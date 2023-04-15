@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --mode development",
+    "dev": "webpack --mode development -w",
     "build": "webpack --mode production",
     "start": "webpack serve --mode development"
   },
@@ -31,7 +31,9 @@
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "babel-loader": "^9.1.2",
+    "eslint": "^8.38.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
     "html-webpack-plugin": "^5.5.0",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4",
@@ -40,6 +42,7 @@
     "webpack-dev-server": "^4.13.2"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
