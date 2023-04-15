@@ -2,19 +2,19 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.tsx",
+  entry: "./client/src/index.tsx",
   output: {
     filename: "main.js",
-    path: path.resolve(__dirname, "build"),
+    path: path.resolve("./client", "build"),
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "public", "index.html"),
+      template: path.join("./client", "public", "index.html"),
     }),
   ],
   devServer: {
     static: {
-      directory: path.join(__dirname, "build"),
+      directory: path.join("./client", "build"),
     },
     port: 3000,
   },
@@ -26,14 +26,14 @@ module.exports = {
         exclude: /node_modules/,
         use: ["babel-loader"],
       },
-      { 
-        test: /\.(ts|tsx)$/, 
-        loader: "ts-loader" 
+      {
+        test: /\.(ts|tsx)$/,
+        loader: "ts-loader"
       }
     ],
   },
   // pass all js files through Babel
   resolve: {
-    extensions: ["*", ".js", ".jsx", ".ts", ".tsx"],    
+    extensions: ["*", ".js", ".jsx", ".ts", ".tsx"],
   }
 };

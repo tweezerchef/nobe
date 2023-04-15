@@ -90,23 +90,23 @@ eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs
 
 /***/ }),
 
-/***/ "./src/App.tsx":
-/*!*********************!*\
-  !*** ./src/App.tsx ***!
-  \*********************/
+/***/ "./client/src/App.tsx":
+/*!****************************!*\
+  !*** ./client/src/App.tsx ***!
+  \****************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst App = () => (0, jsx_runtime_1.jsx)(\"h1\", { children: \"Hello from React!\" });\nexports[\"default\"] = App;\n\n\n//# sourceURL=webpack://nobe/./src/App.tsx?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst App = () => (0, jsx_runtime_1.jsx)(\"h1\", { children: \"Hello from React!\" });\nexports[\"default\"] = App;\n\n\n//# sourceURL=webpack://nobe/./client/src/App.tsx?");
 
 /***/ }),
 
-/***/ "./src/index.tsx":
-/*!***********************!*\
-  !*** ./src/index.tsx ***!
-  \***********************/
+/***/ "./client/src/index.tsx":
+/*!******************************!*\
+  !*** ./client/src/index.tsx ***!
+  \******************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_dom_1 = __importDefault(__webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\"));\nconst App_1 = __importDefault(__webpack_require__(/*! ./App */ \"./src/App.tsx\"));\nreact_dom_1.default.render((0, jsx_runtime_1.jsx)(App_1.default, {}), document.getElementById('root'));\n\n\n//# sourceURL=webpack://nobe/./src/index.tsx?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_dom_1 = __importDefault(__webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\"));\nconst App_1 = __importDefault(__webpack_require__(/*! ./App */ \"./client/src/App.tsx\"));\nreact_dom_1.default.render((0, jsx_runtime_1.jsx)(App_1.default, {}), document.getElementById('root'));\n\n\n//# sourceURL=webpack://nobe/./client/src/index.tsx?");
 
 /***/ })
 
@@ -154,7 +154,7 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.tsx");
+/******/ 	var __webpack_exports__ = __webpack_require__("./client/src/index.tsx");
 /******/ 	
 /******/ })()
 ;
