@@ -13,7 +13,7 @@ app.use(express.json());
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('./client/build', 'index.html'));
 });
-const PORT = 8080;
+const PORT = 8070;
 app.listen(PORT, () => {
     console.log(`Server listening on :${PORT}`);
   });

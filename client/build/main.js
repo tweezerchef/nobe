@@ -166,7 +166,7 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
   \***********************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nfunction Home() {\n    return ((0, jsx_runtime_1.jsx)(\"div\", { children: (0, jsx_runtime_1.jsx)(\"h1\", { children: \"Home\" }) }));\n}\nexports[\"default\"] = Home;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Home.tsx?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nfunction Home() {\n    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ style: { marginRight: '8px' }, to: \"/login\" }, { children: \"Log In \" })), (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: \"/signup\" }, { children: \"Sign Up\" }))] }));\n}\nexports[\"default\"] = Home;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Home.tsx?");
 
 /***/ }),
 
@@ -176,7 +176,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\ncons
   \************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nfunction Login() {\n    return ((0, jsx_runtime_1.jsx)(\"div\", { children: (0, jsx_runtime_1.jsx)(\"h1\", { children: \"Login\" }) }));\n}\nexports[\"default\"] = Login;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Login.tsx?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nfunction Login() {\n    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(\"h1\", { children: \"Login\" }), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\" Don't Have an Account?\", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: '/signup' }, { children: \"Sign Up\" }))] }), (0, jsx_runtime_1.jsx)(\"br\", {}), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\"Go Back \", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: '/' }, { children: \"Home\" }))] })] }));\n}\nexports[\"default\"] = Login;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Login.tsx?");
 
 /***/ }),
 
@@ -186,7 +186,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\ncons
   \*************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nfunction Signup() {\n    return ((0, jsx_runtime_1.jsx)(\"div\", { children: (0, jsx_runtime_1.jsx)(\"h1\", { children: \"Signup\" }) }));\n}\nexports[\"default\"] = Signup;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Signup.tsx?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nfunction Signup() {\n    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(\"h1\", { children: \"Signup!\" }), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\"Already Have an Account?\", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: \"/login\" }, { children: \"Login\" }))] }), (0, jsx_runtime_1.jsx)(\"br\", {}), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\"Go back \", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: '/' }, { children: \" Home \" }))] })] }));\n}\nexports[\"default\"] = Signup;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Signup.tsx?");
 
 /***/ })
 
