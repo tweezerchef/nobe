@@ -11,6 +11,71 @@ datasource db {
 }
 
 model User {
-  id   Int    @id @default(autoincrement())
-  name String
+  id          String        @id @default(uuid())
+  firstName   String
+  username    String
+  zipCode     Int
+  books       UserBooks[]
+  Clubs       Clubs?        @relation(fields: [clubsId], references: [id])
+  clubsId     String?
+  Discussions Discussions[]
+  Posts       Posts[]
+  Books       Books[]
+}
+
+model Books {
+  id          String      @id @default(uuid())
+  title       String
+  author      String
+  description String?
+  genre       Genre[]
+  paperback   Boolean?
+  content     String?
+  user        User        @relation(fields: [userId], references: [id])
+  userId      String
+  UserBooks   UserBooks[]
+}
+
+model Genre {
+  id      String  @id @default(uuid())
+  books   Books?  @relation(fields: [booksId], references: [id])
+  booksId String?
+  name    String
+}
+
+model UserBooks {
+  id       String  @id @default(uuid())
+  wishlist Boolean @default(false)
+  owned    Boolean @default(false)
+  books    Books   @relation(fields: [booksId], references: [id])
+  booksId  String
+  user     User    @relation(fields: [userId], references: [id])
+  userId   String  @unique
+  rating   Float?
+}
+
+model Clubs {
+  id          String        @id @default(uuid())
+  users       User[]
+  name        String
+  Discussions Discussions[]
+}
+
+model Discussions {
+  id      String  @id @default(uuid())
+  clubs   Clubs   @relation(fields: [clubsId], references: [id])
+  creator User    @relation(fields: [userId], references: [id])
+  userId  String
+  title   String
+  clubsId String
+  Posts   Posts[]
+}
+
+model Posts {
+  id            String      @id @default(uuid())
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String
+  body          String
+  discussion    Discussions @relation(fields: [discussionsId], references: [id])
+  discussionsId String
 }
