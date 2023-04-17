@@ -16,13 +16,13 @@ function Clubs() {
   return (
     <div>
       <h1>Book Clubs</h1>
-      <ul>
+      {/* <ul>
         {clubs.map((club) => (
           <li key={club.id}>
             <Link to={`/clubs/${club.id}`}>{club.name}</Link>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   )
 }
