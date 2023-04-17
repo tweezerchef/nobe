@@ -8,7 +8,7 @@ app.use(express.static(CLIENT_PATH));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// make sure this is the last route in our server
+//make sure this is the last route in our server
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('./client/build', 'index.html'));
 });
