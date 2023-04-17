@@ -1,10 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 
 function Login() {
     return (
-        <div>
+        <>
             <h1>Login</h1>
-        </div>
+            <span> Don't Have an Account?
+                <Link to='/signup'>Sign Up</Link>
+            </span>
+            <br />
+            <span>Go Back <Link to='/'>Home</Link></span>
+        </>
     )
 }
 
