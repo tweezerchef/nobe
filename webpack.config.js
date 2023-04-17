@@ -35,5 +35,6 @@ module.exports = {
   // pass all js files through Babel
   resolve: {
     extensions: ["*", ".js", ".jsx", ".ts", ".tsx"],
-  }
+  },
+  watch: true, // watch for changes and re-run
 };
