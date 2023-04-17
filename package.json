@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --mode development -w",
     "build": "webpack --mode production",
-    "start": "webpack serve --mode development"
+    "start": "webpack serve --mode development",
+    "server": "nodemon -L index.js"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
     "html-webpack-plugin": "^5.5.0",
+    "nodemon": "^2.0.22",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4",
     "webpack": "^5.79.0",
@@ -43,6 +45,8 @@
   },
   "dependencies": {
     "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "passport": "^0.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
