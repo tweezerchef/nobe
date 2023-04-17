@@ -13,9 +13,6 @@ app.use(express.json());
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('./client/build', 'index.html'));
 });
-<<<<<<< HEAD
-const PORT = 8070;
-=======
 const PORT = 8080;
 
 app.use("/books", UserBooks);
@@ -25,7 +22,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve('./client/build', 'index.html'));
 });
 
->>>>>>> 1efdbe476d7760afbfdb503f9c3b8604e23f5c89
 app.listen(PORT, () => {
     console.log(`Server listening on :${PORT}`);
   });
