@@ -4,7 +4,6 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 
-
 function Routes() {
     return (
         <Switch>
@@ -14,3 +13,4 @@ function Routes() {
         </Switch>
     );
 }
+export default Routes
