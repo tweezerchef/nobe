@@ -4,7 +4,7 @@ require('dotenv').config();
 
 
 const app = express();
-const CLIENT_PATH = path.resolve(__dirname, './client/build');
+const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 app.use(express.static(CLIENT_PATH));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
