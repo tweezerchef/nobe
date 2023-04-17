@@ -1,4 +1,8 @@
 .env
 node_modules
+<<<<<<< HEAD
 build/main.js
 .env
+=======
+client/build/main.js
+>>>>>>> 6d54826854228ae21f27124c54977e7da5d86e42

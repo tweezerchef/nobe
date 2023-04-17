@@ -1,0 +1,36 @@
+body {
+	background: rgb(34, 35, 36)
+}
+
+.prompt {
+	max-width: 400px;
+	margin: 50px auto;
+	padding-right: 40px;
+	background:rgb(34, 35, 36);
+	border: 5px solid #044461;
+	border-radius: 5px;
+}
+
+.signInButton {
+	box-sizing: border-box;
+	display: block;
+	padding: 10px;
+	width: 100%;
+	border-radius: 10px;
+	margin: 20px;
+	background: #044461;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+	text-decoration: none;
+	color: white;
+}
+
+h3 {
+	font-size: 30px;
+	padding-left: 35px;
+	margin: 0px;
+	font-weight: 250;
+	text-align: center;
+	color: white
+}
