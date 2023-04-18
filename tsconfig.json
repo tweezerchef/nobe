@@ -104,6 +104,7 @@
   },
   "include": [
     "./client/src/**/*",
-    "./client/src/typings/**/*"
+    "./client/src/typings/**/*",
+    "./server/src/**/*"
   ]
 }
