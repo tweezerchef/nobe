@@ -23,6 +23,7 @@ const onSuggectionChange = (value: any) => {
       <h1>Near Me</h1>
       <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
       <GeoapifyGeocoderAutocomplete placeholder="Enter address here"
+
         placeSelect={onPlaceSelect}
         suggestionsChange={onSuggectionChange}
         />
