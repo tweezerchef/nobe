@@ -19,7 +19,7 @@ UserBooks.post('/:id', async (req, res) => {
         title: bookData.title,
         author: bookData.authors[0],
         description: bookData.description,
-        genre: { create: bookData.categories.map(name => ({ name })) },
+        genre: bookData.categories,
         paperback: bookData.printType === 'BOOK',
         content: bookData.contentVersion,
         user: { connect: { id: id } },
