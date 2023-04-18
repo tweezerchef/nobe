@@ -1,14 +1,23 @@
-const path = require('path');
-const express = require('express');
-require('dotenv').config();
-const UserBooks = require('./routes/userbooks.ts');
+
+import path from 'path';
+import express from 'express';
+import dotenv from 'dotenv';
+import morgan from 'morgan';
+import cors from 'cors';
+import UserBooks from './routes/userbooks';
+
+dotenv.config();
 
 const app = express();
 const CLIENT_PATH = path.resolve(__dirname, '../client/build');
+
+app.use(morgan('combined'));
 app.use(express.static(CLIENT_PATH));
+app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-//make sure this is the last route in our server
+
+
 
 const PORT = 8080;
 
