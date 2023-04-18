@@ -283,6 +283,105 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
 
 /***/ }),
 
+/***/ "./client/src/components/Button/Button.tsx":
+/*!*************************************************!*\
+  !*** ./client/src/components/Button/Button.tsx ***!
+  \*************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __rest = (this && this.__rest) || function (s, e) {\n    var t = {};\n    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)\n        t[p] = s[p];\n    if (s != null && typeof Object.getOwnPropertySymbols === \"function\")\n        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {\n            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))\n                t[p[i]] = s[p[i]];\n        }\n    return t;\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst style_1 = __webpack_require__(/*! ./style */ \"./client/src/components/Button/style.ts\");\nfunction Button(_a) {\n    var { children } = _a, props = __rest(_a, [\"children\"]);\n    return ((0, jsx_runtime_1.jsx)(style_1.StyledButton, Object.assign({}, props, { children: children })));\n}\nexports[\"default\"] = Button;\n\n\n//# sourceURL=webpack://nobe/./client/src/components/Button/Button.tsx?");
+
+/***/ }),
+
+/***/ "./client/src/components/Button/index.tsx":
+/*!************************************************!*\
+  !*** ./client/src/components/Button/index.tsx ***!
+  \************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports[\"default\"] = void 0;\nvar Button_1 = __webpack_require__(/*! ./Button */ \"./client/src/components/Button/Button.tsx\");\nObject.defineProperty(exports, \"default\", ({ enumerable: true, get: function () { return __importDefault(Button_1).default; } }));\n\n\n//# sourceURL=webpack://nobe/./client/src/components/Button/index.tsx?");
+
+/***/ }),
+
+/***/ "./client/src/components/Button/style.ts":
+/*!***********************************************!*\
+  !*** ./client/src/components/Button/style.ts ***!
+  \***********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.StyledButton = void 0;\nconst styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.esm.js\"));\nexports.StyledButton = styled_components_1.default.button ` width: ${props => props.full ? '100%' : null}; min-width: 64px;\nborder: 0;\nborder-radius: 4px;\npadding: 8px 16px;\noutline: none;\nbackground-color: #2f8bfd;\ncolor: #ffffff;\nfont-size: 0.875rem;\nfont-weight: 500;\nline-height: 1.5;\nletter-spacing: 0.02857rem;\ncursor: pointer;\ntransition: all 0.2s;\n&:hover { background-color: #0072ff; }\n`;\n\n\n//# sourceURL=webpack://nobe/./client/src/components/Button/style.ts?");
+
+/***/ }),
+
+/***/ "./client/src/components/EntryCard/EntryCard.tsx":
+/*!*******************************************************!*\
+  !*** ./client/src/components/EntryCard/EntryCard.tsx ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst style_1 = __webpack_require__(/*! ./style */ \"./client/src/components/EntryCard/style.ts\");\nfunction EntryCard({ children }) {\n    return ((0, jsx_runtime_1.jsxs)(style_1.StyledEntryCard, { children: [\" \", children] }));\n}\nexports[\"default\"] = EntryCard;\n\n\n//# sourceURL=webpack://nobe/./client/src/components/EntryCard/EntryCard.tsx?");
+
+/***/ }),
+
+/***/ "./client/src/components/EntryCard/style.ts":
+/*!**************************************************!*\
+  !*** ./client/src/components/EntryCard/style.ts ***!
+  \**************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.StyledEntryCard = void 0;\nconst styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.esm.js\"));\nexports.StyledEntryCard = styled_components_1.default.div `\nwidth: 100%; max-width: 450px;\nborder-radius: 5px;\npadding: 50px;\nmargin-bottom: 40px;\nbackground-color: #ffffff;\nbox-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);\ntext-align: center;\nh2 {\nfont-weight: 500;\nmargin-bottom: 50px;\n}\nspan {\ndisplay: block;\nmargin-top: 40px; color: #888888; font-size: 14px;\n}\na {\nmargin-left: 4px; color: #2f8bfd;\n}`;\n\n\n//# sourceURL=webpack://nobe/./client/src/components/EntryCard/style.ts?");
+
+/***/ }),
+
+/***/ "./client/src/components/Input Group/InputGroup.tsx":
+/*!**********************************************************!*\
+  !*** ./client/src/components/Input Group/InputGroup.tsx ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst style_1 = __webpack_require__(/*! ./style */ \"./client/src/components/Input Group/style.ts\");\nfunction InputGroup({ children }) {\n    return ((0, jsx_runtime_1.jsx)(style_1.StyledInputGroup, { children: children }));\n}\nexports[\"default\"] = InputGroup;\n\n\n//# sourceURL=webpack://nobe/./client/src/components/Input_Group/InputGroup.tsx?");
+
+/***/ }),
+
+/***/ "./client/src/components/Input Group/style.ts":
+/*!****************************************************!*\
+  !*** ./client/src/components/Input Group/style.ts ***!
+  \****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.StyledInputGroup = void 0;\nconst styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.esm.js\"));\nexports.StyledInputGroup = styled_components_1.default.div `\nmargin-bottom: 24px;\ntext-align: left;\nlabel {\n    display: inline-block;\n    margin-bottom: 0.5rem;\n    color: #888888;\n}\n`;\n\n\n//# sourceURL=webpack://nobe/./client/src/components/Input_Group/style.ts?");
+
+/***/ }),
+
+/***/ "./client/src/components/Input/Input.tsx":
+/*!***********************************************!*\
+  !*** ./client/src/components/Input/Input.tsx ***!
+  \***********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __rest = (this && this.__rest) || function (s, e) {\n    var t = {};\n    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)\n        t[p] = s[p];\n    if (s != null && typeof Object.getOwnPropertySymbols === \"function\")\n        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {\n            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))\n                t[p[i]] = s[p[i]];\n        }\n    return t;\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst style_1 = __webpack_require__(/*! ./style */ \"./client/src/components/Input/style.ts\");\nfunction Input(_a) {\n    var props = __rest(_a, []);\n    return ((0, jsx_runtime_1.jsx)(style_1.StyledInput, Object.assign({}, props)));\n}\nexports[\"default\"] = Input;\n\n\n//# sourceURL=webpack://nobe/./client/src/components/Input/Input.tsx?");
+
+/***/ }),
+
+/***/ "./client/src/components/Input/style.ts":
+/*!**********************************************!*\
+  !*** ./client/src/components/Input/style.ts ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.StyledInput = void 0;\nconst styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.esm.js\"));\nexports.StyledInput = styled_components_1.default.input `\nwidth: 100%;\noutline: none;\npadding: 8px 16px;\nborder: 1px solid #e0e6e8; border-radius: 4px;\nfont-size: 1rem;\ncolor: #888888;\ntransition: box-shadow 0.2s;\n&::placeholder {\ncolor: #dedede;\n}\n&:focus{\n\nbox-shadow: 0 0 0 2px rgb(169, 172, 255, 0.5);\n}`;\n\n\n//# sourceURL=webpack://nobe/./client/src/components/Input/style.ts?");
+
+/***/ }),
+
 /***/ "./client/src/components/Navbar/Navbar.tsx":
 /*!*************************************************!*\
   !*** ./client/src/components/Navbar/Navbar.tsx ***!
@@ -342,10 +441,10 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
 /*!************************************!*\
   !*** ./client/src/pages/Login.tsx ***!
   \************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nfunction Login() {\n    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(\"h1\", { children: \"Login\" }), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\" Don't Have an Account?\", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: '/signup' }, { children: \"Sign Up\" }))] }), (0, jsx_runtime_1.jsx)(\"br\", {}), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\"Go Back \", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: '/' }, { children: \"Home\" }))] })] }));\n}\nexports[\"default\"] = Login;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Login.tsx?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nconst style_1 = __webpack_require__(/*! ./style */ \"./client/src/pages/style.ts\");\nconst EntryCard_1 = __importDefault(__webpack_require__(/*! ../components/EntryCard/EntryCard */ \"./client/src/components/EntryCard/EntryCard.tsx\"));\nconst InputGroup_1 = __importDefault(__webpack_require__(/*! ../components/Input Group/InputGroup */ \"./client/src/components/Input Group/InputGroup.tsx\"));\nconst Input_1 = __importDefault(__webpack_require__(/*! ../components/Input/Input */ \"./client/src/components/Input/Input.tsx\"));\nconst Button_1 = __importDefault(__webpack_require__(/*! ../components/Button */ \"./client/src/components/Button/index.tsx\"));\nfunction Login() {\n    return ((0, jsx_runtime_1.jsxs)(style_1.EntryPage, { children: [(0, jsx_runtime_1.jsx)(style_1.PageHeader, Object.assign({ to: \"/\" }, { children: \"AWESOME LOGO\" })), \" \", (0, jsx_runtime_1.jsxs)(EntryCard_1.default, { children: [(0, jsx_runtime_1.jsx)(\"h2\", { children: \"Log in\" }), (0, jsx_runtime_1.jsxs)(\"form\", Object.assign({ onSubmit: (e) => e.preventDefault() }, { children: [(0, jsx_runtime_1.jsxs)(InputGroup_1.default, { children: [(0, jsx_runtime_1.jsx)(\"label\", Object.assign({ htmlFor: \"login-email\" }, { children: \"Email Address\" })), (0, jsx_runtime_1.jsx)(Input_1.default, { type: \"text\", placeholder: \"name@email.com\", id: \"login-email\" }), \" \"] }), (0, jsx_runtime_1.jsxs)(InputGroup_1.default, { children: [(0, jsx_runtime_1.jsx)(\"label\", Object.assign({ htmlFor: \"login-password\" }, { children: \"Password\" })), (0, jsx_runtime_1.jsx)(Input_1.default, { type: \"password\", placeholder: \"Password\", id: \"login-password\" }), \" \"] }), (0, jsx_runtime_1.jsx)(Button_1.default, Object.assign({ full: true }, { children: \"Log in\" }))] })), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\"Don't have an account?\", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: \"/signup\" }, { children: \"Sign up\" }))] })] })] }));\n}\nexports[\"default\"] = Login;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Login.tsx?");
 
 /***/ }),
 
@@ -364,10 +463,21 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\ncons
 /*!*************************************!*\
   !*** ./client/src/pages/Signup.tsx ***!
   \*************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nfunction Signup() {\n    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(\"h1\", { children: \"Signup!\" }), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\"Already Have an Account?\", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: \"/login\" }, { children: \"Login\" }))] }), (0, jsx_runtime_1.jsx)(\"br\", {}), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\"Go back \", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: '/' }, { children: \" Home \" }))] })] }));\n}\nexports[\"default\"] = Signup;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Signup.tsx?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nconst style_1 = __webpack_require__(/*! ./style */ \"./client/src/pages/style.ts\");\nconst EntryCard_1 = __importDefault(__webpack_require__(/*! ../components/EntryCard/EntryCard */ \"./client/src/components/EntryCard/EntryCard.tsx\"));\nconst InputGroup_1 = __importDefault(__webpack_require__(/*! ../components/Input Group/InputGroup */ \"./client/src/components/Input Group/InputGroup.tsx\"));\nconst Input_1 = __importDefault(__webpack_require__(/*! ../components/Input/Input */ \"./client/src/components/Input/Input.tsx\"));\nconst Button_1 = __importDefault(__webpack_require__(/*! ../components/Button/Button */ \"./client/src/components/Button/Button.tsx\"));\nfunction Signup() {\n    return ((0, jsx_runtime_1.jsxs)(style_1.EntryPage, { children: [(0, jsx_runtime_1.jsx)(style_1.PageHeader, Object.assign({ to: \"/\" }, { children: \"AWESOME LOGO\" })), \" \", (0, jsx_runtime_1.jsxs)(EntryCard_1.default, { children: [(0, jsx_runtime_1.jsx)(\"h2\", { children: \"Sign up\" }), (0, jsx_runtime_1.jsxs)(\"form\", Object.assign({ onSubmit: (e) => e.preventDefault() }, { children: [(0, jsx_runtime_1.jsxs)(InputGroup_1.default, { children: [(0, jsx_runtime_1.jsx)(\"label\", Object.assign({ htmlFor: \"signup-name\" }, { children: \"Full Name\" })), (0, jsx_runtime_1.jsx)(Input_1.default, { type: \"text\", placeholder: \"John Doe\", id: \"signup-name\" }), \" \"] }), (0, jsx_runtime_1.jsxs)(InputGroup_1.default, { children: [(0, jsx_runtime_1.jsx)(\"label\", Object.assign({ htmlFor: \"signup-email\" }, { children: \"Email Address\" })), (0, jsx_runtime_1.jsx)(Input_1.default, { type: \"text\", placeholder: \"name@email.com\", id: \"signup-email\" }), \" \"] }), (0, jsx_runtime_1.jsxs)(InputGroup_1.default, { children: [(0, jsx_runtime_1.jsx)(\"label\", Object.assign({ htmlFor: \"signup-password\" }, { children: \"Password\" })), (0, jsx_runtime_1.jsx)(Input_1.default, { type: \"password\", placeholder: \"Password\", id: \"signup-password\" }), \" \"] }), (0, jsx_runtime_1.jsx)(Button_1.default, Object.assign({ full: true }, { children: \"Sign up\" }))] })), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\"Already have an account?\", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: \"/login\" }, { children: \"Log in\" }))] })] })] }));\n}\nexports[\"default\"] = Signup;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Signup.tsx?");
+
+/***/ }),
+
+/***/ "./client/src/pages/style.ts":
+/*!***********************************!*\
+  !*** ./client/src/pages/style.ts ***!
+  \***********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.PageHeader = exports.EntryPage = void 0;\nconst styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.esm.js\"));\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nexports.EntryPage = styled_components_1.default.div `\ndisplay: flex;\nalign-items: center; flex-direction: column;\nmin-height: 100vh;\nbackground-color: #fbfbfb\n`;\nexports.PageHeader = (0, styled_components_1.default)(react_router_dom_1.Link) `\nfont-size: 2rem;\nfont-weight: 600; margin: 40px 0; color: inherit;\n`;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/style.ts?");
 
 /***/ }),
 
