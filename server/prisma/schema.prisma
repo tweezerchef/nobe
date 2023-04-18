@@ -13,7 +13,7 @@ datasource db {
 model User {
   id          String        @id @default(uuid())
   firstName   String
-  username    String
+  username    String        @unique
   zipCode     Int
   books       UserBooks[]
   Clubs       Clubs?        @relation(fields: [clubsId], references: [id])

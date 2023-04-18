@@ -1,14 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import Navbar from '../components/Navbar/Navbar'
 
 function Home() {
     return (
-        <>
-            <Link style={{ marginRight: '8px' }} to="/login">
-                Log In </Link>
-            <Link to="/signup">Sign Up</Link>
-        </>
-    )
+        <Navbar children={undefined} />
+    );
 }
 
 export default Home;
