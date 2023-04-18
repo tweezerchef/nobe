@@ -7,19 +7,19 @@ const prisma = new PrismaClient()
 async function clubSeed() {
   const user1 = await prisma.user.findUnique({ where: { username: 'john_doe' } })
   const user2 = await prisma.user.findUnique({ where: { username: 'matt_doe' } })
-  console.log(user1);
+  // console.log('THIS IS USER1', user1);
 
   const club1 = await prisma.clubs.create({
     data: {
       name: 'club1',
-      users: { connect: [{ id: user1.id }] },
+      users: { connect: { id: user1.id } },
     }
   })
 
   const club2 = await prisma.clubs.create({
     data: {
       name: 'club2',
-      users: { connect: [{ id: user2.id }] },
+      users: { connect: { id: user2.id } },
     }
   })
 

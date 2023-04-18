@@ -15,8 +15,7 @@ const UserBooks = express.Router();
 UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { title, wishlist, owned } = req.body;
-    const { id } = req.params;
-
+    const { id } = req.params
     // make request to get book from API
     const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${title}&key=`);
     const bookData = response.data.items[0].volumeInfo;
