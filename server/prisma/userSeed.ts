@@ -28,4 +28,3 @@ seed()
     await prisma.$disconnect()
   })
 
-  export default prisma;
