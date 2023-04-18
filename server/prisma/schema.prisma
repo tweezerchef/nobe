@@ -20,7 +20,6 @@ model User {
   clubsId     String?
   Discussions Discussions[]
   Posts       Posts[]
-  Books       Books[]
 }
 
 model Books {
@@ -31,8 +30,6 @@ model Books {
   genre       Genre[]
   paperback   Boolean?
   content     String?
-  user        User        @relation(fields: [userId], references: [id])
-  userId      String
   UserBooks   UserBooks[]
 }
 
