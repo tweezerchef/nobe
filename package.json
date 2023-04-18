@@ -45,6 +45,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "html-webpack-plugin": "^5.5.0",
     "nodemon": "^2.0.22",
+    "prisma": "^4.12.0",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4",
     "webpack": "^5.79.0",
@@ -52,6 +53,8 @@
     "webpack-dev-server": "^4.13.2"
   },
   "dependencies": {
+    "@geoapify/geocoder-autocomplete": "^1.5.1",
+    "@geoapify/react-geocoder-autocomplete": "^1.5.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.0",
     "@mui/styled-engine-sc": "^5.12.0",
