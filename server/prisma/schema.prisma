@@ -21,6 +21,7 @@ model User {
   Discussions Discussions[]
   Posts       Posts[]
   Books       Books[]
+  Clubs       Clubs?        @relation(fields: [clubsId], references: [id])
 }
 
 model Books {
@@ -56,9 +57,10 @@ model UserBooks {
 
 model Clubs {
   id          String        @id @default(uuid())
-  users       User[]
+  users       User[]        @relation("ClubUsers")
   name        String
   Discussions Discussions[]
+  User        User[]
 }
 
 model Discussions {
