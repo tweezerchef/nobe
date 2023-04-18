@@ -1,11 +1,18 @@
 const express = require('express');
 const axios = require('axios')
 const { PrismaClient } = require('@prisma/client');
+import { Request, Response } from 'express';
+interface AuthenticatedRequest extends Request {
+  user: {
+    id: string;
+    // add other properties as needed
+  };
+}
 
 const prisma = new PrismaClient();
 const UserBooks = express.Router();
 
-UserBooks.post('/:id', async (req, res) => {
+UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { title, wishlist, owned } = req.body;
     const { id } = req.params;
@@ -20,7 +27,7 @@ UserBooks.post('/:id', async (req, res) => {
         title: bookData.title,
         author: bookData.authors[0],
         description: bookData.description,
-        genre: { create: bookData.categories.map(name => ({ name })) },
+        genre: { create: bookData.categories.map((name: string) => ({ name })) },
         paperback: bookData.printType === 'BOOK',
         content: bookData.contentVersion,
         user: { connect: { id: id } },
@@ -44,4 +51,4 @@ UserBooks.post('/:id', async (req, res) => {
   }
 });
 
-module.exports = UserBooks;
+export default UserBooks;
