@@ -8,6 +8,7 @@ import {
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Clubs from './pages/Clubs';
 
 function Router() {
     return (
@@ -15,6 +16,7 @@ function Router() {
             <Route path="/" Component={Home} />
             <Route path="/login" Component={Login} />
             <Route path="/signup" Component={Signup} />
+            <Route path="/clubs" Component={Clubs} />
         </Routes>
     );
 }
