@@ -279,7 +279,7 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nconst Home_1 = __importDefault(__webpack_require__(/*! ./pages/Home */ \"./client/src/pages/Home.tsx\"));\nconst Login_1 = __importDefault(__webpack_require__(/*! ./pages/Login */ \"./client/src/pages/Login.tsx\"));\nconst Signup_1 = __importDefault(__webpack_require__(/*! ./pages/Signup */ \"./client/src/pages/Signup.tsx\"));\nconst Clubs_1 = __importDefault(__webpack_require__(/*! ./pages/Clubs */ \"./client/src/pages/Clubs.tsx\"));\nfunction Router() {\n    return ((0, jsx_runtime_1.jsxs)(react_router_dom_1.Routes, { children: [(0, jsx_runtime_1.jsx)(react_router_dom_1.Route, { path: \"/\", Component: Home_1.default }), (0, jsx_runtime_1.jsx)(react_router_dom_1.Route, { path: \"/login\", Component: Login_1.default }), (0, jsx_runtime_1.jsx)(react_router_dom_1.Route, { path: \"/signup\", Component: Signup_1.default }), (0, jsx_runtime_1.jsx)(react_router_dom_1.Route, { path: \"/clubs\", Component: Clubs_1.default })] }));\n}\nexports[\"default\"] = Router;\n\n\n//# sourceURL=webpack://nobe/./client/src/Router.tsx?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nconst Home_1 = __importDefault(__webpack_require__(/*! ./pages/Home */ \"./client/src/pages/Home.tsx\"));\nconst Login_1 = __importDefault(__webpack_require__(/*! ./pages/Login */ \"./client/src/pages/Login.tsx\"));\nconst Signup_1 = __importDefault(__webpack_require__(/*! ./pages/Signup */ \"./client/src/pages/Signup.tsx\"));\nconst Clubs_1 = __importDefault(__webpack_require__(/*! ./pages/Clubs */ \"./client/src/pages/Clubs.tsx\"));\nconst Nearme_1 = __importDefault(__webpack_require__(/*! ./pages/Nearme */ \"./client/src/pages/Nearme.tsx\"));\nfunction Router() {\n    return ((0, jsx_runtime_1.jsxs)(react_router_dom_1.Routes, { children: [(0, jsx_runtime_1.jsx)(react_router_dom_1.Route, { path: \"/\", Component: Home_1.default }), (0, jsx_runtime_1.jsx)(react_router_dom_1.Route, { path: \"/login\", Component: Login_1.default }), (0, jsx_runtime_1.jsx)(react_router_dom_1.Route, { path: \"/signup\", Component: Signup_1.default }), (0, jsx_runtime_1.jsx)(react_router_dom_1.Route, { path: \"/clubs\", Component: Clubs_1.default }), (0, jsx_runtime_1.jsx)(react_router_dom_1.Route, { path: \"/locations\", Component: Nearme_1.default })] }));\n}\nexports[\"default\"] = Router;\n\n\n//# sourceURL=webpack://nobe/./client/src/Router.tsx?");
 
 /***/ }),
 
@@ -324,6 +324,17 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\ncons
 
 "use strict";
 eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nfunction Login() {\n    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(\"h1\", { children: \"Login\" }), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\" Don't Have an Account?\", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: '/signup' }, { children: \"Sign Up\" }))] }), (0, jsx_runtime_1.jsx)(\"br\", {}), (0, jsx_runtime_1.jsxs)(\"span\", { children: [\"Go Back \", (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: '/' }, { children: \"Home\" }))] })] }));\n}\nexports[\"default\"] = Login;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Login.tsx?");
+
+/***/ }),
+
+/***/ "./client/src/pages/Nearme.tsx":
+/*!*************************************!*\
+  !*** ./client/src/pages/Nearme.tsx ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nfunction Locations() {\n    return ((0, jsx_runtime_1.jsx)(\"div\", { children: (0, jsx_runtime_1.jsx)(\"h1\", { children: \"Near Me\" }) }));\n}\nexports[\"default\"] = Locations;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Nearme.tsx?");
 
 /***/ }),
 
