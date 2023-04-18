@@ -12,12 +12,12 @@ interface AuthenticatedRequest extends Request {
 const prisma = new PrismaClient();
 const UserBooks = express.Router();
 
-UserBooks.post('/', async (req: AuthenticatedRequest, res: Response) => {
+UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { title, wishlist, owned } = req.body;
-
+    const { id } = req.params
     // make request to get book from API
-    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${title}&key=YOUR_API_KEY`);
+    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${title}&key=`);
     const bookData = response.data.items[0].volumeInfo;
 
     // add book to database
@@ -29,12 +29,12 @@ UserBooks.post('/', async (req: AuthenticatedRequest, res: Response) => {
         genre: { create: bookData.categories.map((name: string) => ({ name })) },
         paperback: bookData.printType === 'BOOK',
         content: bookData.contentVersion,
-        user: { connect: { id: req.user.id } },
+        user: { connect: { id: id } },
         UserBooks: {
           create: {
             wishlist,
             owned,
-            user: { connect: { id: req.user.id } },
+            user: { connect: { id: id } },
           },
         },
       },
