@@ -12,14 +12,14 @@ async function clubSeed() {
   const club1 = await prisma.clubs.create({
     data: {
       name: 'club1',
-      users: { connect: [{ id: user1.id }] },
+      clubMembers: { create: [{ userId: user1.id }] },
     }
   })
 
   const club2 = await prisma.clubs.create({
     data: {
       name: 'club2',
-      users: { connect: [{ id: user2.id }] },
+      clubMembers: { create: [{ userId: user2.id }] },
     }
   })
 
