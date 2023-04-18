@@ -9,7 +9,8 @@
     "build": "webpack --mode production",
     "start": "webpack serve --mode development",
     "server": "nodemon -L server/index.js",
-    "seed": "node server/prisma/userSeed.ts"
+    "userSeed": "node server/prisma/userSeed.ts",
+    "clubsSeed": "node server/prisma/clubsSeed.ts"
   },
   "repository": {
     "type": "git",

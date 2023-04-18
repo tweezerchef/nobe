@@ -50,7 +50,7 @@ model UserBooks {
   books    Books   @relation(fields: [booksId], references: [id])
   booksId  String
   user     User    @relation(fields: [userId], references: [id])
-  userId   String  @unique
+  userId   String
   rating   Float?
 }
 
