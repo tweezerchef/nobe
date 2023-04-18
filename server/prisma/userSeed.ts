@@ -27,3 +27,5 @@ seed()
   .finally(async () => {
     await prisma.$disconnect()
   })
+
+  export default prisma;

@@ -43,4 +43,3 @@ UserBooks.post('/:id', async (req, res) => {
   }
 });
 
-module.exports = UserBooks;
