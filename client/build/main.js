@@ -283,6 +283,28 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
 
 /***/ }),
 
+/***/ "./client/src/components/Navbar/Navbar.tsx":
+/*!*************************************************!*\
+  !*** ./client/src/components/Navbar/Navbar.tsx ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst style_1 = __webpack_require__(/*! ./style */ \"./client/src/components/Navbar/style.ts\");\nfunction Navbar({ children }) {\n    return ((0, jsx_runtime_1.jsxs)(style_1.StyledNavbar, { children: [(0, jsx_runtime_1.jsx)(style_1.NavItemLink, Object.assign({ to: '/login' }, { children: \"Login\" })), (0, jsx_runtime_1.jsx)(style_1.NavItemLink, Object.assign({ to: '/signup' }, { children: \"Sign Up\" }))] }));\n}\nexports[\"default\"] = Navbar;\n\n\n//# sourceURL=webpack://nobe/./client/src/components/Navbar/Navbar.tsx?");
+
+/***/ }),
+
+/***/ "./client/src/components/Navbar/style.ts":
+/*!***********************************************!*\
+  !*** ./client/src/components/Navbar/style.ts ***!
+  \***********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    var desc = Object.getOwnPropertyDescriptor(m, k);\n    if (!desc || (\"get\" in desc ? !m.__esModule : desc.writable || desc.configurable)) {\n      desc = { enumerable: true, get: function() { return m[k]; } };\n    }\n    Object.defineProperty(o, k2, desc);\n}) : (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    o[k2] = m[k];\n}));\nvar __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {\n    Object.defineProperty(o, \"default\", { enumerable: true, value: v });\n}) : function(o, v) {\n    o[\"default\"] = v;\n});\nvar __importStar = (this && this.__importStar) || function (mod) {\n    if (mod && mod.__esModule) return mod;\n    var result = {};\n    if (mod != null) for (var k in mod) if (k !== \"default\" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);\n    __setModuleDefault(result, mod);\n    return result;\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.NavItemLink = exports.StyledNavbar = void 0;\nconst styled_components_1 = __importStar(__webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.esm.js\"));\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nexports.StyledNavbar = styled_components_1.default.nav ` display: flex;\nalign-items: center; justify-content: flex-end;\nwidth: 100%;\nheight: 70px;\npadding: 0 30px;\ncolor: #ffffff;\nbackground-color: #202023;\nbox-shadow: 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);\n`;\nexports.NavItemLink = (0, styled_components_1.default)(react_router_dom_1.Link) `\ncolor: inherit;\nmargin-left: 16px;\n${props => props.fill && (0, styled_components_1.css) `\npadding: 8px 16px;\nborder-radius: 4px;\nbackground-color: #2f8bfd;\ntransition: background-color 0.2s; &:hover { background-color: #0072ff; }\n`};\n`;\n\n\n//# sourceURL=webpack://nobe/./client/src/components/Navbar/style.ts?");
+
+/***/ }),
+
 /***/ "./client/src/index.tsx":
 /*!******************************!*\
   !*** ./client/src/index.tsx ***!
@@ -309,10 +331,10 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\ncons
 /*!***********************************!*\
   !*** ./client/src/pages/Home.tsx ***!
   \***********************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst react_router_dom_1 = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router-dom/dist/index.js\");\nfunction Home() {\n    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ style: { marginRight: '8px' }, to: \"/login\" }, { children: \"Log In \" })), (0, jsx_runtime_1.jsx)(react_router_dom_1.Link, Object.assign({ to: \"/signup\" }, { children: \"Sign Up\" }))] }));\n}\nexports[\"default\"] = Home;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Home.tsx?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nconst Navbar_1 = __importDefault(__webpack_require__(/*! ../components/Navbar/Navbar */ \"./client/src/components/Navbar/Navbar.tsx\"));\nfunction Home() {\n    return ((0, jsx_runtime_1.jsx)(Navbar_1.default, { children: undefined }));\n}\nexports[\"default\"] = Home;\n\n\n//# sourceURL=webpack://nobe/./client/src/pages/Home.tsx?");
 
 /***/ }),
 
