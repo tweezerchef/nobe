@@ -8,7 +8,8 @@
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
     "start": "webpack serve --mode development",
-    "server": "nodemon -L server/index.js"
+    "server": "nodemon -L server/index.js",
+    "seed": "node server/prisma/userSeed.ts"
   },
   "repository": {
     "type": "git",
