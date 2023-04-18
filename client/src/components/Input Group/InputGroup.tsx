@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyledInputGroup } from './style';
 
-interface InputProps extends React.ChildrenProps {
+interface InputProps extends React.PropsWithChildren {
     // Add any other props specific to the Button component here
 }
 

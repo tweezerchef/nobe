@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyledButton } from './style'
 
-export interface ButtonProps extends React.ChildrenProps {
+export interface ButtonProps extends React.PropsWithChildren {
     full?: boolean;
     fill?: boolean;
     // Add any other props specific to the Button component here
