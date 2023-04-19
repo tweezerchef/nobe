@@ -6,7 +6,7 @@ function Clubs() {
 
   useEffect(() => {
     async function fetchClubs() {
-      const response = await fetch("/api/clubs");
+      const response = await fetch("/clubs");
       const data = await response.json();
       setClubs(data);
     }

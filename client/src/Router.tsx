@@ -9,6 +9,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Clubs from './pages/Clubs';
+import Locations from './pages/Nearme';
+import Profile from './pages/Profile';
 
 function Router() {
     return (
@@ -17,6 +19,8 @@ function Router() {
             <Route path="/login" Component={Login} />
             <Route path="/signup" Component={Signup} />
             <Route path="/clubs" Component={Clubs} />
+            <Route path="/locations" Component={Locations} />
+            <Route path="/profile" Component={Profile} />
         </Routes>
     );
 }
