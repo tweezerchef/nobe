@@ -24,12 +24,9 @@ function Clubs() {
       <h1>Book Clubs</h1>
       <ul>
         {clubs.map((club) => (
-          <li >
-            {club.name}
+          <li key={club.id}>
+            <Link to={`/api/clubs/${club.id}`}>{club.name}</Link>
           </li>
-          // <li key={club.id}>
-          //   <Link to={`/api/clubs/${club.id}`}>{club.name}</Link>
-          // </li>
         ))}
       </ul>
     </div>
