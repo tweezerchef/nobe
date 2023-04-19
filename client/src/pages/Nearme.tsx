@@ -3,12 +3,22 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete'
 
+interface Book {
+  books: {
+    id: string;
+    title: string;
+    author: string;
+    description: string;
+  }
+}
 
 
 function Locations() {
 
 const [userLocation, setUserLocation] = useState('');
 const [radius, setRadius] = useState(0);
+const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
+
 
 
 
@@ -34,6 +44,7 @@ const onSuggectionChange = (value: any) => {
         />
     </GeoapifyContext>
     {/* <input type='number' onChange={e => setRadius(e.target.value)}></input> */}
+
     </div>
   )
 

@@ -70,7 +70,6 @@ app.post("/signup", async (req, res) => {
           picture: profile.picture ?? "",
           token: "",
           username: "",
-          zipCode: 0,
         },
       });
 
