@@ -27,6 +27,7 @@ model Books {
   content     String?
   genre       Genre[]
   UserBooks   UserBooks[]
+  image       String
 }
 
 model Genre {

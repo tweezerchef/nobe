@@ -2,10 +2,15 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 interface Book {
+  books: {
+    id: string;
+    title: string;
+    author: string;
+    description: string;
+  }
   id: string;
-  title: string;
-  author: string;
-  description: string;
+  wishlist: boolean;
+  owned: boolean;
 }
 const Profile = () => {
   const [userBooks, setUserBooks] = useState<Book[]>([]);
@@ -17,10 +22,11 @@ const Profile = () => {
       console.error(err);
     }
   }
+  //console.log(userBooks[0].books);
 
-  // useEffect(() => {
-  //   getUserBooks();
-  // })
+  useEffect(() => {
+    getUserBooks();
+  }, [])
 
   return (
     <div>
@@ -28,9 +34,9 @@ const Profile = () => {
       <h2>My Books</h2>
       {userBooks.map((book) => (
         <div key={book.id}>
-          <h3>{book.title}</h3>
-          <p>{book.description}</p>
-          <p>{book.author}</p>
+          <h3>{book.books.title}</h3>
+          <p>{book.books.description}</p>
+          <p>{book.books.author}</p>
         </div>
       ))}
     </div>
