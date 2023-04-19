@@ -13,7 +13,7 @@ model User {
   lastName    String?
   picture     String?
   email       String
-  googleId    String?
+  googleId    String        @unique
   token       String?
   username    String?       @unique
   latitude    Float?
