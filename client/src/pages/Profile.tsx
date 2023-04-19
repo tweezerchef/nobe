@@ -28,6 +28,7 @@ const Profile = () => {
     getUserBooks();
   }, [])
 
+  // <p> <img src={book.books.image} /></p>
   return (
     <div>
       <h1>Profile</h1>
@@ -35,7 +36,7 @@ const Profile = () => {
       {userBooks.map((book) => (
         <div key={book.id}>
           <h3>{book.books.title}</h3>
-          <p> <img src={book.books.image} /></p>
+
           <p>{book.books.author}</p>
         </div>
       ))}
