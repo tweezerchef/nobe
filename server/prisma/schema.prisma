@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,14 +10,19 @@ datasource db {
 model User {
   id          String        @id @default(uuid())
   firstName   String
-  username    String
-  zipCode     Int
-  books       UserBooks[]
-  Clubs       Clubs?        @relation(fields: [clubsId], references: [id])
-  clubsId     String?
+  lastName    String?
+  picture     String?
+  email       String
+  googleId    String        @unique
+  token       String?
+  username    String?       @unique
+  latitude    Float?
+  longitude   Float?
+  radius      Int?
+  clubMembers ClubMembers[]
   Discussions Discussions[]
   Posts       Posts[]
-  Books       Books[]
+  books       UserBooks[]
 }
 
 model Books {
@@ -28,54 +30,63 @@ model Books {
   title       String
   author      String
   description String?
-  genre       Genre[]
   paperback   Boolean?
   content     String?
-  user        User        @relation(fields: [userId], references: [id])
-  userId      String
+  image       String?
+  genre       Genre[]
   UserBooks   UserBooks[]
 }
 
 model Genre {
   id      String  @id @default(uuid())
-  books   Books?  @relation(fields: [booksId], references: [id])
   booksId String?
   name    String
+  books   Books?  @relation(fields: [booksId], references: [id])
 }
 
 model UserBooks {
-  id       String  @id @default(uuid())
-  wishlist Boolean @default(false)
-  owned    Boolean @default(false)
-  books    Books   @relation(fields: [booksId], references: [id])
-  booksId  String
-  user     User    @relation(fields: [userId], references: [id])
-  userId   String  @unique
-  rating   Float?
+  id        String  @id @default(uuid())
+  wishlist  Boolean @default(false)
+  owned     Boolean @default(false)
+  booksId   String
+  userId    String
+  rating    Float?
+  thumbDown Int?
+  thumbUp   Int?
+  books     Books   @relation(fields: [booksId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 }
 
 model Clubs {
   id          String        @id @default(uuid())
-  users       User[]
   name        String
+  clubMembers ClubMembers[]
   Discussions Discussions[]
+}
+
+model ClubMembers {
+  id     String @id @default(uuid())
+  userId String
+  clubId String
+  club   Clubs  @relation(fields: [clubId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model Discussions {
   id      String  @id @default(uuid())
-  clubs   Clubs   @relation(fields: [clubsId], references: [id])
-  creator User    @relation(fields: [userId], references: [id])
   userId  String
   title   String
   clubsId String
+  clubs   Clubs   @relation(fields: [clubsId], references: [id])
+  creator User    @relation(fields: [userId], references: [id])
   Posts   Posts[]
 }
 
 model Posts {
   id            String      @id @default(uuid())
-  user          User        @relation(fields: [userId], references: [id])
   userId        String
   body          String
-  discussion    Discussions @relation(fields: [discussionsId], references: [id])
   discussionsId String
+  discussion    Discussions @relation(fields: [discussionsId], references: [id])
+  user          User        @relation(fields: [userId], references: [id])
 }

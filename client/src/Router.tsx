@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
+    Navigate,
     BrowserRouter,
     Routes,
     Route,
@@ -10,9 +11,17 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Clubs from './pages/Clubs';
 import Locations from './pages/Nearme';
-import Trending from './pages/Trending';
 
 function Router() {
+    const [user, setUser] = useState<User | null>(null);
+    useEffect(() => {
+        const theUser = localStorage.getItem("user");
+
+        if (theUser && !theUser.includes("undefined")) {
+            setUser(JSON.parse(theUser));
+        }
+    }, []);
+
     return (
         <Routes>
             <Route path="/" Component={Home} />
@@ -20,7 +29,6 @@ function Router() {
             <Route path="/signup" Component={Signup} />
             <Route path="/clubs" Component={Clubs} />
             <Route path="/locations" Component={Locations} />
-            <Route path="/trending" Component={Trending} />
         </Routes>
     );
 }
