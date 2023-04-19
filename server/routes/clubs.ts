@@ -18,9 +18,9 @@ ClubsRoute.get('/', async (req: Request, res: Response) => {
 
 ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
   try {
-    const discussion = await prisma.discussion.findMany({
+    const discussion = await prisma.discussions.findMany({
       where: {
-        clubId: req.params.id,
+        clubsId: req.params.id,
       },
     });
     res.json(discussion);
