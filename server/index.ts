@@ -5,14 +5,11 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
 import UserBooks from './routes/userbooks';
-<<<<<<< HEAD
 import Trending from './routes/Trending';
 
-=======
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
->>>>>>> 60ba05f99f076bb76095f282552cc331c0241ea5
 dotenv.config();
 
 
