@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
 import UserBooks from './routes/userbooks';
+import Clubs from './routes/clubs';
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 
@@ -118,6 +119,7 @@ app.post("/login", async (req, res) => {
 
 
 app.use("/books", UserBooks);
+app.use("/api/clubs", Clubs);
 
 //make sure this is the last route in our server
 app.get('*', (req, res) => {
