@@ -16,7 +16,9 @@ model User {
   googleId    String
   token       String
   username    String        @unique
-  zipCode     Int
+  latitude    Float
+  longitude   Float
+  radius      Int
   clubMembers ClubMembers[]
   Discussions Discussions[]
   Posts       Posts[]
