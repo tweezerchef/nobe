@@ -6,6 +6,8 @@ import morgan from 'morgan';
 import cors from 'cors';
 import UserBooks from './routes/userbooks';
 import Clubs from './routes/clubs';
+import Trending from './routes/Trending';
+
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
@@ -69,12 +71,10 @@ app.post("/signup", async (req, res) => {
           email: profile.email ?? "",
           googleId: profile.sub,
           picture: profile.picture ?? "",
-          token: "",
-          username: "",
         },
       });
 
-      console.log(createdUser);
+
       let unique_id = createdUser.id;
 
       res.status(201).json({
@@ -97,7 +97,9 @@ app.post("/signup", async (req, res) => {
     });
   }
 });
+
 app.post("/login", async (req, res) => {
+  console.log('yes')
   try {
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
@@ -106,16 +108,28 @@ app.post("/login", async (req, res) => {
           message: verificationResponse.error,
         });
       }
-
+      console.log('yes')
       const profile = verificationResponse?.payload;
+      console.log(profile);
 
+      if (!profile) {
+        return res.status(400).json({
+          message: "Unable to retrieve user profile",
+        });
+      }
+
+      const exists = await prisma.user.findFirst({
+        where: {
+          googleId: profile.sub,
+        },
+      })
       // const existsInDB = DB.find((person) => person?.email === profile?.email);
 
-      // if (!existsInDB) {
-      //   return res.status(400).json({
-      //     message: "You are not registered. Please sign up",
-      //   });
-      // }
+      if (!exists) {
+        return res.status(400).json({
+          message: "You are not registered. Please sign up",
+        });
+      }
 
       res.status(201).json({
         message: "Login was successful",
@@ -144,6 +158,7 @@ app.post("/login", async (req, res) => {
 app.use("/books", UserBooks);
 // app.use("/clubs", Clubs);
 app.use("/api/clubs", Clubs);
+app.use("/api/trending", Trending);
 
 //make sure this is the last route in our server
 app.get('*', (req, res) => {
