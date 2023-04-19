@@ -27,8 +27,7 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
         author: bookData.authors[0],
         description: bookData.description,
         genre: { create: bookData.categories.map((name: string) => ({ name })) },
-        paperback: bookData.printType === 'BOOK',
-        //image: bookData.imageLinks.smallThumbnail,
+        image: bookData.imageLinks.thumbnail,
         UserBooks: {
           create: {
             wishlist,
