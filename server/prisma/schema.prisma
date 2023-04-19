@@ -12,6 +12,11 @@ model User {
   firstName   String
   username    String        @unique
   zipCode     Int
+  email       String
+  googleId    String
+  lastName    String
+  picture     String
+  token       String
   clubMembers ClubMembers[]
   Discussions Discussions[]
   Posts       Posts[]
@@ -25,9 +30,9 @@ model Books {
   description String?
   paperback   Boolean?
   content     String?
+  image       String?
   genre       Genre[]
   UserBooks   UserBooks[]
-  image       String
 }
 
 model Genre {
@@ -44,8 +49,8 @@ model UserBooks {
   booksId   String
   userId    String
   rating    Float?
-  thumbUp   Int
   thumbDown Int
+  thumbUp   Int
   books     Books   @relation(fields: [booksId], references: [id])
   user      User    @relation(fields: [userId], references: [id])
 }
