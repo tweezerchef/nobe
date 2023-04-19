@@ -37,14 +37,16 @@ model Genre {
 }
 
 model UserBooks {
-  id       String  @id @default(uuid())
-  wishlist Boolean @default(false)
-  owned    Boolean @default(false)
-  booksId  String
-  userId   String
-  rating   Float?
-  books    Books   @relation(fields: [booksId], references: [id])
-  user     User    @relation(fields: [userId], references: [id])
+  id        String  @id @default(uuid())
+  wishlist  Boolean @default(false)
+  owned     Boolean @default(false)
+  booksId   String
+  userId    String
+  rating    Float?
+  thumbUp   Int
+  thumbDown Int
+  books     Books   @relation(fields: [booksId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 }
 
 model Clubs {
