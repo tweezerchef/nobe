@@ -5,9 +5,14 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
 import UserBooks from './routes/userbooks';
+import LocationRoute from './routes/booksnearuser';
+import Clubs from './routes/clubs';
+import Trending from './routes/Trending';
+
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
+
 dotenv.config();
 
 
@@ -150,9 +155,12 @@ app.post("/login", async (req, res) => {
 
 
 
-
+app.use("/location", LocationRoute);
 
 app.use("/books", UserBooks);
+// app.use("/clubs", Clubs);
+app.use("/api/clubs", Clubs);
+app.use("/api/trending", Trending);
 
 //make sure this is the last route in our server
 app.get('*', (req, res) => {
