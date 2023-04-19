@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
+interface Club {
+  id: string;
+  name: string;
+}
 
 function Clubs() {
-  const [clubs, setClubs] = useState([]);
+  const [clubs, setClubs] = useState<Club[]>([]);
 
   useEffect(() => {
     async function fetchClubs() {
@@ -16,13 +22,13 @@ function Clubs() {
   return (
     <div>
       <h1>Book Clubs</h1>
-      {/* <ul>
+      <ul>
         {clubs.map((club) => (
           <li key={club.id}>
-            <Link to={`/clubs/${club.id}`}>{club.name}</Link>
+            <Link to={`/api/clubs/${club.id}`}>{club.name}</Link>
           </li>
         ))}
-      </ul> */}
+      </ul>
     </div>
   )
 }
