@@ -71,7 +71,6 @@ app.post("/signup", async (req, res) => {
           picture: profile.picture ?? "",
           token: "",
           username: "",
-          zipCode: 0,
         },
       });
 
@@ -143,6 +142,7 @@ app.post("/login", async (req, res) => {
 
 
 app.use("/books", UserBooks);
+// app.use("/clubs", Clubs);
 app.use("/api/clubs", Clubs);
 
 //make sure this is the last route in our server
