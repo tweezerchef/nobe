@@ -5,9 +5,11 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
 import UserBooks from './routes/userbooks';
+import LocationRoute from './routes/booksnearuser';
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
+
 dotenv.config();
 
 
@@ -138,7 +140,7 @@ app.post("/login", async (req, res) => {
 
 
 
-
+app.use("/location", LocationRoute);
 
 app.use("/books", UserBooks);
 
