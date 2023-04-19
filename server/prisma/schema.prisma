@@ -10,13 +10,15 @@ datasource db {
 model User {
   id          String        @id @default(uuid())
   firstName   String
-  username    String        @unique
-  zipCode     Int
-  email       String
-  googleId    String
   lastName    String
   picture     String
+  email       String
+  googleId    String
   token       String
+  username    String        @unique
+  latitude    Float
+  longitude   Float
+  radius      Int
   clubMembers ClubMembers[]
   Discussions Discussions[]
   Posts       Posts[]

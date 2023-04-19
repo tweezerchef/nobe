@@ -8,6 +8,9 @@ import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-g
 function Locations() {
 
 const [userLocation, setUserLocation] = useState('');
+const [radius, setRadius] = useState(0);
+
+
 
 const onPlaceSelect = (value: any) => {
   console.log(value);
@@ -18,17 +21,19 @@ const onSuggectionChange = (value: any) => {
 }
 
 
+
+
+
   return (
     <div>
       <h1>Near Me</h1>
       <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
       <GeoapifyGeocoderAutocomplete placeholder="Enter address here"
-
         placeSelect={onPlaceSelect}
         suggestionsChange={onSuggectionChange}
         />
     </GeoapifyContext>
-
+    {/* <input type='number' onChange={e => setRadius(e.target.value)}></input> */}
     </div>
   )
 
