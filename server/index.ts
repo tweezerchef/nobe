@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
 import UserBooks from './routes/userbooks';
+import Trending from './routes/Trending';
+
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
@@ -153,6 +155,7 @@ app.post("/login", async (req, res) => {
 
 
 app.use("/books", UserBooks);
+app.use("/api/trending", Trending);
 
 //make sure this is the last route in our server
 app.get('*', (req, res) => {
