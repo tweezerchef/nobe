@@ -12,7 +12,7 @@ import Button from "../components/Button/Button";
 declare const google: any;
 
 const Signup = () => {
-    const { handleGoogle, loading, error } = useFetch("http://localhost:8070/signup");
+    const { handleGoogle, loading, error } = useFetch("http://localhost:8080/signup");
 
 
     // useEffect(() => {
