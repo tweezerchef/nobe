@@ -10,8 +10,15 @@ datasource db {
 model User {
   id          String        @id @default(uuid())
   firstName   String
-  username    String        @unique
-  zipCode     Int
+  lastName    String?
+  picture     String?
+  email       String
+  googleId    String        @unique
+  token       String?
+  username    String?       @unique
+  latitude    Float?
+  longitude   Float?
+  radius      Int?
   clubMembers ClubMembers[]
   Discussions Discussions[]
   Posts       Posts[]
@@ -25,9 +32,9 @@ model Books {
   description String?
   paperback   Boolean?
   content     String?
+  image       String?
   genre       Genre[]
   UserBooks   UserBooks[]
-  image       String
 }
 
 model Genre {
@@ -44,8 +51,8 @@ model UserBooks {
   booksId   String
   userId    String
   rating    Float?
-  thumbUp   Int
-  thumbDown Int
+  thumbDown Int?
+  thumbUp   Int?
   books     Books   @relation(fields: [booksId], references: [id])
   user      User    @relation(fields: [userId], references: [id])
 }

@@ -8,13 +8,14 @@ import UserBooks from './routes/userbooks';
 import Clubs from './routes/clubs';
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
-
+import { PrismaClient } from '@prisma/client';
 dotenv.config();
 
 
 const app = express();
 const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 const PORT = 8080;
+const prisma = new PrismaClient();
 //Middleware
 app.use(morgan('combined'));
 app.use(express.static(CLIENT_PATH));
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Authentication
+
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
@@ -52,8 +54,29 @@ app.post("/signup", async (req, res) => {
 
       const profile = verificationResponse?.payload;
 
+      if (!profile) {
+        return res.status(400).json({
+          message: "Unable to retrieve user profile",
+        });
+      }
+
       //this needs to be changed to add the user to the database
       // DB.push(profile);
+      const createdUser = await prisma.user.create({
+        data: {
+          firstName: profile.given_name ?? "",
+          lastName: profile.family_name ?? "",
+          email: profile.email ?? "",
+          googleId: profile.sub,
+          picture: profile.picture ?? "",
+          token: "",
+          username: "",
+          zipCode: 0,
+        },
+      });
+
+      console.log(createdUser);
+      let unique_id = createdUser.id;
 
       res.status(201).json({
         message: "Signup was successful",
@@ -61,8 +84,9 @@ app.post("/signup", async (req, res) => {
           firstName: profile?.given_name,
           lastName: profile?.family_name,
           picture: profile?.picture,
+          id: unique_id,
           email: profile?.email,
-          token: jwt.sign({ email: profile?.email }, "myScret", {
+          token: jwt.sign({ email: profile?.email }, "mySecret", {
             expiresIn: "1d",
           }),
         },
