@@ -1,5 +1,6 @@
 import { url } from "inspector";
 import React, { useState } from "react";
+import axios from "axios";
 
 
 interface Response {
@@ -24,16 +25,16 @@ const useFetch = (url: string) => {
     const handleGoogle = async (response: Response) => {
         setLoading(true);
         try {
-            const res = await fetch(url, {
+            const res = await axios(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ credential: response.credential }),
+                data: JSON.stringify({ credential: response.credential }),
             });
             setLoading(false);
 
-            const data: ApiResponse = await res.json();
+            const data: ApiResponse = res.data;;
 
             if (data?.user) {
                 localStorage.setItem('user', JSON.stringify(data?.user));
