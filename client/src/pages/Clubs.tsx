@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 import axios from "axios";
 
 interface Club {
@@ -22,6 +23,7 @@ function Clubs() {
   return (
     <div>
       <h1>Book Clubs</h1>
+      <Button component={Link} to="/clubs/new" variant="contained" color="primary">Create new club</Button>
       <ul>
         {clubs.map((club) => (
           <li key={club.id}>
