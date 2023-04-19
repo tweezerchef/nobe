@@ -7,7 +7,8 @@ async function seed() {
     data: {
       firstName: 'John',
       username: 'john_doe',
-      zipCode: 12345
+      email: 'john_doe@example.com',
+      googleId: '123456789',
     }
   })
 
@@ -15,7 +16,8 @@ async function seed() {
     data: {
       firstName: 'Matt',
       username: 'matt_doe',
-      zipCode: 53634
+      email: 'matt_doe@example.com',
+      googleId: '987654321',
     }
   })
 
