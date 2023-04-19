@@ -17,7 +17,7 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
     const { title, wishlist, owned } = req.body;
     const { id } = req.params
     // make request to get book from API
-    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${title}&key=`);
+    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?key=&q=intitle:${title}`);
     const bookData = response.data.items[0].volumeInfo;
 
     // add book to database
@@ -48,5 +48,8 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
     res.status(500).json({ error: 'Something went wrong' });
   }
 });
+
+// UserBooks.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
+//   try {}
 
 export default UserBooks;
