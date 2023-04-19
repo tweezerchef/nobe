@@ -16,4 +16,18 @@ ClubsRoute.get('/', async (req: Request, res: Response) => {
   }
 });
 
+ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
+  try {
+    const discussion = await prisma.discussion.findMany({
+      where: {
+        clubId: req.params.id,
+      },
+    });
+    res.json(discussion);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 export default ClubsRoute;
