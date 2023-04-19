@@ -10,12 +10,12 @@ datasource db {
 model User {
   id          String        @id @default(uuid())
   firstName   String
-  lastName    String?
-  picture     String?
+  username    String?       @unique
   email       String
   googleId    String        @unique
+  lastName    String?
+  picture     String?
   token       String?
-  username    String?       @unique
   latitude    Float?
   longitude   Float?
   radius      Int?
