@@ -28,7 +28,7 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
         description: bookData.description,
         genre: { create: bookData.categories.map((name: string) => ({ name })) },
         paperback: bookData.printType === 'BOOK',
-        content: bookData.contentVersion,
+        image: bookData.imageLinks.smallThumbnail,
         UserBooks: {
           create: {
             wishlist,
@@ -49,7 +49,23 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
   }
 });
 
-// UserBooks.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
-//   try {}
+UserBooks.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userBooks = await prisma.userBooks.findMany({
+      where: {
+        userId: id
+      },
+      include: {
+        books: true
+      }
+    });
+    // const books = userBooks.map((userBook: UserBooks) => userBook.books);
+    res.json(userBooks);
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Something went wrong' })
+  }
+});
 
 export default UserBooks;

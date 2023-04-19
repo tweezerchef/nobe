@@ -1,13 +1,12 @@
 import React from 'react';
 import Navbar from '../components/Navbar/Navbar'
 
-function Home() {
+function Landing() {
     return (
         <>
             <Navbar children={undefined} />
-            <h1>Home</h1>
+            <h1>Landing Page</h1>
         </>
     );
 }
-
-export default Home;
+export default Landing;
