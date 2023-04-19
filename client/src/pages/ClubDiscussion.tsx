@@ -5,16 +5,17 @@ import axios from "axios";
 interface Discussion {
   id: string;
   name: string;
+  text: string;
 }
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
-  const [discussions, setDiscussion] = useState<Discussion | null>(null);
+  const [discussions, setDiscussions] = useState<Discussion[]>([]);
 
   useEffect(() => {
     async function fetchDiscussion() {
       const response = await axios.get(`/api/clubs/${id}/discussion`);
-      setDiscussion(response.data);
+      setDiscussions(response.data);
     }
     fetchDiscussion();
   }, [id])
@@ -23,6 +24,11 @@ function ClubDiscussion() {
   return (
     <div>
       <h1>Book Club Discussion</h1>
+      <ul>
+        {discussions.map((discussion) => (
+          <li key={discussion.id}>{discussion.text}</li>
+        ))}
+      </ul>
     </div>
   )
 }
