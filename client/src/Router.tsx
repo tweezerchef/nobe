@@ -32,6 +32,7 @@ function Router() {
     return (
         <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/home" element={<Home />} />
             <Route
                 path="/signup"
                 element={user?.email ? <Navigate to="/home" /> : <Signup />}
