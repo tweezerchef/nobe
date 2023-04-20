@@ -57,6 +57,17 @@ model UserBooks {
   user      User    @relation(fields: [userId], references: [id])
 }
 
+model bookdata {
+  asin       String
+  ISBN10     Int    @id
+  author     String
+  image_url  String
+  rating     String
+  title      String
+  url        String
+  categories String
+}
+
 model Clubs {
   id          String        @id @default(uuid())
   name        String

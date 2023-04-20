@@ -45,28 +45,28 @@ ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Club not found" });
     }
 
-    const updatedClub = await prisma.clubmembers.create({
-      data: {
-        clubs: {
-          connect: {
-            id: id,
-          }
-        }
-      }
-    });
-
-    // const updatedClub = await prisma.clubs.update({
-    //   where: {
-    //     id: id,
-    //   },
+    // const updatedClub = await prisma.clubmembers.create({
     //   data: {
-    //     clubMembers: {
+    //     clubs: {
     //       connect: {
     //         id: id,
     //       }
     //     }
     //   }
     // });
+
+    const updatedClub = await prisma.clubs.update({
+      where: {
+        id: id,
+      },
+      data: {
+        clubMembers: {
+          create: {
+            id: id,
+          }
+        }
+      }
+    });
 
     res.json(updatedClub);
   } catch (error) {
