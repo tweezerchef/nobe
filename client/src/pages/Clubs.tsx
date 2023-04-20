@@ -23,7 +23,9 @@ function Clubs() {
   return (
     <div>
       <h1>Book Clubs</h1>
-      <Button component={Link} to="/clubs/new" variant="contained" color="primary">Create new club</Button>
+      <Button variant="contained" color="primary" component={Link} to="/create-club">
+        Create a new club
+      </Button>
       <ul>
         {clubs.map((club) => (
           <li key={club.id}>
