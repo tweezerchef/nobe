@@ -29,8 +29,9 @@ const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
 
 const  getBooksNearMe = async () => {
   try {
-    const res = await axios.get('/location', { params: { longitude: longitude, latitude: latitude, radius: radius } });
-    setBooksNearBy(res.data);
+    const res = await axios.get('/location/locations', { params: {longitude: longitude, latitude: latitude, radius: radius } });
+    console.log(res);
+   // setBooksNearBy(res.data);
   } catch (err) {
     console.error(err);
   }

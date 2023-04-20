@@ -9,6 +9,9 @@ async function seed() {
       username: 'john_doe',
       email: 'john_doe@example.com',
       googleId: '123456789',
+      latitude: 29.968543,
+      longitude: -90.036728,
+      radius: 4
     }
   })
 
@@ -18,6 +21,9 @@ async function seed() {
       username: 'matt_doe',
       email: 'matt_doe@example.com',
       googleId: '987654321',
+      latitude: 30.012171,
+      longitude: -90.131527,
+      radius: 2
     }
   })
 
