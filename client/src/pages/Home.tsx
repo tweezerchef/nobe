@@ -16,8 +16,9 @@ function Home() {
         return (
             <>
                 <Navbar children={undefined} />
-                <Thumbs />
+
                 <h1>Home</h1>
+                <Thumbs />
             </>
         );
     }
