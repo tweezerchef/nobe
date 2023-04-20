@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import UserBooks from './routes/userbooks';
 import Clubs from './routes/clubs';
+import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
 
 import { OAuth2Client } from "google-auth-library";
@@ -158,6 +159,7 @@ app.post("/login", async (req, res) => {
 app.use("/books", UserBooks);
 // app.use("/clubs", Clubs);
 app.use("/api/clubs", Clubs);
+app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
 
 //make sure this is the last route in our server
