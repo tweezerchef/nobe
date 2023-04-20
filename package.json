@@ -67,6 +67,7 @@
     "@mui/material": "^5.12.0",
     "@mui/styled-engine-sc": "^5.12.0",
     "@mui/styles": "^5.12.0",
+    "@mui/system": "^5.12.1",
     "@prisma/client": "^4.12.0",
     "@types/css": "0.0.33",
     "@types/html": "^1.0.1",
