@@ -21,7 +21,7 @@ const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 const PORT = 8080;
 const prisma = new PrismaClient();
 //Middleware
-//app.use(morgan('combined'));
+ app.use(morgan('combined'));
 app.use(express.static(CLIENT_PATH));
 app.use(cors())
 app.use(express.urlencoded({ extended: true }));
