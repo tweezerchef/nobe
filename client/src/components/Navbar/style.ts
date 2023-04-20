@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components'; import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import { Link } from 'react-router-dom';
 import { NavProps } from './Navbar'
 
 export const StyledNavbar = styled.nav<NavProps>` display: flex;
