@@ -10,11 +10,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Clubs from './pages/Clubs';
-import ClubDiscussion from './pages/ClubDiscussion';
 import Locations from './pages/Nearme';
 import Profile from './pages/Profile';
 import Landing from './pages/Landing';
-import Trending from './pages/Trending';
 
 interface User {
     email: string;
@@ -44,11 +42,8 @@ function Router() {
                 element={user?.email ? <Navigate to="/home" /> : <Login />}
             />
             <Route path="/clubs" element={< Clubs />} />
-            <Route path="/clubs/:id" element={<ClubDiscussion />} />
-
             <Route path="/locations" element={<Locations />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/trending" element={<Trending />} />
         </Routes>
     );
 }

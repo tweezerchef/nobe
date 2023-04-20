@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Grid, Card, CardMedia, CardContent } from '@material-ui/core';
+import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
 
 
 
@@ -37,28 +37,93 @@ const Profile = () => {
     title: {
       textAlign: 'center',
     },
+    form: {
+      display: 'flex',
+      alignItems: 'center',
+      marginBottom: theme.spacing(2),
+    },
+    input: {
+      marginRight: theme.spacing(2),
+      flex: 1,
+    },
+    button: {
+      marginLeft: theme.spacing(2),
+    },
   }));
   const classes = useStyles();
   const [userBooks, setUserBooks] = useState<Book[]>([]);
+  const [wishlist, setWishlist] = useState<boolean>(false);
+  const [owned, setOwned] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>('');
   const getUserBooks = async () => {
     try {
-      const res = await axios.get(`/books/e2a5eb89-3fd5-4f3a-a884-3e75e1c59b1b`);
+      const res = await axios.get(`/books/c1a2f75d-4c90-4cfd-b8bf-d78594306adb`);
       setUserBooks(res.data);
     } catch (err) {
       console.error(err);
     }
   }
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
+
+  const handleWishlistChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setWishlist(event.target.checked);
+    if (event.target.checked) {
+      setOwned(false);
+    }
+  };
+
+  const handleOwnedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOwned(event.target.checked);
+    if (event.target.checked) {
+      setWishlist(false);
+    }
+  };
   // console.log(userBooks[0]);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      await axios.post(`/books/c1a2f75d-4c90-4cfd-b8bf-d78594306adb`,
+        {
+          title,
+          wishlist,
+          owned
+        }
+      );
+      setTitle("");
+      setWishlist(false);
+      setOwned(false);
+      getUserBooks();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     getUserBooks();
   }, [])
 
-  // <p> <img src={book.books.image} /></p>
+  //
   return (
     <div className={classes.root}>
       <Typography variant="h3" className={classes.title}>Profile</Typography>
       <Typography variant="h4" className={classes.title}>My Books</Typography>
+      <form onSubmit={handleSubmit} className={classes.form}>
+        <label>
+          Book Title:
+          <input type="text" className={classes.input} value={title} onChange={handleTitleChange} />
+        </label>
+        <label>
+          <input type="checkbox" checked={wishlist} onChange={handleWishlistChange} />
+          Add to Wishlist
+        </label>
+        <label>
+          <input type="checkbox" checked={owned} onChange={handleOwnedChange} />
+          Add to Owned Books
+        </label>
+        <button className={classes.button} type="submit">Add Book</button>
+      </form>
       <Grid container spacing={2}>
         {userBooks.map((book) => (
           <Grid item xs={12} sm={6} md={4} key={book.id}>
@@ -74,6 +139,7 @@ const Profile = () => {
       </Grid>
     </div>
   );
+
 
 }
 
