@@ -21,7 +21,7 @@ const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 const PORT = 8080;
 const prisma = new PrismaClient();
 //Middleware
-// app.use(morgan('combined'));
+//app.use(morgan('combined'));
 app.use(express.static(CLIENT_PATH));
 app.use(cors())
 app.use(express.urlencoded({ extended: true }));
@@ -101,7 +101,7 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  console.log('yes')
+
   try {
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
@@ -110,9 +110,7 @@ app.post("/login", async (req, res) => {
           message: verificationResponse.error,
         });
       }
-      console.log('yes')
       const profile = verificationResponse?.payload;
-      console.log(profile);
 
       if (!profile) {
         return res.status(400).json({
