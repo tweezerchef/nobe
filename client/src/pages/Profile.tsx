@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
+import Carousel from 'react-material-ui-carousel'
 
 
 
@@ -27,7 +28,7 @@ const Profile = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      height: '100%',
+      height: '700px',
       borderRadius: 0,
     },
     media: {
@@ -104,6 +105,8 @@ const Profile = () => {
     getUserBooks();
   }, [])
 
+  const ownedBooks = userBooks.filter(book => book.owned);
+  const wishlistBooks = userBooks.filter(book => book.wishlist);
   //
   return (
     <div className={classes.root}>
@@ -125,17 +128,44 @@ const Profile = () => {
         <button className={classes.button} type="submit">Add Book</button>
       </form>
       <Grid container spacing={2}>
-        {userBooks.map((book) => (
-          <Grid item xs={12} sm={6} md={4} key={book.id}>
-            <Card className={classes.card}>
-              <CardMedia component="img" className={classes.media} image={book.books.image} />
-              <CardContent>
-                <Typography variant="h5">{book.books.title}</Typography>
-                <Typography variant="body1">{book.books.author}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+        <Grid item xs={12} sm={6} md={4}>
+          <Typography variant="h5">Owned Books</Typography>
+          {ownedBooks.length > 0 ?
+            <Carousel>
+              {ownedBooks.map((book) => (
+                <div key={book.id}>
+                  <Card className={classes.card}>
+                    <CardMedia component="img" className={classes.media} image={book.books.image} />
+                    <CardContent>
+                      <Typography variant="h5">{book.books.title}</Typography>
+                      <Typography variant="body1">{book.books.author}</Typography>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </Carousel> :
+            <Typography variant="body1">No owned books</Typography>
+          }
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Typography variant="h5">Wishlist</Typography>
+          {wishlistBooks.length > 0 ?
+            <Carousel>
+              {wishlistBooks.map((book) => (
+                <div key={book.id}>
+                  <Card className={classes.card}>
+                    <CardMedia component="img" className={classes.media} image={book.books.image} />
+                    <CardContent>
+                      <Typography variant="h5">{book.books.title}</Typography>
+                      <Typography variant="body1">{book.books.author}</Typography>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </Carousel> :
+            <Typography variant="body1">No wishlist books</Typography>
+          }
+        </Grid>
       </Grid>
     </div>
   );
