@@ -28,7 +28,7 @@ const Profile = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      height: '700px',
+      height: '100%',
       borderRadius: 0,
     },
     media: {
