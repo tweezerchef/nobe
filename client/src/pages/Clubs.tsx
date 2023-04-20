@@ -29,6 +29,16 @@ function Clubs() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    // Check if the new club name already exists in the database
+    const existingClubs = await axios.get('/api/clubs');
+    const clubExists = existingClubs.data.some((club: { name: string; }) => club.name === newClubName);
+
+    if (clubExists) {
+      alert('Club name already exists!');
+      return;
+    }
+
     try {
       const response = await axios.post('/api/create-club', { name: newClubName });
       console.log(response.data);
