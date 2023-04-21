@@ -23,7 +23,6 @@ function ClubDiscussion() {
   const searchParams = new URLSearchParams(location.search);
   const clubName = searchParams.get('name') || 'Book Club Discussion';
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
-  const [newDiscussionBody, setNewDiscussionBody] = useState('');
   const [showForm, setShowForm] = useState(false);
 
 
@@ -61,13 +60,19 @@ function ClubDiscussion() {
     event.preventDefault();
 
     try {
+      const user = localStorage.getItem("user");
+
+      if (!user) {
+        throw new Error("No user found");
+      }
+      const parsed = JSON.parse(user)
+      console.log(parsed);
       const response = await axios.post(`/api/clubs/${id}/discussion`, {
         title: newDiscussionTitle,
-        body: newDiscussionBody,
+        userId: parsed.id,
       });
       setDiscussions([...discussions, response.data]);
       setNewDiscussionTitle('');
-      setNewDiscussionBody('');
       setShowForm(false);
     } catch (error) {
       console.error(error);
