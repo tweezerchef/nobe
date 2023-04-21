@@ -50,7 +50,6 @@ model UserBooks {
   wishlist  Boolean @default(false)
   owned     Boolean @default(false)
   booksId   String
-  ISBN10    Int?
   userId    String
   rating    Float?
   thumbDown Int?
