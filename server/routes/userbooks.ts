@@ -16,6 +16,7 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { title, wishlist, owned } = req.body;
     const { id } = req.params;
+    console.log(id)
 
     const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?key=&q=intitle:${title}`);
     const bookData = response.data.items[0].volumeInfo;
@@ -30,19 +31,32 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
       },
     });
 
+    let userBook;
     if (existingBook) {
-      const userBook = await prisma.userBooks.create({
+      userBook = await prisma.userBooks.findUnique({
+        where: {
+          bookId_userId: {
+            bookId: existingBook.id,
+            userId: id,
+          },
+        },
+      });
+    }
+
+    if (userBook) {
+      res.json(userBook);
+    } else if (existingBook) {
+      userBook = await prisma.userBooks.create({
         data: {
           wishlist,
           owned,
           user: { connect: { id: id } },
-          book: { connect: { id: existingBook.id } },
+          books: { connect: { id: existingBook.id } },
         },
         include: {
-          book: true,
+          books: true,
         },
       });
-
       res.json(userBook);
     } else {
       const createdBook = await prisma.books.create({
