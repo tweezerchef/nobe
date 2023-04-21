@@ -12,7 +12,7 @@ interface DiscussionPost {
 
 interface Discussion {
   id: string;
-  posts: DiscussionPost[];
+  Posts: DiscussionPost[];
   title: string;
 };
 
@@ -20,7 +20,7 @@ function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [hasJoined, setHasJoined] = useState(false);
-  // console.log(discussions);
+  console.log(discussions);
 
   useEffect(() => {
     async function fetchDiscussion() {
@@ -65,7 +65,7 @@ function ClubDiscussion() {
         // console.log(discussion),
         <div key={discussion.id}>
           <h2>{discussion.title}</h2>
-          {discussion.posts?.map((post) => (
+          {discussion.Posts?.map((post) => (
             <div key={post.id}>
               <p>{post.body}</p>
             </div>
