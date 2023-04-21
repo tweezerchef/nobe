@@ -35,7 +35,7 @@ model Books {
   paperback   Boolean?
   content     String?
   image       String?
-  ISBN10      String      @unique
+  ISBN10      Int         @unique
   genre       Genre[]
   UserBooks   UserBooks[]
 }
@@ -74,14 +74,14 @@ model bookdata {
 model Clubs {
   id          String        @id @default(uuid())
   name        String
-  clubMembers ClubMembers?
+  clubMembers ClubMembers[]
   Discussions Discussions[]
 }
 
 model ClubMembers {
   id     String @id @default(uuid())
-  userId String @unique
-  clubId String @unique
+  userId String
+  clubId String
   club   Clubs  @relation(fields: [clubId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
 }
