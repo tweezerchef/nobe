@@ -10,22 +10,22 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ThumbComponent from '../Thumbs/Thumbs';
 
+let books: any
 
 
-
-const BookDisplay = () => {
-
+const BookDisplay = (props: any) => {
+    const { books: any } = props;
     return (
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
             {books.length === 0 ? (
                 <div></div>
             ) : (
-                books.map((book) => (
+                books.map((book: any) => (
                     <Card variant="outlined" sx={{ width: 380, margin: '10px' }}>
                         <CardOverflow>
                             <AspectRatio ratio="2">
                                 <img
-                                    src={book.book_image}
+                                    src={book.image}
                                     loading="lazy"
                                     alt=""
                                 />
@@ -67,7 +67,7 @@ const BookDisplay = () => {
                             }}
                         >
                             <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
-                                {book.rank}
+                                {book.rating}
                             </Typography>
                             <Divider orientation="vertical" />
                             <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
