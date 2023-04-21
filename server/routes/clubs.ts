@@ -18,9 +18,9 @@ ClubsRoute.get('/', async (req: Request, res: Response) => {
 
 ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
   try {
-    const discussion = await prisma.discussion.findMany({
+    const discussion = await prisma.discussions.findMany({
       where: {
-        clubId: req.params.id,
+        clubsId: req.params.id,
       },
     });
     res.json(discussion);
@@ -29,5 +29,51 @@ ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
     res.status(500).json({ error: "Something went wrong" });
   }
 });
+
+ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { email } = req.body;
+
+    const club = await prisma.clubs.findUnique({
+      where: {
+        id: id,
+      }
+    });
+
+    if (!club) {
+      return res.status(404).json({ error: "Club not found" });
+    }
+
+    // const updatedClub = await prisma.clubmembers.create({
+    //   data: {
+    //     clubs: {
+    //       connect: {
+    //         id: id,
+    //       }
+    //     }
+    //   }
+    // });
+
+    const updatedClub = await prisma.clubs.update({
+      where: {
+        id: id,
+      },
+      data: {
+        clubMembers: {
+          create: {
+            id: id,
+          }
+        }
+      }
+    });
+
+    res.json(updatedClub);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 
 export default ClubsRoute;

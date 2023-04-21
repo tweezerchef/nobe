@@ -6,6 +6,7 @@ import cors from 'cors';
 import UserBooks from './routes/userbooks';
 import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
+import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
 
 import { OAuth2Client } from "google-auth-library";
@@ -20,7 +21,7 @@ const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 const PORT = 8080;
 const prisma = new PrismaClient();
 //Middleware
-//app.use(morgan('combined'));
+ app.use(morgan('combined'));
 app.use(express.static(CLIENT_PATH));
 app.use(cors())
 app.use(express.urlencoded({ extended: true }));
@@ -157,6 +158,7 @@ app.use("/location", LocationRoute);
 app.use("/books", UserBooks);
 // app.use("/clubs", Clubs);
 app.use("/api/clubs", Clubs);
+app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
 
 //make sure this is the last route in our server

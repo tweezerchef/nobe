@@ -19,7 +19,8 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
     // make request to get book from API
     const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?key=&q=intitle:${title}`);
     const bookData = response.data.items[0].volumeInfo;
-
+    //const thumbnail = bookData.imageLinks.thumbnail.replace("zoom=1", "zoom=2");
+    //console.log(thumbnail)
     // add book to database
     const createdBook = await prisma.books.create({
       data: {
