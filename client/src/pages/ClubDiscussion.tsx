@@ -22,7 +22,9 @@ function ClubDiscussion() {
   const [hasJoined, setHasJoined] = useState(false);
   const searchParams = new URLSearchParams(location.search);
   const clubName = searchParams.get('name') || 'Book Club Discussion';
-  console.log(discussions);
+  const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
+  const [showForm, setShowForm] = useState(false);
+
 
   useEffect(() => {
     async function fetchDiscussion() {
@@ -54,6 +56,29 @@ function ClubDiscussion() {
     }
   };
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const user = localStorage.getItem("user");
+
+      if (!user) {
+        throw new Error("No user found");
+      }
+      const parsed = JSON.parse(user)
+      console.log(parsed);
+      const response = await axios.post(`/api/clubs/${id}/discussion`, {
+        title: newDiscussionTitle,
+        userId: parsed.id,
+      });
+      setDiscussions([...discussions, response.data]);
+      setNewDiscussionTitle('');
+      setShowForm(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <h1>{clubName}</h1>
@@ -65,6 +90,26 @@ function ClubDiscussion() {
       >
         {hasJoined ? "Joined" : "Join"}
       </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setShowForm(!showForm)}
+      >
+        Start new discussion
+      </Button>
+      {showForm && (
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={newDiscussionTitle}
+            onChange={(event) => setNewDiscussionTitle(event.target.value)}
+          />
+          <button type="submit">Create New Discussion</button>
+        </form>
+      )}
       {discussions?.map((discussion) => (
         // console.log(discussion),
         <div key={discussion.id}>
