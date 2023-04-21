@@ -10,13 +10,13 @@ import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
 import Recommendations from './routes/recomendations';
 import morgan from 'morgan';
+import Wishlist from './routes/wishlist';
 
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
 
 dotenv.config();
-
 
 const app = express();
 const CLIENT_PATH = path.resolve(__dirname, '../client/build');
@@ -97,7 +97,6 @@ app.post("/signup", async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: "An error occurred. Registration failed.",
 
@@ -154,15 +153,11 @@ app.post("/login", async (req, res) => {
       });
     }
   } catch (error: any) {
-    console.error(error);
     res.status(500).json({
-
       message: error?.message || error,
     });
   }
 });
-
-
 
 // app.use("/location", LocationRoute);
 app.use("/recommendations", Recommendations);
@@ -171,6 +166,8 @@ app.use("/books", UserBooks);
 app.use("/api/clubs", Clubs);
 app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
+app.use("/api/wishlist", Wishlist);
+
 
 //make sure this is the last route in our server
 app.get('*', (req, res) => {
