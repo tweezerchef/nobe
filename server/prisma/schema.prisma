@@ -21,7 +21,7 @@ model User {
   latitude    Float?
   longitude   Float?
   radius      Int?
-  clubMembers ClubMembers?
+  clubMembers ClubMembers[]
   Discussions Discussions[]
   Posts       Posts[]
   books       UserBooks[]
