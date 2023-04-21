@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
-
-
+import Navbar from '../components/Navbar/Navbar';
+import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
 interface Book {
   books: {
     id: string;
@@ -16,6 +16,16 @@ interface Book {
   wishlist: boolean;
   owned: boolean;
 }
+
+// interface Books {
+//   books: {
+//     id: string;
+//     title: string;
+//     author: string;
+//     image: string;
+//   }
+// }
+
 const Profile = () => {
 
 
@@ -24,6 +34,7 @@ const Profile = () => {
   const [wishlist, setWishlist] = useState<boolean>(false);
   const [owned, setOwned] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
+  const [books, setBooks] = useState<any[]>([]);
   const userString = localStorage.getItem('user');
   const user = userString ? JSON.parse(userString) : null;
 
@@ -52,7 +63,7 @@ const Profile = () => {
       setWishlist(false);
     }
   };
-  // console.log(userBooks[0]);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -72,15 +83,23 @@ const Profile = () => {
     }
   };
 
+  const ownedBooks = userBooks.filter(book => book.owned).map((book) => book.books);
+  const ownedClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setBooks(ownedBooks)
+  }
+
+  const wishlistBooks = userBooks.filter(book => book.wishlist).map((book) => book.books);
+  const wishClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setBooks(wishlistBooks)
+  }
+  console.log(userBooks)
   useEffect(() => {
     getUserBooks();
   }, [])
 
-  const ownedBooks = userBooks.filter(book => book.owned);
-  const wishlistBooks = userBooks.filter(book => book.wishlist);
-  //
   return (
     <div >
+      <Navbar children={undefined} />
       <Typography variant="h3" >Profile</Typography>
       <Typography variant="h4" >My Books</Typography>
       <form onSubmit={handleSubmit} >
@@ -98,46 +117,19 @@ const Profile = () => {
         </label>
         <button type="submit">Add Book</button>
       </form>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={4}>
-          <Typography variant="h5">Owned Books</Typography>
-          {ownedBooks.length > 0 ?
-            <Grid container spacing={2}>
-              {ownedBooks.map((book) => (
-                <div key={book.id}>
-                  <Card >
-                    <CardMedia component="img" image={book.books.image} />
-                    <CardContent>
-                      <Typography variant="h5">{book.books.title}</Typography>
-                      <Typography variant="body1">{book.books.author}</Typography>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </Grid> :
-            <Typography variant="body1">No owned books</Typography>
-          }
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <Typography variant="h5">Wishlist</Typography>
-          {wishlistBooks.length > 0 ?
-            <Grid container spacing={2} >
-              {wishlistBooks.map((book) => (
-                <div key={book.id}>
-                  <Card >
-                    <CardMedia component="img" image={book.books.image} />
-                    <CardContent>
-                      <Typography variant="h5">{book.books.title}</Typography>
-                      <Typography variant="body1">{book.books.author}</Typography>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </Grid> :
-            <Typography variant="body1">No wishlist books</Typography>
-          }
-        </Grid>
-      </Grid>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
+        <div style={{ display: 'flex', justifyContent: 'center', background: 'rgb(32, 32, 35)' }}>
+          <button style={{ margin: '10px' }} onClick={wishClicked}>WishList</button>
+          <button style={{ margin: '10px' }} onClick={ownedClicked}>Owned</button>
+        </div>
+        <Typography variant="h5">My books</Typography>
+        {books.length > 0 ?
+          <BookDisplay books={books} id={user.id} /> :
+          <Typography variant="body1">No books</Typography>
+        }
+      </div>
+
+
     </div>
   );
 

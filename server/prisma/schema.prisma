@@ -18,8 +18,8 @@ model User {
   lastName    String?
   picture     String?
   token       String?
-  longitude   Float?
   latitude    Float?
+  longitude   Float?
   radius      Int?
   clubMembers ClubMembers[]
   Discussions Discussions[]
