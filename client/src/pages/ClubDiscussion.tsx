@@ -99,7 +99,7 @@ function ClubDiscussion() {
       </Button>
       {showForm && (
         <form onSubmit={handleSubmit}>
-          <label htmlFor="title">Title:</label>
+          <label htmlFor="title">Title: </label>
           <input
             type="text"
             id="title"
@@ -113,12 +113,15 @@ function ClubDiscussion() {
       {discussions?.map((discussion) => (
         // console.log(discussion),
         <div key={discussion.id}>
-          <h2>{discussion.title}</h2>
+          <ul key={discussion.title}>
+            <Link to={`/clubs/${id}/discussion/${discussion.id}`}>{discussion.title}</Link>
+          </ul>
+          {/* <h2>{discussion.title}</h2>
           {discussion.Posts?.map((post) => (
             <div key={post.id}>
               <p>{post.body}</p>
             </div>
-          ))}
+          ))} */}
         </div>
       ))}
     </div>
