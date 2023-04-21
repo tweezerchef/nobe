@@ -33,7 +33,7 @@ ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
 ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { email } = req.body;
+    const { user } = req.body;
 
     const club = await prisma.clubs.findUnique({
       where: {
@@ -63,6 +63,11 @@ ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
         clubMembers: {
           create: {
             id: id,
+            user: {
+              connect: {
+                id: id,
+              }
+            }
           }
         }
       }
