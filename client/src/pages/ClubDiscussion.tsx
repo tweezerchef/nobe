@@ -7,7 +7,7 @@ interface Discussion {
   id: string;
   name: string;
   text: string;
-}
+};
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
@@ -24,7 +24,7 @@ function ClubDiscussion() {
       }
     }
     fetchDiscussion();
-  }, [id])
+  }, [id]);
 
   const handleJoinClub = async () => {
     try {
