@@ -5,32 +5,39 @@ import axios from "axios";
 
 interface DiscussionPost {
   id: string;
-  title: string;
-  content: string;
-  createdAt: string;
+  body: string;
+  userId: string;
+  discussionId: string;
 };
 
 interface Discussion {
   id: string;
-  posts: DiscussionPost[];
+  Posts: DiscussionPost[];
+  title: string;
 };
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [hasJoined, setHasJoined] = useState(false);
-  // console.log(discussions);
+  const searchParams = new URLSearchParams(location.search);
+  const clubName = searchParams.get('name') || 'Book Club Discussion';
+  const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
+  const [showForm, setShowForm] = useState(false);
+
 
   useEffect(() => {
     async function fetchDiscussion() {
       try {
-        const response = await axios.get(`/api/clubs/${id}/discussion`);
-        setDiscussions(response.data);
+        const { data } = await axios.get(`/api/clubs/${id}/discussion`);
+        setDiscussions(data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
-    fetchDiscussion();
+    if (id) {
+      fetchDiscussion();
+    }
   }, [id]);
 
   const handleJoinClub = async () => {
@@ -49,9 +56,32 @@ function ClubDiscussion() {
     }
   };
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const user = localStorage.getItem("user");
+
+      if (!user) {
+        throw new Error("No user found");
+      }
+      const parsed = JSON.parse(user)
+      console.log(parsed);
+      const response = await axios.post(`/api/clubs/${id}/discussion`, {
+        title: newDiscussionTitle,
+        userId: parsed.id,
+      });
+      setDiscussions([...discussions, response.data]);
+      setNewDiscussionTitle('');
+      setShowForm(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
-      <h1>Book Club Discussion</h1>
+      <h1>{clubName}</h1>
       <Button
         variant="contained"
         color="primary"
@@ -60,6 +90,37 @@ function ClubDiscussion() {
       >
         {hasJoined ? "Joined" : "Join"}
       </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setShowForm(!showForm)}
+      >
+        Start new discussion
+      </Button>
+      {showForm && (
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={newDiscussionTitle}
+            onChange={(event) => setNewDiscussionTitle(event.target.value)}
+          />
+          <button type="submit">Create New Discussion</button>
+        </form>
+      )}
+      {discussions?.map((discussion) => (
+        // console.log(discussion),
+        <div key={discussion.id}>
+          <h2>{discussion.title}</h2>
+          {discussion.Posts?.map((post) => (
+            <div key={post.id}>
+              <p>{post.body}</p>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   )
 }

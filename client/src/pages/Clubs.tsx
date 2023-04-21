@@ -76,7 +76,8 @@ function Clubs() {
       <ul>
         {clubs.map((club) => (
           <li key={club.id}>
-            <Link to={`/clubs/${club.id}`}>{club.name}</Link>
+            <Link to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}>{club.name}</Link>
+
           </li>
         ))}
       </ul>

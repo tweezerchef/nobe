@@ -22,6 +22,9 @@ ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
       where: {
         clubsId: req.params.id,
       },
+      include: {
+        Posts: true
+      }
     });
     res.json(discussion);
   } catch (error) {
@@ -29,6 +32,30 @@ ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
     res.status(500).json({ error: "Something went wrong" });
   }
 });
+
+ClubsRoute.post('/:id/discussion', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { userId, title } = req.body;
+
+  try {
+    const discussion = await prisma.discussions.create({
+      data: {
+        title,
+        creator: {
+          connect: { id: userId },
+        },
+        clubs: {
+          connect: { id },
+        },
+      },
+    });
+
+    res.json(discussion);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Unable to create discussion' });
+  }
+})
 
 ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -50,5 +77,6 @@ ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
   }
   addUserToClub(email, id)
 });
+
 
 export default ClubsRoute;
