@@ -152,8 +152,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
-
 app.use("/location", LocationRoute);
 
 app.use("/books", UserBooks);
