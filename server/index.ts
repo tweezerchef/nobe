@@ -99,12 +99,13 @@ app.post("/signup", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "An error occurred. Registration failed.",
+
     });
   }
 });
 
 app.post("/login", async (req, res) => {
-console.log(req.body);
+  console.log(req.body);
   try {
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);

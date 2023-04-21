@@ -1,6 +1,6 @@
- const express = require('express');
- const axios = require('axios');
- import { PrismaClient, User } from '@prisma/client'
+const express = require('express');
+const axios = require('axios');
+import { PrismaClient, User } from '@prisma/client'
 const prisma = new PrismaClient()
 const LocationRoute = express.Router();
 import { Request, Response } from "express";
