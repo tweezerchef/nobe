@@ -15,9 +15,21 @@ import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
 import Recommendations from './routes/recomendations';
+<<<<<<< HEAD
 import Review from './routes/review';
 
 dotenv.config();
+=======
+import morgan from 'morgan';
+import Wishlist from './routes/wishlist';
+
+import { OAuth2Client } from "google-auth-library";
+import jwt from "jsonwebtoken";
+import { PrismaClient } from '@prisma/client';
+
+dotenv.config();
+
+>>>>>>> 891a3826db28efdc0c657daf575d062c28b8593f
 const app = express();
 const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 const PORT = 8080;
@@ -99,15 +111,15 @@ app.post("/signup", async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: "An error occurred. Registration failed.",
+
     });
   }
 });
 
 app.post("/login", async (req, res) => {
-console.log(req.body);
+  console.log(req.body);
   try {
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
@@ -155,15 +167,11 @@ console.log(req.body);
       });
     }
   } catch (error: any) {
-    console.error(error);
     res.status(500).json({
-
       message: error?.message || error,
     });
   }
 });
-
-
 
 // app.use("/location", LocationRoute);
 app.use("/recommendations", Recommendations);
@@ -173,6 +181,8 @@ app.use('/review', Review);
 app.use("/api/clubs", Clubs);
 app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
+app.use("/api/wishlist", Wishlist);
+
 
 //make sure this is the last route in our server
 app.get('*', (req, res) => {

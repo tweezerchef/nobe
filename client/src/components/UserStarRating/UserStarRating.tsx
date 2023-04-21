@@ -26,7 +26,7 @@ const UserStarRating = (props: any) => {
                 '& > legend': { mt: 2 },
             }}
         >
-            <Typography component="legend">Your Rating</Typography>
+            <Typography sx={{fontSize: 'md'}}component="legend"></Typography>
             <Rating
                 name="simple-controlled"
                 value={value}
