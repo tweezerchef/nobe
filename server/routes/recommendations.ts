@@ -14,6 +14,7 @@ async function findRandomRows(limit: number) {
 }
 
 
+
 Recommendations.get('/random', async (req : Request, res: Response) => {
   try{
   const books = await findRandomRows(20);
@@ -25,6 +26,32 @@ Recommendations.get('/random', async (req : Request, res: Response) => {
   }
 
 })
+
+Recommendations.get('/recommended', async (req : Request, res : Response) => {
+console.log('poop');
+  const { id } = req.params
+  const topRatedBooks = await prisma.userBooks.findMany({
+    where: {
+      userId: id,
+    },
+    orderBy: {
+      rating: 'desc',
+    },
+    take: 20,
+    include: {
+      books: true,
+    },
+  });
+
+  const titles = await topRatedBooks.reduce((acc: string[] , book: any) => {
+    acc.push(book.books.title);
+    return acc;
+  },[])
+
+
+}
+)
+
 
 
 export default Recommendations;

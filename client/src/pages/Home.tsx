@@ -19,7 +19,9 @@ function Home() {
                 <Link to="/user-reco-input">
                     <button>Start Building Your Recommendations</button>
                 </Link>
-
+                <Link to="/recommended">
+                    <button>Recommendations</button>
+                </Link>
                 <h1>Home</h1>
 
             </>
