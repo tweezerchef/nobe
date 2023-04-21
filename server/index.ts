@@ -14,22 +14,12 @@ import UserBooks from './routes/userbooks';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
-import Recommendations from './routes/recomendations';
-<<<<<<< HEAD
+import Recommendations from './routes/recommendations';
 import Review from './routes/review';
-
-dotenv.config();
-=======
-import morgan from 'morgan';
 import Wishlist from './routes/wishlist';
 
-import { OAuth2Client } from "google-auth-library";
-import jwt from "jsonwebtoken";
-import { PrismaClient } from '@prisma/client';
 
 dotenv.config();
-
->>>>>>> 891a3826db28efdc0c657daf575d062c28b8593f
 const app = express();
 const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 const PORT = 8080;

@@ -7,18 +7,19 @@ const Review = express.Router();
 
 const prisma = new PrismaClient();
 
-// async function findOrCreateBook(ISBN10: string, book: object) {
-//     const newbook = await prisma.Books.upsert({
-//       where: { ISBN10: ISBN10 },
-//       update: {},
-//       create: { username },
-//     });
-//     return newbook;;
-//   }
+async function findOrCreateBook(ISBN10: string, title: string, author: string, image_url: string) {
+    const newbook = await prisma.Books.upsert({
+      where: { ISBN10: ISBN10 },
+      update: {},
+      create: { ISBN10 : ISBN10, title: title, author: author, image: image_url},
+    });
+    return newbook;;
+  }
 
 Review.post('/', async (req: Request, res: Response) => {
-const { book, rating, userID } = req.body;
-console.log(book, rating, userID);
+const { book, rating, id } = req.body;
+const { title, author, ISBN10, image_url} = book;
+findOrCreateBook(ISBN10, title, author, image_url).then(newbook => console.log(newbook))
 
 })
 

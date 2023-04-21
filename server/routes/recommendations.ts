@@ -15,7 +15,6 @@ async function findRandomRows(limit: number) {
 
 
 Recommendations.get('/random', async (req : Request, res: Response) => {
-  console.log(req);
   try{
   const books = await findRandomRows(20);
   res.send(books);

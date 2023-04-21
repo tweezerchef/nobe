@@ -7,18 +7,19 @@ import axios from 'axios';
 const UserStarRating = (props: any) => {
     const [value, setValue] = React.useState<number | null>(0);
     const { book, id } = props;
-    console.log(book, id);
-    React.useEffect(() => {
-        console.log(book, id);
+    console.log(id);
+    const handleRatingChange = (event: React.ChangeEvent<{}>, newValue: number | null) => {
         // Make an API call to update the rating on the server
-        axios.post('/review', { rating: value, book: book, id: id })
+        axios.post('/review', { rating: newValue, book: book, id: id })
             .then(response => {
                 console.log('Rating updated successfully');
             })
             .catch(error => {
                 console.error('Failed to update rating:', error);
             });
-    }, [setValue]);
+
+        setValue(newValue);
+    };
 
     return (
         <Box
@@ -26,13 +27,11 @@ const UserStarRating = (props: any) => {
                 '& > legend': { mt: 2 },
             }}
         >
-            <Typography sx={{fontSize: 'md'}}component="legend"></Typography>
+            <Typography sx={{ fontSize: 'md' }} component="legend"></Typography>
             <Rating
                 name="simple-controlled"
                 value={value}
-                onChange={(event, newValue) => {
-                    setValue(newValue);
-                }}
+                onChange={handleRatingChange}
             />
         </Box>
     );

@@ -13,7 +13,6 @@ import UserStarRating from '../UserStarRating/UserStarRating';
 
 const BookDisplay = (props: any) => {
     const { books: array, id } = props;
-    console.log(array);
     return (
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
             {array.length === 0 ? (
