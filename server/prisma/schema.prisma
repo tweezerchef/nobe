@@ -74,14 +74,14 @@ model bookdata {
 model Clubs {
   id          String        @id @default(uuid())
   name        String
-  clubMembers ClubMembers[]
+  clubMembers ClubMembers?
   Discussions Discussions[]
 }
 
 model ClubMembers {
   id     String @id @default(uuid())
-  userId String
-  clubId String
+  userId String @unique
+  clubId String @unique
   club   Clubs  @relation(fields: [clubId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
 }
