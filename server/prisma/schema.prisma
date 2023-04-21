@@ -29,6 +29,7 @@ model Books {
   id          String      @id @default(uuid())
   title       String
   author      String
+  ISBN10      Int?
   description String?
   paperback   Boolean?
   content     String?
@@ -49,6 +50,7 @@ model UserBooks {
   wishlist  Boolean @default(false)
   owned     Boolean @default(false)
   booksId   String
+  ISBN10    Int?
   userId    String
   rating    Float?
   thumbDown Int?
@@ -59,13 +61,13 @@ model UserBooks {
 
 model bookdata {
   asin       String
-  ISBN10     Int    @id
   author     String
   image_url  String
   rating     String
   title      String
   url        String
   categories String
+  ISBN10     Int    @id
 }
 
 model Clubs {
@@ -100,4 +102,36 @@ model Posts {
   discussionsId String
   discussion    Discussions @relation(fields: [discussionsId], references: [id])
   user          User        @relation(fields: [userId], references: [id])
+}
+
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
+}
+
+model us_gaz {
+  id        Int     @id(map: "pk_us_gaz") @default(autoincrement())
+  seq       Int?
+  word      String?
+  stdword   String?
+  token     Int?
+  is_custom Boolean @default(true)
+}
+
+model us_lex {
+  id        Int     @id(map: "pk_us_lex") @default(autoincrement())
+  seq       Int?
+  word      String?
+  stdword   String?
+  token     Int?
+  is_custom Boolean @default(true)
+}
+
+model us_rules {
+  id        Int     @id(map: "pk_us_rules") @default(autoincrement())
+  rule      String?
+  is_custom Boolean @default(true)
 }

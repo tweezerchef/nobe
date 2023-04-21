@@ -2,7 +2,6 @@
 import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
-import morgan from 'morgan';
 import cors from 'cors';
 import UserBooks from './routes/userbooks';
 import LocationRoute from './routes/booksnearuser';

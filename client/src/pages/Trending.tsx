@@ -15,6 +15,7 @@ import { FormControl, InputLabel } from "@mui/material";
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import ThumbComponent from '../components/Thumbs/Thumbs';
 
 function Trending() {
   const [trending, setTrending] = useState<any[]>([]);
@@ -34,7 +35,7 @@ function Trending() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Navbar children={undefined} />
       <h1>NYT Best Sellers</h1>
-      <FormControl sx={{width: '90%'}}>
+      <FormControl sx={{ width: '90%' }}>
         <InputLabel>Category</InputLabel>
         <Select
           onChange={handleSelect}
@@ -158,6 +159,7 @@ function Trending() {
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
                   {book.rank > book.rank_last_week ? <ArrowUpwardIcon sx={{ color: 'green', fontSize: 'md' }} /> : <ArrowDownwardIcon sx={{ color: 'red', fontSize: 'md' }} />}
                 </Typography>
+                < ThumbComponent />
               </CardOverflow>
             </Card>
           ))
