@@ -152,6 +152,7 @@ function Trending() {
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
                   {book.weeks_on_list} <WhatshotIcon sx={{ color: 'orange', fontSize: 'md' }} />
                 </Typography>
+                <Divider orientation="vertical" />
                 <UserStarRating />
               </CardOverflow>
             </Card>
