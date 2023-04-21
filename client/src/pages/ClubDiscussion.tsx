@@ -5,32 +5,37 @@ import axios from "axios";
 
 interface DiscussionPost {
   id: string;
-  title: string;
-  content: string;
-  createdAt: string;
+  body: string;
+  userId: string;
+  discussionId: string;
 };
 
 interface Discussion {
   id: string;
-  posts: DiscussionPost[];
+  Posts: DiscussionPost[];
+  title: string;
 };
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [hasJoined, setHasJoined] = useState(false);
-  // console.log(discussions);
+  const searchParams = new URLSearchParams(location.search);
+  const clubName = searchParams.get('name') || 'Book Club Discussion';
+  console.log(discussions);
 
   useEffect(() => {
     async function fetchDiscussion() {
       try {
-        const response = await axios.get(`/api/clubs/${id}/discussion`);
-        setDiscussions(response.data);
+        const { data } = await axios.get(`/api/clubs/${id}/discussion`);
+        setDiscussions(data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
-    fetchDiscussion();
+    if (id) {
+      fetchDiscussion();
+    }
   }, [id]);
 
   const handleJoinClub = async () => {
@@ -51,7 +56,7 @@ function ClubDiscussion() {
 
   return (
     <div>
-      <h1>Book Club Discussion</h1>
+      <h1>{clubName}</h1>
       <Button
         variant="contained"
         color="primary"
@@ -60,6 +65,17 @@ function ClubDiscussion() {
       >
         {hasJoined ? "Joined" : "Join"}
       </Button>
+      {discussions?.map((discussion) => (
+        // console.log(discussion),
+        <div key={discussion.id}>
+          <h2>{discussion.title}</h2>
+          {discussion.Posts?.map((post) => (
+            <div key={post.id}>
+              <p>{post.body}</p>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   )
 }
