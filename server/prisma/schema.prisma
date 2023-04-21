@@ -35,7 +35,7 @@ model Books {
   paperback   Boolean?
   content     String?
   image       String?
-  ISBN10      String      @unique
+  ISBN10      Int         @unique
   genre       Genre[]
   UserBooks   UserBooks[]
 }

@@ -16,14 +16,18 @@ function ClubDiscussion() {
 
   useEffect(() => {
     async function fetchDiscussion() {
-      const response = await axios.get(`/api/clubs/${id}/discussion`);
-      setDiscussions(response.data);
+      try {
+        const response = await axios.get(`/api/clubs/${id}/discussion`);
+        setDiscussions(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
     fetchDiscussion();
   }, [id])
 
   const handleJoinClub = async () => {
-    try {      
+    try {
       const user = localStorage.getItem("user");
 
       if (!user) {
