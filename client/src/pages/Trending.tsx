@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
+import axios from 'axios';
 
 function Trending() {
   const [trending, setTrending] = useState<any[]>([]);
@@ -29,6 +30,16 @@ function Trending() {
   function handleSelect(event: SelectChangeEvent<string>) {
     fetchTrending(event.target.value)
   }
+
+  const addToWishlist = (bookTitle: string, bookAuthor: string) => {
+    axios.post('/api/wishlist', { title: bookTitle, author: bookAuthor })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -88,7 +99,7 @@ function Trending() {
                     transform: 'translateY(50%)',
                   }}
                 >
-                  <BookmarkAddIcon />
+                  <BookmarkAddIcon onClick={() => addToWishlist(book.title, book.author)}/>
                 </IconButton>
               </CardOverflow>
               <Typography level="h2" sx={{ fontSize: 'md', mt: 2 }}>

@@ -10,18 +10,16 @@ datasource db {
 }
 
 model User {
-  id          String        @id @default(uuid())
+  id          String                    @id @default(uuid())
   firstName   String
-  username    String?       @unique
+  username    String?                   @unique
   email       String
-  googleId    String        @unique
+  googleId    String                    @unique
   lastName    String?
   picture     String?
   token       String?
-  latitude    Float?
-  longitude   Float?
-  radius      Int?
-  clubMembers ClubMembers[]
+  location    Unsupported("geography")?
+  clubMembers ClubMembers?
   Discussions Discussions[]
   Posts       Posts[]
   books       UserBooks[]
@@ -58,6 +56,8 @@ model UserBooks {
   thumbUp   Int?
   books     Books   @relation(fields: [booksId], references: [id])
   user      User    @relation(fields: [userId], references: [id])
+
+  @@unique([userId, booksId])
 }
 
 model bookdata {

@@ -9,13 +9,13 @@ import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
+import Wishlist from './routes/wishlist';
 
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
 
 dotenv.config();
-
 
 const app = express();
 const CLIENT_PATH = path.resolve(__dirname, '../client/build');
@@ -161,6 +161,8 @@ app.use("/books", UserBooks);
 app.use("/api/clubs", Clubs);
 app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
+app.use("/api/wishlist", Wishlist);
+
 
 //make sure this is the last route in our server
 app.get('*', (req, res) => {
