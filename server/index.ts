@@ -17,6 +17,7 @@ import Trending from './routes/Trending';
 import Recommendations from './routes/recommendations';
 import Review from './routes/review';
 import Wishlist from './routes/wishlist';
+import OpenAI from './routes/OpenAI';
 
 
 dotenv.config();
@@ -172,6 +173,8 @@ app.use("/api/clubs", Clubs);
 app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
 app.use("/api/wishlist", Wishlist);
+app.use("/api/openai", OpenAI);
+
 
 
 //make sure this is the last route in our server
