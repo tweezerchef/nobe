@@ -3,9 +3,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
-import Carousel from 'react-material-ui-carousel'
-
-
 
 
 interface Book {
@@ -20,40 +17,9 @@ interface Book {
   owned: boolean;
 }
 const Profile = () => {
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-      padding: theme.spacing(2),
-    },
-    card: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      height: '100%',
-      borderRadius: 0,
-    },
-    media: {
-      height: '100%',
-      backgroundSize: 'contain',
-    },
-    title: {
-      textAlign: 'center',
-    },
-    form: {
-      display: 'flex',
-      alignItems: 'center',
-      marginBottom: theme.spacing(2),
-    },
-    input: {
-      marginRight: theme.spacing(2),
-      flex: 1,
-    },
-    button: {
-      marginLeft: theme.spacing(2),
-    },
-  }));
 
-  const classes = useStyles();
+
+  //const classes = useStyles();
   const [userBooks, setUserBooks] = useState<Book[]>([]);
   const [wishlist, setWishlist] = useState<boolean>(false);
   const [owned, setOwned] = useState<boolean>(false);
@@ -114,33 +80,33 @@ const Profile = () => {
   const wishlistBooks = userBooks.filter(book => book.wishlist);
   //
   return (
-    <div className={classes.root}>
-      <Typography variant="h3" className={classes.title}>Profile</Typography>
-      <Typography variant="h4" className={classes.title}>My Books</Typography>
-      <form onSubmit={handleSubmit} className={classes.form}>
+    <div >
+      <Typography variant="h3" >Profile</Typography>
+      <Typography variant="h4" >My Books</Typography>
+      <form onSubmit={handleSubmit} >
         <label>
           Book Title:
-          <input type="text" className={classes.input} value={title} onChange={handleTitleChange} />
+          <input type="text" value={title} onChange={handleTitleChange} />
         </label>
         <label>
-          <input type="checkbox" checked={wishlist} onChange={handleWishlistChange} />
+          <Checkbox checked={wishlist} onChange={handleWishlistChange} />
           Add to Wishlist
         </label>
         <label>
-          <input type="checkbox" checked={owned} onChange={handleOwnedChange} />
+          <Checkbox checked={owned} onChange={handleOwnedChange} />
           Add to Owned Books
         </label>
-        <button className={classes.button} type="submit">Add Book</button>
+        <button type="submit">Add Book</button>
       </form>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="h5">Owned Books</Typography>
           {ownedBooks.length > 0 ?
-            <Carousel autoPlay={false}>
+            <Grid container spacing={2}>
               {ownedBooks.map((book) => (
                 <div key={book.id}>
-                  <Card className={classes.card}>
-                    <CardMedia component="img" className={classes.media} image={book.books.image} />
+                  <Card >
+                    <CardMedia component="img" image={book.books.image} />
                     <CardContent>
                       <Typography variant="h5">{book.books.title}</Typography>
                       <Typography variant="body1">{book.books.author}</Typography>
@@ -148,18 +114,18 @@ const Profile = () => {
                   </Card>
                 </div>
               ))}
-            </Carousel> :
+            </Grid> :
             <Typography variant="body1">No owned books</Typography>
           }
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="h5">Wishlist</Typography>
           {wishlistBooks.length > 0 ?
-            <Carousel autoPlay={false}>
+            <Grid container spacing={2} >
               {wishlistBooks.map((book) => (
                 <div key={book.id}>
-                  <Card className={classes.card}>
-                    <CardMedia component="img" className={classes.media} image={book.books.image} />
+                  <Card >
+                    <CardMedia component="img" image={book.books.image} />
                     <CardContent>
                       <Typography variant="h5">{book.books.title}</Typography>
                       <Typography variant="body1">{book.books.author}</Typography>
@@ -167,7 +133,7 @@ const Profile = () => {
                   </Card>
                 </div>
               ))}
-            </Carousel> :
+            </Grid> :
             <Typography variant="body1">No wishlist books</Typography>
           }
         </Grid>
