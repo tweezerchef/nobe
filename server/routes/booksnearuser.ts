@@ -18,7 +18,7 @@ interface QueryResult {
 
 
 // LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
-//   // const { longitude, latitude, radius } = req.query
+//   const { longitude, latitude, radius } = req.query
 //   console.log(longitude, latitude, radius);
 //   try {
 //     const query = await prisma.$queryRaw<User[]>

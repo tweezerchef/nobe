@@ -10,8 +10,7 @@ dotenv.config();
 const Wishlist = express.Router();
 
 Wishlist.post('/', async (req, res) => {
-  const bookTitle = req.body.title;
-  const bookAuthor = req.body.author;
+  const isbn = req.body.isbn;
   const email = req.body.email;
 
   try {
@@ -26,13 +25,15 @@ Wishlist.post('/', async (req, res) => {
       return;
     }
 
-    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${bookTitle} by ${bookAuthor}&key=${process.env.GOOGLE_BOOKS}`);
+    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn=${isbn}&key=${process.env.GOOGLE_BOOKS}`);
     const bookData = response.data;
+
+    console.log('book data', bookData);
 
     const book = await prisma.books.create({
       data: {
-        title: bookTitle,
-        author: bookAuthor,
+        title: bookData.items[0].volumeInfo.title,
+        author: bookData.items[0].volumeInfo.authors[0],
         description: bookData.items[0].volumeInfo.description,
         paperback: bookData.items[0].volumeInfo.printType === 'BOOK',
         content: bookData.items[0].volumeInfo.contentVersion,
