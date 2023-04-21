@@ -2,13 +2,14 @@
 import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
-import morgan from 'morgan';
 import cors from 'cors';
 import UserBooks from './routes/userbooks';
-import LocationRoute from './routes/booksnearuser';
+// import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
+import Recommendations from './routes/recomendations';
+import morgan from 'morgan';
 
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
@@ -22,9 +23,9 @@ const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 const PORT = 8080;
 const prisma = new PrismaClient();
 //Middleware
-app.use(morgan('combined'));
 app.use(express.static(CLIENT_PATH));
 app.use(cors())
+app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -46,6 +47,7 @@ async function verifyGoogleToken(token: string) {
 }
 
 app.post("/signup", async (req, res) => {
+  console.log(req.body);
   try {
     // console.log({ verified: verifyGoogleToken(req.body.credential) });
     if (req.body.credential) {
@@ -95,7 +97,7 @@ app.post("/signup", async (req, res) => {
       });
     }
   } catch (error) {
-    console.error(error)
+    console.log(error);
     res.status(500).json({
       message: "An error occurred. Registration failed.",
 
@@ -104,13 +106,15 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-
+  console.log(req.body);
   try {
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
       if (verificationResponse.error) {
+        console.error(verificationResponse.error);
         return res.status(400).json({
           message: verificationResponse.error,
+
         });
       }
       const profile = verificationResponse?.payload;
@@ -126,6 +130,7 @@ app.post("/login", async (req, res) => {
           googleId: profile.sub,
         },
       })
+      console.log(exists);
       // const existsInDB = DB.find((person) => person?.email === profile?.email);
 
       if (!exists) {
@@ -140,6 +145,7 @@ app.post("/login", async (req, res) => {
           firstName: profile?.given_name,
           lastName: profile?.family_name,
           picture: profile?.picture,
+          id: exists.id,
           email: profile?.email,
           token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
             expiresIn: "1d",
@@ -148,7 +154,9 @@ app.post("/login", async (req, res) => {
       });
     }
   } catch (error: any) {
+    console.error(error);
     res.status(500).json({
+
       message: error?.message || error,
     });
   }
@@ -156,8 +164,8 @@ app.post("/login", async (req, res) => {
 
 
 
-app.use("/location", LocationRoute);
-
+// app.use("/location", LocationRoute);
+app.use("/recommendations", Recommendations);
 app.use("/books", UserBooks);
 // app.use("/clubs", Clubs);
 app.use("/api/clubs", Clubs);
