@@ -19,12 +19,12 @@ const UserRecoInputPage = () => {
             .then(res => setBooks(res.data))
         //.then(data => setBooks(data));
     }, []);
-    console.log(id)
+
 
     return (
         <div>
             <Navbar children={undefined} />
-            <BookDisplay books={books} />
+            <BookDisplay books={books} id={id} />
             <h1>  UserRecoInputPage </h1>
         </div>
     )

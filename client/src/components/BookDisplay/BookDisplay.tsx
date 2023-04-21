@@ -12,7 +12,8 @@ import UserStarRating from '../UserStarRating/UserStarRating';
 
 
 const BookDisplay = (props: any) => {
-    const { books: array } = props;
+    const { books: array, id } = props;
+    console.log(array);
     return (
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
             {array.length === 0 ? (
@@ -70,7 +71,7 @@ const BookDisplay = (props: any) => {
                             <Divider orientation="vertical" />
                             <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
                             </Typography>
-                            <UserStarRating />
+                            <UserStarRating book={book} id={id} />
                         </CardOverflow>
                     </Card>
                 ))
