@@ -7,6 +7,7 @@ import Carousel from 'react-material-ui-carousel'
 
 
 
+
 interface Book {
   books: {
     id: string;
@@ -51,14 +52,18 @@ const Profile = () => {
       marginLeft: theme.spacing(2),
     },
   }));
+
   const classes = useStyles();
   const [userBooks, setUserBooks] = useState<Book[]>([]);
   const [wishlist, setWishlist] = useState<boolean>(false);
   const [owned, setOwned] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
+  const userString = localStorage.getItem('user');
+  const user = userString ? JSON.parse(userString) : null;
+
   const getUserBooks = async () => {
     try {
-      const res = await axios.get(`/books/8f7e1c02-9aa4-4252-9494-e27bdd0cbba6`);
+      const res = await axios.get(`/books/${user.id}`);
       setUserBooks(res.data);
     } catch (err) {
       console.error(err);
@@ -85,7 +90,7 @@ const Profile = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await axios.post(`/books/8f7e1c02-9aa4-4252-9494-e27bdd0cbba6`,
+      await axios.post(`/books/${user.id}`,
         {
           title,
           wishlist,
@@ -131,7 +136,7 @@ const Profile = () => {
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="h5">Owned Books</Typography>
           {ownedBooks.length > 0 ?
-            <Carousel>
+            <Carousel autoPlay={false}>
               {ownedBooks.map((book) => (
                 <div key={book.id}>
                   <Card className={classes.card}>
@@ -150,7 +155,7 @@ const Profile = () => {
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="h5">Wishlist</Typography>
           {wishlistBooks.length > 0 ?
-            <Carousel>
+            <Carousel autoPlay={false}>
               {wishlistBooks.map((book) => (
                 <div key={book.id}>
                   <Card className={classes.card}>

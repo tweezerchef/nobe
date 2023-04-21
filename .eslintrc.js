@@ -1,8 +1,5 @@
 module.exports = {
-  extends: ['airbnb', + 'airbnb-typescript', 'eslint:recommended', 'plugin:@typescript-eslint/recommended'],
-  parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
-  root: true,
+  extends: ['airbnb', + 'airbnb-typescript'],
    parserOptions: {
        project: './tsconfig.json'
      }
