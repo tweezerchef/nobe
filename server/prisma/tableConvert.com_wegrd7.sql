@@ -1,14 +1,4 @@
-﻿CREATE TABLE "bookdata"
-(
-    "asin"	INT,
-    "ISBN10"	INT,
-    "author"	VARCHAR(512),
-    "image_url"	VARCHAR(512),
-    "rating"	VARCHAR(512),
-    "title"	VARCHAR(512),
-    "url"	VARCHAR(512),
-    "categories"	VARCHAR(512)
-);
+﻿
 
 INSERT INTO "bookdata" ("asin", "ISBN10", "author", "image_url", "rating", "title", "url", "categories") VALUES ('0007350813', '0007350813', 'Emily Brontë', 'https://images-na.ssl-images-amazon.com/images/I/41k1JwQ6zVL._SY291_BO1,204,203,200_QL40_FMwebp_.jpg', '4.6 out of 5 stars', 'Wuthering Heights (Collins Classics)', 'https://www.amazon.com/dp/0007350813', 'Books,Literature & Fiction,Genre Fiction');
 INSERT INTO "bookdata" ("asin", "ISBN10", "author", "image_url", "rating", "title", "url", "categories") VALUES ('0007513763', '9780007513765', 'Drew Daywalt', 'https://images-na.ssl-images-amazon.com/images/I/51q21jP9MtL._SX218_BO1,204,203,200_QL40_ML2_.jpg', '4.8 out of 5 stars', 'THE DAYS THE CRAYONS QUIT', 'https://www.amazon.com/dp/0007513763', 'Books,Childrens Books,Literature & Fiction');
