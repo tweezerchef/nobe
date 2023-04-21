@@ -24,8 +24,8 @@ function ClubDiscussion() {
 
   const handleJoinClub = async () => {
     try {
-      const email = localStorage.getItem("user");
-      await axios.post(`/api/clubs/${id}/join`, { email });
+      const user = localStorage.getItem("user");
+      await axios.post(`/api/clubs/${id}/join`, { user });
       setHasJoined(true);
     } catch (error) {
       console.error(error);
