@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const userString = localStorage.getItem('user');
 const user = userString ? JSON.parse(userString) : null;
-let id
+let id: any
 user ? (id = user.id) : (id = null);
 
 
@@ -16,9 +16,10 @@ const UserRecoInputPage = () => {
     const [books, setBooks] = useState([]);
     useEffect(() => {
         axios.get('/recommendations/random')
-            .then(res => console.log(res.data))
+            .then(res => setBooks(res.data))
         //.then(data => setBooks(data));
     }, []);
+    console.log(id)
 
     return (
         <div>

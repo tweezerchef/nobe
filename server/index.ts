@@ -88,7 +88,7 @@ app.post("/signup", async (req, res) => {
           firstName: profile?.given_name,
           lastName: profile?.family_name,
           picture: profile?.picture,
-          // id: unique_id,
+          id: unique_id,
           email: profile?.email,
           token: jwt.sign({ email: profile?.email }, "mySecret", {
             expiresIn: "1d",
@@ -129,6 +129,7 @@ console.log(req.body);
           googleId: profile.sub,
         },
       })
+      console.log(exists);
       // const existsInDB = DB.find((person) => person?.email === profile?.email);
 
       if (!exists) {
@@ -143,6 +144,7 @@ console.log(req.body);
           firstName: profile?.given_name,
           lastName: profile?.family_name,
           picture: profile?.picture,
+          id: exists.id,
           email: profile?.email,
           token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
             expiresIn: "1d",

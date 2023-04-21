@@ -8,22 +8,22 @@ import Link from '@mui/joy/Link';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
 
-let books: any
+
 
 
 const BookDisplay = (props: any) => {
-    const { books: any } = props;
+    const { books: array } = props;
     return (
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-            {books.length === 0 ? (
+            {array.length === 0 ? (
                 <div></div>
             ) : (
-                books.map((book: any) => (
-                    <Card variant="outlined" sx={{ width: 380, margin: '10px' }}>
+                array.map((book: any) => (
+                    <Card key={book.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px' }}>
                         <CardOverflow>
                             <AspectRatio ratio="2">
                                 <img
-                                    src={book.image}
+                                    src={book.image_url}
                                     loading="lazy"
                                     alt=""
                                 />
