@@ -24,8 +24,9 @@ const useFetch = (url: string) => {
 
     const handleGoogle = async (response: Response) => {
         setLoading(true);
+        let res;
         try {
-            const res = await axios(url, {
+            res = await axios(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,11 +34,15 @@ const useFetch = (url: string) => {
                 data: JSON.stringify({ credential: response.credential }),
             });
             setLoading(false);
+            console.log(res);
 
             const data: ApiResponse = res.data;;
+            console.log(data);
 
             if (data?.user) {
-                localStorage.setItem('user', JSON.stringify(data?.user));
+                await localStorage.setItem('user', JSON.stringify(data?.user));
+                let user = await localStorage.getItem('user');
+                console.log(user);
                 window.location.reload();
             } else {
                 throw new Error(data?.message || 'error');

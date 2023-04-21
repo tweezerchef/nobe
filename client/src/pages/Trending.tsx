@@ -15,6 +15,8 @@ import { FormControl, InputLabel } from "@mui/material";
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import ThumbComponent from '../components/Thumbs/Thumbs';
+import UserStarRating from "../components/UserStarRating/UserStarRating";
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 
 function Trending() {
@@ -34,7 +36,7 @@ function Trending() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Navbar children={undefined} />
       <h1>NYT Best Sellers</h1>
-      <FormControl sx={{width: '90%'}}>
+      <FormControl sx={{ width: '90%' }}>
         <InputLabel>Category</InputLabel>
         <Select
           onChange={handleSelect}
@@ -115,12 +117,13 @@ function Trending() {
                 </Typography>
                 <Divider orientation="vertical" />
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
-                  {book.rank > book.rank_last_week ? <TrendingUpIcon sx={{ color: 'green', fontSize: 'md' }} /> : book.rank < book.rank_last_week ? <TrendingDownIcon sx={{ color: 'red', fontSize: 'md' }}/> : null}
+                  {book.rank > book.rank_last_week ? <TrendingUpIcon sx={{ color: 'green', fontSize: 'md' }} /> : book.rank < book.rank_last_week ? <TrendingDownIcon sx={{ color: 'red', fontSize: 'md' }} /> : null}
                 </Typography>
                 <Divider orientation="vertical" />
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
                   {book.weeks_on_list} <WhatshotIcon sx={{ color: 'orange', fontSize: 'md' }} />
                 </Typography>
+                <UserStarRating />
               </CardOverflow>
             </Card>
           ))
