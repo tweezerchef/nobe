@@ -18,8 +18,8 @@ model User {
   lastName    String?
   picture     String?
   token       String?
-  location    Unsupported("geography")?
-  clubMembers ClubMembers?
+  location    String?
+  clubMembers ClubMembers[]
   Discussions Discussions[]
   Posts       Posts[]
   books       UserBooks[]
@@ -33,7 +33,7 @@ model Books {
   paperback   Boolean?
   content     String?
   image       String?
-  ISBN10      Int         @unique
+  ISBN10      String      @unique
   genre       Genre[]
   UserBooks   UserBooks[]
 }
@@ -68,7 +68,7 @@ model bookdata {
   title      String
   url        String
   categories String
-  ISBN10     Int    @id
+  ISBN10     String @id
 }
 
 model Clubs {

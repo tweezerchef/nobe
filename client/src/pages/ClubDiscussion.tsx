@@ -3,16 +3,23 @@ import { Link, useParams } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import axios from "axios";
 
+interface DiscussionPost {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+};
+
 interface Discussion {
   id: string;
-  name: string;
-  text: string;
+  posts: DiscussionPost[];
 };
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [hasJoined, setHasJoined] = useState(false);
+  // console.log(discussions);
 
   useEffect(() => {
     async function fetchDiscussion() {
@@ -53,11 +60,6 @@ function ClubDiscussion() {
       >
         {hasJoined ? "Joined" : "Join"}
       </Button>
-      <ul>
-        {discussions.map((discussion) => (
-          <li key={discussion.id}>{discussion.text}</li>
-        ))}
-      </ul>
     </div>
   )
 }
