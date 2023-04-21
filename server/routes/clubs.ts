@@ -40,16 +40,14 @@ ClubsRoute.post('/:id/discussion', async (req: Request, res: Response) => {
   try {
     const discussion = await prisma.discussions.create({
       data: {
-        userId,
         title,
-        clubsId: id,
-        clubs: {
-          connect: { id }
-        },
         creator: {
-          connect: { id: userId }
-        }
-      }
+          connect: { id: userId },
+        },
+        clubs: {
+          connect: { id },
+        },
+      },
     });
 
     res.json(discussion);
