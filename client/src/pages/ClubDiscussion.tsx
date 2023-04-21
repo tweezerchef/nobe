@@ -20,6 +20,8 @@ function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [hasJoined, setHasJoined] = useState(false);
+  const searchParams = new URLSearchParams(location.search);
+  const clubName = searchParams.get('name') || 'Book Club Discussion';
   console.log(discussions);
 
   useEffect(() => {
@@ -31,7 +33,9 @@ function ClubDiscussion() {
         console.error(error);
       }
     }
-    fetchDiscussion();
+    if (id) {
+      fetchDiscussion();
+    }
   }, [id]);
 
   const handleJoinClub = async () => {
@@ -52,7 +56,7 @@ function ClubDiscussion() {
 
   return (
     <div>
-      <h1>Book Club Discussion</h1>
+      <h1>{clubName}</h1>
       <Button
         variant="contained"
         color="primary"
