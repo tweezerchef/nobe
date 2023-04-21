@@ -44,7 +44,7 @@ async function seed() {
       firstName: 'Ubuntu',
       username: 'ubuntu_wsl',
       email: 'ubuntu_wsl@example.com',
-      googleId: '432156789',
+      googleId: '876123409',
       latitude: 29.012171,
       longitude: -90.032427,
       radius: 3
