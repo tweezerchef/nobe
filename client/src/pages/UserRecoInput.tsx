@@ -24,16 +24,16 @@ const UserRecoInputPage = () => {
             <BookDisplay books={books} />
         </div>
     );
-};
+    ;
 
 
-return (
-    <div>
-        <Navbar children={undefined} />
-        <BookDisplay books={books} />
-        <h1>  UserRecoInputPage </h1>
-    </div>
-)
+    return (
+        <div>
+            <Navbar children={undefined} />
+            <BookDisplay books={books} />
+            <h1>  UserRecoInputPage </h1>
+        </div>
+    )
 
 
 }
