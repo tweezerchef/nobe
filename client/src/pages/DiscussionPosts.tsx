@@ -26,14 +26,14 @@ function DiscussionPosts() {
     if (id) {
       getPosts();
     }
-  }, []);
+  }, [id]);
 
   return (
     <div>
       <h1>Discussion Posts</h1>
       {posts?.map((post) => (
         <div key={post.id}>
-          <h2>{post.body}</h2>
+          <h3>{post.body}</h3>
           {/* <p>userId: {post.userId}</p> */}
         </div>
       ))}
