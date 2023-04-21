@@ -18,6 +18,7 @@ async function findOrCreateBook(ISBN10: string, title: string, author: string, i
 
 Review.post('/', async (req: Request, res: Response) => {
 const { book, rating, id } = req.body;
+console.log(id);
 const { title, author, ISBN10, image_url} = book;
 findOrCreateBook(ISBN10, title, author, image_url).then(newbook => console.log(newbook))
 

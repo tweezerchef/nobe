@@ -43,7 +43,9 @@ function Router() {
             />
             <Route
                 path="/login"
-                element={user?.email ? <Navigate to="/home" /> : <Login />}
+                element={user?.email ? <Navigate to="/home" /> : <Login onLogin={function (): void {
+                    throw new Error('Function not implemented.');
+                }} />}
             />
             <Route path="/clubs" element={< Clubs />} />
             <Route path="/clubs/:id" element={<ClubDiscussion />} />
