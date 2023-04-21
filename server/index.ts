@@ -8,6 +8,7 @@ import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
+import Recommendations from './routes/recomendations';
 
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
@@ -155,7 +156,7 @@ app.post("/login", async (req, res) => {
 
 
 app.use("/location", LocationRoute);
-
+app.use("/recommendations", Recommendations);
 app.use("/books", UserBooks);
 // app.use("/clubs", Clubs);
 app.use("/api/clubs", Clubs);
