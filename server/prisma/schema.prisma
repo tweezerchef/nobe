@@ -58,6 +58,8 @@ model UserBooks {
   thumbUp   Int?
   books     Books   @relation(fields: [booksId], references: [id])
   user      User    @relation(fields: [userId], references: [id])
+
+  @@unique([userId, booksId], name: "userId_bookId")
 }
 
 model bookdata {

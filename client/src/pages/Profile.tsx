@@ -58,7 +58,7 @@ const Profile = () => {
   const [title, setTitle] = useState<string>('');
   const getUserBooks = async () => {
     try {
-      const res = await axios.get(`/books/6b15b543-6649-42d0-93b7-922f1fd7d44e`);
+      const res = await axios.get(`/books/ec9468cd-5b42-4f6f-8a24-709ed66f4b60`);
       setUserBooks(res.data);
     } catch (err) {
       console.error(err);
@@ -85,7 +85,7 @@ const Profile = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await axios.post(`/books/c1a2f75d-4c90-4cfd-b8bf-d78594306adb`,
+      await axios.post(`/books/ec9468cd-5b42-4f6f-8a24-709ed66f4b60`,
         {
           title,
           wishlist,
