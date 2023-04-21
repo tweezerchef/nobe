@@ -16,6 +16,7 @@ import Profile from './pages/Profile';
 import Landing from './pages/Landing';
 import Trending from './pages/Trending';
 import UserRecoInputPage from './pages/UserRecoInput';
+import Recommended from './pages/Recommended';
 
 interface User {
     email: string;
@@ -42,7 +43,9 @@ function Router() {
             />
             <Route
                 path="/login"
-                element={user?.email ? <Navigate to="/home" /> : <Login />}
+                element={user?.email ? <Navigate to="/home" /> : <Login onLogin={function (): void {
+                    throw new Error('Function not implemented.');
+                }} />}
             />
             <Route path="/clubs" element={< Clubs />} />
             <Route path="/clubs/:id" element={<ClubDiscussion />} />
@@ -51,6 +54,7 @@ function Router() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/trending" element={<Trending />} />
             <Route path="/user-reco-input" element={<UserRecoInputPage />} />
+            <Route path="/recommended" element={<Recommended />} />
 
         </Routes>
     );

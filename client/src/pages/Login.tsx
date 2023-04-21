@@ -5,8 +5,12 @@ import useFetch from '../hooks/useFetch';
 declare const google: any;
 declare const handleGoogle: string;
 
+export interface LoginProps {
+    onLogin: () => void;
+}
 
-function Login() {
+
+function Login(props: LoginProps) {
     const { handleGoogle, loading, error } = useFetch(
         "http://localhost:8080/login"
     );
