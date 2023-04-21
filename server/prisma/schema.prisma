@@ -31,12 +31,11 @@ model Books {
   id          String      @id @default(uuid())
   title       String
   author      String
-  ISBN10      Int?
   description String?
   paperback   Boolean?
   content     String?
   image       String?
-  ISBN10      String      @unique
+  ISBN10      String?     @unique
   genre       Genre[]
   UserBooks   UserBooks[]
 }

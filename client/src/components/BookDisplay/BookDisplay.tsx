@@ -6,9 +6,7 @@ import Typography from '@mui/joy/Typography';
 import IconButton from '@mui/joy/IconButton';
 import Link from '@mui/joy/Link';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ThumbComponent from '../Thumbs/Thumbs';
+import UserStarRating from '../UserStarRating/UserStarRating';
 
 let books: any
 
@@ -71,9 +69,8 @@ const BookDisplay = (props: any) => {
                             </Typography>
                             <Divider orientation="vertical" />
                             <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
-                                {book.rank > book.rank_last_week ? <ArrowUpwardIcon sx={{ color: 'green', fontSize: 'md' }} /> : <ArrowDownwardIcon sx={{ color: 'red', fontSize: 'md' }} />}
                             </Typography>
-                            <ThumbComponent />
+                            <UserStarRating />
                         </CardOverflow>
                     </Card>
                 ))

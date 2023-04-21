@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import ThumbComponent from '../components/Thumbs/Thumbs';
+import UserStarRating from "../components/UserStarRating/UserStarRating";
 
 function Trending() {
   const [trending, setTrending] = useState<any[]>([]);
@@ -159,7 +160,7 @@ function Trending() {
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
                   {book.rank > book.rank_last_week ? <ArrowUpwardIcon sx={{ color: 'green', fontSize: 'md' }} /> : <ArrowDownwardIcon sx={{ color: 'red', fontSize: 'md' }} />}
                 </Typography>
-                < ThumbComponent />
+                <UserStarRating />
               </CardOverflow>
             </Card>
           ))

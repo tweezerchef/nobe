@@ -15,6 +15,7 @@ import CreateClub from './pages/CreateClub';
 import Locations from './pages/Nearme';
 import Profile from './pages/Profile';
 import Landing from './pages/Landing';
+import Trending from './pages/Trending';
 
 interface User {
     email: string;
@@ -46,7 +47,7 @@ function Router() {
             <Route path="/clubs" element={< Clubs />} />
             <Route path="/clubs/:id" element={<ClubDiscussion />} />
             <Route path="/create-club" element={<CreateClub />} />
-
+            <Route path="/trending" element={<Trending />} />
             <Route path="/locations" element={<Locations />} />
             <Route path="/profile" element={<Profile />} />
         </Routes>

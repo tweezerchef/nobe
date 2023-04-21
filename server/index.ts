@@ -105,8 +105,10 @@ app.post("/login", async (req, res) => {
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
       if (verificationResponse.error) {
+        console.error(verificationResponse.error);
         return res.status(400).json({
           message: verificationResponse.error,
+
         });
       }
       const profile = verificationResponse?.payload;

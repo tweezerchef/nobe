@@ -3,11 +3,12 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { Toolbar } from '@mui/material';
 
-
+const userString = localStorage.getItem('user');
+const user = userString ? JSON.parse(userString) : null;
+let id
+user ? (id = user.id) : (id = null);
 
 const ThumbComponent = (props: any) => {
     const { ISBN10 } = props;
