@@ -95,9 +95,7 @@ app.post("/signup", async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json({
-      message: "An error occurred. Registration failed.",
-    });
+      console.error(error)
   }
 });
 
@@ -146,9 +144,7 @@ app.post("/login", async (req, res) => {
       });
     }
   } catch (error: any) {
-    res.status(500).json({
-      message: error?.message || error,
-    });
+    console.error(error);
   }
 });
 

@@ -18,7 +18,15 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import axios from 'axios';
 
+
+
 function Trending() {
+
+  const userString = localStorage.getItem('user');
+  const user = userString ? JSON.parse(userString) : null;
+  let id
+  user ? (id = user.id) : (id = null);
+
   const [trending, setTrending] = useState<any[]>([]);
 
   async function fetchTrending(category: string) {
@@ -32,7 +40,17 @@ function Trending() {
   }
 
   const addToWishlist = (bookTitle: string, bookAuthor: string) => {
-    axios.post('/api/wishlist', { title: bookTitle, author: bookAuthor })
+
+    const user = localStorage.getItem("user");
+
+    if (!user) {
+      throw new Error("No user found");
+    }
+    const parsed = JSON.parse(user)
+    const email = parsed.email
+
+
+    axios.post('/api/wishlist', { title: bookTitle, author: bookAuthor, email: email })
       .then(response => {
         console.log(response.data);
       })
@@ -45,7 +63,7 @@ function Trending() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Navbar children={undefined} />
       <h1>NYT Best Sellers</h1>
-      <FormControl sx={{width: '90%'}}>
+      <FormControl sx={{ width: '90%' }}>
         <InputLabel>Category</InputLabel>
         <Select
           onChange={handleSelect}
@@ -99,7 +117,7 @@ function Trending() {
                     transform: 'translateY(50%)',
                   }}
                 >
-                  <BookmarkAddIcon onClick={() => addToWishlist(book.title, book.author)}/>
+                  <BookmarkAddIcon onClick={() => addToWishlist(book.title, book.author)} />
                 </IconButton>
               </CardOverflow>
               <Typography level="h2" sx={{ fontSize: 'md', mt: 2 }}>
@@ -126,7 +144,7 @@ function Trending() {
                 </Typography>
                 <Divider orientation="vertical" />
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
-                  {book.rank > book.rank_last_week ? <TrendingUpIcon sx={{ color: 'green', fontSize: 'md' }} /> : book.rank < book.rank_last_week ? <TrendingDownIcon sx={{ color: 'red', fontSize: 'md' }}/> : null}
+                  {book.rank > book.rank_last_week ? <TrendingUpIcon sx={{ color: 'green', fontSize: 'md' }} /> : book.rank < book.rank_last_week ? <TrendingDownIcon sx={{ color: 'red', fontSize: 'md' }} /> : null}
                 </Typography>
                 <Divider orientation="vertical" />
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
