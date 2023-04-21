@@ -9,16 +9,16 @@ import Typography from '@mui/joy/Typography';
 import IconButton from '@mui/joy/IconButton';
 import Link from '@mui/joy/Link';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import { FormControl, InputLabel } from "@mui/material";
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 
 function Trending() {
   const [trending, setTrending] = useState<any[]>([]);
-
 
   async function fetchTrending(category: string) {
     const response = await fetch(`/api/trending?category=${category}`);
@@ -45,59 +45,18 @@ function Trending() {
           <MenuItem value="hardcover-fiction">Hardcover Fiction</MenuItem>
           <MenuItem value="hardcover-nonfiction">Hardcover Nonfiction</MenuItem>
           <MenuItem value="trade-fiction-paperback">Paperback Trade Fiction</MenuItem>
-          <MenuItem value="mass-market-paperback">Paperback Mass-Market Fiction</MenuItem>
           <MenuItem value="paperback-nonfiction">Paperback Nonfiction</MenuItem>
-          <MenuItem value="e-book-fiction">E-Book Fiction</MenuItem>
-          <MenuItem value="e-book-nonfiction">E-Book Nonfiction</MenuItem>
-          <MenuItem value="hardcover-advice">Hardcover Advice</MenuItem>
-          <MenuItem value="paperback-advice">Paperback Advice</MenuItem>
           <MenuItem value="advice-how-to-and-miscellaneous">Advice How-To and Miscellaneous</MenuItem>
-          <MenuItem value="hardcover-graphic-books">Hardcover Graphic Books</MenuItem>
-          <MenuItem value="paperback-graphic-books">Paperback Graphic Books</MenuItem>
-          <MenuItem value="manga">Manga</MenuItem>
-          <MenuItem value="combined-print-fiction">Combined Print Fiction</MenuItem>
-          <MenuItem value="combined-print-nonfiction">Combined Print Nonfiction</MenuItem>
-          <MenuItem value="chapter-books">Chapter Books</MenuItem>
-          <MenuItem value="childrens-middle-grade">Childrens Middle Grade</MenuItem>
-          <MenuItem value="childrens-middle-grade-e-book">Childrens Middle Grade E-Book</MenuItem>
           <MenuItem value="childrens-middle-grade-hardcover">Childrens Middle Grade Hardcover</MenuItem>
           <MenuItem value="childrens-middle-grade-paperback">Childrens Middle Grade Paperback</MenuItem>
-          <MenuItem value="paperback-books">Childrens Paperback Books</MenuItem>
           <MenuItem value="picture-books">Childrens Picture Books</MenuItem>
           <MenuItem value="series-books">Childrens Series Books</MenuItem>
-          <MenuItem value="young-adult">Young Adult</MenuItem>
-          <MenuItem value="young-adult-e-book">Young Adult E-Book</MenuItem>
-          <MenuItem value="young-adult-hardcover">Young Adult Hardcover</MenuItem>
-          <MenuItem value="young-adult-paperback">Young Adult Paperback</MenuItem>
-          <MenuItem value="animals">Animals</MenuItem>
           <MenuItem value="audio-fiction">Audio Fiction</MenuItem>
           <MenuItem value="audio-nonfiction">Audio Nonfiction</MenuItem>
           <MenuItem value="business-books">Business Books</MenuItem>
-          <MenuItem value="celebrities">Celebrities</MenuItem>
-          <MenuItem value="crime-and-punishment">Crime and Punishment</MenuItem>
-          <MenuItem value="culture">Culture</MenuItem>
-          <MenuItem value="education">Education</MenuItem>
-          <MenuItem value="espionage">Espionage</MenuItem>
-          <MenuItem value="expeditions-disasters-and-adventures">Expeditions Disasters and Adventures</MenuItem>
-          <MenuItem value="fashion-manners-and-customs">Fashion Manners and Customs</MenuItem>
-          <MenuItem value="food-and-fitness">Food and Fitness</MenuItem>
-          <MenuItem value="games-and-activities">Games and Activities</MenuItem>
           <MenuItem value="graphic-books-and-manga">Graphic Books and Manga</MenuItem>
-          <MenuItem value="hardcover-business-books">Hardcover Business Books</MenuItem>
-          <MenuItem value="health">Health</MenuItem>
-          <MenuItem value="humor">Humor</MenuItem>
-          <MenuItem value="indigenous-americans">Indigenous Americans</MenuItem>
-          <MenuItem value="relationships">Relationships</MenuItem>
           <MenuItem value="mass-market-monthly">Mass Market Monthly</MenuItem>
           <MenuItem value="middle-grade-paperback-monthly">Middle Grade Paperback Monthly</MenuItem>
-          <MenuItem value="paperback-business-books">Paperback Business Books</MenuItem>
-          <MenuItem value="family">Family</MenuItem>
-          <MenuItem value="hardcover-political-books">Hardcover Political Books</MenuItem>
-          <MenuItem value="race-and-civil-rights">Race and Civil Rights</MenuItem>
-          <MenuItem value="religion-spirituality-and-faith">Religion Spirituality and Faith</MenuItem>
-          <MenuItem value="science">Science</MenuItem>
-          <MenuItem value="sports">Sports and Fitness</MenuItem>
-          <MenuItem value="travel">Travel</MenuItem>
           <MenuItem value="young-adult-paperback-monthly">Young Adult Paperback Monthly</MenuItem>
         </Select>
       </FormControl>
@@ -156,7 +115,11 @@ function Trending() {
                 </Typography>
                 <Divider orientation="vertical" />
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
-                  {book.rank > book.rank_last_week ? <ArrowUpwardIcon sx={{ color: 'green', fontSize: 'md' }} /> : <ArrowDownwardIcon sx={{ color: 'red', fontSize: 'md' }} />}
+                  {book.rank > book.rank_last_week ? <TrendingUpIcon sx={{ color: 'green', fontSize: 'md' }} /> : book.rank < book.rank_last_week ? <TrendingDownIcon sx={{ color: 'red', fontSize: 'md' }}/> : null}
+                </Typography>
+                <Divider orientation="vertical" />
+                <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
+                  {book.weeks_on_list} <WhatshotIcon sx={{ color: 'orange', fontSize: 'md' }} />
                 </Typography>
               </CardOverflow>
             </Card>
