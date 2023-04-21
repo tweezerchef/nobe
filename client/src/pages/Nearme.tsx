@@ -22,8 +22,8 @@ interface Props {
 
 function Locations() {
 
-const [longitude, setLongitude] = useState(0);
-const [latitude, setLatitude] = useState(0);
+// const [longitude, setLongitude] = useState(0);
+// const [latitude, setLatitude] = useState(0);
 const [radius, setRadius] = useState(0);
 const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
 
@@ -41,12 +41,12 @@ const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
 
 const onPlaceSelect = (value: any) => {
   console.log(value);
-  setLatitude(value.properties.lon);
-  setLongitude(value.properties.lat);
+  // setLatitude(value.properties.lon);
+  // setLongitude(value.properties.lat);
 }
 
-console.log(longitude, '1');
-console.log(latitude, '2');
+// console.log(longitude, '1');
+// console.log(latitude, '2');
 console.log(radius, '3');
 
 
