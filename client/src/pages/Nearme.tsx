@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete'
+import BookDisplay from "../components/BookDisplay/BookDisplay";
 
 interface Book {
   books: {
     id: string;
     title: string;
     author: string;
-    description: string;
+    image: string;
   }
+  id: string;
+  wishlist: boolean;
+  owned: boolean;
 }
 
 interface Props {
@@ -22,31 +26,30 @@ interface Props {
 
 function Locations() {
 
-// const [longitude, setLongitude] = useState(0);
-// const [latitude, setLatitude] = useState(0);
+const [longitude, setLongitude] = useState(0);
+const [latitude, setLatitude] = useState(0);
 const [radius, setRadius] = useState(0);
 const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
 
+
 const  getBooksNearMe = async () => {
   try {
-    const res = await axios.get('/location/locations', { params: {longitude: longitude, latitude: latitude, radius: radius } });
+    const res = await axios.get('/location/locations', { params: {lon: longitude, lat: latitude, radius: radius } });
     console.log(res);
-   // setBooksNearBy(res.data);
+    setBooksNearBy(res.data.userBooks);
   } catch (err) {
     console.error(err);
   }
 }
 
-
-
 const onPlaceSelect = (value: any) => {
   console.log(value);
-  // setLatitude(value.properties.lon);
-  // setLongitude(value.properties.lat);
+  setLatitude(value.properties.lon);
+  setLongitude(value.properties.lat);
 }
 
-// console.log(longitude, '1');
-// console.log(latitude, '2');
+console.log(longitude, '1');
+console.log(latitude, '2');
 console.log(radius, '3');
 
 
@@ -59,7 +62,7 @@ const handleRadiusChange = (e:any) => {
   setRadius(newRadius);
 };
 
-
+//const ownedBooks = booksNearBy.filter(book => book.owned).map((book) => book.books);
 
   return (
     <div>
@@ -78,6 +81,7 @@ const handleRadiusChange = (e:any) => {
       placeholder="Set Range"
     />
     <button type="button" onClick={getBooksNearMe}>Search for Books</button>
+    <BookDisplay books={books} id={user.id} />
     </div>
   )
 

@@ -4,7 +4,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import UserBooks from './routes/userbooks';
-// import LocationRoute from './routes/booksnearuser';
+ import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
@@ -158,7 +158,7 @@ console.log(req.body);
   }
 });
 
-// app.use("/location", LocationRoute);
+ app.use("/location", LocationRoute);
 app.use("/recommendations", Recommendations);
 app.use("/books", UserBooks);
 // app.use("/clubs", Clubs);
