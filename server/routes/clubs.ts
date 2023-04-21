@@ -31,54 +31,24 @@ ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
 });
 
 ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { user } = req.body;
+  const { id } = req.params;
+  const { email } = req.body;
 
-    const club = await prisma.clubs.findUnique({
-      where: {
-        id: id,
-      }
-    });
-
-    if (!club) {
-      return res.status(404).json({ error: "Club not found" });
-    }
-
-    // const updatedClub = await prisma.clubmembers.create({
-    //   data: {
-    //     clubs: {
-    //       connect: {
-    //         id: id,
-    //       }
-    //     }
-    //   }
-    // });
-
-    const updatedClub = await prisma.clubs.update({
-      where: {
-        id: id,
-      },
-      data: {
-        clubMembers: {
-          create: {
-            id: id,
-            user: {
-              connect: {
-                id: id,
-              }
-            }
-          }
+  async function addUserToClub(email: string, clubId: string) {
+    const user = await prisma.user.findFirst({ where: { email: email } });
+    if (user) {
+      const clubMember = await prisma.clubMembers.create({
+        data: {
+          user: { connect: { id: user.id } },
+          club: { connect: { id: clubId } }
         }
-      }
-    });
-
-    res.json(updatedClub);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Something went wrong" });
+      });
+      console.log(`Added user ${user.id} to club ${clubMember.clubId}`);
+    } else {
+      console.log(`User with email ${email} not found`);
+    }
   }
+  addUserToClub(email, id)
 });
-
 
 export default ClubsRoute;

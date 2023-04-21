@@ -50,6 +50,8 @@ function Router() {
             <Route path="/trending" element={<Trending />} />
             <Route path="/locations" element={<Locations />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/trending" element={<Trending />} />
+
         </Routes>
     );
 }

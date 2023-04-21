@@ -23,15 +23,20 @@ function ClubDiscussion() {
   }, [id])
 
   const handleJoinClub = async () => {
-    try {
+    try {      
       const user = localStorage.getItem("user");
-      await axios.post(`/api/clubs/${id}/join`, { user });
+
+      if (!user) {
+        throw new Error("No user found");
+      }
+      const parsed = JSON.parse(user)
+      const email = parsed.email
+      await axios.post(`/api/clubs/${id}/join`, { email });
       setHasJoined(true);
     } catch (error) {
       console.error(error);
     }
   };
-
 
   return (
     <div>
