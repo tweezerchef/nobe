@@ -22,6 +22,9 @@ ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
       where: {
         clubsId: req.params.id,
       },
+      include: {
+        Posts: true
+      }
     });
     res.json(discussion);
   } catch (error) {

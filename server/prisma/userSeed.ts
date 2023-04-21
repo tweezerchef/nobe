@@ -9,9 +9,6 @@ async function seed() {
       username: 'john_doe',
       email: 'john_doe@example.com',
       googleId: '123456789',
-      latitude: 29.968543,
-      longitude: -90.036728,
-      radius: 4
     }
   })
 
@@ -21,9 +18,6 @@ async function seed() {
       username: 'matt_doe',
       email: 'matt_doe@example.com',
       googleId: '987654321',
-      latitude: 30.012171,
-      longitude: -90.131527,
-      radius: 2
     }
   })
 
@@ -33,9 +27,6 @@ async function seed() {
       username: 'gregg_turkington',
       email: 'gregg_turkington@example.com',
       googleId: '432156789',
-      latitude: 31.012171,
-      longitude: -90.031527,
-      radius: 3
     }
   })
 
@@ -45,9 +36,6 @@ async function seed() {
       username: 'ubuntu_wsl',
       email: 'ubuntu_wsl@example.com',
       googleId: '876123409',
-      latitude: 29.012171,
-      longitude: -90.032427,
-      radius: 3
     }
   })
 

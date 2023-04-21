@@ -5,14 +5,15 @@ import axios from "axios";
 
 interface DiscussionPost {
   id: string;
-  title: string;
-  content: string;
-  createdAt: string;
+  body: string;
+  userId: string;
+  discussionId: string;
 };
 
 interface Discussion {
   id: string;
   posts: DiscussionPost[];
+  title: string;
 };
 
 function ClubDiscussion() {
@@ -24,10 +25,10 @@ function ClubDiscussion() {
   useEffect(() => {
     async function fetchDiscussion() {
       try {
-        const response = await axios.get(`/api/clubs/${id}/discussion`);
-        setDiscussions(response.data);
+        const { data } = await axios.get(`/api/clubs/${id}/discussion`);
+        setDiscussions(data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
     fetchDiscussion();
@@ -60,6 +61,17 @@ function ClubDiscussion() {
       >
         {hasJoined ? "Joined" : "Join"}
       </Button>
+      {discussions?.map((discussion) => (
+        // console.log(discussion),
+        <div key={discussion.id}>
+          <h2>{discussion.title}</h2>
+          {discussion.posts?.map((post) => (
+            <div key={post.id}>
+              <p>{post.body}</p>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   )
 }
