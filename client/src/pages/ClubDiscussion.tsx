@@ -50,6 +50,14 @@ function ClubDiscussion() {
       }
       const parsed = JSON.parse(user)
       const email = parsed.email
+
+      const { data: club } = await axios.get(`/api/clubs/${id}`);
+      const memberEmails = club.members.map((member: { email: any; }) => member.email);
+      if (memberEmails.includes(email)) {
+        setHasJoined(true);
+        return;
+      }
+
       await axios.post(`/api/clubs/${id}/join`, { email });
       setHasJoined(true);
     } catch (error) {
