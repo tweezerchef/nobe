@@ -7,12 +7,13 @@ import IconButton from '@mui/joy/IconButton';
 import Link from '@mui/joy/Link';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
+import DeleteButton from '../DeleteButton/DeleteButton';
 
 
 
 
 const BookDisplay = (props: any) => {
-    const { books: array, id } = props;
+    const { books: array, id, getUserBooks, setBooks } = props;
     return (
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
             {array.length === 0 ? (
@@ -71,6 +72,7 @@ const BookDisplay = (props: any) => {
                             <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
                             </Typography>
                             <UserStarRating book={book} id={id} />
+                            <DeleteButton book={book} id={id} getUserBooks={getUserBooks} setBooks={setBooks} />
                         </CardOverflow>
                     </Card>
                 ))
