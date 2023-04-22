@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button } from "@material-ui/core";
+import DiscussionPosts from "./DiscussionPosts";
 import axios from "axios";
 
 interface DiscussionPost {
@@ -107,11 +108,10 @@ function ClubDiscussion() {
             value={newDiscussionTitle}
             onChange={(event) => setNewDiscussionTitle(event.target.value)}
           />
-          <button type="submit">Create New Discussion</button>
+          <button type="submit">Start Discussion</button>
         </form>
       )}
       {discussions?.map((discussion) => (
-        // console.log(discussion),
         <div key={discussion.id}>
           <ul key={discussion.title}>
             <Link to={`/clubs/${id}/discussion/${discussion.id}`}>{discussion.title}</Link>
@@ -125,6 +125,7 @@ function ClubDiscussion() {
         </div>
       ))}
     </div>
+
   )
 }
 
