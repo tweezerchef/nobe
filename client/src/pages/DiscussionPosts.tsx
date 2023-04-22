@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { format } from "date-fns";
 import axios from "axios";
 import { useParams } from "react-router";
 
@@ -7,14 +8,15 @@ interface Post {
   body: string;
   userId: string;
   discussionId: string;
+  createdAt: string;
 }
 
 function DiscussionPosts() {
   const { id } = useParams<{ id: string }>();
   const [posts, setPosts] = useState<Post[]>([]);
   const [newPost, setNewPost] = useState("");
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  console.log('POSTS: ', posts);
+  // const user = JSON.parse(localStorage.getItem("user") || "{}");
+  // console.log('POSTS: ', posts);
 
   useEffect(() => {
     async function getPosts() {
@@ -35,9 +37,11 @@ function DiscussionPosts() {
 
     try {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const currentDate = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
       const { data } = await axios.post(`/api/clubs/${id}/posts`, {
         userId: user.id,
         body: newPost,
+        createdAt: currentDate
       });
       setPosts([...posts, data]);
       setNewPost("");
@@ -61,6 +65,7 @@ function DiscussionPosts() {
       {posts?.map((post) => (
         <div key={post.id}>
           <h3>{post.body}</h3>
+          <p>{format(new Date(post.createdAt), "h:mm a MMMM d, yyyy")}</p>
           {post.userId === JSON.parse(localStorage.getItem("user") || "{}").id && (
             <button onClick={() => handleDelete(post.id)}>Delete</button>
           )}

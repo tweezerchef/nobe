@@ -103,6 +103,7 @@ model Posts {
   userId        String
   body          String
   discussionsId String
+  createdAt     DateTime    @default(now())
   discussion    Discussions @relation(fields: [discussionsId], references: [id])
   user          User        @relation(fields: [userId], references: [id])
 }
