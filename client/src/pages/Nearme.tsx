@@ -5,6 +5,8 @@ import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-g
 import BookDisplay from "../components/MattsBookDisplay/BookDisplay";
 import Navbar from "../components/Navbar/Navbar";
 import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 
 interface Book {
   books: {
@@ -104,6 +106,10 @@ return (
       onChange={handleRadiusChange}
       placeholder="Set Range"
     />
+ <Box width={300}>
+<Slider defaultValue={0} value={radius}
+      onChange={handleRadiusChange}aria-label="Default" valueLabelDisplay="auto" />
+    </Box>
     <button type="button" onClick={getBooksNearMe}>Search for Books</button>
     <BookDisplay books={displayBooks} id={id} />
     </div>
