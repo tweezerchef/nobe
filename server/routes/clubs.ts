@@ -51,7 +51,6 @@ ClubsRoute.get("/:id/posts", async (req: Request, res: Response) => {
 ClubsRoute.post('/:id/posts', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { userId, body } = req.body;
-
   try {
     const post = await prisma.posts.create({
       data: {
@@ -64,26 +63,26 @@ ClubsRoute.post('/:id/posts', async (req: Request, res: Response) => {
         },
       },
     });
-
-    // ClubsRoute.delete("/:id/posts", async (req: Request, res: Response) => {
-    //   const { id } = req.params;
-    //   try {
-    //     await prisma.posts.delete({
-    //       where: { id },
-    //     });
-    //     res.status(204).send();
-    //   } catch (error) {
-    //     console.error(error);
-    //     res.status(500).send("Error deleting post");
-    //   }
-    // });
-
     res.json(post);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong" });
   }
 });
+
+ClubsRoute.delete('/:id/posts/:postId', async (req: Request, res: Response) => {
+  const { postId } = req.params;
+  try {
+    const post = await prisma.posts.delete({
+      where: { id: postId },
+    });
+    res.json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 
 ClubsRoute.post('/:id/discussion', async (req: Request, res: Response) => {
   const { id } = req.params;

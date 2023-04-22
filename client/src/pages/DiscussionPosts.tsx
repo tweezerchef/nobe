@@ -14,7 +14,7 @@ function DiscussionPosts() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [newPost, setNewPost] = useState("");
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  console.log(posts);
+  console.log('POSTS: ', posts);
 
   useEffect(() => {
     async function getPosts() {
@@ -46,6 +46,14 @@ function DiscussionPosts() {
     }
   };
 
+  async function handleDelete(postId: string) {
+    try {
+      await axios.delete(`/api/clubs/${id}/posts/${postId}`);
+      setPosts(posts.filter((post) => post.id !== postId));
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div>
@@ -53,7 +61,9 @@ function DiscussionPosts() {
       {posts?.map((post) => (
         <div key={post.id}>
           <h3>{post.body}</h3>
-
+          {post.userId === JSON.parse(localStorage.getItem("user") || "{}").id && (
+            <button onClick={() => handleDelete(post.id)}>Delete</button>
+          )}
           {/* <p>userId: {post.userId}</p> */}
         </div>
       ))}
