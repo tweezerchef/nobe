@@ -76,8 +76,8 @@ function DiscussionPosts() {
           <p>{post.user.firstName} {format(new Date(post.createdAt), "h:mm a MMMM d, yyyy")}</p>
           {post.userId === JSON.parse(localStorage.getItem("user") || "{}").id && (
             <Stack direction="row" spacing={1}>
-              <IconButton aria-label="delete">
-                <DeleteIcon onClick={() => handleDelete(post.id)} />
+              <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
+                <DeleteIcon />
               </IconButton>
               {/* <button onClick={() => handleDelete(post.id)}>Delete</button> */}
             </Stack>

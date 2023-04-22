@@ -2,16 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ClubHeader } from './style'
 import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
-import {
-  Button,
-  Card,
-  CardContent,
-  Typography,
-  TextField,
-  FormControl,
-  FormLabel,
-  InputLabel
-} from "@material-ui/core";
+import { Button, Card, CardContent, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
 import Stack from '@mui/material/Stack';
 import axios from "axios";
 
@@ -82,7 +73,7 @@ function Clubs() {
               value={newClubName}
               onChange={handleInputChange}
             />
-            <Button type="submit" variant="contained" color="primary">
+            <Button type="submit" variant="contained">
               Create Club
             </Button>
           </FormControl>
