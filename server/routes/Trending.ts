@@ -11,9 +11,6 @@ Trending.get('/', async (req: Request, res: Response) => {
 
   const categoryWithoutQuotes = category.replace(/"/g, '');
 
-
-  console.log('CATEGORY', categoryWithoutQuotes)
-
   try {
     const response = await axios.get(`https://api.nytimes.com/svc/books/v3/lists/current/${categoryWithoutQuotes}.json?api-key=${process.env.NYT_API}`);
     res.json(response.data);

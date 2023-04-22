@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from '../components/Navbar/Navbar'
 
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
@@ -19,8 +18,7 @@ import ThumbComponent from '../components/Thumbs/Thumbs';
 import UserStarRating from "../components/UserStarRating/UserStarRating";
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import axios from 'axios';
-
-
+import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 
 function Trending() {
 
@@ -63,7 +61,7 @@ function Trending() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Navbar children={undefined} />
+      <ResponsiveAppBar />
       <h1>NYT Best Sellers</h1>
       <FormControl sx={{ width: '90%' }}>
         <InputLabel>Category</InputLabel>
