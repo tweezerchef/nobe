@@ -1,6 +1,6 @@
  const express = require('express');
  const axios = require('axios');
- import { PrismaClient, User, UserBooks } from '@prisma/client'
+ import { PrismaClient, User } from '@prisma/client'
 const prisma = new PrismaClient()
 const LocationRoute = express.Router();
 import { Request, Response } from "express";
@@ -18,7 +18,7 @@ interface QueryResult {
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { lon, lat, radius } = req.query
-    console.log(lon, lat, radius);
+    //console.log(lon, lat, radius);
      // Assuming coordinates are sent in the request body
     if (!lat || !lon || !radius) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
@@ -64,7 +64,7 @@ const userBooks = await Promise.all(userBooksPromises);
 //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
 res.status(200).json({ userBooks });
   } catch (error) {
-    console.error('Error getting users within radius:', error);
+   // console.error('Error getting users within radius:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
