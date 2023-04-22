@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 // import { Button } from "@material-ui/core";
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import axios from "axios";
 
 interface DiscussionPost {
@@ -92,7 +91,6 @@ function ClubDiscussion() {
 
   return (
     <div>
-      <ResponsiveAppBar></ResponsiveAppBar>
       <h1 style={{ textAlign: 'center' }}>{clubName}</h1>
       <Stack spacing={2} direction="row">
         <Button

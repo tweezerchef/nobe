@@ -18,7 +18,6 @@ import ThumbComponent from '../components/Thumbs/Thumbs';
 import UserStarRating from "../components/UserStarRating/UserStarRating";
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import axios from 'axios';
-import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 
 function Trending() {
 
@@ -59,7 +58,6 @@ function Trending() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <ResponsiveAppBar />
       <h1>NYT Best Sellers</h1>
       <FormControl sx={{ width: '90%' }}>
         <InputLabel>Category</InputLabel>
