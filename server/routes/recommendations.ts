@@ -14,7 +14,8 @@ async function findRandomRows(limit: number) {
 }
 
 async function getGoogleBooksData(title: string) {
-  axios.get(`https://www.googleapis.com/books/v1/volumes?key=&q=intitle:${title}`).then((response) => { return response.data.items[0].volumeInfo })
+  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?key=&q=intitle:${title}`);
+   return response.data.items[0].volumeInfo;
 }
 
 
@@ -31,7 +32,7 @@ Recommendations.get('/random', async (req : Request, res: Response) => {
 })
 
 Recommendations.get('/recommended', async (req : Request, res : Response) => {
-  const responseArray = []
+  const responseArray: any[] = [];
   const { id } = req.params
   const topRatedBooks = await prisma.userBooks.findMany({
     where: {
@@ -54,14 +55,28 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
   // const titles = 'Neuromancer, The Great Gatsby, The Cartel, The Unbearable Lightness of Being, Silo, Dune, Kurt Vonegut, Do Androids Dream of Electric Sheep'
   const content:string = `Please return 20 book recommendations for somebody that likes these books ${titles} please return it with only the title of the recommendation separated by a commas without numbers, please try to create unique suggestions ones that a normal recommendation algo wouldn't, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books`;
 
-   axios.get(`http://localhost:8080/openai?content=${content}`).then(response => response.data.content.split(',')).then(data =>{
-      data.forEach((book: any) => {
-       getGoogleBooksData(book).then(data => console.log(data));
-     });
-   });
-
-}
-)
+  axios
+  .get(`http://localhost:8080/openai?content=${content}`)
+  .then((response) => response.data.content.split(','))
+  .then((data) => {
+    const promises = data.map((book: any) => {
+        return getGoogleBooksData(book).then((bookData) => {
+            const transformedData = {
+                title: bookData.title,
+                author: bookData.authors ? bookData.authors[0] : '',
+                image_url: bookData.imageLinks ? bookData.imageLinks.thumbnail : '',
+                rating: bookData.averageRating ? bookData.averageRating : null,
+                ISBN10: bookData.industryIdentifiers ? bookData.industryIdentifiers[0].identifier : ''
+            };
+            responseArray.push(transformedData);
+        });
+    });
+    // Don't forget to return Promise.all() to wait for all promises to resolve
+    return Promise.all(promises);
+  })
+  .then(() => res.status(200).send(responseArray))
+  .catch((error) => console.error('Error:', error));
+});
 
 
 
