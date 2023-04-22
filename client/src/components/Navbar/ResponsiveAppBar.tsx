@@ -134,6 +134,12 @@ function ResponsiveAppBar() {
                     Books Near Me</Link>
                 </Typography>
               </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <Link to="/profile">
+                    Profile</Link>
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <AutoStoriesIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
