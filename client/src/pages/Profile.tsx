@@ -3,10 +3,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
-import Carousel from 'react-material-ui-carousel'
-
-
-
+import Navbar from '../components/Navbar/Navbar';
+import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
 interface Book {
   books: {
     id: string;
@@ -18,47 +16,31 @@ interface Book {
   wishlist: boolean;
   owned: boolean;
 }
+
+// interface Books {
+//   books: {
+//     id: string;
+//     title: string;
+//     author: string;
+//     image: string;
+//   }
+// }
+
 const Profile = () => {
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-      padding: theme.spacing(2),
-    },
-    card: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      height: '100%',
-      borderRadius: 0,
-    },
-    media: {
-      height: '100%',
-      backgroundSize: 'contain',
-    },
-    title: {
-      textAlign: 'center',
-    },
-    form: {
-      display: 'flex',
-      alignItems: 'center',
-      marginBottom: theme.spacing(2),
-    },
-    input: {
-      marginRight: theme.spacing(2),
-      flex: 1,
-    },
-    button: {
-      marginLeft: theme.spacing(2),
-    },
-  }));
-  const classes = useStyles();
+
+
+  //const classes = useStyles();
   const [userBooks, setUserBooks] = useState<Book[]>([]);
   const [wishlist, setWishlist] = useState<boolean>(false);
   const [owned, setOwned] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
+  const [books, setBooks] = useState<any[]>([]);
+  const userString = localStorage.getItem('user');
+  const user = userString ? JSON.parse(userString) : null;
+
   const getUserBooks = async () => {
     try {
-      const res = await axios.get(`/books/8f7e1c02-9aa4-4252-9494-e27bdd0cbba6`);
+      const res = await axios.get(`/books/${user.id}`);
       setUserBooks(res.data);
     } catch (err) {
       console.error(err);
@@ -81,11 +63,11 @@ const Profile = () => {
       setWishlist(false);
     }
   };
-  // console.log(userBooks[0]);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await axios.post(`/books/8f7e1c02-9aa4-4252-9494-e27bdd0cbba6`,
+      await axios.post(`/books/${user.id}`,
         {
           title,
           wishlist,
@@ -101,72 +83,53 @@ const Profile = () => {
     }
   };
 
+  const ownedBooks = userBooks.filter(book => book.owned).map((book) => book.books);
+  const ownedClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setBooks(ownedBooks)
+  }
+
+  const wishlistBooks = userBooks.filter(book => book.wishlist).map((book) => book.books);
+  const wishClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setBooks(wishlistBooks)
+  }
+  console.log(userBooks)
   useEffect(() => {
     getUserBooks();
   }, [])
 
-  const ownedBooks = userBooks.filter(book => book.owned);
-  const wishlistBooks = userBooks.filter(book => book.wishlist);
-  //
   return (
-    <div className={classes.root}>
-      <Typography variant="h3" className={classes.title}>Profile</Typography>
-      <Typography variant="h4" className={classes.title}>My Books</Typography>
-      <form onSubmit={handleSubmit} className={classes.form}>
+    <div >
+      <Navbar children={undefined} />
+      <Typography variant="h3" >Profile</Typography>
+      <Typography variant="h4" >My Books</Typography>
+      <form onSubmit={handleSubmit} >
         <label>
           Book Title:
-          <input type="text" className={classes.input} value={title} onChange={handleTitleChange} />
+          <input type="text" value={title} onChange={handleTitleChange} />
         </label>
         <label>
-          <input type="checkbox" checked={wishlist} onChange={handleWishlistChange} />
+          <Checkbox checked={wishlist} onChange={handleWishlistChange} />
           Add to Wishlist
         </label>
         <label>
-          <input type="checkbox" checked={owned} onChange={handleOwnedChange} />
+          <Checkbox checked={owned} onChange={handleOwnedChange} />
           Add to Owned Books
         </label>
-        <button className={classes.button} type="submit">Add Book</button>
+        <button type="submit">Add Book</button>
       </form>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={4}>
-          <Typography variant="h5">Owned Books</Typography>
-          {ownedBooks.length > 0 ?
-            <Carousel>
-              {ownedBooks.map((book) => (
-                <div key={book.id}>
-                  <Card className={classes.card}>
-                    <CardMedia component="img" className={classes.media} image={book.books.image} />
-                    <CardContent>
-                      <Typography variant="h5">{book.books.title}</Typography>
-                      <Typography variant="body1">{book.books.author}</Typography>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </Carousel> :
-            <Typography variant="body1">No owned books</Typography>
-          }
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <Typography variant="h5">Wishlist</Typography>
-          {wishlistBooks.length > 0 ?
-            <Carousel>
-              {wishlistBooks.map((book) => (
-                <div key={book.id}>
-                  <Card className={classes.card}>
-                    <CardMedia component="img" className={classes.media} image={book.books.image} />
-                    <CardContent>
-                      <Typography variant="h5">{book.books.title}</Typography>
-                      <Typography variant="body1">{book.books.author}</Typography>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </Carousel> :
-            <Typography variant="body1">No wishlist books</Typography>
-          }
-        </Grid>
-      </Grid>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
+        <div style={{ display: 'flex', justifyContent: 'center', background: 'rgb(32, 32, 35)' }}>
+          <button style={{ margin: '10px' }} onClick={wishClicked}>WishList</button>
+          <button style={{ margin: '10px' }} onClick={ownedClicked}>Owned</button>
+        </div>
+        <Typography variant="h5">My books</Typography>
+        {books.length > 0 ?
+          <BookDisplay books={books} id={user.id} /> :
+          <Typography variant="body1">No books</Typography>
+        }
+      </div>
+
+
     </div>
   );
 

@@ -3,25 +3,29 @@ import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import morgan from 'morgan';
+import { OAuth2Client } from "google-auth-library";
+import jwt from "jsonwebtoken";
+import { PrismaClient } from '@prisma/client';
+
+//Routes
 import UserBooks from './routes/userbooks';
  import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
-import Recommendations from './routes/recomendations';
-import morgan from 'morgan';
+import Recommendations from './routes/recommendations';
+import Review from './routes/review';
 import Wishlist from './routes/wishlist';
 
-import { OAuth2Client } from "google-auth-library";
-import jwt from "jsonwebtoken";
-import { PrismaClient } from '@prisma/client';
 
 dotenv.config();
-
 const app = express();
 const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 const PORT = 8080;
 const prisma = new PrismaClient();
+
+
 //Middleware
 app.use(express.static(CLIENT_PATH));
 app.use(cors())
@@ -97,14 +101,15 @@ app.post("/signup", async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json({
-      message: "An error occurred. Registration failed.",
-    });
+    console.error(error),
+      res.status(500).json({
+        message: "An error occurred. Registration failed.",
+      });
   }
 });
 
 app.post("/login", async (req, res) => {
-console.log(req.body);
+  console.log(req.body);
   try {
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
@@ -161,6 +166,7 @@ console.log(req.body);
  app.use("/location", LocationRoute);
 app.use("/recommendations", Recommendations);
 app.use("/books", UserBooks);
+app.use('/review', Review);
 // app.use("/clubs", Clubs);
 app.use("/api/clubs", Clubs);
 app.use('/api/create-club', CreateClub);

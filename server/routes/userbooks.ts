@@ -35,8 +35,8 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
     if (existingBook) {
       userBook = await prisma.userBooks.findUnique({
         where: {
-          bookId_userId: {
-            bookId: existingBook.id,
+          userId_bookId: {
+            booksId: existingBook.id,
             userId: id,
           },
         },

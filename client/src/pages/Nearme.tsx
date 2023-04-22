@@ -12,6 +12,7 @@ interface Book {
     image: string;
   }
   id: string;
+  userId: string;
   wishlist: boolean;
   owned: boolean;
 }
@@ -30,6 +31,7 @@ const [longitude, setLongitude] = useState(0);
 const [latitude, setLatitude] = useState(0);
 const [radius, setRadius] = useState(0);
 const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
+const [displayBooks, setDisplayBooks] = useState<any>([])
 
 
 const  getBooksNearMe = async () => {
@@ -37,10 +39,14 @@ const  getBooksNearMe = async () => {
     const res = await axios.get('/location/locations', { params: {lon: longitude, lat: latitude, radius: radius } });
     console.log(res);
     setBooksNearBy(res.data.userBooks);
+    const ownedBooks = booksNearBy.filter(book => book.owned).map((book) => book.books);
+    setDisplayBooks(ownedBooks);
   } catch (err) {
     console.error(err);
   }
 }
+
+console.log(displayBooks);
 
 const onPlaceSelect = (value: any) => {
   console.log(value);
@@ -53,26 +59,27 @@ console.log(latitude, '2');
 console.log(radius, '3');
 
 
-const onSuggectionChange = (value: any) => {
-  console.log(value);
-}
+  const onSuggectionChange = (value: any) => {
+    console.log(value);
+  }
 
-const handleRadiusChange = (e:any) => {
-  const newRadius = e.target.value
-  setRadius(newRadius);
-};
+  const handleRadiusChange = (e: any) => {
+    const newRadius = e.target.value
+    setRadius(newRadius);
+  };
 
-//const ownedBooks = booksNearBy.filter(book => book.owned).map((book) => book.books);
+;
+//console.log(ownedBooks, '69');
 
-  return (
-    <div>
+return (
+   <div>
       <h1>Near Me</h1>
       <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
-      <GeoapifyGeocoderAutocomplete
-        placeholder="Enter address here"
-        placeSelect={onPlaceSelect}
-        suggestionsChange={onSuggectionChange}
-      />
+        <GeoapifyGeocoderAutocomplete
+          placeholder="Enter address here"
+          placeSelect={onPlaceSelect}
+          suggestionsChange={onSuggectionChange}
+        />
     </GeoapifyContext>
     <input
       type="number"
@@ -81,10 +88,11 @@ const handleRadiusChange = (e:any) => {
       placeholder="Set Range"
     />
     <button type="button" onClick={getBooksNearMe}>Search for Books</button>
-    <BookDisplay books={books} id={user.id} />
+    <BookDisplay books={displayBooks} id={displayBooks.userId} />
     </div>
   )
 
-}
 
+
+}
 export default Locations;
