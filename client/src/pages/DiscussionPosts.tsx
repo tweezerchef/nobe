@@ -19,7 +19,6 @@ function DiscussionPosts() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [newPost, setNewPost] = useState("");
   // const user = JSON.parse(localStorage.getItem("user") || "{}");
-  // console.log('POSTS: ', posts);
 
   useEffect(() => {
     async function getPosts() {

@@ -67,7 +67,6 @@ function ClubDiscussion() {
         throw new Error("No user found");
       }
       const parsed = JSON.parse(user)
-      console.log(parsed);
       const response = await axios.post(`/api/clubs/${id}/discussion`, {
         title: newDiscussionTitle,
         userId: parsed.id,

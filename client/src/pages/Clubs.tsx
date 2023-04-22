@@ -41,7 +41,6 @@ function Clubs() {
 
     try {
       const response = await axios.post('/api/create-club', { name: newClubName });
-      console.log(response.data);
 
       setClubs([...clubs, response.data]); // add the new club to the state variable
 
