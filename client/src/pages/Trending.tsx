@@ -39,7 +39,7 @@ function Trending() {
     fetchTrending(event.target.value)
   }
 
-  const addToWishlist = (isbn: string) => {
+  const addToWishlist = async (isbn: string, title: string, author: string) => {
 
     const user = localStorage.getItem("user");
 
@@ -49,14 +49,12 @@ function Trending() {
     const parsed = JSON.parse(user)
     const email = parsed.email
 
-
-    axios.post('/api/wishlist', { isbn: isbn, email: email })
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    try {
+      await axios.post('/api/wishlist', { isbn: isbn, title: title, author: author, email: email });
+      console.log("Added to wishlist");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -116,8 +114,9 @@ function Trending() {
                     bottom: 0,
                     transform: 'translateY(50%)',
                   }}
+                  onClick={() => addToWishlist(book.primary_isbn10, book.title, book.author)} 
                 >
-                  <BookmarkAddIcon onClick={() => addToWishlist(book.primary_isbn10)} />
+                  <BookmarkAddIcon />
                 </IconButton>
               </CardOverflow>
               <Typography level="h2" sx={{ fontSize: 'md', mt: 2 }}>
