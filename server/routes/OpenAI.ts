@@ -21,7 +21,7 @@ OpenAI.get('/', (req, res) => {
   })
     .then((response: any) => {
       //console.log(response.data);
-      //console.log(response.data.choices[0].message);
+      // console.log(response.data.choices[0].message);
       res.send(response.data.choices[0].message).status(200);
     })
     .catch((error: any) => {
