@@ -89,7 +89,6 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
 });
 
 
-
 UserBooks.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { id } = req.params;
@@ -108,5 +107,25 @@ UserBooks.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
     res.status(500).json({ error: 'Something went wrong' })
   }
 });
+
+UserBooks.delete('/:id', async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const bookId = req.body.bookId;
+    const userId = req.params.id;
+
+    await prisma.userBooks.deleteMany({
+      where: {
+        userId: userId,
+        booksId: bookId
+      }
+    });
+
+    res.status(200).json({ message: 'Book removed.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error removing book.' });
+  }
+});
+
 
 export default UserBooks;
