@@ -13,7 +13,7 @@ import DeleteButton from '../DeleteButton/DeleteButton';
 
 
 const BookDisplay = (props: any) => {
-    const { books: array, id, getUserBooks } = props;
+    const { books: array, id, getUserBooks, setBooks } = props;
     return (
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
             {array.length === 0 ? (
@@ -72,7 +72,7 @@ const BookDisplay = (props: any) => {
                             <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
                             </Typography>
                             <UserStarRating book={book} id={id} />
-                            <DeleteButton book={book} id={id} getUserBooks={getUserBooks} />
+                            <DeleteButton book={book} id={id} getUserBooks={getUserBooks} setBooks={setBooks} />
                         </CardOverflow>
                     </Card>
                 ))

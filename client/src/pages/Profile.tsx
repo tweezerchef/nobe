@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
-import Navbar from '../components/Navbar/Navbar';
+import ResponsiveAppBar from '../components/Navbar/ResponsiveAppBar';
 import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
 interface Book {
   books: {
@@ -99,7 +99,7 @@ const Profile = () => {
 
   return (
     <div >
-      <Navbar children={undefined} />
+      <ResponsiveAppBar />
       <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
         <Typography variant="h4">{`${user.firstName}'s`} Books</Typography>
       </div>
@@ -153,7 +153,7 @@ const Profile = () => {
           <Typography variant="h5">Books</Typography>
         </div>
         {books.length > 0 ?
-          <BookDisplay books={books} id={user.id} getUserBooks={getUserBooks} /> :
+          <BookDisplay books={books} id={user.id} getUserBooks={getUserBooks} setBooks={setBooks} /> :
           <Typography variant="body1">No books</Typography>
         }
       </div>
