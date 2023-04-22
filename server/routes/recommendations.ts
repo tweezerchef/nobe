@@ -15,7 +15,11 @@ async function findRandomRows(limit: number) {
 
 async function getGoogleBooksData(title: string) {
   const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?key=&q=intitle:${title}`);
-   return response.data.items[0].volumeInfo;
+  if (response.data.items && response.data.items.length > 0) {
+    return response.data.items[0].volumeInfo;
+  } else {
+    throw new Error('No items found in Google Books response');
+  }
 }
 
 
@@ -53,7 +57,7 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
   },[]).join(', ')
   // console.log(titles);
   // const titles = 'Neuromancer, The Great Gatsby, The Cartel, The Unbearable Lightness of Being, Silo, Dune, Kurt Vonegut, Do Androids Dream of Electric Sheep'
-  const content:string = `Please return 20 book recommendations for somebody that likes these books ${titles} please return it with only the title of the recommendation separated by a commas without numbers, please try to create unique suggestions ones that a normal recommendation algo wouldn't, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books`;
+  const content:string = `Please return 20 book recommendations for somebody that likes these books ${titles} please return it with only the title of the recommendation separated by a commas without numbers, please try to create unique suggestions ones that a normal recommendation algo wouldn't, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books, absolutely no duplicates`;
 
   axios
   .get(`http://localhost:8080/openai?content=${content}`)
