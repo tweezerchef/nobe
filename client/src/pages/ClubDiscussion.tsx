@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button } from "@material-ui/core";
+// import { Button } from "@material-ui/core";
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import DiscussionPosts from "./DiscussionPosts";
 import axios from "axios";
@@ -53,8 +55,8 @@ function ClubDiscussion() {
       const email = parsed.email
 
       const { data: club } = await axios.get(`/api/clubs/${id}`);
-      const memberEmails = club.members.map((member: { email: any; }) => member.email);
-      if (memberEmails.includes(email)) {
+      const memberEmails = club.members?.map((member: { email: any; }) => member.email);
+      if (memberEmails && memberEmails.includes(email)) {
         setHasJoined(true);
         return;
       }
@@ -92,21 +94,23 @@ function ClubDiscussion() {
     <div>
       <ResponsiveAppBar></ResponsiveAppBar>
       <h1>{clubName}</h1>
-      <Button
-        variant="contained"
-        color="primary"
-        disabled={hasJoined}
-        onClick={handleJoinClub}
-      >
-        {hasJoined ? "Joined" : "Join"}
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setShowForm(!showForm)}
-      >
-        Start new discussion
-      </Button>
+      <Stack spacing={2} direction="row">
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={hasJoined}
+          onClick={handleJoinClub}
+        >
+          {hasJoined ? "Joined" : "Join"}
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setShowForm(!showForm)}
+        >
+          Start new discussion
+        </Button>
+      </Stack>
       {showForm && (
         <form onSubmit={handleSubmit}>
           <label htmlFor="title">Title: </label>

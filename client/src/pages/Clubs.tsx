@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
+// import { Button } from "@material-ui/core";
 import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import { makeStyles } from '@material-ui/core/styles';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import axios from "axios";
 
 interface Club {
@@ -57,9 +59,11 @@ function Clubs() {
     <div>
       <ResponsiveAppBar></ResponsiveAppBar>
       <h1>Book Clubs</h1>
-      <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
-        Create a new club
-      </Button>
+      <Stack spacing={2} direction="row">
+        <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
+          Create a new club
+        </Button>
+      </Stack>
 
       {showForm && (
         <form onSubmit={handleSubmit}>
