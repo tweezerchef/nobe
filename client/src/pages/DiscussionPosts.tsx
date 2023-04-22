@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import DeleteIcon from '@mui/icons-material/Delete';
 import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import axios from "axios";
 import { useParams } from "react-router";
@@ -72,7 +75,12 @@ function DiscussionPosts() {
           {/* <p>userId: {post.userId}</p> */}
           <p>{post.user.firstName} {format(new Date(post.createdAt), "h:mm a MMMM d, yyyy")}</p>
           {post.userId === JSON.parse(localStorage.getItem("user") || "{}").id && (
-            <button onClick={() => handleDelete(post.id)}>Delete</button>
+            <Stack direction="row" spacing={1}>
+              <IconButton aria-label="delete">
+                <DeleteIcon onClick={() => handleDelete(post.id)} />
+              </IconButton>
+              {/* <button onClick={() => handleDelete(post.id)}>Delete</button> */}
+            </Stack>
           )}
         </div>
       ))}

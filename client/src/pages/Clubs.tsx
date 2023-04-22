@@ -2,9 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import { Button } from "@material-ui/core";
 import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+} from "@material-ui/core";
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import axios from "axios";
 
 interface Club {
@@ -68,24 +73,32 @@ function Clubs() {
       {showForm && (
         <form onSubmit={handleSubmit}>
           <label htmlFor="name">Club Name: </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
+          <TextField
+            label="Club Name"
+            variant="outlined"
             value={newClubName}
             onChange={handleInputChange}
           />
           <button type="submit">Create Club</button>
         </form>
       )}
-
-      <ul>
+      <div>
         {clubs.map((club) => (
-          <li key={club.id}>
-            <Link to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}>{club.name}</Link>
-          </li>
+          <Card key={club.id} >
+            <CardContent>
+              <Typography variant="h5" component="h2" style={{ textAlign: 'center' }}>
+                <Link
+                  to={`/clubs/${club.id}?name=${encodeURIComponent(
+                    club.name
+                  )}`}
+                >
+                  {club.name}
+                </Link>
+              </Typography>
+            </CardContent>
+          </Card>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }

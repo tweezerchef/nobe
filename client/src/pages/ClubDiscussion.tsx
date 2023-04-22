@@ -4,7 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
-import DiscussionPosts from "./DiscussionPosts";
 import axios from "axios";
 
 interface DiscussionPost {
@@ -55,7 +54,8 @@ function ClubDiscussion() {
       const email = parsed.email
 
       const { data: club } = await axios.get(`/api/clubs/${id}`);
-      const memberEmails = club.members?.map((member: { email: any; }) => member.email);
+      const memberEmails = club.members?.map((member: { email: string; }) => member.email);
+
       if (memberEmails && memberEmails.includes(email)) {
         setHasJoined(true);
         return;
@@ -129,12 +129,6 @@ function ClubDiscussion() {
           <ul key={discussion.title}>
             <Link to={`/clubs/${id}/discussion/${discussion.id}`}>{discussion.title}</Link>
           </ul>
-          {/* <h2>{discussion.title}</h2>
-          {discussion.Posts?.map((post) => (
-            <div key={post.id}>
-              <p>{post.body}</p>
-            </div>
-          ))} */}
         </div>
       ))}
     </div>
