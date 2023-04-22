@@ -55,13 +55,13 @@ function Clubs() {
   return (
     <div>
       <h1>Book Clubs</h1>
-      <Button variant="contained" color="primary" onClick={() => setShowForm(true)}>
+      <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
         Create a new club
       </Button>
 
       {showForm && (
         <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Name: </label>
+          <label htmlFor="name">Club Name: </label>
           <input
             type="text"
             id="name"
