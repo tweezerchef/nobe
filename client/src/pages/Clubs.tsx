@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import { ClubHeader } from './style'
+import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
+import { Button, Card, CardContent, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
+import Stack from '@mui/material/Stack';
 import axios from "axios";
 
 interface Club {
@@ -53,32 +56,46 @@ function Clubs() {
 
   return (
     <div>
-      <h1>Book Clubs</h1>
-      <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
-        Create a new club
-      </Button>
-
+      <ResponsiveAppBar />
+      <ClubHeader>Book Clubs</ClubHeader>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
+          Create a new club
+        </Button>
+      </div>
       {showForm && (
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Club Name: </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={newClubName}
-            onChange={handleInputChange}
-          />
-          <button type="submit">Create Club</button>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+          <FormControl>
+            <FormLabel htmlFor="name">Club Name: </FormLabel>
+            <TextField
+              label="Club Name"
+              variant="outlined"
+              value={newClubName}
+              onChange={handleInputChange}
+            />
+            <Button type="submit" variant="contained">
+              Create Club
+            </Button>
+          </FormControl>
         </form>
       )}
-
-      <ul>
+      <div>
         {clubs.map((club) => (
-          <li key={club.id}>
-            <Link to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}>{club.name}</Link>
-          </li>
+          <Card key={club.id} >
+            <CardContent>
+              <Typography variant="h5" component="h2" style={{ textAlign: 'center' }}>
+                <Link
+                  to={`/clubs/${club.id}?name=${encodeURIComponent(
+                    club.name
+                  )}`}
+                >
+                  {club.name}
+                </Link>
+              </Typography>
+            </CardContent>
+          </Card>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }

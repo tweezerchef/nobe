@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button } from "@material-ui/core";
-import DiscussionPosts from "./DiscussionPosts";
+// import { Button } from "@material-ui/core";
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import axios from "axios";
 
 interface DiscussionPost {
@@ -50,6 +52,15 @@ function ClubDiscussion() {
       }
       const parsed = JSON.parse(user)
       const email = parsed.email
+
+      const { data: club } = await axios.get(`/api/clubs/${id}`);
+      const memberEmails = club.members?.map((member: { email: string; }) => member.email);
+
+      if (memberEmails && memberEmails.includes(email)) {
+        setHasJoined(true);
+        return;
+      }
+
       await axios.post(`/api/clubs/${id}/join`, { email });
       setHasJoined(true);
     } catch (error) {
@@ -81,22 +92,25 @@ function ClubDiscussion() {
 
   return (
     <div>
-      <h1>{clubName}</h1>
-      <Button
-        variant="contained"
-        color="primary"
-        disabled={hasJoined}
-        onClick={handleJoinClub}
-      >
-        {hasJoined ? "Joined" : "Join"}
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setShowForm(!showForm)}
-      >
-        Start new discussion
-      </Button>
+      <ResponsiveAppBar></ResponsiveAppBar>
+      <h1 style={{ textAlign: 'center' }}>{clubName}</h1>
+      <Stack spacing={2} direction="row">
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={hasJoined}
+          onClick={handleJoinClub}
+        >
+          {hasJoined ? "Joined" : "Join"}
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setShowForm(!showForm)}
+        >
+          Start new discussion
+        </Button>
+      </Stack>
       {showForm && (
         <form onSubmit={handleSubmit}>
           <label htmlFor="title">Title: </label>
@@ -115,12 +129,6 @@ function ClubDiscussion() {
           <ul key={discussion.title}>
             <Link to={`/clubs/${id}/discussion/${discussion.id}`}>{discussion.title}</Link>
           </ul>
-          {/* <h2>{discussion.title}</h2>
-          {discussion.Posts?.map((post) => (
-            <div key={post.id}>
-              <p>{post.body}</p>
-            </div>
-          ))} */}
         </div>
       ))}
     </div>
