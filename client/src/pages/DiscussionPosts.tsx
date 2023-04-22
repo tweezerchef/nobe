@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
+import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import axios from "axios";
 import { useParams } from "react-router";
 
@@ -63,6 +64,7 @@ function DiscussionPosts() {
 
   return (
     <div>
+      <ResponsiveAppBar></ResponsiveAppBar>
       <h1>Discussion Posts</h1>
       {posts?.map((post) => (
         <div key={post.id}>

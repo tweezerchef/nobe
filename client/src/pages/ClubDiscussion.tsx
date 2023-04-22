@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button } from "@material-ui/core";
+import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import DiscussionPosts from "./DiscussionPosts";
 import axios from "axios";
 
@@ -89,6 +90,7 @@ function ClubDiscussion() {
 
   return (
     <div>
+      <ResponsiveAppBar></ResponsiveAppBar>
       <h1>{clubName}</h1>
       <Button
         variant="contained"

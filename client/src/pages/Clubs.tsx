@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
+import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import axios from "axios";
 
 interface Club {
@@ -53,6 +54,7 @@ function Clubs() {
 
   return (
     <div>
+      <ResponsiveAppBar></ResponsiveAppBar>
       <h1>Book Clubs</h1>
       <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
         Create a new club
