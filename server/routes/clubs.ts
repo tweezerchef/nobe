@@ -48,6 +48,30 @@ ClubsRoute.get("/:id/posts", async (req: Request, res: Response) => {
   }
 });
 
+ClubsRoute.post('/:id/posts', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { userId, body } = req.body;
+
+  try {
+    const post = await prisma.posts.create({
+      data: {
+        body,
+        user: {
+          connect: { id: userId },
+        },
+        discussion: {
+          connect: { id },
+        },
+      },
+    });
+
+    res.json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 ClubsRoute.post('/:id/discussion', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { userId, title } = req.body;

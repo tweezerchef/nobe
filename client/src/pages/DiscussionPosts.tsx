@@ -12,6 +12,7 @@ interface Post {
 function DiscussionPosts() {
   const { id } = useParams<{ id: string }>();
   const [posts, setPosts] = useState<Post[]>([]);
+  const [newPost, setNewPost] = useState("");
   console.log(posts);
 
   useEffect(() => {
@@ -28,6 +29,23 @@ function DiscussionPosts() {
     }
   }, [id]);
 
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const { data } = await axios.post(`/api/clubs/${id}/posts`, {
+        userId: user.id,
+        body: newPost,
+      });
+      setPosts([...posts, data]);
+      setNewPost("");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
   return (
     <div>
       <h1>Discussion Posts</h1>
@@ -37,6 +55,14 @@ function DiscussionPosts() {
           {/* <p>userId: {post.userId}</p> */}
         </div>
       ))}
+      <form onSubmit={handleSubmit}>
+        <textarea
+          value={newPost}
+          onChange={(event) => setNewPost(event.target.value)}
+          placeholder="Write a new post"
+        />
+        <button type="submit">Post</button>
+      </form>
     </div>
   );
 }
