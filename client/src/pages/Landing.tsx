@@ -12,6 +12,9 @@ function Landing() {
     const handleLogin = () => {
         setIsLoggedIn(true);
     };
+    // (function () {
+    //     localStorage.clear();
+    // })();
     return (
         <>
             <Navbar children={undefined} />
