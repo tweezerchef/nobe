@@ -1,6 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar/Navbar';
-import Thumbs from '../components/Thumbs/Thumbs';
 
 function Home() {
     const exists = localStorage.getItem('user')
@@ -16,9 +16,14 @@ function Home() {
         return (
             <>
                 <Navbar children={undefined} />
-
+                <Link to="/user-reco-input">
+                    <button>Start Building Your Recommendations</button>
+                </Link>
+                <Link to="/recommended">
+                    <button>Recommendations</button>
+                </Link>
                 <h1>Home</h1>
-                <Thumbs />
+
             </>
         );
     }

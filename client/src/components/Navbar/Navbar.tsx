@@ -14,6 +14,7 @@ function Navbar({ children }: NavProps) {
     };
     return (
         <StyledNavbar>
+            <NavItemLink to='/home'>Home</NavItemLink>
             <NavItemLink to='/login'>Login</NavItemLink>
             <NavItemLink to='/signup'>Sign Up</NavItemLink>
             <button
