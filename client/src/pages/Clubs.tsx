@@ -41,7 +41,6 @@ function Clubs() {
 
     try {
       const response = await axios.post('/api/create-club', { name: newClubName });
-      console.log(response.data);
 
       setClubs([...clubs, response.data]); // add the new club to the state variable
 
@@ -55,13 +54,13 @@ function Clubs() {
   return (
     <div>
       <h1>Book Clubs</h1>
-      <Button variant="contained" color="primary" onClick={() => setShowForm(true)}>
+      <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
         Create a new club
       </Button>
 
       {showForm && (
         <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Name: </label>
+          <label htmlFor="name">Club Name: </label>
           <input
             type="text"
             id="name"

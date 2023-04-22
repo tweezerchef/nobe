@@ -40,6 +40,13 @@ ClubsRoute.get("/:id/posts", async (req: Request, res: Response) => {
       where: {
         discussionsId: id,
       },
+      include: {
+        user: {
+          select: {
+            firstName: true
+          }
+        }
+      }
     });
     res.json(posts);
   } catch (error) {
@@ -47,6 +54,49 @@ ClubsRoute.get("/:id/posts", async (req: Request, res: Response) => {
     res.status(500).send("Error retrieving posts for discussion");
   }
 });
+
+ClubsRoute.post('/:id/posts', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { userId, body } = req.body;
+  try {
+    const post = await prisma.posts.create({
+      data: {
+        body,
+        user: {
+          connect: { id: userId },
+        },
+        discussion: {
+          connect: { id },
+        },
+      },
+      include: {
+        user: {
+          select: {
+            firstName: true
+          }
+        }
+      }
+    });
+    res.json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+ClubsRoute.delete('/:id/posts/:postId', async (req: Request, res: Response) => {
+  const { postId } = req.params;
+  try {
+    const post = await prisma.posts.delete({
+      where: { id: postId },
+    });
+    res.json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 
 ClubsRoute.post('/:id/discussion', async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -87,7 +137,7 @@ ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
       });
       console.log(`Added user ${user.id} to club ${clubMember.clubId}`);
     } else {
-      console.log(`User with email ${email} not found`);
+      console.error(`User with email ${email} not found`);
     }
   }
   addUserToClub(email, id)
