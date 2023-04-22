@@ -70,17 +70,37 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
     },
   });
 
-  const titles = await topRatedBooks.reduce((acc: string[] , book: any) => {
+  const lowRatedBooks = await prisma.userBooks.findMany({
+    where: {
+      userId: id,
+      rating: {
+        lte: 2,
+      },
+    },
+    orderBy: {
+      rating: 'asc',
+    },
+    take: 20,
+    include: {
+      books: true,
+    },
+  });
+
+ const lowTitles = await lowRatedBooks.reduce((acc: string[] , book: any) => {
+    acc.push(book.books.title);
+    return acc;
+  },[]).join(', ')
+  const topTitles = await topRatedBooks.reduce((acc: string[] , book: any) => {
     acc.push(book.books.title);
     return acc;
   },[]).join(', ')
 
-  const content:string = `Please return 20 book recommendations for somebody that likes these books ${titles} please return it with only the title of the recommendation separated by a commas without numbers, please try to create unique suggestions ones that a normal recommendation algo wouldn't, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books, absolutely no duplicates`;
+  const content:string = `Please return 20 book titles, separated by commas, for somebody that likes these books ${topTitles} and dislikes these ${lowTitles} please try to create unique suggestions ones, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books, with none of the suggested titles being duplicated`;
 
   axios
   .get(`http://localhost:8080/openai?content=${content}`)
   .then((response) => response.data.content.split(','))
-  .then((data) => {
+  .then((data) => {console.log(data)
     const promises = data.map((book: any) => {
         return getGoogleBooksData(book).then((bookData) => {
             const transformedData = {
