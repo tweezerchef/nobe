@@ -67,9 +67,9 @@ function DiscussionPosts() {
       <h1>Discussion Posts</h1>
       {posts?.map((post) => (
         <div key={post.id}>
-          <p>{post.user.firstName}: {post.body}</p>
+          <h3>{post.body}</h3>
           {/* <p>userId: {post.userId}</p> */}
-          <p>{format(new Date(post.createdAt), "h:mm a MMMM d, yyyy")}</p>
+          <p>User: {post.user.firstName} At: {format(new Date(post.createdAt), "h:mm a MMMM d, yyyy")}</p>
           {post.userId === JSON.parse(localStorage.getItem("user") || "{}").id && (
             <button onClick={() => handleDelete(post.id)}>Delete</button>
           )}
