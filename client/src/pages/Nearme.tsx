@@ -4,6 +4,7 @@ import axios from "axios";
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete'
 import BookDisplay from "../components/MattsBookDisplay/BookDisplay";
 import Navbar from "../components/Navbar/Navbar";
+import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 
 interface Book {
   books: {
@@ -82,7 +83,7 @@ const onPlaceSelect = (value: any) => {
 
 return (
    <div>
-    <Navbar children={undefined} />
+    < ResponsiveAppBar />
       <h1>Near Me</h1>
       <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
         <GeoapifyGeocoderAutocomplete
