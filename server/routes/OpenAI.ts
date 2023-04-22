@@ -20,9 +20,9 @@ return OpenApi.createChatCompletion({
     messages: [{role: 'user', content: req.query.content}],
   })
     .then((response: any)=>{
-      console.log(response);
-        //console.log(response.data.choices[0].message);
-      //res.send(response.data.choices[0].message).status(200);
+      //console.log(response.data);
+    //console.log(response.data.choices[0].message);
+    res.send(response.data.choices[0].message).status(200);
     })
     .catch((error: any)=>{
       res.status(500);

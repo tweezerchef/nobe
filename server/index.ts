@@ -173,7 +173,7 @@ app.use("/api/clubs", Clubs);
 app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
 app.use("/api/wishlist", Wishlist);
-app.use("/api/openai", OpenAI);
+app.use("/openai", OpenAI);
 
 
 
