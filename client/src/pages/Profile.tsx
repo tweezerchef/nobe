@@ -4,7 +4,6 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
 import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
-import ResponsiveAppBar from '../components/Navbar/ResponsiveAppBar';
 
 interface Book {
   books: {
@@ -107,7 +106,6 @@ const Profile = () => {
 
   return (
     <div >
-      <ResponsiveAppBar />
       <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
         <Typography variant="h4">{`${user.firstName}'s`} Books</Typography>
       </div>
