@@ -10,7 +10,7 @@ const configuration = new Configuration({
 
 const OpenAI = express.Router();
 const OpenApi = new OpenAIApi(configuration);
-const {OPENAI_API_KEY} = process.env;
+
 
 const prisma = new PrismaClient();
 
@@ -19,14 +19,14 @@ return OpenApi.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages: [{role: 'user', content: req.query.content}],
   })
-    .then((response)=>{
-      console.log(response);
-        //console.log(response.data.choices[0].message);
-      //res.send(response.data.choices[0].message).status(200);
+    .then((response: any)=>{
+      //console.log(response.data);
+    //console.log(response.data.choices[0].message);
+    res.send(response.data.choices[0].message).status(200);
     })
-    .catch((err)=>{
+    .catch((error: any)=>{
       res.status(500);
-      console.error('didnt work', err);
+      console.error('didnt work', error);
     });
 });
 
