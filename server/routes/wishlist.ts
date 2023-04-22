@@ -28,7 +28,7 @@ Wishlist.post('/', async (req, res) => {
     const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn=${isbn}&key=${process.env.GOOGLE_BOOKS}`);
     const bookData = response.data;
 
-    console.log('book data', bookData);
+    //console.log('book data', bookData);
 
     let book = await prisma.books.findUnique({
       where: {
