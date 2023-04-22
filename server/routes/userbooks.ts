@@ -64,7 +64,7 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
           title: bookData.title,
           author: bookData.authors[0],
           description: bookData.description,
-          genre: { create: bookData.categories.map((name: string) => ({ name })) },
+          // genre: { create: bookData.categories.map((name: string) => ({ name })) },
           image: bookData.imageLinks.thumbnail,
           ISBN10: isbn10,
           UserBooks: {

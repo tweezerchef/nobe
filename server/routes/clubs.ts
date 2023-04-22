@@ -33,6 +33,21 @@ ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
   }
 });
 
+ClubsRoute.get("/:id/posts", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const posts = await prisma.posts.findMany({
+      where: {
+        discussionsId: id,
+      },
+    });
+    res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error retrieving posts for discussion");
+  }
+});
+
 ClubsRoute.post('/:id/discussion', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { userId, title } = req.body;

@@ -92,7 +92,8 @@ const Profile = () => {
   const wishClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
     setBooks(wishlistBooks)
   }
-  console.log(userBooks)
+
+
   useEffect(() => {
     getUserBooks();
   }, [])
