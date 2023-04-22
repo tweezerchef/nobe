@@ -15,11 +15,15 @@ async function findRandomRows(limit: number) {
   const randomRows = shuffledRows.slice(0, limit);
   return randomRows;
 }
-function getISBN10(volumeInfo: any) {
+
+function getISBN(volumeInfo: any) {
   const identifiers = volumeInfo.industryIdentifiers;
   if (identifiers) {
     for (const identifierObj of identifiers) {
       if (identifierObj.type === 'ISBN_10') {
+        return identifierObj.identifier;
+      }
+      if (identifierObj.type === 'ISBN_13') {
         return identifierObj.identifier;
       }
     }
@@ -70,8 +74,7 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
     acc.push(book.books.title);
     return acc;
   },[]).join(', ')
-  // console.log(titles);
-  // const titles = 'Neuromancer, The Great Gatsby, The Cartel, The Unbearable Lightness of Being, Silo, Dune, Kurt Vonegut, Do Androids Dream of Electric Sheep'
+
   const content:string = `Please return 20 book recommendations for somebody that likes these books ${titles} please return it with only the title of the recommendation separated by a commas without numbers, please try to create unique suggestions ones that a normal recommendation algo wouldn't, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books, absolutely no duplicates`;
 
   axios
@@ -85,7 +88,7 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
                 author: bookData.authors ? bookData.authors[0] : '',
                 image_url: bookData.imageLinks ? bookData.imageLinks.thumbnail : '',
                 rating: bookData.averageRating ? bookData.averageRating : null,
-                ISBN10: getISBN10(bookData)
+                ISBN10: getISBN(bookData)
             };
             responseArray.push(transformedData);
         });
@@ -98,5 +101,5 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
 });
 
 
-
+export  { getISBN };
 export default Recommendations;
