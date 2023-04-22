@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
-import Navbar from '../components/Navbar/Navbar';
+import ResponsiveAppBar from '../components/Navbar/ResponsiveAppBar';
 import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
 interface Book {
   books: {
@@ -100,7 +100,7 @@ const Profile = () => {
 
   return (
     <div >
-      <Navbar children={undefined} />
+      <ResponsiveAppBar/>
       <Typography variant="h3" >Profile</Typography>
       <Typography variant="h4" >My Books</Typography>
       <form onSubmit={handleSubmit} >

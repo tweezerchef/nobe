@@ -5,7 +5,6 @@ const prisma = new PrismaClient()
 const LocationRoute = express.Router();
 import { Request, Response } from "express";
 
-
 interface AuthenticatedRequest extends Request {
   user: {
     id: string;
@@ -15,7 +14,6 @@ interface AuthenticatedRequest extends Request {
 interface QueryResult {
   id: number;
 }
-
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
   try {
