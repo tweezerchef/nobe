@@ -2,14 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete'
+import BookDisplay from "../components/BookDisplay/BookDisplay";
 
 interface Book {
   books: {
     id: string;
     title: string;
     author: string;
-    description: string;
+    image: string;
   }
+  id: string;
+  userId: string;
+  wishlist: boolean;
+  owned: boolean;
 }
 
 interface Props {
@@ -22,32 +27,36 @@ interface Props {
 
 function Locations() {
 
-  const [longitude, setLongitude] = useState(0);
-  const [latitude, setLatitude] = useState(0);
-  const [radius, setRadius] = useState(0);
-  const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
+const [longitude, setLongitude] = useState(0);
+const [latitude, setLatitude] = useState(0);
+const [radius, setRadius] = useState(0);
+const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
+const [displayBooks, setDisplayBooks] = useState<any>([])
 
-  const getBooksNearMe = async () => {
-    try {
-      const res = await axios.get('/location/locations', { params: { longitude: longitude, latitude: latitude, radius: radius } });
-      console.log(res);
-      // setBooksNearBy(res.data);
-    } catch (err) {
-      console.error(err);
-    }
+
+const  getBooksNearMe = async () => {
+  try {
+    const res = await axios.get('/location/locations', { params: {lon: longitude, lat: latitude, radius: radius } });
+    console.log(res);
+    setBooksNearBy(res.data.userBooks);
+    const ownedBooks = booksNearBy.filter(book => book.owned).map((book) => book.books);
+    setDisplayBooks(ownedBooks);
+  } catch (err) {
+    console.error(err);
   }
+}
 
+console.log(displayBooks);
 
+const onPlaceSelect = (value: any) => {
+  console.log(value);
+  setLatitude(value.properties.lon);
+  setLongitude(value.properties.lat);
+}
 
-  const onPlaceSelect = (value: any) => {
-    console.log(value);
-    // setLatitude(value.properties.lon);
-    // setLongitude(value.properties.lat);
-  }
-
-  // console.log(longitude, '1');
-  // console.log(latitude, '2');
-  console.log(radius, '3');
+console.log(longitude, '1');
+console.log(latitude, '2');
+console.log(radius, '3');
 
 
   const onSuggectionChange = (value: any) => {
@@ -59,10 +68,11 @@ function Locations() {
     setRadius(newRadius);
   };
 
+;
+//console.log(ownedBooks, '69');
 
-
-  return (
-    <div>
+return (
+   <div>
       <h1>Near Me</h1>
       <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
         <GeoapifyGeocoderAutocomplete
@@ -70,17 +80,19 @@ function Locations() {
           placeSelect={onPlaceSelect}
           suggestionsChange={onSuggectionChange}
         />
-      </GeoapifyContext>
-      <input
-        type="number"
-        value={radius}
-        onChange={handleRadiusChange}
-        placeholder="Set Range"
-      />
-      <button type="button" onClick={getBooksNearMe}>Search for Books</button>
+    </GeoapifyContext>
+    <input
+      type="number"
+      value={radius}
+      onChange={handleRadiusChange}
+      placeholder="Set Range"
+    />
+    <button type="button" onClick={getBooksNearMe}>Search for Books</button>
+    <BookDisplay books={displayBooks} id={displayBooks.userId} />
     </div>
   )
 
-}
 
+
+}
 export default Locations;
