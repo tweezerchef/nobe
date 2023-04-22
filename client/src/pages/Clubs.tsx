@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ClubHeader } from './style'
-import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import { Button, Card, CardContent, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
 import Stack from '@mui/material/Stack';
 import axios from "axios";
@@ -56,7 +55,6 @@ function Clubs() {
 
   return (
     <div>
-      <ResponsiveAppBar />
       <ClubHeader>Book Clubs</ClubHeader>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>

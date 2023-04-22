@@ -3,7 +3,6 @@ import { format } from "date-fns";
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import axios from "axios";
 import { useParams } from "react-router";
 
@@ -67,7 +66,6 @@ function DiscussionPosts() {
 
   return (
     <div>
-      <ResponsiveAppBar></ResponsiveAppBar>
       <h1 style={{ textAlign: 'center' }}>Discussion Posts</h1>
       {posts?.map((post) => (
         <div key={post.id}>
