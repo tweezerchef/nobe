@@ -31,7 +31,9 @@ const prisma = new PrismaClient();
 app.use(express.static(CLIENT_PATH));
 //app.use(cors())
 app.use(cors({
-  origin: 'http://ec2-18-119-156-72.us-east-2.compute.amazonaws.com:8080'
+  origin: 'http://ec2-18-119-156-72.us-east-2.compute.amazonaws.com:8080',
+  methods:'GET,POST,PUT,DELETE',
+  credentials: true,
 }));
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
