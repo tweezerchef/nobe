@@ -13,6 +13,7 @@ function DiscussionPosts() {
   const { id } = useParams<{ id: string }>();
   const [posts, setPosts] = useState<Post[]>([]);
   const [newPost, setNewPost] = useState("");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
   console.log(posts);
 
   useEffect(() => {
@@ -43,7 +44,7 @@ function DiscussionPosts() {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
 
   return (
@@ -52,6 +53,7 @@ function DiscussionPosts() {
       {posts?.map((post) => (
         <div key={post.id}>
           <h3>{post.body}</h3>
+
           {/* <p>userId: {post.userId}</p> */}
         </div>
       ))}
