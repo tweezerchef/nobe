@@ -10,13 +10,14 @@ import { PrismaClient } from '@prisma/client';
 
 //Routes
 import UserBooks from './routes/userbooks';
-// import LocationRoute from './routes/booksnearuser';
+ import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
 import Recommendations from './routes/recommendations';
 import Review from './routes/review';
 import Wishlist from './routes/wishlist';
+import OpenAI from './routes/OpenAI';
 
 
 dotenv.config();
@@ -163,7 +164,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// app.use("/location", LocationRoute);
+ app.use("/location", LocationRoute);
 app.use("/recommendations", Recommendations);
 app.use("/books", UserBooks);
 app.use('/review', Review);
@@ -172,6 +173,8 @@ app.use("/api/clubs", Clubs);
 app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
 app.use("/api/wishlist", Wishlist);
+app.use("/api/openai", OpenAI);
+
 
 
 //make sure this is the last route in our server

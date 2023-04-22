@@ -48,7 +48,7 @@ console.log('poop');
     return acc;
   },[])
 
-
+console.log(titles);
 }
 )
 
