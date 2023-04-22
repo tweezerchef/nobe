@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
-import ResponsiveAppBar from '../components/Navbar/ResponsiveAppBar';
 import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
+import ResponsiveAppBar from '../components/Navbar/ResponsiveAppBar';
+
 interface Book {
   books: {
     id: string;
