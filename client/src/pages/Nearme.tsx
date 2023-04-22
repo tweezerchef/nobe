@@ -25,6 +25,10 @@ interface Props {
 }
 
 
+const userString = localStorage.getItem('user');
+const user = userString ? JSON.parse(userString) : null;
+let id: string
+user ? (id = user.id) : (id = '');
 
 
 function Locations() {
@@ -39,10 +43,10 @@ const [displayBooks, setDisplayBooks] = useState<any>([])
 const  getBooksNearMe = async () => {
   try {
     const res = await axios.get('/location/locations', { params: {lon: longitude, lat: latitude, radius: radius } });
-    console.log(res);
+    //console.log(res);
     setBooksNearBy(res.data.userBooks);
   } catch (err) {
-    console.error(err);
+    //console.error(err);
   }
 }
 
@@ -50,15 +54,17 @@ console.log(booksNearBy, 'booksNeaBy')
 
 useEffect(() => {
   const ownedBooks = booksNearBy.flat().filter(book => book.owned === true).map((book) => book.books);
-  console.log(ownedBooks, '69');
+ // console.log(ownedBooks, '69');
   setDisplayBooks(ownedBooks);
 }, [booksNearBy]);
 
-console.log(displayBooks, 'displaybooks');
+
+
+//console.log(displayBooks, 'displaybooks');
 
 
 const onPlaceSelect = (value: any) => {
-  console.log(value);
+ // console.log(value);
   setLatitude(value.properties.lon);
   setLongitude(value.properties.lat);
 }
@@ -69,7 +75,7 @@ const onPlaceSelect = (value: any) => {
 
 
   const onSuggectionChange = (value: any) => {
-    console.log(value);
+   // console.log(value);
   }
 
   const handleRadiusChange = (e: any) => {
@@ -77,7 +83,7 @@ const onPlaceSelect = (value: any) => {
     setRadius(newRadius);
   };
 
-;
+
 
 
 
@@ -99,7 +105,7 @@ return (
       placeholder="Set Range"
     />
     <button type="button" onClick={getBooksNearMe}>Search for Books</button>
-    <BookDisplay books={displayBooks} id={displayBooks.userId} />
+    <BookDisplay books={displayBooks} id={id} />
     </div>
   )
 

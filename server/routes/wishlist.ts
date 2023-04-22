@@ -30,17 +30,25 @@ Wishlist.post('/', async (req, res) => {
 
     console.log('book data', bookData);
 
-    const book = await prisma.books.create({
-      data: {
-        title: bookData.items[0].volumeInfo.title,
-        author: bookData.items[0].volumeInfo.authors[0],
-        description: bookData.items[0].volumeInfo.description,
-        paperback: bookData.items[0].volumeInfo.printType === 'BOOK',
-        content: bookData.items[0].volumeInfo.contentVersion,
-        image: bookData.items[0].volumeInfo.imageLinks.thumbnail,
+    let book = await prisma.books.findUnique({
+      where: {
         ISBN10: bookData.items[0].volumeInfo.industryIdentifiers[1].identifier,
       },
     });
+
+    if (!book) {
+      book = await prisma.books.create({
+        data: {
+          title: bookData.items[0].volumeInfo.title,
+          author: bookData.items[0].volumeInfo.authors[0],
+          description: bookData.items[0].volumeInfo.description,
+          paperback: bookData.items[0].volumeInfo.printType === 'BOOK',
+          content: bookData.items[0].volumeInfo.contentVersion,
+          image: bookData.items[0].volumeInfo.imageLinks.thumbnail,
+          ISBN10: bookData.items[0].volumeInfo.industryIdentifiers[1].identifier,
+        },
+      });
+    }
 
     const userBook = await prisma.userBooks.create({
       data: {
