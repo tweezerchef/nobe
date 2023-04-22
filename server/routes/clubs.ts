@@ -40,6 +40,13 @@ ClubsRoute.get("/:id/posts", async (req: Request, res: Response) => {
       where: {
         discussionsId: id,
       },
+      include: {
+        user: {
+          select: {
+            firstName: true
+          }
+        }
+      }
     });
     res.json(posts);
   } catch (error) {
@@ -62,6 +69,13 @@ ClubsRoute.post('/:id/posts', async (req: Request, res: Response) => {
           connect: { id },
         },
       },
+      include: {
+        user: {
+          select: {
+            firstName: true
+          }
+        }
+      }
     });
     res.json(post);
   } catch (error) {

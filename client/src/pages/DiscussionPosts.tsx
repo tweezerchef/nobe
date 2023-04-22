@@ -9,6 +9,9 @@ interface Post {
   userId: string;
   discussionId: string;
   createdAt: string;
+  user: {
+    firstName: string;
+  }
 }
 
 function DiscussionPosts() {
@@ -64,12 +67,12 @@ function DiscussionPosts() {
       <h1>Discussion Posts</h1>
       {posts?.map((post) => (
         <div key={post.id}>
-          <h3>{post.body}</h3>
+          <p>{post.user.firstName}: {post.body}</p>
+          {/* <p>userId: {post.userId}</p> */}
           <p>{format(new Date(post.createdAt), "h:mm a MMMM d, yyyy")}</p>
           {post.userId === JSON.parse(localStorage.getItem("user") || "{}").id && (
             <button onClick={() => handleDelete(post.id)}>Delete</button>
           )}
-          {/* <p>userId: {post.userId}</p> */}
         </div>
       ))}
       <form onSubmit={handleSubmit}>
