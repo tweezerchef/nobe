@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EntryPage, PageHeader } from './style'; import EntryCard from '../components/EntryCard/EntryCard'; import InputGroup from '../components/Input Group/InputGroup'; import Input from '../components/Input/Input'; import Button from '../components/Button';
 import useFetch from '../hooks/useFetch';
+import Signup from './Signup';
+import axios from 'axios';
 declare const google: any;
 declare const handleGoogle: string;
 
@@ -11,6 +13,28 @@ export interface LoginProps {
 
 
 function Login(props: LoginProps) {
+    const [email, setEmail] = useState("");
+
+    const loginHandler = () => {
+        axios
+            .get("http://localhost:8080/Login", {
+                params: {
+                    email: email,
+                },
+            })
+            .then((response) => {
+
+                let { user } = response.data;
+                user = JSON.stringify(user)
+                //console.log(user)
+                localStorage.setItem("user", user);
+                // // Handle success
+                console.log(localStorage.getItem("user"));
+            })
+            .catch((error) => {
+                // Handle error
+            });
+    };
     const { handleGoogle, loading, error } = useFetch(
         "http://localhost:8080/login"
     );
@@ -28,6 +52,7 @@ function Login(props: LoginProps) {
             document.head.appendChild(script);
         });
     };
+
 
     useEffect(() => {
         const initGoogleButton = async () => {
@@ -55,11 +80,21 @@ function Login(props: LoginProps) {
                 <form onSubmit={(e) => e.preventDefault()}>
                     <InputGroup>
                         <label htmlFor="login-email">Email Address</label>
-                        <Input type="text" placeholder="name@email.com" id="login-email" /> </InputGroup>
+                        <Input
+                            type="text"
+                            placeholder="name@email.com"
+                            id="login-email"
+                            value={email}
+                            onChange={(e: any) => setEmail(e.target.value)}
+                        />
+                    </InputGroup>
                     <InputGroup>
                         <label htmlFor="login-password">Password</label>
                         <Input type="password" placeholder="Password" id="login-password" /> </InputGroup>
-                    <Button full>Log in</Button>
+                    <Button full onClick={loginHandler}>Log in</Button>
+                    <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+                        <div id="loginDiv"></div>
+                    </div>
                     <div
                         style={{
                             display: "flex",

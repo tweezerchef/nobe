@@ -16,8 +16,7 @@ const Recommended = () => {
     console.log(id);
     const [books, setBooks] = useState([]);
     useEffect(() => {
-        axios.get('/recommendations/recommended/?id=' + id)
-        // .then(res => setBooks(res.data))
+        axios.get('/recommendations/recommended/?id=' + id).then(res => setBooks(res.data))
         //.then(data => setBooks(data));
     }, []);
 

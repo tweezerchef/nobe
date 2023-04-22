@@ -34,7 +34,7 @@ const useFetch = (url: string) => {
                 data: JSON.stringify({ credential: response.credential }),
             });
             setLoading(false);
-            console.log(res);
+            //console.log(res);
 
             const data: ApiResponse = res.data;;
             console.log(data);

@@ -109,6 +109,36 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+app.get("/Login", async (req, res) => {
+  const email = req.query.email as string;
+  console.log(email);
+  const profile = await prisma.user.findFirst({
+    where: {
+      email: email,
+    },
+  });
+  console.log(profile);
+
+  if (profile) {
+    res.status(200).json({
+      message: "Login was successful",
+      user: {
+        firstName: profile.firstName,
+        googleId: profile.googleId,
+        id: profile.id,
+        email: profile.email,
+        // token: jwt.sign({ email: profile.email }, process.env.JWT_SECRET as jwt.Secret, {
+        //   expiresIn: "1d",
+        // }),
+      },
+    });
+  } else {
+    res.status(404).json({
+      message: "User not found",
+    });
+  }
+});
+
 app.post("/login", async (req, res) => {
   console.log(req.body);
   try {
