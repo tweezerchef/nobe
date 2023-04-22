@@ -11,3 +11,7 @@ export const PageHeader = styled(Link)`
 font-size: 2rem;
 font-weight: 600; margin: 40px 0; color: inherit;
 `;
+
+export const ClubHeader = styled.h1`
+text-align: center;
+`

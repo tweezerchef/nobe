@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import { Button } from "@material-ui/core";
+import { ClubHeader } from './style'
 import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import {
   Button,
@@ -8,6 +8,9 @@ import {
   CardContent,
   Typography,
   TextField,
+  FormControl,
+  FormLabel,
+  InputLabel
 } from "@material-ui/core";
 import Stack from '@mui/material/Stack';
 import axios from "axios";
@@ -62,24 +65,27 @@ function Clubs() {
 
   return (
     <div>
-      <ResponsiveAppBar></ResponsiveAppBar>
-      <h1 style={{ textAlign: 'center' }}>Book Clubs</h1>
-      <Stack spacing={2} direction="row">
+      <ResponsiveAppBar />
+      <ClubHeader>Book Clubs</ClubHeader>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
           Create a new club
         </Button>
-      </Stack>
-
+      </div>
       {showForm && (
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Club Name: </label>
-          <TextField
-            label="Club Name"
-            variant="outlined"
-            value={newClubName}
-            onChange={handleInputChange}
-          />
-          <button type="submit">Create Club</button>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+          <FormControl>
+            <FormLabel htmlFor="name">Club Name: </FormLabel>
+            <TextField
+              label="Club Name"
+              variant="outlined"
+              value={newClubName}
+              onChange={handleInputChange}
+            />
+            <Button type="submit" variant="contained" color="primary">
+              Create Club
+            </Button>
+          </FormControl>
         </form>
       )}
       <div>
