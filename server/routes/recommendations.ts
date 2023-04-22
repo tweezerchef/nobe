@@ -1,6 +1,9 @@
 const { PrismaClient } = require('@prisma/client');
 import express, { Request, Response } from 'express';
 import axios from 'axios';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const Recommendations = express.Router();
 
@@ -12,13 +15,25 @@ async function findRandomRows(limit: number) {
   const randomRows = shuffledRows.slice(0, limit);
   return randomRows;
 }
+function getISBN10(volumeInfo: any) {
+  const identifiers = volumeInfo.industryIdentifiers;
+  if (identifiers) {
+    for (const identifierObj of identifiers) {
+      if (identifierObj.type === 'ISBN_10') {
+        return identifierObj.identifier;
+      }
+    }
+  }
+  return ''; // return an empty string when no ISBN-10 is found
+}
 
 async function getGoogleBooksData(title: string) {
-  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?key=&q=intitle:${title}`);
+  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=intitle=${title}&key=${process.env.GOOGLE_BOOKS}`);
   if (response.data.items && response.data.items.length > 0) {
     return response.data.items[0].volumeInfo;
   } else {
-    throw new Error('No items found in Google Books response');
+    console.warn(`No items found in Google Books response for title: ${title}`);
+    return {}; // or return an empty object: {}
   }
 }
 
@@ -70,7 +85,7 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
                 author: bookData.authors ? bookData.authors[0] : '',
                 image_url: bookData.imageLinks ? bookData.imageLinks.thumbnail : '',
                 rating: bookData.averageRating ? bookData.averageRating : null,
-                ISBN10: bookData.industryIdentifiers ? bookData.industryIdentifiers[0].identifier : ''
+                ISBN10: getISBN10(bookData)
             };
             responseArray.push(transformedData);
         });
