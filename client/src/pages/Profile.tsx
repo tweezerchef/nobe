@@ -28,7 +28,6 @@ interface Book {
 
 const Profile = () => {
 
-
   //const classes = useStyles();
   const [userBooks, setUserBooks] = useState<Book[]>([]);
   const [wishlist, setWishlist] = useState<boolean>(false);
@@ -101,36 +100,63 @@ const Profile = () => {
   return (
     <div >
       <Navbar children={undefined} />
-      <Typography variant="h3" >Profile</Typography>
-      <Typography variant="h4" >My Books</Typography>
-      <form onSubmit={handleSubmit} >
-        <label>
-          Book Title:
-          <input type="text" value={title} onChange={handleTitleChange} />
-        </label>
-        <label>
-          <Checkbox checked={wishlist} onChange={handleWishlistChange} />
-          Add to Wishlist
-        </label>
-        <label>
-          <Checkbox checked={owned} onChange={handleOwnedChange} />
-          Add to Owned Books
-        </label>
-        <button type="submit">Add Book</button>
-      </form>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
-        <div style={{ display: 'flex', justifyContent: 'center', background: 'rgb(32, 32, 35)' }}>
-          <button style={{ margin: '10px' }} onClick={wishClicked}>WishList</button>
-          <button style={{ margin: '10px' }} onClick={ownedClicked}>Owned</button>
+      <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
+        <Typography variant="h4">{`${user.firstName}'s`} Books</Typography>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <form onSubmit={handleSubmit} >
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12}>
+              <TextField
+                label="Book Title"
+                value={title}
+                onChange={handleTitleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  <Checkbox checked={wishlist} onChange={handleWishlistChange} />
+                </Grid>
+                <Grid item>
+                  Add to Wishlist
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  <Checkbox checked={owned} onChange={handleOwnedChange} />
+                </Grid>
+                <Grid item>
+                  Add to Owned Books
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="contained" color="primary" type="submit">
+                Add Book
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', background: 'rgb(32, 32, 35)', marginTop: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%' }}>
+            <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
+            <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
+          </div>
         </div>
-        <Typography variant="h5">My books</Typography>
+        <div style={{ margin: '15px' }}>
+          <Typography variant="h5">Books</Typography>
+        </div>
         {books.length > 0 ?
-          <BookDisplay books={books} id={user.id} /> :
+          <BookDisplay books={books} id={user.id} getUserBooks={getUserBooks} /> :
           <Typography variant="body1">No books</Typography>
         }
       </div>
-
-
     </div>
   );
 
