@@ -63,7 +63,7 @@ function Clubs() {
   return (
     <div>
       <ResponsiveAppBar></ResponsiveAppBar>
-      <h1>Book Clubs</h1>
+      <h1 style={{ textAlign: 'center' }}>Book Clubs</h1>
       <Stack spacing={2} direction="row">
         <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
           Create a new club

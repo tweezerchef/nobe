@@ -93,7 +93,7 @@ function ClubDiscussion() {
   return (
     <div>
       <ResponsiveAppBar></ResponsiveAppBar>
-      <h1>{clubName}</h1>
+      <h1 style={{ textAlign: 'center' }}>{clubName}</h1>
       <Stack spacing={2} direction="row">
         <Button
           variant="contained"

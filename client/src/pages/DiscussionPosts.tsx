@@ -68,7 +68,7 @@ function DiscussionPosts() {
   return (
     <div>
       <ResponsiveAppBar></ResponsiveAppBar>
-      <h1>Discussion Posts</h1>
+      <h1 style={{ textAlign: 'center' }}>Discussion Posts</h1>
       {posts?.map((post) => (
         <div key={post.id}>
           <h3>{post.body}</h3>
