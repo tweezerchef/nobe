@@ -10,7 +10,7 @@ import { PrismaClient } from '@prisma/client';
 
 //Routes
 import UserBooks from './routes/userbooks';
- import LocationRoute from './routes/booksnearuser';
+import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
 import Trending from './routes/Trending';
@@ -29,7 +29,17 @@ const prisma = new PrismaClient();
 
 //Middleware
 app.use(express.static(CLIENT_PATH));
-app.use(cors())
+//app.use(cors())
+// app.use(cors({
+//   origin: 'http://ec2-18-119-156-72.us-east-2.compute.amazonaws.com:8080',
+//   methods:'GET,POST,PUT,DELETE',
+//   credentials: true,
+// }));
+const allowedOrigins = ['http://ec2-18-119-156-72.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
+
+app.use(cors({
+  origin: allowedOrigins,
+}));
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

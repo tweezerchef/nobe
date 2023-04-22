@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const DeleteButton = (props: any) => {
   const { book, id, getUserBooks, setBooks } = props;
-  console.log(book);
+
   const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     axios.delete(`/books/${id}`, {
       data: {
@@ -16,7 +16,7 @@ const DeleteButton = (props: any) => {
     })
       .then(response => {
         console.log('Book removed');
-        // getUserBooks();
+        getUserBooks();
         setBooks((prevBooks: any) => prevBooks.filter((b: any) => b.id !== book.id));
       })
       .catch(error => {

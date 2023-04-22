@@ -1,6 +1,9 @@
 const { PrismaClient } = require('@prisma/client');
 import express, { Request, Response } from 'express';
 import axios from 'axios';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const Recommendations = express.Router();
 
@@ -13,12 +16,28 @@ async function findRandomRows(limit: number) {
   return randomRows;
 }
 
+function getISBN(volumeInfo: any) {
+  const identifiers = volumeInfo.industryIdentifiers;
+  if (identifiers) {
+    for (const identifierObj of identifiers) {
+      if (identifierObj.type === 'ISBN_10') {
+        return identifierObj.identifier;
+      }
+      if (identifierObj.type === 'ISBN_13') {
+        return identifierObj.identifier;
+      }
+    }
+  }
+  return ''; // return an empty string when no ISBN-10 is found
+}
+
 async function getGoogleBooksData(title: string) {
-  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?key=&q=intitle:${title}`);
+  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=intitle=${title}&key=${process.env.GOOGLE_BOOKS}`);
   if (response.data.items && response.data.items.length > 0) {
     return response.data.items[0].volumeInfo;
   } else {
-    throw new Error('No items found in Google Books response');
+    console.warn(`No items found in Google Books response for title: ${title}`);
+    return {}; // or return an empty object: {}
   }
 }
 
@@ -51,18 +70,37 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
     },
   });
 
-  const titles = await topRatedBooks.reduce((acc: string[] , book: any) => {
+  const lowRatedBooks = await prisma.userBooks.findMany({
+    where: {
+      userId: id,
+      rating: {
+        lte: 2,
+      },
+    },
+    orderBy: {
+      rating: 'asc',
+    },
+    take: 20,
+    include: {
+      books: true,
+    },
+  });
+
+ const lowTitles = await lowRatedBooks.reduce((acc: string[] , book: any) => {
     acc.push(book.books.title);
     return acc;
   },[]).join(', ')
-  // console.log(titles);
-  // const titles = 'Neuromancer, The Great Gatsby, The Cartel, The Unbearable Lightness of Being, Silo, Dune, Kurt Vonegut, Do Androids Dream of Electric Sheep'
-  const content:string = `Please return 20 book recommendations for somebody that likes these books ${titles} please return it with only the title of the recommendation separated by a commas without numbers, please try to create unique suggestions ones that a normal recommendation algo wouldn't, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books, absolutely no duplicates`;
+  const topTitles = await topRatedBooks.reduce((acc: string[] , book: any) => {
+    acc.push(book.books.title);
+    return acc;
+  },[]).join(', ')
+
+  const content:string = `Please return 20 book titles, separated by commas, for somebody that likes these books ${topTitles} and dislikes these ${lowTitles} please try to create unique suggestions ones, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books, with none of the suggested titles being duplicated`;
 
   axios
   .get(`http://localhost:8080/openai?content=${content}`)
   .then((response) => response.data.content.split(','))
-  .then((data) => {
+  .then((data) => {console.log(data)
     const promises = data.map((book: any) => {
         return getGoogleBooksData(book).then((bookData) => {
             const transformedData = {
@@ -70,7 +108,7 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
                 author: bookData.authors ? bookData.authors[0] : '',
                 image_url: bookData.imageLinks ? bookData.imageLinks.thumbnail : '',
                 rating: bookData.averageRating ? bookData.averageRating : null,
-                ISBN10: bookData.industryIdentifiers ? bookData.industryIdentifiers[0].identifier : ''
+                ISBN10: getISBN(bookData)
             };
             responseArray.push(transformedData);
         });
@@ -83,5 +121,5 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
 });
 
 
-
+export  { getISBN };
 export default Recommendations;

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
@@ -63,35 +63,42 @@ const Profile = () => {
       setWishlist(false);
     }
   };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      await axios.post(`/books/${user.id}`,
-        {
-          title,
-          wishlist,
-          owned
-        }
-      );
-      setTitle("");
-      setWishlist(false);
-      setOwned(false);
-      getUserBooks();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const ownedBooks = userBooks.filter(book => book.owned).map((book) => book.books);
-  const ownedClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+  // const ownedBooks = userBooks.filter(book => book.owned).map((book) => book.books);
+  const ownedClicked = () => {
+    const ownedBooks = userBooks.filter(book => book.owned).map((book) => book.books);
     setBooks(ownedBooks)
   }
 
-  const wishlistBooks = userBooks.filter(book => book.wishlist).map((book) => book.books);
-  const wishClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //const wishlistBooks = userBooks.filter(book => book.wishlist).map((book) => book.books);
+  const wishClicked = () => {
+    const wishlistBooks = userBooks.filter(book => book.wishlist).map((book) => book.books);
     setBooks(wishlistBooks)
   }
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const prevWishlist = wishlist;
+    const prevOwned = owned;
+
+    axios.post(`/books/${user.id}`, { title, wishlist, owned })
+      .then(response => {
+        setTitle("");
+        setWishlist(false);
+        setOwned(false);
+        getUserBooks();
+      })
+      // .then(() => {
+      //   if (prevWishlist) {
+      //     console.log("wish")
+      //     wishClicked();
+      //   } else if (prevOwned) {
+      //     ownedClicked();
+      //   }
+      // })
+      .catch(error => {
+        console.error(error);
+      });
+  };
 
 
   useEffect(() => {
