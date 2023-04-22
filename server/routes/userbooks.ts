@@ -16,7 +16,6 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { title, wishlist, owned } = req.body;
     const { id } = req.params;
-    console.log(id)
 
     const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?key=&q=intitle:${title}`);
     const bookData = response.data.items[0].volumeInfo;
