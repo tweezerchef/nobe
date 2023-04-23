@@ -112,7 +112,7 @@ function Trending() {
                     bottom: 0,
                     transform: 'translateY(50%)',
                   }}
-                  onClick={() => addToWishlist(book.primary_isbn10, book.title, book.author)} 
+                  onClick={() => addToWishlist(book.primary_isbn10, book.title, book.author)}
                 >
                   <BookmarkAddIcon />
                 </IconButton>
