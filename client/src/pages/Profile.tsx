@@ -17,23 +17,14 @@ interface Book {
   owned: boolean;
 }
 
-// interface Books {
-//   books: {
-//     id: string;
-//     title: string;
-//     author: string;
-//     image: string;
-//   }
-// }
-
 const Profile = () => {
 
-  //const classes = useStyles();
   const [userBooks, setUserBooks] = useState<Book[]>([]);
   const [wishlist, setWishlist] = useState<boolean>(false);
   const [owned, setOwned] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [books, setBooks] = useState<any[]>([]);
+
   const userString = localStorage.getItem('user');
   const user = userString ? JSON.parse(userString) : null;
 
@@ -45,6 +36,7 @@ const Profile = () => {
       console.error(err);
     }
   }
+
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
@@ -62,13 +54,12 @@ const Profile = () => {
       setWishlist(false);
     }
   };
-  // const ownedBooks = userBooks.filter(book => book.owned).map((book) => book.books);
+
   const ownedClicked = () => {
     const ownedBooks = userBooks.filter(book => book.owned).map((book) => book.books);
     setBooks(ownedBooks)
   }
 
-  //const wishlistBooks = userBooks.filter(book => book.wishlist).map((book) => book.books);
   const wishClicked = () => {
     const wishlistBooks = userBooks.filter(book => book.wishlist).map((book) => book.books);
     setBooks(wishlistBooks)
@@ -76,29 +67,20 @@ const Profile = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const prevWishlist = wishlist;
-    const prevOwned = owned;
 
     axios.post(`/books/${user.id}`, { title, wishlist, owned })
       .then(response => {
         setTitle("");
         setWishlist(false);
         setOwned(false);
+        setBooks(prevBooks => [...prevBooks, response.data]);
         getUserBooks();
+
       })
-      // .then(() => {
-      //   if (prevWishlist) {
-      //     console.log("wish")
-      //     wishClicked();
-      //   } else if (prevOwned) {
-      //     ownedClicked();
-      //   }
-      // })
       .catch(error => {
         console.error(error);
       });
   };
-
 
   useEffect(() => {
     getUserBooks();
@@ -165,8 +147,6 @@ const Profile = () => {
       </div>
     </div>
   );
-
-
 }
 
 export default Profile;
