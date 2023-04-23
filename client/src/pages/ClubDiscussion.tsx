@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-// import { Button } from "@material-ui/core";
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import { Card, CardContent, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
+import { ClubHeader } from './style'
 import axios from "axios";
 
 interface DiscussionPost {
@@ -91,7 +92,7 @@ function ClubDiscussion() {
 
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>{clubName}</h1>
+      <ClubHeader style={{ textAlign: 'center' }}>{clubName}</ClubHeader>
       <Stack spacing={2} direction="row">
         <Button
           variant="contained"
@@ -110,16 +111,18 @@ function ClubDiscussion() {
         </Button>
       </Stack>
       {showForm && (
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="title">Title: </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={newDiscussionTitle}
-            onChange={(event) => setNewDiscussionTitle(event.target.value)}
-          />
-          <button type="submit">Start Discussion</button>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+          <FormControl>
+            <FormLabel htmlFor="title"></FormLabel>
+            <TextField
+              label="Discussion Title"
+              variant="outlined"
+              name="title"
+              value={newDiscussionTitle}
+              onChange={(event) => setNewDiscussionTitle(event.target.value)}
+            />
+            <button type="submit">Start Discussion</button>
+          </FormControl>
         </form>
       )}
       {discussions?.map((discussion) => (
