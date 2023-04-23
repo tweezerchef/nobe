@@ -3,13 +3,19 @@ import { Link } from "react-router-dom";
 import { ClubHeader } from './style'
 import { Button, Card, CardContent, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
 import axios from "axios";
 import CreateClubs from "../components/CreateClubs/CreateClubs";
 
-interface Club {
+
+export interface Club {
   id: string;
   name: string;
 }
+
+
 
 function Clubs() {
   const [clubs, setClubs] = useState<Club[]>([]);
@@ -57,45 +63,55 @@ function Clubs() {
   return (
     <div>
       <ClubHeader>Book Clubs</ClubHeader>
-      <CreateClubs />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
-          Create a new club
-        </Button>
-      </div>
-      {showForm && (
-        <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-          <FormControl>
-            <FormLabel htmlFor="name"></FormLabel>
-            <TextField
-              label="Club Name"
-              variant="outlined"
-              value={newClubName}
-              onChange={handleInputChange}
-            />
-            <Button type="submit" variant="contained">
-              Create Club
+      <React.Fragment>
+        {/* <Container maxWidth="md"> */}
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={4} >
+            <CreateClubs setClubs={setClubs} />
+          </Grid>
+          {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
+              Create a new club
             </Button>
-          </FormControl>
-        </form>
-      )}
-      <div>
-        {clubs.map((club) => (
-          <Card key={club.id} >
-            <CardContent>
-              <Typography variant="h5" component="h2" style={{ textAlign: 'center' }}>
-                <Link
-                  to={`/clubs/${club.id}?name=${encodeURIComponent(
-                    club.name
-                  )}`}
-                >
-                  {club.name}
-                </Link>
-              </Typography>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+          </div> */}
+          {/* {showForm && (
+            <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+              <FormControl>
+                <FormLabel htmlFor="name"></FormLabel>
+                <TextField
+                  label="Club Name"
+                  variant="outlined"
+                  value={newClubName}
+                  onChange={handleInputChange}
+                />
+                <Button type="submit" variant="contained">
+                  Create Club
+                </Button>
+              </FormControl>
+            </form>
+          )} */}
+          <Grid item xs={12} md={8}>
+            <div>
+              {clubs.map((club) => (
+                <Card key={club.id} >
+                  <CardContent>
+                    <Typography variant="h5" component="h2" style={{ textAlign: 'center' }}>
+                      <Link
+                        to={`/clubs/${club.id}?name=${encodeURIComponent(
+                          club.name
+                        )}`}
+                      >
+                        {club.name}
+                      </Link>
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </Grid>
+        </Grid>
+        {/* </Container> */}
+      </React.Fragment>
     </div>
   )
 }

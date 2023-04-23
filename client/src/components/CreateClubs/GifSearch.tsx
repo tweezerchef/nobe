@@ -1,6 +1,7 @@
 import ReactGiphySearchbox from "react-giphy-searchbox";
 
-const GifSearch = () => {
+
+const GifSearch = (props: any) => {
   return (
     <ReactGiphySearchbox
       apiKey="9Ixlv3DWC1biJRI57RanyL7RTbfzz0o7"
