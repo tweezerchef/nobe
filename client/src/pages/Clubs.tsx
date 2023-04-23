@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ClubHeader } from './style'
-import ResponsiveAppBar from "../components/Navbar/ResponsiveAppBar";
 import { Button, Card, CardContent, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
 import Stack from '@mui/material/Stack';
 import axios from "axios";
+import CreateClubs from "../components/CreateClubs/CreateClubs";
 
 interface Club {
   id: string;
@@ -56,8 +56,8 @@ function Clubs() {
 
   return (
     <div>
-      <ResponsiveAppBar />
       <ClubHeader>Book Clubs</ClubHeader>
+      <CreateClubs />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
           Create a new club
@@ -66,7 +66,7 @@ function Clubs() {
       {showForm && (
         <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
           <FormControl>
-            <FormLabel htmlFor="name">Club Name: </FormLabel>
+            <FormLabel htmlFor="name"></FormLabel>
             <TextField
               label="Club Name"
               variant="outlined"
