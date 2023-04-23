@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Router from './Router';
 // import ResponsiveAppBar from './components/Navbar/ResponsiveAppBar';
 import UserContext from './hooks/Context';
+import Navbar from './components/Navbar/Navbar';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
     return (
         <div className="App">
             <UserContext.Provider value={userId}>
+                <Navbar children={undefined} />
                 <Router />
             </UserContext.Provider>
         </div>

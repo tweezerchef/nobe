@@ -148,7 +148,7 @@ function Trending() {
                   {book.weeks_on_list} <WhatshotIcon sx={{ color: 'orange', fontSize: 'md' }} />
                 </Typography>
                 <Divider orientation="vertical" />
-                <UserStarRating />
+                {/* <UserStarRating /> */}
               </CardOverflow>
             </Card>
           ))

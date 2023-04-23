@@ -19,7 +19,6 @@ function Home() {
 
         return (
             <>
-                <Navbar children={undefined} />
                 <Link to="/user-reco-input">
                     <button>Start Building Your Recommendations</button>
                 </Link>
