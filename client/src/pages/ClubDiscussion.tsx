@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import { Card, CardContent, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
+// import Button from '@mui/material/Button';
+import { Button, Card, CardContent, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
 import { ClubHeader } from './style'
 import axios from "axios";
 
@@ -93,23 +93,25 @@ function ClubDiscussion() {
   return (
     <div>
       <ClubHeader style={{ textAlign: 'center' }}>{clubName}</ClubHeader>
-      <Stack spacing={2} direction="row">
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={hasJoined}
-          onClick={handleJoinClub}
-        >
-          {hasJoined ? "Joined" : "Join"}
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setShowForm(!showForm)}
-        >
-          Start new discussion
-        </Button>
-      </Stack>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Stack spacing={2} direction="row">
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={hasJoined}
+            onClick={handleJoinClub}
+          >
+            {hasJoined ? "Joined" : "Join"}
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setShowForm(!showForm)}
+          >
+            Start new discussion
+          </Button>
+        </Stack>
+      </div>
       {showForm && (
         <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
           <FormControl>
@@ -126,11 +128,15 @@ function ClubDiscussion() {
         </form>
       )}
       {discussions?.map((discussion) => (
-        <div key={discussion.id}>
-          <ul key={discussion.title}>
-            <Link to={`/clubs/${id}/discussion/${discussion.id}`}>{discussion.title}</Link>
-          </ul>
-        </div>
+        <Card key={discussion.id} >
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }} >
+              <Link to={`/clubs/${id}/discussion/${discussion.id}`}>
+                {discussion.title}
+              </Link>
+            </Typography>
+          </CardContent>
+        </Card>
       ))}
     </div>
 
