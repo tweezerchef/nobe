@@ -6,6 +6,7 @@ import BookDisplay from "../components/MattsBookDisplay/BookDisplay";
 import Navbar from "../components/Navbar/Navbar";
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import ReactiveButton from 'reactive-button';
 
 interface Book {
   books: {
@@ -40,17 +41,22 @@ const [radius, setRadius] = useState(0);
 const [covertRadius, setConvertRadius] = useState(0);
 const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
 const [displayBooks, setDisplayBooks] = useState<any>([])
+const [buttonState, setButtonState] = useState('idle');
 
 
 const  getBooksNearMe = async () => {
-
+  setButtonState('loading');
   try {
     const res = await axios.get('/location/locations', { params: {lon: longitude, lat: latitude, radius: covertRadius } });
     //console.log(res);
     setBooksNearBy(res.data.userBooks);
+    setTimeout(() => {
+      setButtonState('success');
+    }, 2000);
   } catch (err) {
     //console.error(err);
   }
+
 }
 
 console.log(booksNearBy, 'booksNeaBy')
@@ -94,6 +100,10 @@ const onPlaceSelect = (value: any) => {
 
 
 
+
+
+
+
 return (
    <div>
       <h1>Near Me</h1>
@@ -114,7 +124,17 @@ return (
 <Slider defaultValue={0} value={radius}
       onChange={handleRadiusChange}aria-label="Default" valueLabelDisplay="auto" />
     </Box>
-    <button type="button" onClick={getBooksNearMe}>Search for Books</button>
+    <ReactiveButton
+      rounded
+      size="large"
+      buttonState={buttonState}
+      idleText="Search For Books"
+      loadingText="Loading"
+      successText="Done"
+      onClick={getBooksNearMe}
+      color="blue"
+    />
+    {/* <button type="button" onClick={getBooksNearMe}>Search for Books</button> */}
     <BookDisplay books={displayBooks} id={id} />
     </div>
   )
