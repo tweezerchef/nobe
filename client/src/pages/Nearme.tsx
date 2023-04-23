@@ -38,13 +38,15 @@ function Locations() {
 const [longitude, setLongitude] = useState(0);
 const [latitude, setLatitude] = useState(0);
 const [radius, setRadius] = useState(0);
+const [covertRadius, setConvertRadius] = useState(0);
 const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
 const [displayBooks, setDisplayBooks] = useState<any>([])
 
 
 const  getBooksNearMe = async () => {
+
   try {
-    const res = await axios.get('/location/locations', { params: {lon: longitude, lat: latitude, radius: radius } });
+    const res = await axios.get('/location/locations', { params: {lon: longitude, lat: latitude, radius: covertRadius } });
     //console.log(res);
     setBooksNearBy(res.data.userBooks);
   } catch (err) {
@@ -61,7 +63,10 @@ useEffect(() => {
 }, [booksNearBy]);
 
 
-
+useEffect(() => {
+ const convert = radius * 32;
+ setConvertRadius(convert);
+}, [radius]);
 //console.log(displayBooks, 'displaybooks');
 
 
@@ -82,6 +87,7 @@ const onPlaceSelect = (value: any) => {
 
   const handleRadiusChange = (e: any) => {
     const newRadius = e.target.value
+
     setRadius(newRadius);
   };
 
