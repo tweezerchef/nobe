@@ -7,12 +7,8 @@ import axios from 'axios';
 declare const google: any;
 declare const handleGoogle: string;
 
-export interface LoginProps {
-    onLogin: () => void;
-}
 
-
-function Login(props: LoginProps) {
+function Login() {
     const [email, setEmail] = useState("");
 
     const loginHandler = () => {
@@ -32,7 +28,7 @@ function Login(props: LoginProps) {
                 console.log(localStorage.getItem("user"));
             })
             .catch((error) => {
-                // Handle error
+                console.error(error)
             });
     };
     const { handleGoogle, loading, error } = useFetch(

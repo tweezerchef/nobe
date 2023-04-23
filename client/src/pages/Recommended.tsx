@@ -25,7 +25,6 @@ const Recommended = () => {
 
     return (
         <div>
-            <Navbar children={undefined} />
             <BookDisplay books={books} id={id} />
             <h1>  UserRecoInputPage </h1>
         </div>
