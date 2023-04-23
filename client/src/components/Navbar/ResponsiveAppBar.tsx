@@ -32,14 +32,14 @@ function ResponsiveAppBar() {
 
 
 
-  const user = localStorage.getItem("user");
+  // const user = localStorage.getItem("user");
 
-  if (!user) {
-    throw new Error("No user found");
-  }
-  
-  const parsed = JSON.parse(user)
-  console.log(parsed);
+  // if (!user) {
+  //   throw new Error("No user found");
+  // }
+
+  // const parsed = JSON.parse(user)
+  // console.log(parsed);
 
 
 
@@ -186,7 +186,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="pfp" src={parsed.picture} />
+                {/* <Avatar alt="pfp" src={parsed.picture} /> */}
               </IconButton>
             </Tooltip>
             <Menu
