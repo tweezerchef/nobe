@@ -13,6 +13,8 @@ import CreateClubs from "../components/CreateClubs/CreateClubs";
 export interface Club {
   id: string;
   name: string;
+  description: string;
+  image: string;
 }
 
 
@@ -104,6 +106,11 @@ function Clubs() {
                         {club.name}
                       </Link>
                     </Typography>
+                    <Typography variant="body1" component="p">
+                      {club.description}
+                    </Typography>
+                    <iframe src={club.image}
+                      style={{ pointerEvents: 'none' }} />
                   </CardContent>
                 </Card>
               ))}
