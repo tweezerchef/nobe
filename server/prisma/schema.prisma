@@ -76,6 +76,8 @@ model bookdata {
 model Clubs {
   id          String        @id @default(uuid())
   name        String
+  description String
+  image       String
   clubMembers ClubMembers[]
   Discussions Discussions[]
 }
