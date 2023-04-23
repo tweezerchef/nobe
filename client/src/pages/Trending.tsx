@@ -112,7 +112,7 @@ function Trending() {
                     bottom: 0,
                     transform: 'translateY(50%)',
                   }}
-                  onClick={() => addToWishlist(book.primary_isbn10, book.title, book.author)} 
+                  onClick={() => addToWishlist(book.primary_isbn10, book.title, book.author)}
                 >
                   <BookmarkAddIcon />
                 </IconButton>
@@ -148,7 +148,7 @@ function Trending() {
                   {book.weeks_on_list} <WhatshotIcon sx={{ color: 'orange', fontSize: 'md' }} />
                 </Typography>
                 <Divider orientation="vertical" />
-                <UserStarRating />
+                {/* <UserStarRating /> */}
               </CardOverflow>
             </Card>
           ))
