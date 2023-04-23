@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import axios from 'axios';
+import { useContext } from 'react';
+import { UserContext } from '../hooks/Context';
 
 const userString = localStorage.getItem('user');
 const user = userString ? JSON.parse(userString) : null;
@@ -13,7 +15,7 @@ user ? (id = user.id) : (id = '');
 
 
 const Recommended = () => {
-    console.log(id);
+    const id = useContext(UserContext);
     const [books, setBooks] = useState([]);
     useEffect(() => {
         axios.get('/recommendations/recommended/?id=' + id).then(res => setBooks(res.data))
@@ -23,7 +25,6 @@ const Recommended = () => {
 
     return (
         <div>
-            <Navbar children={undefined} />
             <BookDisplay books={books} id={id} />
             <h1>  UserRecoInputPage </h1>
         </div>
