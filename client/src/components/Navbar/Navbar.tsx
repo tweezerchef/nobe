@@ -24,7 +24,6 @@ function Navbar({ children }: NavProps) {
             <NavItemLink to='/user-reco-input'>Build Recommendations</NavItemLink>
             <NavItemLink to='/recommended'>Get Recommendations</NavItemLink>
             <NavItemLink to='/profile'>Profile</NavItemLink>
-
             <button
                 onClick={logout}
                 style={{
