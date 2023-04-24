@@ -14,17 +14,16 @@ import { FormControl, InputLabel } from "@mui/material";
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import ThumbComponent from '../components/Thumbs/Thumbs';
 import UserStarRating from "../components/UserStarRating/UserStarRating";
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import axios from 'axios';
+import { useContext } from 'react';
+import { UserContext } from '../hooks/Context';
+
 
 function Trending() {
 
-  const userString = localStorage.getItem('user');
-  const user = userString ? JSON.parse(userString) : null;
-  let id
-  user ? (id = user.id) : (id = null);
+  const id = useContext(UserContext);
 
   const [trending, setTrending] = useState<any[]>([]);
 

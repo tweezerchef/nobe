@@ -15,6 +15,10 @@ async function findRandomRows(limit: number) {
   const randomRows = shuffledRows.slice(0, limit);
   return randomRows;
 }
+const callOpenAI = async (content: string) =>{
+  const response = axios.get(`http://localhost:8080/openai?content=${content}`)
+return response
+}
 
 function getISBN(volumeInfo: any) {
   const identifiers = volumeInfo.industryIdentifiers;
@@ -95,12 +99,24 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
     return acc;
   },[]).join(', ')
 
-  const content:string = `Please return 20 book titles, separated by commas with no additional information included numbers , for somebody that likes these books ${topTitles} and dislikes these ${lowTitles} please try to create unique suggestions ones, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books, with none of the suggested titles being duplicated`;
+  const content:string = `Please return 20 book titles, in the form of a JSON array, for somebody that likes these books ${topTitles} and dislikes these ${lowTitles} please try to create unique suggestions ones, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books`;
 
-  axios
-  .get(`http://localhost:8080/openai?content=${content}`)
-  .then((response) => response.data.content.split(','))
-  .then((data) => {console.log(data)
+  // axios
+  // .get(`http://localhost:8080/openai?content=${content}`)
+  const call = async (): Promise<any> => {
+    try {
+      const response = await callOpenAI(content);
+      const data = JSON.parse(response.data.content);
+      return data || call();
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+      return call();
+    }
+  };
+
+call()
+.then((response: any) => [...new Set(response)])
+  .then((data) => {
     const promises = data.map((book: any) => {
         return getGoogleBooksData(book).then((bookData) => {
             const transformedData = {
