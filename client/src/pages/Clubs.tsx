@@ -8,6 +8,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import axios from "axios";
 import CreateClubs from "../components/CreateClubs/CreateClubs";
+import styled from 'styled-components';
 
 
 export interface Club {
@@ -61,6 +62,15 @@ function Clubs() {
       console.error(error);
     }
   };
+  const CardContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+  const StyledCard = styled(Card) <{ flexBasis?: string }>`
+  flex-basis: ${(props) => props.flexBasis || '33%'};
+  margin: 10px;
+`;
 
   return (
     <div>
@@ -71,31 +81,11 @@ function Clubs() {
           <Grid item xs={12} md={4} >
             <CreateClubs setClubs={setClubs} />
           </Grid>
-          {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
-              Create a new club
-            </Button>
-          </div> */}
-          {/* {showForm && (
-            <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-              <FormControl>
-                <FormLabel htmlFor="name"></FormLabel>
-                <TextField
-                  label="Club Name"
-                  variant="outlined"
-                  value={newClubName}
-                  onChange={handleInputChange}
-                />
-                <Button type="submit" variant="contained">
-                  Create Club
-                </Button>
-              </FormControl>
-            </form>
-          )} */}
+
           <Grid item xs={12} md={8}>
-            <div>
+            <CardContainer>
               {clubs.map((club) => (
-                <Card key={club.id} >
+                <StyledCard key={club.id} flexBasis="25%">
                   <CardContent>
                     <Typography variant="h5" component="h2" style={{ textAlign: 'center' }}>
                       <Link
@@ -112,9 +102,9 @@ function Clubs() {
                     <iframe src={club.image}
                       style={{ pointerEvents: 'none' }} />
                   </CardContent>
-                </Card>
+                </StyledCard>
               ))}
-            </div>
+            </CardContainer>
           </Grid>
         </Grid>
         {/* </Container> */}
