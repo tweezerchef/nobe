@@ -44,6 +44,26 @@ const [covertRadius, setConvertRadius] = useState(0);
 const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
 const [displayBooks, setDisplayBooks] = useState<any>([])
 const [buttonState, setButtonState] = useState('idle');
+const [locationState, setLocationState] = useState('idle');
+const [userLongitude, setUserLongitude] = useState(0);
+const [userLatitude, setUserLatitude] = useState(0);
+
+const  saveLocation = async () => {
+  setLocationState('loading');
+  try {
+    const res = await axios.put(`/location/${user.id}`, {
+      longitude: userLongitude,
+      latitude: userLatitude
+    });
+    console.log(res)
+    setTimeout(() => {
+      setLocationState('success');
+    }, 2000);
+  } catch (err) {
+    console.error(err);
+  }
+
+}
 
 
 const  getBooksNearMe = async () => {
@@ -79,8 +99,10 @@ useEffect(() => {
 
 const onPlaceSelect = (value: any) => {
  // console.log(value);
-  setLatitude(value.properties.lon);
-  setLongitude(value.properties.lat);
+  setLatitude(value.properties.lat);
+  setLongitude(value.properties.lon);
+  setUserLatitude(value.properties.lat);
+  setUserLongitude(value.properties.lon);
 }
 
 // console.log(longitude, '1');
@@ -118,6 +140,16 @@ return (
           suggestionsChange={onSuggectionChange}
         />
     </GeoapifyContext>
+    <ReactiveButton
+      rounded
+      size="large"
+      buttonState={locationState}
+      idleText="Save Location"
+      loadingText="Loading"
+      successText="Done"
+      onClick={saveLocation}
+      color="blue"
+    />
     </Grid>
     <Grid xs={3}>
     <h1>Set Range in Miles</h1>
@@ -127,7 +159,7 @@ return (
       onChange={handleRadiusChange}
       placeholder="Set Range"
     />
- <Box width={300}>
+ <Box width={175}>
 <Slider defaultValue={0} value={radius}
       onChange={handleRadiusChange}aria-label="Default" valueLabelDisplay="auto" />
     </Box>
