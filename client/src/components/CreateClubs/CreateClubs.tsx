@@ -10,8 +10,6 @@ interface CreateClubsProps {
   setClubs: React.Dispatch<React.SetStateAction<typeof Clubs[]>>;
 }
 
-
-
 const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
@@ -89,17 +87,7 @@ const createClubs = (props: any) => {
     </Box>
   );
 
-
-
 }
-
-
-
-
-
-
-
-
 
 
 export default createClubs;
