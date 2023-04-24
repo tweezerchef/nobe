@@ -164,8 +164,7 @@ function ResponsiveAppBar() {
               </MenuItem>
               <MenuItem onClick={logout}>
                 <Typography textAlign="center">
-                  <Link to="/">
-                    Logout</Link>
+                  Logout
                 </Typography>
               </MenuItem>
             </Menu>
@@ -239,10 +238,10 @@ function ResponsiveAppBar() {
               <StyledLink to="/profile">Profile</StyledLink>
             </Button>
             <Button
-              onClick={handleCloseNavMenu}
+              onClick={logout}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              <StyledLink to="/">Logout</StyledLink>
+              <StyledLink to="/login">Logout</StyledLink>
             </Button>
           </Box>
 
