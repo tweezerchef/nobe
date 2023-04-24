@@ -31,7 +31,6 @@ function ResponsiveAppBar() {
   );
 
 
-
   // const user = localStorage.getItem("user");
 
   // if (!user) {
@@ -61,7 +60,6 @@ function ResponsiveAppBar() {
   const logout = () => {
     localStorage.removeItem("user");
     window.location.href = '/';
-    handleCloseUserMenu()
   };
 
   return (
@@ -118,7 +116,7 @@ function ResponsiveAppBar() {
             >
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <Link to="/login">
+                  <Link to="/">
                     Login</Link>
                 </Typography>
               </MenuItem>
@@ -148,7 +146,7 @@ function ResponsiveAppBar() {
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <Link to="/user-reco-inpit">
+                  <Link to="/user-reco-input">
                     Build Recomendations</Link>
                 </Typography>
               </MenuItem>
@@ -162,6 +160,12 @@ function ResponsiveAppBar() {
                 <Typography textAlign="center">
                   <Link to="/profile">
                     Profile</Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={logout}>
+                <Typography textAlign="center">
+                  <Link to="/">
+                    Logout</Link>
                 </Typography>
               </MenuItem>
             </Menu>
@@ -190,7 +194,7 @@ function ResponsiveAppBar() {
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              <StyledLink to="/login" >Login</StyledLink>
+              <StyledLink to="/" >Login</StyledLink>
             </Button>
             <Button
               onClick={handleCloseNavMenu}
@@ -233,6 +237,12 @@ function ResponsiveAppBar() {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               <StyledLink to="/profile">Profile</StyledLink>
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <StyledLink to="/">Logout</StyledLink>
             </Button>
           </Box>
 
