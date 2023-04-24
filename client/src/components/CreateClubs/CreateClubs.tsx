@@ -1,15 +1,14 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import GifSearch from './GifSearch';
 import axios from 'axios';
 import { Button } from '@mui/material';
-import Clubs from '../../pages/Clubs';
 
-interface CreateClubsProps {
-  setClubs: React.Dispatch<React.SetStateAction<typeof Clubs[]>>;
-}
+// interface CreateClubsProps {
+//   setClubs: React.Dispatch<React.SetStateAction<typeof Clubs[]>>;
+// }
 
 const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
@@ -23,10 +22,14 @@ const createClubs = (props: any) => {
       description: clubDescription,
       image: clubImage
     }
-    axios.post('/api/create-club', body)
-      .then(data => {
-        console.log(data);
-      })
+    try {
+      axios.post('/api/create-club', body)
+        .then(data => {
+          setClubs(data.data);
+        })
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
