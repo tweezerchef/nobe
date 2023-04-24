@@ -7,6 +7,8 @@ import Navbar from "../components/Navbar/Navbar";
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import ReactiveButton from 'reactive-button';
+import Grid from '@mui/material/Grid';
+
 
 interface Book {
   books: {
@@ -106,7 +108,9 @@ const onPlaceSelect = (value: any) => {
 
 return (
    <div>
-      <h1>Near Me</h1>
+<Grid style={{ display: "flex", justifyContent: "center"}} container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+<Grid xs={3}>
+      <h1>Enter Address</h1>
       <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
         <GeoapifyGeocoderAutocomplete
           placeholder="Enter address here"
@@ -114,6 +118,9 @@ return (
           suggestionsChange={onSuggectionChange}
         />
     </GeoapifyContext>
+    </Grid>
+    <Grid xs={3}>
+    <h1>Set Range in Miles</h1>
     <input
       type="number"
       value={radius}
@@ -134,6 +141,8 @@ return (
       onClick={getBooksNearMe}
       color="blue"
     />
+    </Grid>
+    </Grid>
     {/* <button type="button" onClick={getBooksNearMe}>Search for Books</button> */}
     <BookDisplay books={displayBooks} id={id} />
     </div>
