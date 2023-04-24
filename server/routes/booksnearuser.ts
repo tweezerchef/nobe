@@ -69,6 +69,32 @@ res.status(200).json({ userBooks });
   }
 });
 
+
+LocationRoute.put('/:id', async (req: AuthenticatedRequest, res: Response) => {
+  console.log(req);
+  try {
+    const id = req.params.id;
+    const latitude = req.body.latitude;
+    const longitude = req.body.longitude;
+    const userUpdate = await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        longitude: longitude,
+        latitude: latitude
+      },
+    })
+    console.log(userUpdate);
+    res.status(200).json({ userUpdate })
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({
+      error: 'Server error!',
+    })
+  }
+})
+
 // const userBooks = await prisma.userBooks.findMany({
 //   where: {
 //     userId: id
@@ -118,25 +144,7 @@ res.status(200).json({ userBooks });
 //   res.status(500).json({ error: 'Internal server error' });
 //  }
 
-// app.post('/user', async (req, res) => {
-//   const { name, location } = req.body
-//   try {
-//     const response: any = (await prisma.$queryRaw`
-//     insert into "User" ("name", "location") values
-//     (${name}, "public"."st_point"(${location.lng}, ${location.lat}))
-//     returning id`) as any
 
-//     res.json({
-//       success: true,
-//       id: response[0].id,
-//     })
-//   } catch (e) {
-//     console.error(e)
-//     res.status(500).json({
-//       error: 'Server error!',
-//     })
-//   }
-// })
 
 // app.post('/location', async (req, res) => {
 //   const { name, location } = req.body
