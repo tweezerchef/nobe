@@ -31,7 +31,6 @@ function ResponsiveAppBar() {
   );
 
 
-
   // const user = localStorage.getItem("user");
 
   // if (!user) {
@@ -61,7 +60,6 @@ function ResponsiveAppBar() {
   const logout = () => {
     localStorage.removeItem("user");
     window.location.href = '/';
-    handleCloseUserMenu()
   };
 
   return (
@@ -118,7 +116,7 @@ function ResponsiveAppBar() {
             >
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <Link to="/login">
+                  <Link to="/">
                     Login</Link>
                 </Typography>
               </MenuItem>
@@ -164,6 +162,12 @@ function ResponsiveAppBar() {
                     Profile</Link>
                 </Typography>
               </MenuItem>
+              <MenuItem onClick={logout}>
+                <Typography textAlign="center">
+                  <Link to="/">
+                    Logout</Link>
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <AutoStoriesIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -190,7 +194,7 @@ function ResponsiveAppBar() {
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              <StyledLink to="/login" >Login</StyledLink>
+              <StyledLink to="/" >Login</StyledLink>
             </Button>
             <Button
               onClick={handleCloseNavMenu}
@@ -233,6 +237,12 @@ function ResponsiveAppBar() {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               <StyledLink to="/profile">Profile</StyledLink>
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <StyledLink to="/">Logout</StyledLink>
             </Button>
           </Box>
 
