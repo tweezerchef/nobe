@@ -115,7 +115,6 @@ function ClubDiscussion() {
       {showForm && (
         <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
           <FormControl>
-            <FormLabel htmlFor="title"></FormLabel>
             <TextField
               label="Discussion Title"
               variant="outlined"
@@ -123,7 +122,7 @@ function ClubDiscussion() {
               value={newDiscussionTitle}
               onChange={(event) => setNewDiscussionTitle(event.target.value)}
             />
-            <button type="submit">Start Discussion</button>
+            <Button type="submit" variant="contained">Start Discussion</Button>
           </FormControl>
         </form>
       )}
@@ -131,7 +130,9 @@ function ClubDiscussion() {
         <Card key={discussion.id} >
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }} >
-              <Link to={`/clubs/${id}/discussion/${discussion.id}`}>
+              <Link
+                to={`/clubs/${id}/discussion/${discussion.id}`}
+                style={{ color: 'black', textDecoration: 'none' }}>
                 {discussion.title}
               </Link>
             </Typography>

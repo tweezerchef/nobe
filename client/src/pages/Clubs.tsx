@@ -33,91 +33,68 @@ function Clubs() {
     fetchClubs();
   }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setNewClubName(value);
-  };
+  // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { value } = event.target;
+  //   setNewClubName(value);
+  // };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
 
-    // Check if the new club name already exists in the database
-    const existingClubs = await axios.get('/api/clubs');
-    const clubExists = existingClubs.data.some((club: { name: string; }) => club.name === newClubName);
+  //   // Check if the new club name already exists in the database
+  //   const existingClubs = await axios.get('/api/clubs');
+  //   const clubExists = existingClubs.data.some((club: { name: string; }) => club.name === newClubName);
 
-    if (clubExists) {
-      alert('Club name already exists!');
-      return;
-    }
+  //   if (clubExists) {
+  //     alert('Club name already exists!');
+  //     return;
+  //   }
 
-    try {
-      const response = await axios.post('/api/create-club', { name: newClubName });
+  //   try {
+  //     const response = await axios.post('/api/create-club', { name: newClubName });
 
-      setClubs([...clubs, response.data]); // add the new club to the state variable
+  //     setClubs([...clubs, response.data]); // add the new club to the state variable
 
-      setShowForm(false); // hide the form after submission
-      setNewClubName(''); // reset the input box
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     setShowForm(false); // hide the form after submission
+  //     setNewClubName(''); // reset the input box
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
-    <div>
-      <ClubHeader>Book Clubs</ClubHeader>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
       <React.Fragment>
         {/* <Container maxWidth="md"> */}
         <Grid container spacing={2}>
           <Grid item xs={12} md={4} >
             <CreateClubs setClubs={setClubs} />
           </Grid>
-          {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>
-              Create a new club
-            </Button>
-          </div> */}
-          {/* {showForm && (
-            <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-              <FormControl>
-                <FormLabel htmlFor="name"></FormLabel>
-                <TextField
-                  label="Club Name"
-                  variant="outlined"
-                  value={newClubName}
-                  onChange={handleInputChange}
-                />
-                <Button type="submit" variant="contained">
-                  Create Club
-                </Button>
-              </FormControl>
-            </form>
-          )} */}
           <Grid item xs={12} md={8}>
-            <div>
+            <ClubHeader style={{ maxWidth: "800px", margin: "20px 0" }}>Book Clubs</ClubHeader>
+            <div style={{ maxWidth: "800px", margin: "20px 0" }}>
               {clubs.map((club) => (
-                <Card key={club.id} >
-                  <CardContent>
+                <Card key={club.id} style={{ marginBottom: '20px' }}>
+                  <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <Typography variant="h5" component="h2" style={{ textAlign: 'center' }}>
                       <Link
-                        to={`/clubs/${club.id}?name=${encodeURIComponent(
-                          club.name
-                        )}`}
+                        to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
+                        style={{ color: 'black', textDecoration: 'none' }}
                       >
                         {club.name}
                       </Link>
                     </Typography>
+                    <iframe src={club.image}
+                      style={{ pointerEvents: 'none' }} />
                     <Typography variant="body1" component="p">
                       {club.description}
                     </Typography>
-                    <iframe src={club.image}
-                      style={{ pointerEvents: 'none' }} />
                   </CardContent>
                 </Card>
               ))}
             </div>
           </Grid>
         </Grid>
-        {/* </Container> */}
       </React.Fragment>
     </div>
   )

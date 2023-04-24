@@ -6,6 +6,7 @@ import GifSearch from './GifSearch';
 import axios from 'axios';
 import { Button } from '@mui/material';
 import Clubs from '../../pages/Clubs';
+
 interface CreateClubsProps {
   setClubs: React.Dispatch<React.SetStateAction<typeof Clubs[]>>;
 }
@@ -16,29 +17,6 @@ const createClubs = (props: any) => {
   const [clubImage, setClubImage] = useState('');
   const { setClubs } = props;
 
-
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-
-  //   // Check if the new club name already exists in the database
-  //   const existingClubs = await axios.get('/api/clubs');
-  //   const clubExists = existingClubs.data.some((club: { name: string; }) => club.name === newClubName);
-
-  //   if (clubExists) {
-  //     alert('Club name already exists!');
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await axios.post('/api/create-club', { name: clubName, description: clubDescription, image: clubImage});
-  //     setClubs([...clubs, response.data]); // add the new club to the state variable
-  //     // setShowForm(false); // hide the form after submission
-  //     setClubName(''); // reset the input box
-  //     setClubDescription('');
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
   const handleSubmit = () => {
     let body = {
       name: clubName,
