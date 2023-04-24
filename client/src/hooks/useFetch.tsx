@@ -1,6 +1,8 @@
 import { url } from "inspector";
 import React, { useState } from "react";
 import axios from "axios";
+import { Link, useNavigate } from 'react-router-dom';
+
 
 
 interface Response {
@@ -21,7 +23,7 @@ interface ApiResponse {
 const useFetch = (url: string) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
+    const navigate = useNavigate()
     const handleGoogle = async (response: Response) => {
         setLoading(true);
         let res;
@@ -43,7 +45,7 @@ const useFetch = (url: string) => {
                 await localStorage.setItem('user', JSON.stringify(data?.user));
                 let user = await localStorage.getItem('user');
                 console.log(user);
-                window.location.reload();
+                navigate('/home');
             } else {
                 throw new Error(data?.message || 'error');
             }

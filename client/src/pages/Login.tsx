@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { EntryPage, PageHeader } from './style'; import EntryCard from '../components/EntryCard/EntryCard'; import InputGroup from '../components/Input Group/InputGroup'; import Input from '../components/Input/Input'; import Button from '../components/Button';
 import useFetch from '../hooks/useFetch';
 import Signup from './Signup';
@@ -9,9 +9,11 @@ declare const handleGoogle: string;
 
 
 function Login() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
 
     const loginHandler = () => {
+
         axios
             .get("/Login", {
                 params: {
@@ -26,6 +28,7 @@ function Login() {
                 localStorage.setItem("user", user);
                 // // Handle success
                 console.log(localStorage.getItem("user"));
+                navigate("/home");
             })
             .catch((error) => {
                 console.error(error)
