@@ -26,6 +26,9 @@ const createClubs = (props: any) => {
       axios.post('/api/create-club', body)
         .then(data => {
           setClubs(data.data);
+          setClubName('');
+          setClubDescription('');
+          setClubImage('');
         })
     } catch (error) {
       console.log(error);
@@ -67,7 +70,6 @@ const createClubs = (props: any) => {
       </Button>
     </Box>
   );
-
 }
 
 

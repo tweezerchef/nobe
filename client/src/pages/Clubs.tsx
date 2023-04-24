@@ -2,13 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ClubHeader } from './style'
 import { Button, Card, CardContent, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import axios from "axios";
 import CreateClubs from "../components/CreateClubs/CreateClubs";
-
 
 export interface Club {
   id: string;
@@ -16,8 +12,6 @@ export interface Club {
   description: string;
   image: string;
 }
-
-
 
 function Clubs() {
   const [clubs, setClubs] = useState<Club[]>([]);
