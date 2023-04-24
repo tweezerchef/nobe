@@ -32,14 +32,14 @@ function ResponsiveAppBar() {
 
 
 
-  const user = localStorage.getItem("user");
+  // const user = localStorage.getItem("user");
 
-  if (!user) {
-    throw new Error("No user found");
-  }
-  
-  const parsed = JSON.parse(user)
-  console.log(parsed);
+  // if (!user) {
+  //   throw new Error("No user found");
+  // }
+
+  // const parsed = JSON.parse(user)
+  // console.log(parsed);
 
 
 
@@ -118,6 +118,18 @@ function ResponsiveAppBar() {
             >
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
+                  <Link to="/login">
+                    Login</Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <Link to="/signup">
+                    Signup</Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
                   <Link to="/trending">
                     Trending</Link>
                 </Typography>
@@ -132,6 +144,18 @@ function ResponsiveAppBar() {
                 <Typography textAlign="center">
                   <Link to="/locations">
                     Books Near Me</Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <Link to="/user-reco-inpit">
+                    Build Recomendations</Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <Link to="/recommended">
+                    Get Recomendations</Link>
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
@@ -162,7 +186,18 @@ function ResponsiveAppBar() {
             Nobe
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <StyledLink to="/login" >Login</StyledLink>
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <StyledLink to="/signup" >Signup</StyledLink>
+            </Button>
             <Button
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
@@ -181,12 +216,30 @@ function ResponsiveAppBar() {
             >
               <StyledLink to="/locations">Books Near Me</StyledLink>
             </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <StyledLink to="/user-reco-input">Build Recomendations</StyledLink>
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <StyledLink to="/recommended">Get Recommendations</StyledLink>
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <StyledLink to="/profile">Profile</StyledLink>
+            </Button>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="pfp" src={parsed.picture} />
+                {/* <Avatar alt="pfp" src={parsed.picture} /> */}
               </IconButton>
             </Tooltip>
             <Menu
