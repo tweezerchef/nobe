@@ -148,7 +148,7 @@ function ResponsiveAppBar() {
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <Link to="/user-reco-inpit">
+                  <Link to="/user-reco-input">
                     Build Recomendations</Link>
                 </Typography>
               </MenuItem>
