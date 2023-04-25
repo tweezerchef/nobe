@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ClubHeader } from './style'
-import { Button, Card, CardContent, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
-import Grid from '@mui/material/Grid';
+import { Box, Container, Grid, Button, Card, CardContent, CardMedia, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
 import axios from "axios";
 import CreateClubs from "../components/CreateClubs/CreateClubs";
+import styled from 'styled-components';
 
 export interface Club {
   id: string;
@@ -56,37 +56,83 @@ function Clubs() {
   //   }
   // };
 
+  const CardContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+  const StyledCard = styled(Card) <{ flexBasis?: string }>`
+  flex-basis: ${(props) => props.flexBasis || '33%'};
+  margin: 10px;
+`;
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    // <div style={{ display: 'flex', justifyContent: 'center' }}>
+    //   <React.Fragment>
+    //     {/* <Container maxWidth="md"> */}
+    //     <Grid container spacing={2}>
+    //       <Grid item xs={12} md={4} >
+    //         <CreateClubs setClubs={setClubs} />
+    //       </Grid>
+    //       <Grid item xs={12} md={8}>
+    //         <ClubHeader style={{ maxWidth: "800px", margin: "20px 0" }}>Book Clubs</ClubHeader>
+    //         <div style={{ maxWidth: "800px", margin: "20px 0" }}>
+    //           {clubs.map((club) => (
+    //             <Card key={club.id} style={{ marginBottom: '20px' }}>
+    //               <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    //                 <Typography variant="h5" component="h2" style={{ textAlign: 'center' }}>
+    //                   <Link
+    //                     to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
+    //                     style={{ color: 'black', textDecoration: 'none' }}
+    //                   >
+    //                     {club.name}
+    //                   </Link>
+    //                 </Typography>
+    //                 <iframe src={club.image}
+    //                   style={{ pointerEvents: 'none' }} />
+    //                 <Typography variant="body1" component="p">
+    //                   {club.description}
+    //                 </Typography>
+    //               </CardContent>
+    //             </Card>
+    //           ))}
+    //         </div>
+    //       </Grid>
+    //     </Grid>
+    //   </React.Fragment>
+    // </div>
+
+    <div>
+      <ClubHeader>Book Clubs</ClubHeader>
       <React.Fragment>
-        {/* <Container maxWidth="md"> */}
         <Grid container spacing={2}>
           <Grid item xs={12} md={4} >
             <CreateClubs setClubs={setClubs} />
           </Grid>
+
           <Grid item xs={12} md={8}>
-            <ClubHeader style={{ maxWidth: "800px", margin: "20px 0" }}>Book Clubs</ClubHeader>
-            <div style={{ maxWidth: "800px", margin: "20px 0" }}>
+            <CardContainer>
               {clubs.map((club) => (
-                <Card key={club.id} style={{ marginBottom: '20px' }}>
-                  <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <StyledCard key={club.id} flexBasis="25%">
+                  <CardContent>
                     <Typography variant="h5" component="h2" style={{ textAlign: 'center' }}>
                       <Link
-                        to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
-                        style={{ color: 'black', textDecoration: 'none' }}
+                        to={`/clubs/${club.id}?name=${encodeURIComponent(
+                          club.name
+                        )}`}
                       >
                         {club.name}
                       </Link>
                     </Typography>
-                    <iframe src={club.image}
-                      style={{ pointerEvents: 'none' }} />
                     <Typography variant="body1" component="p">
                       {club.description}
                     </Typography>
+                    <iframe src={club.image}
+                      style={{ pointerEvents: 'none' }} />
                   </CardContent>
-                </Card>
+                </StyledCard>
               ))}
-            </div>
+            </CardContainer>
           </Grid>
         </Grid>
       </React.Fragment>
