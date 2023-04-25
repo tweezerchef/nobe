@@ -55,6 +55,21 @@ ClubsRoute.get("/:id/posts", async (req: Request, res: Response) => {
   }
 });
 
+ClubsRoute.get('/discussions/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const discussion = await prisma.discussions.findUnique({
+      where: {
+        id,
+      },
+    });
+    res.json(discussion);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 ClubsRoute.post('/:id/posts', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { userId, body } = req.body;
