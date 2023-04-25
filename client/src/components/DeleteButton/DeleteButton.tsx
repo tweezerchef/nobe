@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 
 const DeleteButton = (props: any) => {
-  const { book, id, getUserBooks, setBooks } = props;
+  const { book, id, getUserBooks, setBooks, inventory } = props;
 
   const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     axios.delete(`/books/${id}`, {
@@ -16,7 +16,7 @@ const DeleteButton = (props: any) => {
     })
       .then(response => {
         console.log('Book removed');
-        getUserBooks();
+        getUserBooks(inventory);
         setBooks((prevBooks: any) => prevBooks.filter((b: any) => b.id !== book.id));
       })
       .catch(error => {
