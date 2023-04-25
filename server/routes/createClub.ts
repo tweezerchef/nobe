@@ -7,52 +7,30 @@ const prisma = new PrismaClient();
 const CreateClubRoute = express.Router();
 
 
-async function findOrCreateClub(name: string, description: string, image: string){
+async function findOrCreateClub(name: string, description: string, image: string) {
 
-    const newClub = await prisma.clubs.upsert({
-      where: { name: name },
-      update: {},
-      create: {name : name,  description: description, image: image},
-    });
-    return newClub;
-  }
+  const newClub = await prisma.clubs.upsert({
+    where: { name: name },
+    update: {},
+    create: { name: name, description: description, image: image },
+  });
+  return newClub;
+}
 
 CreateClubRoute.post('/', async (req: Request, res: Response) => {
- findOrCreateClub(req.body.name, req.body.description, req.body.image).then((newClub) => {
-  console.log(newClub);
- });
-
+  findOrCreateClub(req.body.name, req.body.description, req.body.image)
+    .then((newClub) =>
+      console.log(newClub)
+    )
+    .then(async () => {
+      const clubs = await prisma.clubs.findMany();
+      res.json(clubs);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Something went wrong" });
+    })
 });
-
-
-
-
-
-// async function findOrCreateBook(ISBN10: string, title: string, author: string, image_url: string) {
-//   const newbook = await prisma.Books.upsert({
-//     where: { ISBN10: ISBN10 },
-//     update: {},
-//     create: { ISBN10 : ISBN10, title: title, author: author, image: image_url},
-//   });
-//   return newbook;;
-// }
-
-
-
-
-// Review.post('/', async (req: Request, res: Response) => {
-//   const { book, rating, id } = req.body;
-//   console.log(id);
-//   const { title, author, ISBN10, image_url} = book;
-//   findOrCreateBook(ISBN10, title, author, image_url).then(newbook =>{
-//   const booksId = newbook.id;
-//   findOrCreateUserBook(booksId, id, rating).then(NewUserBook =>{
-//       console.log(NewUserBook);
-//   res.status(201).json(NewUserBook);
-//   })
-//   })
-
-
 
 
 

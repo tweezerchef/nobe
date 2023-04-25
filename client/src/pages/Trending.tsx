@@ -15,6 +15,7 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import UserStarRating from "../components/UserStarRating/UserStarRating";
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import axios from 'axios';
 import { useContext } from 'react';
@@ -116,12 +117,12 @@ function Trending() {
                   <BookmarkAddIcon />
                 </IconButton>
               </CardOverflow>
-              <Typography level="h2" sx={{ fontSize: 'md', mt: 2 }}>
+              <Typography level="h2" sx={{ fontSize: 'md', mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box',  '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical' }}>
                 <Link href="#multiple-actions" overlay underline="none">
-                  {book.title}
+                  {book.title.charAt(0).toUpperCase() + book.title.slice(1).toLowerCase()}
                 </Link>
               </Typography>
-              <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
+              <Typography level="body2" sx={{ mt: 0.5, mb: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 <Link href="#multiple-actions">{book.author}</Link>
               </Typography>
               <Divider inset="context" />
@@ -140,13 +141,12 @@ function Trending() {
                 </Typography>
                 <Divider orientation="vertical" />
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
-                  {book.rank > book.rank_last_week ? <TrendingUpIcon sx={{ color: 'green', fontSize: 'md' }} /> : book.rank < book.rank_last_week ? <TrendingDownIcon sx={{ color: 'red', fontSize: 'md' }} /> : null}
+                  {book.rank > book.rank_last_week ? <TrendingUpIcon sx={{ color: 'green', fontSize: 'md' }} /> : book.rank < book.rank_last_week ? <TrendingDownIcon sx={{ color: 'red', fontSize: 'md' }} /> : <TrendingFlatIcon sx={{ color: 'grey', fontSize: 'md' }} />}
                 </Typography>
                 <Divider orientation="vertical" />
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
                   {book.weeks_on_list} <WhatshotIcon sx={{ color: 'orange', fontSize: 'md' }} />
                 </Typography>
-                <Divider orientation="vertical" />
                 {/* <UserStarRating /> */}
               </CardOverflow>
             </Card>

@@ -17,136 +17,84 @@ interface Book {
   owned: boolean;
 }
 
-// interface Books {
-//   books: {
-//     id: string;
-//     title: string;
-//     author: string;
-//     image: string;
-//   }
-// }
-
 const Profile = () => {
 
-  //const classes = useStyles();
   const [userBooks, setUserBooks] = useState<Book[]>([]);
-  const [wishlist, setWishlist] = useState<boolean>(false);
-  const [owned, setOwned] = useState<boolean>(false);
+  const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
   const [books, setBooks] = useState<any[]>([]);
+
   const userString = localStorage.getItem('user');
   const user = userString ? JSON.parse(userString) : null;
 
-  const getUserBooks = async () => {
+  const getUserBooks = async (type?: string) => {
     try {
-      const res = await axios.get(`/books/${user.id}`);
+      let url = `/books/${user.id}`;
+      if (type) {
+        url += `/${type}`;
+      }
+      const res = await axios.get(url);
       setUserBooks(res.data);
+      console.log(res.data)
     } catch (err) {
       console.error(err);
     }
   }
+
+  useEffect(() => {
+    setBooks(userBooks.map((book) => book.books));
+  }, [userBooks, setBooks]);
+
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
-  const handleWishlistChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setWishlist(event.target.checked);
-    if (event.target.checked) {
-      setOwned(false);
-    }
-  };
+  // const handleWishlistChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setWishlist(event.target.checked);
+  //   if (event.target.checked) {
+  //     setOwned(false);
+  //   }
+  // };
 
-  const handleOwnedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setOwned(event.target.checked);
-    if (event.target.checked) {
-      setWishlist(false);
-    }
-  };
-  // const ownedBooks = userBooks.filter(book => book.owned).map((book) => book.books);
+  // const handleOwnedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setOwned(event.target.checked);
+  //   if (event.target.checked) {
+  //     setWishlist(false);
+  //   }
+  // };
+
   const ownedClicked = () => {
-    const ownedBooks = userBooks.filter(book => book.owned).map((book) => book.books);
-    setBooks(ownedBooks)
+    getUserBooks('Owned');
+    setInventory('Owned');
   }
 
-  //const wishlistBooks = userBooks.filter(book => book.wishlist).map((book) => book.books);
   const wishClicked = () => {
-    const wishlistBooks = userBooks.filter(book => book.wishlist).map((book) => book.books);
-    setBooks(wishlistBooks)
+    getUserBooks('Wishlist')
+    setInventory('Wishlist');
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const prevWishlist = wishlist;
-    const prevOwned = owned;
 
-    axios.post(`/books/${user.id}`, { title, wishlist, owned })
+    axios.post(`/books/${user.id}`, { title, inventory })
       .then(response => {
         setTitle("");
-        setWishlist(false);
-        setOwned(false);
-        getUserBooks();
+        setBooks(prevBooks => [...prevBooks, response.data]);
+        // getUserBooks();
       })
-      // .then(() => {
-      //   if (prevWishlist) {
-      //     console.log("wish")
-      //     wishClicked();
-      //   } else if (prevOwned) {
-      //     ownedClicked();
-      //   }
-      // })
       .catch(error => {
         console.error(error);
       });
   };
 
-
   useEffect(() => {
-    getUserBooks();
+    getUserBooks('Owned');
   }, [])
 
   return (
     <div >
       <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
         <Typography variant="h4">{`${user.firstName}'s`} Books</Typography>
-      </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <form onSubmit={handleSubmit} >
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12}>
-              <TextField
-                label="Book Title"
-                value={title}
-                onChange={handleTitleChange}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Grid container spacing={2} alignItems="center">
-                <Grid item>
-                  <Checkbox checked={wishlist} onChange={handleWishlistChange} />
-                </Grid>
-                <Grid item>
-                  Add to Wishlist
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <Grid container spacing={2} alignItems="center">
-                <Grid item>
-                  <Checkbox checked={owned} onChange={handleOwnedChange} />
-                </Grid>
-                <Grid item>
-                  Add to Owned Books
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <Button variant="contained" color="primary" type="submit">
-                Add Book
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%', background: 'rgb(32, 32, 35)', marginTop: '20px' }}>
@@ -155,18 +103,35 @@ const Profile = () => {
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
           </div>
         </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <form onSubmit={handleSubmit} >
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={12}>
+                <TextField
+                  label="Book Title"
+                  value={title}
+                  onChange={handleTitleChange}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button variant="contained" color="primary" type="submit">
+                  Add Book
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
         <div style={{ margin: '15px' }}>
-          <Typography variant="h5">Books</Typography>
+          <Typography variant="h5">{inventory} Books</Typography>
         </div>
         {books.length > 0 ?
-          <BookDisplay books={books} id={user.id} getUserBooks={getUserBooks} setBooks={setBooks} /> :
+          <BookDisplay books={books} id={user.id} getUserBooks={getUserBooks} setBooks={setBooks} inventory={inventory} /> :
           <Typography variant="body1">No books</Typography>
         }
       </div>
     </div>
   );
-
-
 }
 
 export default Profile;

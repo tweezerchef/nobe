@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { ClubHeader } from './style'
 import axios from "axios";
 import { useParams } from "react-router";
 
@@ -21,7 +22,7 @@ function DiscussionPosts() {
   const { id } = useParams<{ id: string }>();
   const [posts, setPosts] = useState<Post[]>([]);
   const [newPost, setNewPost] = useState("");
-  // const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const [discussionTitle, setDiscussionTitle] = useState("");
 
   useEffect(() => {
     async function getPosts() {
@@ -32,10 +33,19 @@ function DiscussionPosts() {
         console.error(error);
       }
     }
+    async function getDiscussionTitle() {
+      try {
+        const { data } = await axios.get(`/api/clubs/discussions/${id}`);
+        setDiscussionTitle(data.title);
+      } catch (error) {
+        console.error(error);
+      }
+    }
     if (id) {
       getPosts();
+      getDiscussionTitle();
     }
-  }, [id]);
+  }, [id, discussionTitle]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -66,7 +76,7 @@ function DiscussionPosts() {
 
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>Discussion Posts</h1>
+      <ClubHeader style={{ textAlign: 'center' }}>{discussionTitle}</ClubHeader>
       {posts?.map((post) => (
         <div key={post.id}>
           <h3>{post.body}</h3>
