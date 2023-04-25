@@ -17,6 +17,11 @@ const createClubs = (props: any) => {
   const { setClubs } = props;
 
   const handleSubmit = async () => {
+    if (!clubName || !clubDescription || !clubImage) {
+      alert('Please enter a value for all fields!');
+      return;
+    }
+
     const existingClubs = await axios.get('/api/clubs');
     const clubExists = existingClubs.data.some((club: { name: string; }) => club.name === clubName);
 
@@ -64,6 +69,7 @@ const createClubs = (props: any) => {
         variant="outlined"
         value={clubName}
         onChange={(e) => setClubName(e.target.value)}
+        required
       />
       <TextField
         id="club-description"
@@ -71,6 +77,7 @@ const createClubs = (props: any) => {
         variant="outlined"
         value={clubDescription}
         onChange={(e) => setClubDescription(e.target.value)}
+        required
       />
       <GifSearch setClubImage={setClubImage} />
       <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
