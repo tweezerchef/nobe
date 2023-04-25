@@ -81,10 +81,10 @@ function Clubs() {
     //             <Card key={club.id} style={{ marginBottom: '20px' }}>
     //               <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
     //                 <Typography variant="h5" component="h2" style={{ textAlign: 'center' }}>
-    //                   <Link
-    //                     to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
-    //                     style={{ color: 'black', textDecoration: 'none' }}
-    //                   >
+    // <Link
+    //   to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
+    //   style={{ color: 'black', textDecoration: 'none' }}
+    // >
     //                     {club.name}
     //                   </Link>
     //                 </Typography>
@@ -102,34 +102,38 @@ function Clubs() {
     //   </React.Fragment>
     // </div>
 
+
+    //SECOND REFACTOR - TOMS
     <div>
-      <ClubHeader>Book Clubs</ClubHeader>
       <React.Fragment>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4} >
+            <ClubHeader>Create a Club</ClubHeader>
             <CreateClubs setClubs={setClubs} />
           </Grid>
 
           <Grid item xs={12} md={8}>
+            <ClubHeader>Book Clubs</ClubHeader>
             <CardContainer>
               {clubs.map((club) => (
                 <StyledCard key={club.id} flexBasis="25%">
-                  <CardContent>
-                    <Typography variant="h5" component="h2" style={{ textAlign: 'center' }}>
-                      <Link
-                        to={`/clubs/${club.id}?name=${encodeURIComponent(
-                          club.name
-                        )}`}
-                      >
+                  <Link
+                    to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
+                    style={{ color: 'black', textDecoration: 'none', fontSize: '24px', fontWeight: 600, display: 'block', width: '100%' }}
+                  >
+                    <iframe
+                      src={club.image}
+                      style={{ pointerEvents: 'none' }}
+                    />
+                    <CardContent>
+                      <Typography variant="h5" component="h2" style={{ textAlign: 'center', marginBottom: '10px' }}>
                         {club.name}
-                      </Link>
-                    </Typography>
-                    <Typography variant="body1" component="p">
-                      {club.description}
-                    </Typography>
-                    <iframe src={club.image}
-                      style={{ pointerEvents: 'none' }} />
-                  </CardContent>
+                      </Typography>
+                      <Typography variant="body1" component="p" style={{ fontSize: '18px', color: 'gray' }}>
+                        {club.description}
+                      </Typography>
+                    </CardContent>
+                  </Link>
                 </StyledCard>
               ))}
             </CardContainer>
