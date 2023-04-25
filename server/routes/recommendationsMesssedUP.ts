@@ -15,6 +15,10 @@ async function findRandomRows(limit: number) {
   const randomRows = shuffledRows.slice(0, limit);
   return randomRows;
 }
+const callOpenAI = async (content: string) =>{
+  const response = axios.get(`http://localhost:8080/openai?content=${content}`)
+return response
+}
 
 function getISBN(volumeInfo: any) {
   const identifiers = volumeInfo.industryIdentifiers;
@@ -32,18 +36,13 @@ function getISBN(volumeInfo: any) {
 }
 
 async function getGoogleBooksData(title: string) {
-  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=intitle=${title}&key=`);
+  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=intitle=${title}&key=${process.env.GOOGLE_BOOKS}`);
   if (response.data.items && response.data.items.length > 0) {
     return response.data.items[0].volumeInfo;
   } else {
     console.warn(`No items found in Google Books response for title: ${title}`);
     return {}; // or return an empty object: {}
   }
-}
-function extractBookTitles(bookData: string) {
-  const regex = /\"(.*?)\"/g;
-  const matches = bookData.match(regex);
-  return matches;
 }
 
 
@@ -100,13 +99,25 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
     return acc;
   },[]).join(', ')
 
-  const content:string = `Please respond with  20 book titles in quotes with each separated by commas with no additional characters or information besides the title and no duplicate titles, for somebody that likes these books ${topTitles} and dislikes these ${lowTitles} please try to create unique suggestions ones, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books`;
+  const content:string = `Please return a JSON formated array with  20 book titles, one in each element of the array for somebody that likes these books ${topTitles} and dislikes these ${lowTitles} please try to create unique suggestions ones, find unique correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of books`;
 
-  axios
-  .get(`http://localhost:8080/openai?content=${content}`)
-  .then((response) => {
-    //console.log("yes", extractBookTitles(response.data.content));
-    return response.data.content.split(',')})
+  // axios
+  // .get(`http://localhost:8080/openai?content=${content}`)
+  const call = async (): Promise<any> => {
+    try {
+      const response = await callOpenAI(content);
+
+      const data = response.data.content;
+      return data || call();
+    } catch (error) {
+      console.error("Error parsing JSON:");
+      return call();
+    }
+  };
+
+call()
+.then((response: any) => {console.log(response)
+  return [...new Set(response)]})
   .then((data) => {
     console.log(data);
     const promises = data.map((book: any) => {
@@ -125,7 +136,7 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
     return Promise.all(promises);
   })
   .then(() => res.status(200).send(responseArray))
-  .catch((error) => console.error('Error:', error.error));
+  .catch((error) => console.error('Error:', error.data));
 });
 
 
