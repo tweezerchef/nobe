@@ -178,7 +178,7 @@ return (
     </Grid>
     {/* <button type="button" onClick={getBooksNearMe}>Search for Books</button> */}
     <BookDisplay books={displayBooks} id={id} />
-    <OpenIconSpeedDial/>
+    {/* <OpenIconSpeedDial/> */}
     </div>
   )
 
