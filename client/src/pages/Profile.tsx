@@ -22,7 +22,6 @@ const Profile = () => {
   const [userBooks, setUserBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
-  const [books, setBooks] = useState<any[]>([]);
 
   const userString = localStorage.getItem('user');
   const user = userString ? JSON.parse(userString) : null;
@@ -41,27 +40,11 @@ const Profile = () => {
     }
   }
 
-  useEffect(() => {
-    setBooks(userBooks.map((book) => book.books));
-  }, [userBooks, setBooks]);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
-  // const handleWishlistChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setWishlist(event.target.checked);
-  //   if (event.target.checked) {
-  //     setOwned(false);
-  //   }
-  // };
-
-  // const handleOwnedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setOwned(event.target.checked);
-  //   if (event.target.checked) {
-  //     setWishlist(false);
-  //   }
-  // };
 
   const ownedClicked = () => {
     getUserBooks('Owned');
@@ -79,7 +62,7 @@ const Profile = () => {
     axios.post(`/books/${user.id}`, { title, inventory })
       .then(response => {
         setTitle("");
-        setBooks(prevBooks => [...prevBooks, response.data]);
+        setUserBooks(prevUserBooks => [...prevUserBooks, response.data]);
         // getUserBooks();
       })
       .catch(error => {
@@ -125,8 +108,8 @@ const Profile = () => {
         <div style={{ margin: '15px' }}>
           <Typography variant="h5">{inventory} Books</Typography>
         </div>
-        {books.length > 0 ?
-          <BookDisplay books={books} id={user.id} getUserBooks={getUserBooks} setBooks={setBooks} inventory={inventory} /> :
+        {userBooks.length > 0 ?
+          <BookDisplay userBooks={userBooks} id={user.id} getUserBooks={getUserBooks} setUserBooks={setUserBooks} inventory={inventory} /> :
           <Typography variant="body1">No books</Typography>
         }
       </div>

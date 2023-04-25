@@ -101,7 +101,7 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
           UserBooks: true,
         },
       });
-
+      console.log(createdBook)
       res.json(createdBook);
     }
   } catch (error) {
