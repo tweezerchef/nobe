@@ -16,7 +16,15 @@ const createClubs = (props: any) => {
   const [clubImage, setClubImage] = useState('');
   const { setClubs } = props;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const existingClubs = await axios.get('/api/clubs');
+    const clubExists = existingClubs.data.some((club: { name: string; }) => club.name === clubName);
+
+    if (clubExists) {
+      alert('Club name already exists!');
+      return;
+    }
+
     let body = {
       name: clubName,
       description: clubDescription,
