@@ -1,16 +1,14 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import GifSearch from './GifSearch';
 import axios from 'axios';
 import { Button } from '@mui/material';
-import Clubs from '../../pages/Clubs';
-interface CreateClubsProps {
-  setClubs: React.Dispatch<React.SetStateAction<typeof Clubs[]>>;
-}
 
-
+// interface CreateClubsProps {
+//   setClubs: React.Dispatch<React.SetStateAction<typeof Clubs[]>>;
+// }
 
 const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
@@ -18,39 +16,36 @@ const createClubs = (props: any) => {
   const [clubImage, setClubImage] = useState('');
   const { setClubs } = props;
 
+  const handleSubmit = async () => {
+    if (!clubName || !clubDescription || !clubImage) {
+      alert('Please enter a value for all fields!');
+      return;
+    }
 
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
+    const existingClubs = await axios.get('/api/clubs');
+    const clubExists = existingClubs.data.some((club: { name: string; }) => club.name === clubName);
 
-  //   // Check if the new club name already exists in the database
-  //   const existingClubs = await axios.get('/api/clubs');
-  //   const clubExists = existingClubs.data.some((club: { name: string; }) => club.name === newClubName);
+    if (clubExists) {
+      alert('Club name already exists!');
+      return;
+    }
 
-  //   if (clubExists) {
-  //     alert('Club name already exists!');
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await axios.post('/api/create-club', { name: clubName, description: clubDescription, image: clubImage});
-  //     setClubs([...clubs, response.data]); // add the new club to the state variable
-  //     // setShowForm(false); // hide the form after submission
-  //     setClubName(''); // reset the input box
-  //     setClubDescription('');
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  const handleSubmit = () => {
     let body = {
       name: clubName,
       description: clubDescription,
       image: clubImage
     }
-    axios.post('/api/create-club', body)
-      .then(data => {
-        console.log(data);
-      })
+    try {
+      axios.post('/api/create-club', body)
+        .then(data => {
+          setClubs(data.data);
+          setClubName('');
+          setClubDescription('');
+          setClubImage('');
+        })
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -74,6 +69,7 @@ const createClubs = (props: any) => {
         variant="outlined"
         value={clubName}
         onChange={(e) => setClubName(e.target.value)}
+        required
       />
       <TextField
         id="club-description"
@@ -81,6 +77,7 @@ const createClubs = (props: any) => {
         variant="outlined"
         value={clubDescription}
         onChange={(e) => setClubDescription(e.target.value)}
+        required
       />
       <GifSearch setClubImage={setClubImage} />
       <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
@@ -88,18 +85,7 @@ const createClubs = (props: any) => {
       </Button>
     </Box>
   );
-
-
-
 }
-
-
-
-
-
-
-
-
 
 
 export default createClubs;

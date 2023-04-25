@@ -33,12 +33,14 @@ function ResponsiveAppBar() {
 
   // const user = localStorage.getItem("user");
 
-  // if (!user) {
-  //   throw new Error("No user found");
-  // }
+  const user = localStorage.getItem("user");
 
-  // const parsed = JSON.parse(user)
-  // console.log(parsed);
+  if (!user) {
+    throw new Error("No user found");
+  }
+
+  const parsed = JSON.parse(user)
+  console.log(parsed);
 
 
 
