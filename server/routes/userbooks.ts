@@ -14,9 +14,15 @@ const UserBooks = express.Router();
 
 UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { title, wishlist, owned } = req.body;
+    const { title, inventory } = req.body;
     const { id } = req.params;
-
+    let wishlist;
+    let owned;
+    if (inventory === 'Wishlist') {
+      wishlist = true;
+    } else {
+      owned = true;
+    }
     const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?key=&q=intitle:${title}`);
     const bookData = response.data.items[0].volumeInfo;
     const isbn10 = bookData.industryIdentifiers[1].identifier;
@@ -25,11 +31,14 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
       where: {
         ISBN10: isbn10,
       },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        author: true,
+        image: true,
         UserBooks: true,
       },
     });
-
     let userBook;
     if (existingBook) {
       userBook = await prisma.userBooks.findUnique({
@@ -41,9 +50,20 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
         },
       });
     }
-
     if (userBook) {
-      res.json(userBook);
+      const updatedUserBook = await prisma.userBooks.update({
+        where: { id: userBook.id },
+        data: {
+          wishlist: inventory === 'Wishlist',
+          owned: inventory === 'Owned',
+        },
+        include: { books: true },
+      });
+      const bookWithUserBook = {
+        ...existingBook,
+        UserBooks: [updatedUserBook],
+      };
+      res.json(bookWithUserBook);
     } else if (existingBook) {
       userBook = await prisma.userBooks.create({
         data: {
@@ -52,19 +72,22 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
           user: { connect: { id: id } },
           books: { connect: { id: existingBook.id } },
         },
-        include: {
-          books: true,
-        },
+        include: { books: true },
       });
-      res.json(userBook);
+      const bookWithUserBook = {
+        ...existingBook,
+        UserBooks: [userBook],
+      };
+      res.json(bookWithUserBook);
     } else {
+      const thumbnail = bookData.imageLinks?.thumbnail || 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
       const createdBook = await prisma.books.create({
         data: {
           title: bookData.title,
           author: bookData.authors[0],
           description: bookData.description,
           // genre: { create: bookData.categories.map((name: string) => ({ name })) },
-          image: bookData.imageLinks.thumbnail,
+          image: thumbnail,
           ISBN10: isbn10,
           UserBooks: {
             create: {
@@ -104,6 +127,51 @@ UserBooks.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
   } catch (err) {
     console.error(err)
     res.status(500).json({ error: 'Something went wrong' })
+  }
+});
+
+interface UserBooksQuery {
+  where: {
+    userId: string;
+    owned?: boolean;
+    wishlist?: boolean;
+  };
+  include: {
+    books: true;
+  };
+}
+
+UserBooks.get('/:id/:type', async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { id, type } = req.params;
+
+    let userBooksQuery: UserBooksQuery = {
+      where: {
+        userId: id
+      },
+      include: {
+        books: true
+      }
+    };
+
+    if (type === 'Owned') {
+      userBooksQuery.where = {
+        ...userBooksQuery.where,
+        owned: true
+      };
+    } else if (type === 'Wishlist') {
+      userBooksQuery.where = {
+        ...userBooksQuery.where,
+        wishlist: true
+      };
+    }
+
+    const userBooks = await prisma.userBooks.findMany(userBooksQuery);
+
+    res.json(userBooks);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong' });
   }
 });
 
