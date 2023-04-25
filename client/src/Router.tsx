@@ -18,6 +18,7 @@ import Landing from './pages/Landing';
 import Trending from './pages/Trending';
 import UserRecoInputPage from './pages/UserRecoInput';
 import Recommended from './pages/Recommended';
+import ReadingSpots from './pages/ReadingSpots';
 
 interface User {
     email: string;
@@ -55,6 +56,7 @@ function Router() {
             <Route path="/trending" element={<Trending />} />
             <Route path="/user-reco-input" element={<UserRecoInputPage />} />
             <Route path="/recommended" element={<Recommended />} />
+            <Route path="/reading-spots" element={<ReadingSpots />} />
 
         </Routes>
     );
