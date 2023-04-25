@@ -125,7 +125,7 @@ function Clubs() {
                       src={club.image}
                       style={{ pointerEvents: 'none' }}
                     />
-                    <CardContent>
+                    <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                       <Typography variant="h5" component="h2" style={{ textAlign: 'center', marginBottom: '10px' }}>
                         {club.name}
                       </Typography>
