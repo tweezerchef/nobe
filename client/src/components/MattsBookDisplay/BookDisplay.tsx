@@ -8,13 +8,14 @@ import Link from '@mui/joy/Link';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import DeleteButton from '../DeleteButton/DeleteButton';
+import { Link as RouterLink } from 'react-router-dom';
+
 
 
 
 
 const BookDisplay = (props: any) => {
     const { userBooks: array, id, getUserBooks, setUserBooks, inventory } = props;
-    array.map((userBook: any) => console.log(userBook))
     return (
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
             {array.length === 0 ? (
@@ -24,11 +25,9 @@ const BookDisplay = (props: any) => {
                     <Card key={userBook.books.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px' }}>
                         <CardOverflow>
                             <AspectRatio ratio="2">
-                                <img
-                                    src={userBook.books.image}
-                                    loading="lazy"
-                                    alt=""
-                                />
+                                <RouterLink to={`/profile/${id}`}>
+                                    <img src={userBook.books.image} loading="lazy" alt="" />
+                                </RouterLink>
                             </AspectRatio>
                             <IconButton
                                 aria-label="Like minimal photography"

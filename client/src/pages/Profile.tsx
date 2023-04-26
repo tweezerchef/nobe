@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
@@ -18,7 +19,6 @@ interface Book {
 }
 
 const Profile = () => {
-
   const [userBooks, setUserBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
@@ -26,25 +26,24 @@ const Profile = () => {
   const userString = localStorage.getItem('user');
   const user = userString ? JSON.parse(userString) : null;
 
+  let id: string = useParams().id || user?.id;
+
   const getUserBooks = async (type?: string) => {
     try {
-      let url = `/books/${user.id}`;
+      let url = `/books/${id}`;
       if (type) {
         url += `/${type}`;
       }
       const res = await axios.get(url);
       setUserBooks(res.data);
-      console.log(res.data)
     } catch (err) {
       console.error(err);
     }
   }
 
-
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
-
 
   const ownedClicked = () => {
     getUserBooks('Owned');
@@ -59,11 +58,10 @@ const Profile = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    axios.post(`/books/${user.id}`, { title, inventory })
+    axios.post(`/books/${id}`, { title, inventory })
       .then(response => {
         setTitle("");
-        setUserBooks(prevUserBooks => [...prevUserBooks, response.data]);
-        // getUserBooks();
+        getUserBooks(inventory);
       })
       .catch(error => {
         console.error(error);
@@ -82,8 +80,8 @@ const Profile = () => {
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%', background: 'rgb(32, 32, 35)', marginTop: '20px' }}>
           <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%' }}>
-            <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
+            <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "center" }}>
@@ -109,7 +107,7 @@ const Profile = () => {
           <Typography variant="h5">{inventory} Books</Typography>
         </div>
         {userBooks.length > 0 ?
-          <BookDisplay userBooks={userBooks} id={user.id} getUserBooks={getUserBooks} setUserBooks={setUserBooks} inventory={inventory} /> :
+          <BookDisplay userBooks={userBooks} id={id} getUserBooks={getUserBooks} setUserBooks={setUserBooks} inventory={inventory} /> :
           <Typography variant="body1">No books</Typography>
         }
       </div>

@@ -52,7 +52,7 @@ function Router() {
             <Route path="/clubs/:id/discussion/:id" element={<DiscussionPosts />} />
             <Route path="/trending" element={<Trending />} />
             <Route path="/locations" element={<Locations />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:id?" element={<Profile />} />
             <Route path="/trending" element={<Trending />} />
             <Route path="/user-reco-input" element={<UserRecoInputPage />} />
             <Route path="/recommended" element={<Recommended />} />
