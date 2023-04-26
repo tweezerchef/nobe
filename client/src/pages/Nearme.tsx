@@ -9,6 +9,15 @@ import Slider from '@mui/material/Slider';
 import ReactiveButton from 'reactive-button';
 import Grid from '@mui/material/Grid';
 import OpenIconSpeedDial from "../components/ActionButton/ActionButton";
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Card from "@mui/joy/Card/Card";
+import { CardContent } from "@material-ui/core";
+import FormControl from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
+
 
 
 interface Book {
@@ -46,11 +55,12 @@ const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
 const [displayBooks, setDisplayBooks] = useState<any>([])
 const [buttonState, setButtonState] = useState('idle');
 const [locationState, setLocationState] = useState('idle');
+const [radiusState, setRadiusState] = useState('idle');
 const [userLongitude, setUserLongitude] = useState(0);
 const [userLatitude, setUserLatitude] = useState(0);
 
 const  saveLocation = async () => {
-  setLocationState('loading');
+  setLocationState('saving');
   try {
     const res = await axios.put(`/location/${user.id}`, {
       longitude: userLongitude,
@@ -60,6 +70,22 @@ const  saveLocation = async () => {
     setTimeout(() => {
       setLocationState('success');
     }, 2000);
+  } catch (err) {
+    console.error(err);
+  }
+
+}
+
+const saveRadius = async () => {
+  setRadiusState('saving');
+  try {
+    const res = await axios.put(`/location/${user.id}`, {
+      radius: radiusState
+    });
+    console.log(res)
+    setTimeout(() => {
+      setRadiusState('success');
+    }, 1500);
   } catch (err) {
     console.error(err);
   }
@@ -131,8 +157,9 @@ const onPlaceSelect = (value: any) => {
 
 return (
    <div>
-<Grid style={{ display: "flex", justifyContent: "center"}} container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+<Grid style={{ display: "flex", justifyContent: "center"}} container rowSpacing={1} columnSpacing={{ xs: 1 }}>
 <Grid xs={3}>
+<Card sx={{ height: 150, width: 300 }}>
       <h1>Enter Address</h1>
       <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
         <GeoapifyGeocoderAutocomplete
@@ -141,9 +168,30 @@ return (
           suggestionsChange={onSuggectionChange}
         />
     </GeoapifyContext>
+    </Card>
+    </Grid>
+    <Grid xs={3}>
+    <Card sx={{ height: 150, width: 300 }}>
+    <h1>Set Radius</h1>
+    <FormControl sx={{ m: 1, width: '18ch' }} variant="outlined">
+          <OutlinedInput sx={{height: '3ch' }}
+            id="outlined-adornment-weight"
+            endAdornment={<InputAdornment position="end">mi</InputAdornment>}
+            aria-describedby="outlined-weight-helper-text"
+            onChange={handleRadiusChange}
+            value={radius}
+          />
+          <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
+          <Slider defaultValue={0} value={radius}
+      onChange={handleRadiusChange}aria-label="Default" valueLabelDisplay="auto" />
+        </FormControl>
+    </Card>
+    </Grid>
+    </Grid>
+    <ButtonGroup style={{ display: "flex", justifyContent: "center"}}>
     <ReactiveButton
       rounded
-      size="large"
+      size="small"
       buttonState={locationState}
       idleText="Save Location"
       loadingText="Loading"
@@ -151,22 +199,19 @@ return (
       onClick={saveLocation}
       color="blue"
     />
-    </Grid>
-    <Grid xs={3}>
-    <h1>Set Range in Miles</h1>
-    <input
-      type="number"
-      value={radius}
-      onChange={handleRadiusChange}
-      placeholder="Set Range"
-    />
- <Box width={175}>
-<Slider defaultValue={0} value={radius}
-      onChange={handleRadiusChange}aria-label="Default" valueLabelDisplay="auto" />
-    </Box>
     <ReactiveButton
       rounded
-      size="large"
+      size="small"
+      buttonState={radiusState}
+      idleText="Save Radius"
+      loadingText="Saving"
+      successText="Done"
+      onClick={saveRadius}
+      color="blue"
+    />
+     <ReactiveButton
+      rounded
+      size="small"
       buttonState={buttonState}
       idleText="Search For Books"
       loadingText="Loading"
@@ -174,11 +219,8 @@ return (
       onClick={getBooksNearMe}
       color="blue"
     />
-    </Grid>
-    </Grid>
-    {/* <button type="button" onClick={getBooksNearMe}>Search for Books</button> */}
+    </ButtonGroup>
     <BookDisplay books={displayBooks} id={id} />
-    {/* <OpenIconSpeedDial/> */}
     </div>
   )
 
