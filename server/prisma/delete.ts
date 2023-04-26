@@ -33,7 +33,7 @@ async function deleteAllUsers() {
       // Delete all rows in the clubs table
       const numDeleted = await prisma.clubs.deleteMany()
 
-      console.log(`Deleted ${numDeleted} clubs`)
+     // console.log(`Deleted ${numDeleted} clubs`)
     } catch (e) {
       console.error(e)
     } finally {

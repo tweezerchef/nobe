@@ -57,7 +57,7 @@ function Locations() {
         longitude: userLongitude,
         latitude: userLatitude
       });
-      console.log(res)
+      //console.log(res)
       setTimeout(() => {
         setLocationState('success');
       }, 2000);

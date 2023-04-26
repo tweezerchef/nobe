@@ -19,9 +19,9 @@ async function findOrCreateClub(name: string, description: string, image: string
 
 CreateClubRoute.post('/', async (req: Request, res: Response) => {
   findOrCreateClub(req.body.name, req.body.description, req.body.image)
-    .then((newClub) =>
+    .then((newClub) =>(
       console.log(newClub)
-    )
+    ))
     .then(async () => {
       const clubs = await prisma.clubs.findMany();
       res.json(clubs);

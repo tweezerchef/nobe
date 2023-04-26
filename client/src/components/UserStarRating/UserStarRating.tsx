@@ -20,7 +20,6 @@ const UserStarRating = (props: any) => {
 
     const handleRatingChange = (event: React.ChangeEvent<{}>, newValue: number | null) => {
 
-        console.log(book)
         //     Make an API call to update the rating on the server
         axios.post('/review', { rating: newValue, book: book, id: id })
             .then(response => {

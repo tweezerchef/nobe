@@ -141,7 +141,6 @@ app.post("/signup", async (req, res) => {
 
 app.get("/Login", async (req, res) => {
   const email = req.query.email as string;
-  console.log(email);
   const profile = await prisma.user.findFirst({
     where: {
       email: email,
@@ -170,7 +169,6 @@ app.get("/Login", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  console.log(req.body);
   try {
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);

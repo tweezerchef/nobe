@@ -82,7 +82,6 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
   .then((response) => {
     return response.data.split(',')})
     .then(async (data) => {
-      console.log(data);
       const promises = data.map(async (book: any) => {
         const data = await axios.get(`http://localhost:8080/google-books?title=${book}`);
        const transFormedData = data.data

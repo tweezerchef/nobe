@@ -20,7 +20,7 @@ function Home() {
     // else {
     const userContext = useContext(UserContext);
     const user = userContext?.user;
-    console.log(user)
+
 
     return (
         <>

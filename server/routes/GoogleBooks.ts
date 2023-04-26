@@ -49,7 +49,6 @@ function getISBN(volumeInfo: any) {
     if (!title) {
         return res.status(400).send('Please provide a valid book title.');
     }
-    console.log(title)
     try {
     const bookData = await getGoogleBooksData(title);
     const transformedData = {

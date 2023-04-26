@@ -51,7 +51,7 @@ function Trending() {
 
     try {
       await axios.post('/api/wishlist', { isbn: isbn, title: title, author: author, email: email });
-      console.log("Added to wishlist");
+      // console.log("Added to wishlist");
     } catch (error) {
       console.error(error);
     }

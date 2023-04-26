@@ -17,7 +17,7 @@ const UserRecoInputPage = () => {
     const [books, setBooks] = useState([]);
     useEffect(() => {
         axios.get('/recommendations/random')
-            .then(res => { console.log(res.data), setBooks(res.data) })
+            .then(res => { setBooks(res.data) })
         //.then(data => setBooks(data));
     }, []);
 
