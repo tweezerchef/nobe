@@ -1,3 +1,4 @@
+import { useState } from "react";
 import usePlacesAutoComplete, { getGeocode, getLatLng } from "use-places-autocomplete";
 import { Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption } from "@reach/combobox";
 import "@reach/combobox/styles.css";
@@ -5,9 +6,10 @@ import "../../styles/mapstyles.css";
 
 type PlacesProps = {
   setOffice: (position: google.maps.LatLngLiteral) => void;
+  setAddress: React.Dispatch<React.SetStateAction<string>>;
 };
 
-function Places({ setOffice }: PlacesProps) {
+function Places({ setOffice, setAddress }: PlacesProps) {
   const {
     ready,
     value,
@@ -21,11 +23,11 @@ function Places({ setOffice }: PlacesProps) {
   const handleSelect = async (val: string) => {
     setValue(val, false);
     clearSuggestions();
-
     const results = await getGeocode({ address: val });
     const { lat, lng } = await getLatLng(results[0]);
     setOffice({ lat, lng });
-  }
+    setAddress(val); // set the selected address in the state
+  };
 
   return (
     <Combobox onSelect={handleSelect}>
@@ -37,7 +39,10 @@ function Places({ setOffice }: PlacesProps) {
       <ComboboxPopover>
         <ComboboxList>
           {status === "OK" && data.map(({ place_id, description }) => (
-            <ComboboxOption key={place_id} value={description} />
+            <ComboboxOption
+              key={place_id}
+              value={description}
+            />
           ))}
         </ComboboxList>
       </ComboboxPopover>

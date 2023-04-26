@@ -1,18 +1,20 @@
 import { useState, useMemo, useCallback, useRef } from "react";
-import { GoogleMap, Marker, DirectionsRenderer, Circle, MarkerClusterer } from "@react-google-maps/api";
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Places from "./places";
 import "../../styles/mapstyles.css";
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-
-import { SpotContainer, Controls, Map, MapContainer } from "../../pages/style";
+// import { SpotContainer, Controls, Map, MapContainer } from "../../pages/style";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
-type DirectionsResult = google.maps.DirectionsResult;
 type MapOptions = google.maps.MapOptions;
 
 
 function ReadingSpotsMap() {
   const [office, setOffice] = useState<LatLngLiteral>();
+  // console.log("office data", office);
+  const [address, setAddress] = useState<string>("");
+  // console.log("address data", address);
+
+  const [showInfoWindow, setShowInfoWindow] = useState(false);
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(() => ({ lat: 29.9511, lng: -90.0715 }), []);
   const options = useMemo<MapOptions>(() => ({
@@ -23,14 +25,20 @@ function ReadingSpotsMap() {
 
   const onLoad = useCallback((map: any) => (mapRef.current = map), []);
 
+  const handleMarkerClick = useCallback(() => {
+    setShowInfoWindow((prev) => !prev);
+  }, []);
+
   return (
     <div className="spots-container">
       <div className="controls">
         <h1>What are your favorite reading spots?</h1>
-        <Places setOffice={(position: any) => {
-          setOffice(position);
-          mapRef.current?.panTo(position);
-        }}
+        <Places
+          setOffice={(position: any) => {
+            setOffice(position);
+            mapRef.current?.panTo(position);
+          }}
+          setAddress={setAddress}
         />
       </div>
       <div className="spots-map">
@@ -41,15 +49,25 @@ function ReadingSpotsMap() {
           options={options}
           onLoad={onLoad}
         >
-          {office && <Marker
-            position={office}
-            icon={{
-              url: "http://maps.google.com/mapfiles/kml/shapes/library_maps.png",
-              // scaledSize: new window.google.maps.Size(40, 40),
-              // origin: new window.google.maps.Point(0, 0),
-              // anchor: new window.google.maps.Point(20, 20),
-            }}
-          />}
+          {office && (
+            <Marker
+              position={office}
+              onClick={handleMarkerClick}
+              icon={{
+                url: "http://maps.google.com/mapfiles/kml/shapes/library_maps.png",
+              }}
+            >
+              {showInfoWindow && (
+                <InfoWindow
+                  onCloseClick={handleMarkerClick}
+                  position={office}
+                  options={{ maxWidth: 150 }}
+                >
+                  <div>{address}</div>
+                </InfoWindow>
+              )}
+            </Marker>
+          )}
         </GoogleMap>
       </div>
     </div>
