@@ -39,7 +39,9 @@ function ReadingSpotsMap() {
           mapContainerClassName="map-container"
           options={options}
           onLoad={onLoad}
-        ></GoogleMap>
+        >
+          {office && <Marker position={office} />}
+        </GoogleMap>
       </div>
     </div>
 

@@ -146,6 +146,12 @@ function ResponsiveAppBar() {
                     Books Near Me</Link>
                 </Typography>
               </MenuItem>
+              {/* <MenuItem onClick={handleOpenUserMenu}>
+                <Typography textAlign="center">
+                  <Link to="/reading-spots">
+                    Top Reading Spots</Link>
+                </Typography>
+              </MenuItem> */}
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
                   <Link to="/user-reco-input">
