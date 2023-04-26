@@ -10,21 +10,35 @@ datasource db {
 }
 
 model User {
-  id          String        @id @default(uuid())
-  firstName   String
-  username    String?       @unique
-  email       String
-  googleId    String        @unique
-  lastName    String?
-  picture     String?
-  token       String?
-  latitude    Float?
-  longitude   Float?
-  radius      Int?
-  clubMembers ClubMembers?
-  Discussions Discussions[]
-  Posts       Posts[]
-  books       UserBooks[]
+  id               String             @id @default(uuid())
+  firstName        String
+  username         String?            @unique
+  email            String
+  googleId         String             @unique
+  lastName         String?
+  picture          String?
+  token            String?
+  latitude         Float?
+  longitude        Float?
+  radius           Int?
+  clubMembers      ClubMembers[]
+  Discussions      Discussions[]
+  Posts            Posts[]
+  books            UserBooks[]
+  sentMessages     DirectMessage[]    @relation("sentMessages")
+  receivedMessages DirectMessage[]    @relation("receivedMessages")
+  DiscussionsUsers DiscussionsUsers[]
+  PostsUsers       PostsUsers[]
+}
+
+model DirectMessage {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  text        String
+  sender      User     @relation("sentMessages", fields: [senderId], references: [id])
+  senderId    String
+  recipient   User     @relation("receivedMessages", fields: [recipientId], references: [id])
+  recipientId String
 }
 
 model Books {
@@ -80,39 +94,66 @@ model Clubs {
   createdBy   String?
   description String?
   image       String?
-  clubMembers ClubMembers?
+  clubMembers ClubMembers[]
   Discussions Discussions[]
 }
 
 model ClubMembers {
   id     String @id @default(uuid())
-  userId String @unique
-  clubId String @unique
+  userId String
+  clubId String
   club   Clubs  @relation(fields: [clubId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, clubId], name: "userId_clubId")
 }
 
 model Discussions {
-  id      String  @id @default(uuid())
-  userId  String
-  title   String
-  clubsId String
-  bookId  String?
-  rating  String?
-  books   Books?  @relation(fields: [bookId], references: [id])
-  clubs   Clubs   @relation(fields: [clubsId], references: [id])
-  creator User    @relation(fields: [userId], references: [id])
-  Posts   Posts[]
+  id               String             @id @default(uuid())
+  userId           String
+  title            String
+  clubsId          String
+  bookId           String?
+  thumbsUp         Int                @default(0)
+  thumbsDown       Int                @default(0)
+  books            Books?             @relation(fields: [bookId], references: [id])
+  clubs            Clubs              @relation(fields: [clubsId], references: [id])
+  creator          User               @relation(fields: [userId], references: [id])
+  Posts            Posts[]
+  DiscussionsUsers DiscussionsUsers[]
+}
+
+model DiscussionsUsers {
+  id           String      @id @default(uuid())
+  discussion   Discussions @relation(fields: [discussionId], references: [id])
+  discussionId String
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+  thumbsUp     Boolean     @default(false)
+  thumbsDown   Boolean     @default(false)
 }
 
 model Posts {
-  id            String      @id @default(uuid())
+  id            String       @id @default(uuid())
   userId        String
   body          String
   discussionsId String
-  createdAt     DateTime    @default(now())
-  discussion    Discussions @relation(fields: [discussionsId], references: [id])
-  user          User        @relation(fields: [userId], references: [id])
+  thumbsUp      Int          @default(0)
+  thumbsDown    Int          @default(0)
+  createdAt     DateTime     @default(now())
+  discussion    Discussions  @relation(fields: [discussionsId], references: [id])
+  user          User         @relation(fields: [userId], references: [id])
+  PostsUsers    PostsUsers[]
+}
+
+model PostsUsers {
+  id         String  @id @default(uuid())
+  post       Posts   @relation(fields: [postId], references: [id])
+  postId     String
+  user       User    @relation(fields: [userId], references: [id])
+  userId     String
+  thumbsUp   Boolean @default(false)
+  thumbsDown Boolean @default(false)
 }
 
 model spatial_ref_sys {
