@@ -2,6 +2,7 @@ import { useState, useMemo, useCallback, useRef } from "react";
 import { GoogleMap, Marker, DirectionsRenderer, Circle, MarkerClusterer } from "@react-google-maps/api";
 import Places from "./places";
 import "../../styles/mapstyles.css";
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 import { SpotContainer, Controls, Map, MapContainer } from "../../pages/style";
 
@@ -40,7 +41,15 @@ function ReadingSpotsMap() {
           options={options}
           onLoad={onLoad}
         >
-          {office && <Marker position={office} />}
+          {office && <Marker
+            position={office}
+            icon={{
+              url: "http://maps.google.com/mapfiles/kml/shapes/library_maps.png",
+              // scaledSize: new window.google.maps.Size(40, 40),
+              // origin: new window.google.maps.Point(0, 0),
+              // anchor: new window.google.maps.Point(20, 20),
+            }}
+          />}
         </GoogleMap>
       </div>
     </div>
