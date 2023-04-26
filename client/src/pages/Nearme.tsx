@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete'
@@ -17,7 +17,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-
+import UserContext from '../hooks/Context'
 
 
 interface Book {
@@ -39,13 +39,12 @@ interface Props {
 }
 
 
-const userString = localStorage.getItem('user');
-const user = userString ? JSON.parse(userString) : null;
-let id: string
-user ? (id = user.id) : (id = '');
-
 
 function Locations() {
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const id = user?.id;
 
 const [longitude, setLongitude] = useState(0);
 const [latitude, setLatitude] = useState(0);
@@ -60,13 +59,14 @@ const [userLongitude, setUserLongitude] = useState(0);
 const [userLatitude, setUserLatitude] = useState(0);
 
 const  saveLocation = async () => {
-  setLocationState('saving');
+  setLocationState('loading');
+  console.log(userLongitude, userLongitude, 63)
   try {
-    const res = await axios.put(`/location/${user.id}`, {
+    const res = await axios.put(`/location/${id}`, {
       longitude: userLongitude,
       latitude: userLatitude
     });
-    console.log(res)
+    console.log(res, 68)
     setTimeout(() => {
       setLocationState('success');
     }, 2000);
@@ -77,12 +77,12 @@ const  saveLocation = async () => {
 }
 
 const saveRadius = async () => {
-  setRadiusState('saving');
+  setRadiusState('loading');
   try {
-    const res = await axios.put(`/location/${user.id}`, {
+    const res = await axios.put(`/location/${id}`, {
       radius: radiusState
     });
-    console.log(res)
+    console.log(res, 84)
     setTimeout(() => {
       setRadiusState('success');
     }, 1500);
@@ -93,52 +93,51 @@ const saveRadius = async () => {
 }
 
 
-const  getBooksNearMe = async () => {
-  setButtonState('loading');
-  try {
-    const res = await axios.get('/location/locations', { params: {lon: longitude, lat: latitude, radius: covertRadius } });
-    //console.log(res);
-    setBooksNearBy(res.data.userBooks);
-    setTimeout(() => {
-      setButtonState('success');
-    }, 2000);
-  } catch (err) {
-    //console.error(err);
+  const getBooksNearMe = async () => {
+    setButtonState('loading');
+    try {
+      const res = await axios.get('/location/locations', { params: { lon: longitude, lat: latitude, radius: covertRadius } });
+      console.log(res, 99);
+      setBooksNearBy(res.data.userBooks);
+      setTimeout(() => {
+        setButtonState('success');
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+    }
+
   }
 
-}
+  console.log(booksNearBy, 'booksNeaBy')
 
-console.log(booksNearBy, 'booksNeaBy')
-
-useEffect(() => {
-  const ownedBooks = booksNearBy.flat().filter(book => book.owned === true).map((book) => book.books);
- // console.log(ownedBooks, '69');
-  setDisplayBooks(ownedBooks);
-}, [booksNearBy]);
+  useEffect(() => {
+    const ownedBooks = booksNearBy.flat().filter(book => book.owned === true).map((book) => book.books);
+    // console.log(ownedBooks, '69');
+    setDisplayBooks(ownedBooks);
+  }, [booksNearBy]);
 
 
-useEffect(() => {
- const convert = radius * 32;
- setConvertRadius(convert);
-}, [radius]);
-//console.log(displayBooks, 'displaybooks');
+  useEffect(() => {
+    const convert = radius * 32;
+    setConvertRadius(convert);
+  }, [radius]);
 
 
-const onPlaceSelect = (value: any) => {
- // console.log(value);
-  setLatitude(value.properties.lat);
-  setLongitude(value.properties.lon);
-  setUserLatitude(value.properties.lat);
-  setUserLongitude(value.properties.lon);
-}
+  const onPlaceSelect = (value: any) => {
+    // console.log(value);
+    setLatitude(value.properties.lat);
+    setLongitude(value.properties.lon);
+    setUserLatitude(value.properties.lat);
+    setUserLongitude(value.properties.lon);
+  }
 
-// console.log(longitude, '1');
-// console.log(latitude, '2');
-// console.log(radius, '3');
+  // console.log(longitude, '1');
+  // console.log(latitude, '2');
+  // console.log(radius, '3');
 
 
   const onSuggectionChange = (value: any) => {
-   // console.log(value);
+    // console.log(value);
   }
 
   const handleRadiusChange = (e: any) => {
@@ -153,7 +152,7 @@ const onPlaceSelect = (value: any) => {
 
 
 
-
+console.log(displayBooks, 154);
 
 return (
    <div>
@@ -187,21 +186,23 @@ return (
         </FormControl>
     </Card>
     </Grid>
-    </Grid>
-    <ButtonGroup style={{ display: "flex", justifyContent: "center"}}>
+    <Grid xs={3}>
+    <ButtonGroup
+    orientation="vertical"
+    style={{ display: "flex", justifyContent: "right"}}>
     <ReactiveButton
       rounded
-      size="small"
+      size="medium"
       buttonState={locationState}
       idleText="Save Location"
-      loadingText="Loading"
+      loadingText="Saving"
       successText="Done"
       onClick={saveLocation}
       color="blue"
     />
     <ReactiveButton
       rounded
-      size="small"
+      size="medium"
       buttonState={radiusState}
       idleText="Save Radius"
       loadingText="Saving"
@@ -211,7 +212,7 @@ return (
     />
      <ReactiveButton
       rounded
-      size="small"
+      size="medium"
       buttonState={buttonState}
       idleText="Search For Books"
       loadingText="Loading"
@@ -220,6 +221,9 @@ return (
       color="blue"
     />
     </ButtonGroup>
+    </Grid>
+    </Grid>
+
     <BookDisplay books={displayBooks} id={id} />
     </div>
   )

@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar/Navbar';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import axios from 'axios';
 import { useContext } from 'react';
-import { UserContext } from '../hooks/Context';
+import UserContext from '../hooks/Context'
 
 
 
@@ -11,8 +11,8 @@ import { UserContext } from '../hooks/Context';
 
 
 const UserRecoInputPage = () => {
-    const id = useContext(UserContext);
-    console.log(id);
+    const user = useContext(UserContext);
+    //const id = user.id
     const [books, setBooks] = useState([]);
     useEffect(() => {
         axios.get('/recommendations/random')
@@ -23,7 +23,7 @@ const UserRecoInputPage = () => {
 
     return (
         <div>
-            <BookDisplay books={books} id={id} />
+            {/* <BookDisplay books={books} id={id} /> */}
             <h1>  UserRecoInputPage </h1>
         </div>
     )

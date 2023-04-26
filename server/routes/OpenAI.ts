@@ -14,20 +14,19 @@ const OpenApi = new OpenAIApi(configuration);
 
 const prisma = new PrismaClient();
 
-OpenAI.get('/', (req, res) => {
-  return OpenApi.createChatCompletion({
-    model: 'gpt-3.5-turbo',
-    messages: [{ role: 'user', content: req.query.content }],
-  })
-    .then((response: any) => {
-      //console.log(response.data);
-      // console.log(response.data.choices[0].message);
-      res.send(response.data.choices[0].message).status(200);
-    })
-    .catch((error: any) => {
-      res.status(500);
-      console.error('didnt work', error);
+OpenAI.get('/', async (req, res) => {
+  try {
+    const response = await OpenApi.createCompletion({
+      model: 'text-davinci-003',
+      prompt: req.query.content,
+      max_tokens: 1000
     });
+    // console.log(response.data.choices[0].message);
+    res.status(200).send(response.data.choices[0].text);
+  } catch (error) {
+    console.error('didnt work', error);
+    res.sendStatus(500);
+  }
 });
 
 

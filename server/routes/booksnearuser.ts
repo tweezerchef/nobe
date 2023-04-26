@@ -71,52 +71,54 @@ res.status(200).json({ userBooks });
 
 
 LocationRoute.put('/:id', async (req: AuthenticatedRequest, res: Response) => {
-  console.log(req);
-  try {
-    const id = req.params.id;
-    const latitude = req.body.latitude;
-    const longitude = req.body.longitude;
-    const userUpdateLocation = await prisma.user.update({
-      where: {
-        id: id,
-      },
-      data: {
-        longitude: longitude,
-        latitude: latitude
-      },
-    })
-    console.log(userUpdateLocation);
-    res.status(200).json({ userUpdateLocation })
-  } catch (e) {
-    console.error(e)
-    res.status(500).json({
-      error: 'Server error!',
-    })
-  }
+  console.log(req, 74);
+  console.log(req.body, 75);
+  // try {
+  //   const id = req.params.id;
+  //   const latitude = req.body.latitude;
+  //   const longitude = req.body.longitude;
+  //   const userUpdateLocation = await prisma.user.update({
+  //     where: {
+  //       id: id,
+  //     },
+  //     data: {
+  //       longitude: longitude,
+  //       latitude: latitude
+  //     },
+  //   })
+  //   console.log(userUpdateLocation);
+  //   res.status(200).json({ userUpdateLocation })
+  // } catch (e) {
+  //   console.error(e)
+  //   res.status(500).json({
+  //     error: 'Server error!',
+  //   })
+  // }
 })
 
 LocationRoute.put('/:id', async (req: AuthenticatedRequest, res: Response) => {
   console.log(req);
-  try {
-    const id = req.params.id;
-    const radius = req.body.radius
-    const userUpdateRadius = await prisma.user.update({
-      where: {
-        id: id,
-      },
-      data: {
-        radius: radius,
+  console.log(req.body);
+  // try {
+  //   const id = req.params.id;
+  //   const radius = req.body.radius
+  //   const userUpdateRadius = await prisma.user.update({
+  //     where: {
+  //       id: id,
+  //     },
+  //     data: {
+  //       radius: radius,
 
-      },
-    })
-    console.log(userUpdateRadius);
-    res.status(200).json({ userUpdateRadius })
-  } catch (e) {
-    console.error(e)
-    res.status(500).json({
-      error: 'Server error!',
-    })
-  }
+  //     },
+  //   })
+  //   console.log(userUpdateRadius);
+  //   res.status(200).json({ userUpdateRadius })
+  // } catch (e) {
+  //   console.error(e)
+  //   res.status(500).json({
+  //     error: 'Server error!',
+  //   })
+  // }
 })
 
 
