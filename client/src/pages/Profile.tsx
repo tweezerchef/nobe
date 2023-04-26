@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
 import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
+import UserContext from '../hooks/Context'
 
 interface Book {
   books: {
@@ -24,8 +25,8 @@ const Profile = () => {
   const [title, setTitle] = useState<string>('');
   const [books, setBooks] = useState<any[]>([]);
 
-  const userString = localStorage.getItem('user');
-  const user = userString ? JSON.parse(userString) : null;
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
 
   const getUserBooks = async (type?: string) => {
     try {
@@ -49,19 +50,6 @@ const Profile = () => {
     setTitle(event.target.value);
   };
 
-  // const handleWishlistChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setWishlist(event.target.checked);
-  //   if (event.target.checked) {
-  //     setOwned(false);
-  //   }
-  // };
-
-  // const handleOwnedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setOwned(event.target.checked);
-  //   if (event.target.checked) {
-  //     setWishlist(false);
-  //   }
-  // };
 
   const ownedClicked = () => {
     getUserBooks('Owned');
