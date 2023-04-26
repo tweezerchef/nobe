@@ -4,6 +4,7 @@ import BookDisplay from '../components/BookDisplay/BookDisplay';
 import axios from 'axios';
 import { useContext } from 'react';
 import UserContext from '../hooks/Context';
+import Recommendations from '../../../server/routes/recommendations';
 
 
 
@@ -24,8 +25,9 @@ const UserRecoInputPage = () => {
 
     return (
         <div>
-            /* <BookDisplay books={books} id={id} /> */
-            <h1>  UserRecoInputPage </h1>
+            <h1>  The More Books You Rate The Better Your Recommendations Will Be </h1>
+            <BookDisplay books={books} id={id} />
+
         </div>
     )
 

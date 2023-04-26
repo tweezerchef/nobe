@@ -35,6 +35,7 @@ const { ISBN10, title, author, image, description  } = transFormedData;
  findOrCreateBook(ISBN10, title, author, image, description ).then(newbook =>{
  const booksId = newbook.id;
  findOrCreateUserBook(booksId, id, rating).then(NewUserBook =>{
+  //console.log(NewUserBook)
  res.status(201).json(NewUserBook);
  })
  })

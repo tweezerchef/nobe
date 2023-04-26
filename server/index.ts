@@ -40,7 +40,7 @@ const allowedOrigins = ['http://ec2-18-119-156-72.us-east-2.compute.amazonaws.co
 app.use(cors({
   origin: allowedOrigins,
 }));
-app.use(morgan('dev'));
+//app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
