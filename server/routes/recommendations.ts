@@ -24,12 +24,6 @@ async function findRandomRows(limit: number) {
 }
 
 
-function extractBookTitles(bookData: string) {
-  const regex = /\"(.*?)\"/g;
-  const matches = bookData.match(regex);
-  return matches;
-}
-
 
 Recommendations.get('/random', async (req : Request, res: Response) => {
   try{
@@ -40,9 +34,17 @@ Recommendations.get('/random', async (req : Request, res: Response) => {
   //   returnArray.push(data.data)
   // } )
   for (const book of amazonBooks) {
-    const data = await axios.get(`http://localhost:8080/google-books?title=${book.title}`);
-    returnArray.push(data.data);
-  }
+    const data = await axios.get(`http://localhost:8080/google-books/ISBN10?ISBN10=${book.ISBN10}`);
+    const transFormedData = data.data
+    const ISBN10 = transFormedData.ISBN10;
+    const ourBookData = await axios.get(`http://localhost:8080/bookdata?ISBN10=${ISBN10}`);
+      if(ourBookData.data && ourBookData.data !== null){
+        returnArray.push(ourBookData.data)
+      }
+      else{returnArray.push(transFormedData);}
+    }
+
+
 
   //console.log(typeof amazonBooks);
   // const books = amazonBooks.map((book : Book) => {
