@@ -33,7 +33,7 @@ const useFetch = (url: string) => {
             setLoading(false);
 
             const data = res.data;
-            console.log(data);
+
 
             if (data) {
                 if (setUser) {

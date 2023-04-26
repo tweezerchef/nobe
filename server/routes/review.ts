@@ -7,11 +7,11 @@ const Review = express.Router();
 
 const prisma = new PrismaClient();
 
-async function findOrCreateBook(ISBN10: string, title: string, author: string, image_url: string) {
+async function findOrCreateBook(ISBN10: string, title: string, author: string, image: string, description: string ) {
     const newbook = await prisma.Books.upsert({
       where: { ISBN10: ISBN10 },
       update: {},
-      create: { ISBN10 : ISBN10, title: title, author: author, image: image_url},
+      create: { ISBN10 : ISBN10, title: title, author: author, image: image, description: description },
     });
     return newbook;;
   }
@@ -25,16 +25,20 @@ async function findOrCreateUserBook(booksId: string, userId: string, rating: num
     return NewUserBook;}
 
 Review.post('/', async (req: Request, res: Response) => {
-const { book, rating, id } = req.body;
-console.log(id);
-const { title, author, ISBN10, image_url} = book;
-findOrCreateBook(ISBN10, title, author, image_url).then(newbook =>{
-const booksId = newbook.id;
-findOrCreateUserBook(booksId, id, rating).then(NewUserBook =>{
-    console.log(NewUserBook);
-res.status(201).json(NewUserBook);
-})
-})
+
+  const { book, rating, id } = req.body;
+
+const googleTitle = book.title;
+const data = await axios.get(`http://localhost:8080/google-books?title=${googleTitle}`);
+const transFormedData = data.data
+const { ISBN10, title, author, image, description  } = transFormedData;
+ findOrCreateBook(ISBN10, title, author, image, description ).then(newbook =>{
+ const booksId = newbook.id;
+ findOrCreateUserBook(booksId, id, rating).then(NewUserBook =>{
+  //console.log(NewUserBook)
+ res.status(201).json(NewUserBook);
+ })
+ })
 
 
 })
