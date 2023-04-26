@@ -21,7 +21,6 @@ OpenAI.get('/', async (req, res) => {
       prompt: req.query.content,
       max_tokens: 1000
     });
-    // console.log(response.data.choices[0].message);
     res.status(200).send(response.data.choices[0].text);
   } catch (error) {
     console.error('didnt work', error);

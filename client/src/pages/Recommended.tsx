@@ -18,8 +18,8 @@ const Recommended = () => {
 
     return (
         <div>
+            <h1> Your Personalized Recommendations List</h1>
             <BookDisplay books={books} id={id} />
-            <h1>  UserRecoInputPage </h1>
         </div>
     )
 

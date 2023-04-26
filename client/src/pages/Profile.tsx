@@ -36,7 +36,7 @@ const Profile = () => {
       }
       const res = await axios.get(url);
       setUserBooks(res.data);
-      console.log(res.data)
+      // console.log(res.data)
     } catch (err) {
       console.error(err);
     }
@@ -49,7 +49,6 @@ const Profile = () => {
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
-
 
   const ownedClicked = () => {
     getUserBooks('Owned');
@@ -68,6 +67,7 @@ const Profile = () => {
       .then(response => {
         setTitle("");
         setBooks(prevBooks => [...prevBooks, response.data]);
+        // response.data.UserBooks[0].userId <-- userId
         // getUserBooks();
       })
       .catch(error => {
@@ -87,8 +87,8 @@ const Profile = () => {
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%', background: 'rgb(32, 32, 35)', marginTop: '20px' }}>
           <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%' }}>
-            <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
+            <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "center" }}>

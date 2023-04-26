@@ -71,7 +71,7 @@ res.status(200).json({ userBooks });
 
 
 LocationRoute.put('/:id', async (req: AuthenticatedRequest, res: Response) => {
-  console.log(req);
+ // console.log(req);
   try {
     const id = req.params.id;
     const latitude = req.body.latitude;
@@ -85,7 +85,7 @@ LocationRoute.put('/:id', async (req: AuthenticatedRequest, res: Response) => {
         latitude: latitude
       },
     })
-    console.log(userUpdate);
+    //console.log(userUpdate);
     res.status(200).json({ userUpdate })
   } catch (e) {
     console.error(e)

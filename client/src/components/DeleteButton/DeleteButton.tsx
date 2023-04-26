@@ -15,7 +15,7 @@ const DeleteButton = (props: any) => {
       },
     })
       .then(response => {
-        console.log('Book removed');
+        //console.log('Book removed');
         getUserBooks(inventory);
         setBooks((prevBooks: any) => prevBooks.filter((b: any) => b.id !== book.id));
       })

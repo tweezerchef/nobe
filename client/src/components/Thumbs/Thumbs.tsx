@@ -13,8 +13,8 @@ user ? (id = user.id) : (id = null);
 const ThumbComponent = (props: any) => {
     const { ISBN10 } = props;
     const thumbChange = async (thumb: string) => {
-        console.log(thumb);
-        console.log(ISBN10);
+        // console.log(thumb);
+        //console.log(ISBN10);
     }
 
     return (

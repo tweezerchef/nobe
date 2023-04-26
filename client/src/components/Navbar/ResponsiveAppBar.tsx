@@ -34,7 +34,7 @@ function ResponsiveAppBar() {
   let parsed;
 
   if (!localStorage.getItem("user")) {
-    console.log('no user logged in')
+    // console.log('no user logged in')
     loggedIn = false
   } else {
     loggedIn = true;
