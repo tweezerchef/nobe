@@ -21,6 +21,7 @@ import Wishlist from './routes/wishlist';
 import OpenAI from './routes/OpenAI';
 import BookData from './routes/BookData';
 import User from './routes/User';
+import GoogleBooks from './routes/GoogleBooks';
 
 
 
@@ -30,6 +31,23 @@ const app = express();
 const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 const PORT = 8080;
 const prisma = new PrismaClient();
+
+//Middleware
+app.use(express.static(CLIENT_PATH));
+
+const allowedOrigins = ['http://ec2-18-119-156-72.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
+
+app.use(cors({
+  origin: allowedOrigins,
+}));
+app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+
+
+
+//routes
 app.use("/location", LocationRoute);
 app.use("/recommendations", Recommendations);
 app.use("/books", UserBooks);
@@ -42,23 +60,9 @@ app.use("/api/wishlist", Wishlist);
 app.use("/openai", OpenAI);
 app.use("/bookdata", BookData);
 app.use("/user", User);
+app.use("/google-books", GoogleBooks);
 
-//Middleware
-app.use(express.static(CLIENT_PATH));
-//app.use(cors())
-// app.use(cors({
-//   origin: 'http://ec2-18-119-156-72.us-east-2.compute.amazonaws.com:8080',
-//   methods:'GET,POST,PUT,DELETE',
-//   credentials: true,
-// }));
-const allowedOrigins = ['http://ec2-18-119-156-72.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
 
-app.use(cors({
-  origin: allowedOrigins,
-}));
-app.use(morgan('dev'));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 //Authentication
 
