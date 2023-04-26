@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
+import axios from 'axios';
 
 //Routes
 import UserBooks from './routes/userbooks';
@@ -18,6 +19,9 @@ import Recommendations from './routes/recommendations';
 import Review from './routes/review';
 import Wishlist from './routes/wishlist';
 import OpenAI from './routes/OpenAI';
+import BookData from './routes/BookData';
+import User from './routes/User';
+
 
 
 dotenv.config();
@@ -168,16 +172,12 @@ app.post("/login", async (req, res) => {
           message: "Unable to retrieve user profile",
         });
       }
-
-      const exists = await prisma.user.findFirst({
-        where: {
-          googleId: profile.sub,
-        },
-      })
-      console.log(exists);
+      const email = profile.email
+      const getUser  = await axios.get(`http//localhost:8080?email=${email}`)
+      const userData = getUser.data
       // const existsInDB = DB.find((person) => person?.email === profile?.email);
-
-      if (!exists) {
+      console.log(userData)
+      if (!userData) {
         return res.status(400).json({
           message: "You are not registered. Please sign up",
         });
@@ -189,7 +189,7 @@ app.post("/login", async (req, res) => {
           firstName: profile?.given_name,
           lastName: profile?.family_name,
           picture: profile?.picture,
-          id: exists.id,
+          id: userData.id,
           email: profile?.email,
           token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
             expiresIn: "1d",
@@ -204,7 +204,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
- app.use("/location", LocationRoute);
+app.use("/location", LocationRoute);
 app.use("/recommendations", Recommendations);
 app.use("/books", UserBooks);
 app.use('/review', Review);
@@ -214,6 +214,8 @@ app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
 app.use("/api/wishlist", Wishlist);
 app.use("/openai", OpenAI);
+app.use("/bookdata", BookData);
+app.use("/user", User);
 
 
 
