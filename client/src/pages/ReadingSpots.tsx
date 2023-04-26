@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLoadScript } from "@react-google-maps/api"
 import ReadingSpotsMap from "../components/ReadingSpotsMap/ReadingSpotsMap";
-// import "../components/styles/mapstyles.css"
 
 function ReadingSpots() {
   const { isLoaded } = useLoadScript({
