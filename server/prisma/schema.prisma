@@ -35,17 +35,21 @@ model User {
   NotificationsCount Int                @default(0)
   Activity           Activity[]
   User_Places        User_Places[]
+  LendingTable       LendingTable[]
 }
 
 model PlacesToRead {
-  id          String        @id @default(uuid())
-  nickName    String?
-  Location    String
-  Lat         Int?
-  Long        Int?
-  altLoc      String?
-  Description String?
-  userPlaces  User_Places[]
+  id              String         @id @default(uuid())
+  nickName        String?
+  Location        String
+  Private         Boolean        @default(false)
+  Lat             Int?
+  Long            Int?
+  altLoc          String?
+  Description     String?
+  userPlaces      User_Places[]
+  LendingTableOut LendingTable[] @relation("outPlace")
+  LendingTableIn  LendingTable[] @relation("inPlace")
 }
 
 model User_Places {
@@ -103,15 +107,16 @@ model Genre {
 }
 
 model UserBooks {
-  id       String  @id @default(uuid())
-  wishlist Boolean @default(false)
-  owned    Boolean @default(false)
-  booksId  String
-  userId   String
-  rating   Float?
-  review   String?
-  books    Books   @relation(fields: [booksId], references: [id])
-  user     User    @relation(fields: [userId], references: [id])
+  id           String         @id @default(uuid())
+  wishlist     Boolean        @default(false)
+  owned        Boolean        @default(false)
+  booksId      String
+  userId       String
+  rating       Float?
+  review       String?
+  books        Books          @relation(fields: [booksId], references: [id])
+  user         User           @relation(fields: [userId], references: [id])
+  LendingTable LendingTable[]
 
   @@unique([userId, booksId], name: "userId_bookId")
 }
@@ -213,29 +218,31 @@ model Friendship {
   friend   User   @relation("friend", fields: [friendId], references: [id])
 }
 
-// model LendingTable {
-//   id             String @id @default(uuid())
-//   BookID
-//   BororowID = userId
-//   Borrow         Rating
-//   Borrow         Review
-//   Date in planned
-//   Date           In
-//   Borrowed = boolean
-//   Returned = boolean
-//   Date back planned
-//   Date           back
-//   Lend           Rating
-//   Lend           Review
-//   MeetingSpotIn
-//   PlaceID
-//   InTime
-//   InDate
-//   MeetingSpotOut
-//   PlaceID
-//   OutTime
-//   OutDate
-// }
+model LendingTable {
+  id              String        @id @default(uuid())
+  LenderBookId    UserBooks     @relation(fields: [lenderId], references: [id])
+  lenderId        String
+  BorrowID        User          @relation(fields: [borrowerId], references: [id])
+  borrowerId      String
+  LenderReview    String?
+  LenderRating    Int?
+  BorrowRating    Int?
+  BorrowReview    String?
+  DateInPlanned   String?
+  DateIn          String?
+  Borrowed        Boolean       @default(false)
+  Returned        Boolean       @default(false)
+  Datebackplanned String?
+  DateBack        String?
+  placeIn         PlacesToRead? @relation("inPlace", fields: [inPlaceId], references: [id])
+  inPlaceId       String?
+  placeOut        PlacesToRead? @relation("outPlace", fields: [outPlaceId], references: [id])
+  outPlaceId      String?
+  InTime          String?
+  InDate          String?
+  OutTime         String?
+  OutDate         String?
+}
 
 model spatial_ref_sys {
   srid      Int     @id
