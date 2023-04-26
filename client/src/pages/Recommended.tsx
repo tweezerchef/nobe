@@ -1,23 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Navbar from '../components/Navbar/Navbar';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import axios from 'axios';
-
 import UserContext from '../hooks/Context'
-
-// const userString = localStorage.getItem('user');
-// const user = userString ? JSON.parse(userString) : null;
-// let id: string
-// user ? (id = user.id) : (id = '');
-
-
 
 
 
 const Recommended = () => {
     const userContext = useContext(UserContext);
     const user = userContext?.user;
-    console.log(user)
     const id = user.id;
     const [books, setBooks] = useState([]);
     useEffect(() => {

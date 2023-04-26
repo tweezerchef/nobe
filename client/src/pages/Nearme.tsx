@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete'
@@ -9,6 +9,7 @@ import Slider from '@mui/material/Slider';
 import ReactiveButton from 'reactive-button';
 import Grid from '@mui/material/Grid';
 import OpenIconSpeedDial from "../components/ActionButton/ActionButton";
+import UserContext from '../hooks/Context'
 
 
 interface Book {
@@ -30,13 +31,13 @@ interface Props {
 }
 
 
-// const userString = localStorage.getItem('user');
-// const user = userString ? JSON.parse(userString) : null;
-// let id: string
-// user ? (id = user.id) : (id = '');
-
 
 function Locations() {
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const id = user?.id;
+
+
 
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
@@ -49,22 +50,22 @@ function Locations() {
   const [userLongitude, setUserLongitude] = useState(0);
   const [userLatitude, setUserLatitude] = useState(0);
 
-  // const saveLocation = async () => {
-  //   setLocationState('loading');
-  //   try {
-  //     const res = await axios.put(`/location/${user.id}`, {
-  //       longitude: userLongitude,
-  //       latitude: userLatitude
-  //     });
-  //     console.log(res)
-  //     setTimeout(() => {
-  //       setLocationState('success');
-  //     }, 2000);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
+  const saveLocation = async () => {
+    setLocationState('loading');
+    try {
+      const res = await axios.put(`/location/${user.id}`, {
+        longitude: userLongitude,
+        latitude: userLatitude
+      });
+      console.log(res)
+      setTimeout(() => {
+        setLocationState('success');
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+    }
 
-  // }
+  }
 
 
   const getBooksNearMe = async () => {
@@ -177,8 +178,7 @@ function Locations() {
         </Grid>
       </Grid>
       {/* <button type="button" onClick={getBooksNearMe}>Search for Books</button> */}
-      {/* <BookDisplay books={displayBooks} id={id} /> */}
-      {/* <OpenIconSpeedDial/> */}
+      <BookDisplay books={displayBooks} id={id} />
     </div>
   )
 
