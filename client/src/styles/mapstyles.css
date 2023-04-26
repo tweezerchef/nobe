@@ -9,3 +9,17 @@
   background: #14161a;
   color: #fff
 }
+
+.controls input {
+  border: none;
+}
+
+.map-container {
+  width: 100%;
+  height: 100vh;
+}
+
+.spots-map {
+  width: 80%;
+  height: 100vh;
+}

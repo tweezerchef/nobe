@@ -28,4 +28,12 @@ padding: 1rem;
 background: #14161a;
 color: #fff;
 `
-// export const Map = styled
+export const Map = styled.div`
+width: 80%;
+height: 100vh;
+`
+
+export const MapContainer = styled.div`
+width: 100%;
+height: 100vh;
+`
