@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
@@ -24,21 +24,21 @@ const Profile = () => {
   const [title, setTitle] = useState<string>('');
   const [books, setBooks] = useState<any[]>([]);
 
-  const userString = localStorage.getItem('user');
-  const user = userString ? JSON.parse(userString) : null;
+  // const userString = localStorage.getItem('user');
+  // const user = userString ? JSON.parse(userString) : null;
 
   const getUserBooks = async (type?: string) => {
-    try {
-      let url = `/books/${user.id}`;
-      if (type) {
-        url += `/${type}`;
-      }
-      const res = await axios.get(url);
-      setUserBooks(res.data);
-      console.log(res.data)
-    } catch (err) {
-      console.error(err);
-    }
+    // try {
+    //   let url = `/books/${user.id}`;
+    //   if (type) {
+    //     url += `/${type}`;
+    //   }
+    //   const res = await axios.get(url);
+    //   setUserBooks(res.data);
+    //   console.log(res.data)
+    // } catch (err) {
+    //   console.error(err);
+    // }
   }
 
   useEffect(() => {
@@ -76,15 +76,15 @@ const Profile = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    axios.post(`/books/${user.id}`, { title, inventory })
-      .then(response => {
-        setTitle("");
-        setBooks(prevBooks => [...prevBooks, response.data]);
-        // getUserBooks();
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    // axios.post(`/books/${user.id}`, { title, inventory })
+    //   .then(response => {
+    //     setTitle("");
+    //     setBooks(prevBooks => [...prevBooks, response.data]);
+    //     // getUserBooks();
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   });
   };
 
   useEffect(() => {
@@ -94,7 +94,7 @@ const Profile = () => {
   return (
     <div >
       <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
-        <Typography variant="h4">{`${user.firstName}'s`} Books</Typography>
+        {/* <Typography variant="h4">{`${user.firstName}'s`} Books</Typography> */}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%', background: 'rgb(32, 32, 35)', marginTop: '20px' }}>
@@ -125,10 +125,10 @@ const Profile = () => {
         <div style={{ margin: '15px' }}>
           <Typography variant="h5">{inventory} Books</Typography>
         </div>
-        {books.length > 0 ?
+        {/* {books.length > 0 ?
           <BookDisplay books={books} id={user.id} getUserBooks={getUserBooks} setBooks={setBooks} inventory={inventory} /> :
           <Typography variant="body1">No books</Typography>
-        }
+        } */}
       </div>
     </div>
   );

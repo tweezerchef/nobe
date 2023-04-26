@@ -24,12 +24,24 @@ import User from './routes/User';
 
 
 
+
 dotenv.config();
 const app = express();
 const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 const PORT = 8080;
 const prisma = new PrismaClient();
-
+app.use("/location", LocationRoute);
+app.use("/recommendations", Recommendations);
+app.use("/books", UserBooks);
+app.use('/review', Review);
+// app.use("/clubs", Clubs);
+app.use("/api/clubs", Clubs);
+app.use('/api/create-club', CreateClub);
+app.use("/api/trending", Trending);
+app.use("/api/wishlist", Wishlist);
+app.use("/openai", OpenAI);
+app.use("/bookdata", BookData);
+app.use("/user", User);
 
 //Middleware
 app.use(express.static(CLIENT_PATH));
@@ -173,27 +185,31 @@ app.post("/login", async (req, res) => {
         });
       }
       const email = profile.email
-      const getUser  = await axios.get(`http//localhost:8080?email=${email}`)
+      const getUser  = await axios.get(`http://localhost:8080/user?email=${email}`)
       const userData = getUser.data
       // const existsInDB = DB.find((person) => person?.email === profile?.email);
-      console.log(userData)
+      //console.log(userData)
       if (!userData) {
         return res.status(400).json({
           message: "You are not registered. Please sign up",
         });
       }
+      userData.token = jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
+        expiresIn: "1d",
+      }),
 
       res.status(201).json({
         message: "Login was successful",
         user: {
-          firstName: profile?.given_name,
-          lastName: profile?.family_name,
-          picture: profile?.picture,
-          id: userData.id,
-          email: profile?.email,
-          token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
-            expiresIn: "1d",
-          }),
+          // firstName: profile?.given_name,
+          // lastName: profile?.family_name,
+          // picture: profile?.picture,
+          // id: userData.id,
+          // email: profile?.email,
+          // token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
+          //   expiresIn: "1d",
+          // }),
+          userData
         },
       });
     }
@@ -204,18 +220,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.use("/location", LocationRoute);
-app.use("/recommendations", Recommendations);
-app.use("/books", UserBooks);
-app.use('/review', Review);
-// app.use("/clubs", Clubs);
-app.use("/api/clubs", Clubs);
-app.use('/api/create-club', CreateClub);
-app.use("/api/trending", Trending);
-app.use("/api/wishlist", Wishlist);
-app.use("/openai", OpenAI);
-app.use("/bookdata", BookData);
-app.use("/user", User);
+
 
 
 

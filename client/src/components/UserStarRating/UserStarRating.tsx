@@ -8,9 +8,9 @@ import UserBooks from '../../../../server/routes/userbooks';
 const UserStarRating = (props: any) => {
     const { book, id } = props;
     let rating = 0;
-    if (book.UserBooks.includes(id)) {
-        console.log(book.UserBooks)
-    }
+    // if (book.UserBooks.includes(id)) {
+    //     console.log(book.UserBooks)
+    // }
     if (book.rating && book.rating.length === 1) {
         rating = book.rating
     }

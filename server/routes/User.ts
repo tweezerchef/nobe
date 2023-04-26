@@ -10,6 +10,7 @@ const User = express.Router();
 const prisma = new PrismaClient();
 
 User.get('/', async (req, res) => {
+  console.log('poop')
     const email = req.query.email;
   try {
       const user = await prisma.user.findFirst({
@@ -35,7 +36,6 @@ User.get('/', async (req, res) => {
           books: true,
         },
       });
-      console.log(user)
       res.send(user);
     } catch (error) {
       console.error(error);
