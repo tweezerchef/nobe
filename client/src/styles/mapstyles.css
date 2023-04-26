@@ -1,0 +1,11 @@
+.spots-container {
+  display: flex;
+  height: 100vh;
+}
+
+.controls {
+  width: 20%;
+  padding: 1rem;
+  background: #14161a;
+  color: #fff
+}

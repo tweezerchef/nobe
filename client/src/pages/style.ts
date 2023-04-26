@@ -17,3 +17,15 @@ font-weight: 600; margin: 40px 0; color: inherit;
 export const ClubHeader = styled.h1`
 text-align: center;
 `
+
+export const SpotContainer = styled.div`
+display: flex;
+height: 100vh;
+`
+export const Controls = styled.div`
+width: 20%;
+padding: 1rem;
+background: #14161a;
+color: #fff;
+`
+// export const Map = styled

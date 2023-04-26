@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { useLoadScript } from "@react-google-maps/api"
+import ReadingSpotsMap from "../components/ReadingSpotsMap/ReadingSpotsMap";
+// import "../components/styles/mapstyles.css"
 
 function ReadingSpots() {
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || "",
+    libraries: ["places"],
+  })
 
-
+  if (!isLoaded) {
+    return <div>Loading...</div>
+  }
   return (
     <div>
-      <h1>Reading Spots</h1>
-      {/* <ul>
-        {spots.map((spot) => (
-          <li key={spot.id}>{spot.name}</li>
-        ))}
-      </ul> */}
+      <ReadingSpotsMap />
     </div>
   );
 }
