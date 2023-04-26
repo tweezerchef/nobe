@@ -32,7 +32,7 @@ function ReadingSpotsMap() {
   return (
     <div className="spots-container">
       <div className="controls">
-        <h1>What are your favorite reading spots?</h1>
+        <h1>Enter your favorite reading spots</h1>
         <Places
           setOffice={(position: any) => {
             setOffice(position);
