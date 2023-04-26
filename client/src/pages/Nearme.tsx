@@ -49,7 +49,7 @@ function Locations() {
 const [longitude, setLongitude] = useState(0);
 const [latitude, setLatitude] = useState(0);
 const [radius, setRadius] = useState(0);
-const [covertRadius, setConvertRadius] = useState(0);
+const [convertRadius, setConvertRadius] = useState(0);
 const [booksNearBy, setBooksNearBy] = useState<Book[]>([]);
 const [displayBooks, setDisplayBooks] = useState<any>([])
 const [buttonState, setButtonState] = useState('idle');
@@ -58,29 +58,31 @@ const [radiusState, setRadiusState] = useState('idle');
 const [userLongitude, setUserLongitude] = useState(0);
 const [userLatitude, setUserLatitude] = useState(0);
 
-const  saveLocation = async () => {
+
+const saveLocation = async () => {
   setLocationState('loading');
-  console.log(userLongitude, userLongitude, 63)
+  // console.log(userLongitude, userLongitude, 63)
   try {
-    const res = await axios.put(`/location/${id}`, {
+    const res = await axios.put(`/location/${user.id}/coordinates`, {
       longitude: userLongitude,
       latitude: userLatitude
     });
-    console.log(res, 68)
+    // console.log(res, 68)
     setTimeout(() => {
       setLocationState('success');
     }, 2000);
   } catch (err) {
-    console.error(err);
+    // console.error(err);
   }
 
 }
 
 const saveRadius = async () => {
   setRadiusState('loading');
+  console.log(convertRadius, 82);
   try {
-    const res = await axios.put(`/location/${id}`, {
-      radius: radiusState
+    const res = await axios.put(`/location/${user.id}/radius`, {
+      radius: convertRadius
     });
     console.log(res, 84)
     setTimeout(() => {
@@ -96,7 +98,7 @@ const saveRadius = async () => {
   const getBooksNearMe = async () => {
     setButtonState('loading');
     try {
-      const res = await axios.get('/location/locations', { params: { lon: longitude, lat: latitude, radius: covertRadius } });
+      const res = await axios.get('/location/locations', { params: { lon: longitude, lat: latitude, radius: radius } });
       console.log(res, 99);
       setBooksNearBy(res.data.userBooks);
       setTimeout(() => {
@@ -152,7 +154,7 @@ const saveRadius = async () => {
 
 
 
-console.log(displayBooks, 154);
+//console.log(displayBooks, 154);
 
 return (
    <div>

@@ -27,7 +27,7 @@ function Login() {
                 //console.log(user)
                 localStorage.setItem("user", user);
                 // // Handle success
-                console.log(localStorage.getItem("user"));
+
                 navigate("/home");
             })
             .catch((error) => {

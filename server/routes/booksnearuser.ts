@@ -18,8 +18,8 @@ interface QueryResult {
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { lon, lat, radius } = req.query
-    //console.log(lon, lat, radius);
-     // Assuming coordinates are sent in the request body
+    console.log(lon, lat, radius);
+     //  coordinates are sent in the request body
     if (!lat || !lon || !radius) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
     }
@@ -46,7 +46,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
     ]
   }
 });
-
+console.log(users, 49);
 const ids = users.reduce<string[]>((acc, user) => {
   acc.push(user.id);
   return acc;
@@ -62,6 +62,7 @@ const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
 }))
 const userBooks = await Promise.all(userBooksPromises);
 //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
+//console.log(userBooks, 65);
 res.status(200).json({ userBooks });
   } catch (error) {
    // console.error('Error getting users within radius:', error);
@@ -70,56 +71,54 @@ res.status(200).json({ userBooks });
 });
 
 
-LocationRoute.put('/:id', async (req: AuthenticatedRequest, res: Response) => {
-  console.log(req, 74);
-  console.log(req.body, 75);
-  // try {
-  //   const id = req.params.id;
-  //   const latitude = req.body.latitude;
-  //   const longitude = req.body.longitude;
-  //   const userUpdateLocation = await prisma.user.update({
-  //     where: {
-  //       id: id,
-  //     },
-  //     data: {
-  //       longitude: longitude,
-  //       latitude: latitude
-  //     },
-  //   })
-  //   console.log(userUpdateLocation);
-  //   res.status(200).json({ userUpdateLocation })
-  // } catch (e) {
-  //   console.error(e)
-  //   res.status(500).json({
-  //     error: 'Server error!',
-  //   })
-  // }
-})
+// LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Response) => {
+//   try {
+//     const id = req.params.id;
+//     const latitude = req.body.latitude;
+//     const longitude = req.body.longitude;
+//     const userUpdateLocation = await prisma.user.update({
+//       where: {
+//         id: id,
+//       },
+//       data: {
+//         longitude: longitude,
+//         latitude: latitude
+//       },
+//     })
+//     console.log(userUpdateLocation);
+//     res.status(200).json({ userUpdateLocation })
+//   } catch (e) {
+//     console.error(e)
+//     res.status(500).json({
+//       error: 'Server error!',
+//     })
+//   }
+// })
 
-LocationRoute.put('/:id', async (req: AuthenticatedRequest, res: Response) => {
-  console.log(req);
-  console.log(req.body);
-  // try {
-  //   const id = req.params.id;
-  //   const radius = req.body.radius
-  //   const userUpdateRadius = await prisma.user.update({
-  //     where: {
-  //       id: id,
-  //     },
-  //     data: {
-  //       radius: radius,
+// LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response) => {
+//   console.log(req);
+//   console.log(req.body);
+//   try {
+//     const id = req.params.id;
+//     const radius = req.body.radius
+//     const userUpdateRadius = await prisma.user.update({
+//       where: {
+//         id: id,
+//       },
+//       data: {
+//         radius: radius,
 
-  //     },
-  //   })
-  //   console.log(userUpdateRadius);
-  //   res.status(200).json({ userUpdateRadius })
-  // } catch (e) {
-  //   console.error(e)
-  //   res.status(500).json({
-  //     error: 'Server error!',
-  //   })
-  // }
-})
+//       },
+//     })
+//     console.log(userUpdateRadius);
+//     res.status(200).json({ userUpdateRadius })
+//   } catch (e) {
+//     console.error(e)
+//     res.status(500).json({
+//       error: 'Server error!',
+//     })
+//   }
+// })
 
 
 

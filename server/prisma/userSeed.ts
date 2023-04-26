@@ -1,6 +1,6 @@
-const { PrismaClient } = require('@prisma/client')
+//const { PrismaClient } = require('@prisma/client')
 
-const prisma = new PrismaClient()
+//const prisma = new PrismaClient()
 
 async function seed() {
   const user1 = await prisma.user.create({
@@ -39,7 +39,7 @@ async function seed() {
     }
   })
 
-  console.log({ user1, user2, user3, user4 })
+  //console.log({ user1, user2, user3, user4 })
 }
 
 seed()

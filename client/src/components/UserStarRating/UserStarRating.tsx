@@ -14,12 +14,13 @@ const UserStarRating = (props: any) => {
     if (book.rating && book.rating.length === 1) {
         rating = book.rating
     }
-    console.log(book.rating)
+    //console.log(book.rating)
     const [value, setValue] = React.useState<number | null>(rating);
 
 
     const handleRatingChange = (event: React.ChangeEvent<{}>, newValue: number | null) => {
-        // Make an API call to update the rating on the server
+
+        //     Make an API call to update the rating on the server
         axios.post('/review', { rating: newValue, book: book, id: id })
             .then(response => {
                 console.log('Rating updated successfully');
