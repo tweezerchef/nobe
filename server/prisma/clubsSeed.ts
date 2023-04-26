@@ -1,6 +1,6 @@
-const { PrismaClient } = require('@prisma/client')
+//const { PrismaClient } = require('@prisma/client')
 
-const prisma = new PrismaClient()
+//const prisma = new PrismaClient()
 
 // const { user1, user2 } = require('./userSeed.ts')
 
@@ -65,7 +65,7 @@ async function clubSeed() {
     }
   })
 
-  console.log({ club1, club2 })
+  //console.log({ club1, club2 })
 }
 
 clubSeed()

@@ -24,7 +24,7 @@ const Book = (props: any) => {
             <CardOverflow>
                 <AspectRatio ratio="2">
                     <img
-                        src={book.image_url}
+                        src={book.image}
                         loading="lazy"
                         alt=""
                     />
