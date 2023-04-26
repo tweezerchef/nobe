@@ -21,21 +21,21 @@ model User {
   latitude           Float?
   longitude          Float?
   radius             Int?
-  clubMembers        ClubMembers[]
-  Discussions        Discussions[]
-  Posts              Posts[]
-  books              UserBooks[]
-  sentMessages       DirectMessages[]   @relation("sentMessages")
-  receivedMessages   DirectMessages[]   @relation("receivedMessages")
-  DiscussionsUsers   DiscussionsUsers[]
-  PostsUsers         PostsUsers[]
-  friends            Friendship[]       @relation("friend")
-  friendships        Friendship[]       @relation("user")
-  Notifications      Notifications[]
   NotificationsCount Int                @default(0)
   Activity           Activity[]
-  User_Places        User_Places[]
+  clubMembers        ClubMembers[]
+  receivedMessages   DirectMessages[]   @relation("receivedMessages")
+  sentMessages       DirectMessages[]   @relation("sentMessages")
+  Discussions        Discussions[]
+  DiscussionsUsers   DiscussionsUsers[]
+  friends            Friendship[]       @relation("friend")
+  friendships        Friendship[]       @relation("user")
   LendingTable       LendingTable[]
+  Notifications      Notifications[]
+  Posts              Posts[]
+  PostsUsers         PostsUsers[]
+  books              UserBooks[]
+  User_Places        User_Places[]
 }
 
 model PlacesToRead {
@@ -47,20 +47,20 @@ model PlacesToRead {
   Long            Int?
   altLoc          String?
   Description     String?
-  userPlaces      User_Places[]
-  LendingTableOut LendingTable[] @relation("outPlace")
   LendingTableIn  LendingTable[] @relation("inPlace")
+  LendingTableOut LendingTable[] @relation("outPlace")
+  userPlaces      User_Places[]
 }
 
 model User_Places {
   id       String       @id @default(uuid())
-  user     User         @relation(fields: [userId], references: [id])
   userId   String
-  place    PlacesToRead @relation(fields: [placeId], references: [id])
   placeId  String
   Rating   Int?
   Review   String?
   CheckIns Int?
+  place    PlacesToRead @relation(fields: [placeId], references: [id])
+  user     User         @relation(fields: [userId], references: [id])
 
   @@unique([userId, placeId], name: "userId_placeId")
 }
@@ -69,19 +69,19 @@ model Notifications {
   id         String   @id @default(uuid())
   socketIOid String
   createdAt  DateTime @default(now())
-  User       User     @relation(fields: [userId], references: [id])
   userId     String
   body       String
+  User       User     @relation(fields: [userId], references: [id])
 }
 
 model DirectMessages {
   id          String   @id @default(uuid())
   createdAt   DateTime @default(now())
   text        String
-  sender      User     @relation("sentMessages", fields: [senderId], references: [id])
   senderId    String
-  recipient   User     @relation("receivedMessages", fields: [recipientId], references: [id])
   recipientId String
+  recipient   User     @relation("receivedMessages", fields: [recipientId], references: [id])
+  sender      User     @relation("sentMessages", fields: [senderId], references: [id])
 }
 
 model Books {
@@ -93,10 +93,10 @@ model Books {
   content     String?
   image       String?
   ISBN10      String        @unique
+  Activity    Activity[]
   Discussions Discussions[]
   genre       Genre[]
   UserBooks   UserBooks[]
-  Activity    Activity[]
 }
 
 model Genre {
@@ -114,9 +114,9 @@ model UserBooks {
   userId       String
   rating       Float?
   review       String?
+  LendingTable LendingTable[]
   books        Books          @relation(fields: [booksId], references: [id])
   user         User           @relation(fields: [userId], references: [id])
-  LendingTable LendingTable[]
 
   @@unique([userId, booksId], name: "userId_bookId")
 }
@@ -135,9 +135,9 @@ model bookdata {
 model Clubs {
   id          String        @id @default(uuid())
   name        String        @unique
-  admin       String?
   description String?
   image       String?
+  admin       String?
   clubMembers ClubMembers[]
   Discussions Discussions[]
 }
@@ -158,23 +158,23 @@ model Discussions {
   title            String
   clubsId          String
   bookId           String?
-  thumbsUp         Int                @default(0)
   thumbsDown       Int                @default(0)
+  thumbsUp         Int                @default(0)
   books            Books?             @relation(fields: [bookId], references: [id])
   clubs            Clubs              @relation(fields: [clubsId], references: [id])
   creator          User               @relation(fields: [userId], references: [id])
-  Posts            Posts[]
   DiscussionsUsers DiscussionsUsers[]
+  Posts            Posts[]
 }
 
 model DiscussionsUsers {
   id           String      @id @default(uuid())
-  discussion   Discussions @relation(fields: [discussionId], references: [id])
   discussionId String
-  user         User        @relation(fields: [userId], references: [id])
   userId       String
   thumbsUp     Boolean     @default(false)
   thumbsDown   Boolean     @default(false)
+  discussion   Discussions @relation(fields: [discussionId], references: [id])
+  user         User        @relation(fields: [userId], references: [id])
 }
 
 model Posts {
@@ -182,9 +182,9 @@ model Posts {
   userId        String
   body          String
   discussionsId String
-  thumbsUp      Int          @default(0)
-  thumbsDown    Int          @default(0)
   createdAt     DateTime     @default(now())
+  thumbsDown    Int          @default(0)
+  thumbsUp      Int          @default(0)
   discussion    Discussions  @relation(fields: [discussionsId], references: [id])
   user          User         @relation(fields: [userId], references: [id])
   PostsUsers    PostsUsers[]
@@ -192,37 +192,35 @@ model Posts {
 
 model PostsUsers {
   id         String  @id @default(uuid())
-  post       Posts   @relation(fields: [postId], references: [id])
   postId     String
-  user       User    @relation(fields: [userId], references: [id])
   userId     String
   thumbsUp   Boolean @default(false)
   thumbsDown Boolean @default(false)
+  post       Posts   @relation(fields: [postId], references: [id])
+  user       User    @relation(fields: [userId], references: [id])
 }
 
 model Activity {
   id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
   userId    String
   type      String
-  book      Books    @relation(fields: [bookId], references: [id])
   bookId    String
   createdAt DateTime @default(now())
+  book      Books    @relation(fields: [bookId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Friendship {
   id       String @id @default(uuid())
   userId   String
   friendId String
-  user     User   @relation("user", fields: [userId], references: [id])
   friend   User   @relation("friend", fields: [friendId], references: [id])
+  user     User   @relation("user", fields: [userId], references: [id])
 }
 
 model LendingTable {
   id              String        @id @default(uuid())
-  LenderBookId    UserBooks     @relation(fields: [lenderId], references: [id])
   lenderId        String
-  BorrowID        User          @relation(fields: [borrowerId], references: [id])
   borrowerId      String
   LenderReview    String?
   LenderRating    Int?
@@ -234,14 +232,16 @@ model LendingTable {
   Returned        Boolean       @default(false)
   Datebackplanned String?
   DateBack        String?
-  placeIn         PlacesToRead? @relation("inPlace", fields: [inPlaceId], references: [id])
   inPlaceId       String?
-  placeOut        PlacesToRead? @relation("outPlace", fields: [outPlaceId], references: [id])
   outPlaceId      String?
   InTime          String?
   InDate          String?
   OutTime         String?
   OutDate         String?
+  BorrowID        User          @relation(fields: [borrowerId], references: [id])
+  placeIn         PlacesToRead? @relation("inPlace", fields: [inPlaceId], references: [id])
+  LenderBookId    UserBooks     @relation(fields: [lenderId], references: [id])
+  placeOut        PlacesToRead? @relation("outPlace", fields: [outPlaceId], references: [id])
 }
 
 model spatial_ref_sys {
