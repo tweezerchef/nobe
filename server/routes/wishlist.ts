@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
@@ -46,6 +46,14 @@ Wishlist.post('/', async (req, res) => {
         },
       });
     }
+
+    const activity = await prisma.activity.create({
+      data: {
+        userId: user.id,
+        type: 'wishlist',
+        bookId: book.id,
+      },
+    })
 
     const userBook = await prisma.userBooks.create({
       data: {
