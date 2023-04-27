@@ -79,7 +79,7 @@ const saveLocation = async () => {
 
 const saveRadius = async () => {
   setRadiusState('loading');
-  console.log(convertRadius, 82);
+  //console.log(convertRadius, 82);
   try {
     const res = await axios.put(`/location/${user.id}/radius`, {
       radius: convertRadius
@@ -89,7 +89,7 @@ const saveRadius = async () => {
       setRadiusState('success');
     }, 1500);
   } catch (err) {
-    console.error(err);
+    //console.error(err);
   }
 
 }
@@ -99,13 +99,13 @@ const saveRadius = async () => {
     setButtonState('loading');
     try {
       const res = await axios.get('/location/locations', { params: { lon: longitude, lat: latitude, radius: radius } });
-      console.log(res, 99);
+      //console.log(res, 99);
       setBooksNearBy(res.data.userBooks);
       setTimeout(() => {
         setButtonState('success');
       }, 2000);
     } catch (err) {
-      console.error(err);
+     // console.error(err);
     }
 
   }

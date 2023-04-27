@@ -17,11 +17,11 @@ interface QueryResult {
 
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
-  console.log(req, 26);
-  console.log(req, 26);
+  //console.log(req, 26);
+  //console.log(req, 26);
   try {
     const { lon, lat, radius } = req.query
-    console.log(lon, lat, radius);
+   // console.log(lon, lat, radius);
     //  coordinates are sent in the request body
     if (!lat || !lon || !radius) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
@@ -48,7 +48,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         ],
       },
     });
-console.log(users, 51)
+//console.log(users, 51)
    const ids = users.reduce<string[]>((acc, user) => {
   acc.push(user.id);
   return acc;
@@ -64,10 +64,10 @@ const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
 }))
 const userBooks = await Promise.all(userBooksPromises);
 //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
-console.log(userBooks, 67);
+//console.log(userBooks, 67);
 res.status(200).json({ userBooks });
   } catch (error) {
-   console.error('Error getting users within radius:', error);
+  // console.error('Error getting users within radius:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
