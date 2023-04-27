@@ -6,7 +6,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const prisma = new PrismaClient();
-const SpoitsMapRoute = express.Router();
+const SpotsMapRoute = express.Router();
 
 
 
+
+export default SpotsMapRoute;
