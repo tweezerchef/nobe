@@ -64,7 +64,7 @@ const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
 }))
 const userBooks = await Promise.all(userBooksPromises);
 //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
-//console.log(userBooks, 67);
+console.log(userBooks, 67);
 res.status(200).json({ userBooks });
   } catch (error) {
   // console.error('Error getting users within radius:', error);
@@ -88,10 +88,10 @@ LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Res
         latitude: latitude
       },
     })
-    console.log(userUpdateLocation);
+    //console.log(userUpdateLocation);
     res.status(200).json({ userUpdateLocation })
   } catch (e) {
-    console.error(e)
+   // console.error(e)
     res.status(500).json({
       error: 'Server error!',
     })
