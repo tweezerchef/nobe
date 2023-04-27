@@ -71,18 +71,6 @@ function ReadingSpotsMap() {
         </GoogleMap>
       </div>
     </div>
-
-    // <SpotContainer className="spots-container">
-    //   <Controls className="controls">
-    //     What are your favorite reading spots?
-    //   </Controls>
-    //   <Map className="spots-map">
-    //     <GoogleMap
-    //       zoom={10}
-    //       center={center}
-    //     ></GoogleMap>
-    //   </Map>
-    // </SpotContainer>
   )
 }
 
