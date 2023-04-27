@@ -10,21 +10,78 @@ datasource db {
 }
 
 model User {
-  id          String        @id @default(uuid())
-  firstName   String
-  username    String?       @unique
-  email       String
-  googleId    String        @unique
-  lastName    String?
-  picture     String?
-  token       String?
-  latitude    Float?
-  longitude   Float?
-  radius      Int?
-  clubMembers ClubMembers?
-  Discussions Discussions[]
-  Posts       Posts[]
-  books       UserBooks[]
+  id                 String             @id @default(uuid())
+  firstName          String
+  username           String?            @unique
+  email              String             @unique
+  googleId           String             @unique
+  lastName           String?
+  picture            String?
+  token              String?
+  latitude           Float?
+  longitude          Float?
+  radius             Int?
+  NotificationsCount Int                @default(0)
+  Activity           Activity[]
+  clubMembers        ClubMembers[]
+  receivedMessages   DirectMessages[]   @relation("receivedMessages")
+  sentMessages       DirectMessages[]   @relation("sentMessages")
+  Discussions        Discussions[]
+  DiscussionsUsers   DiscussionsUsers[]
+  friends            Friendship[]       @relation("friend")
+  friendships        Friendship[]       @relation("user")
+  LendingTable       LendingTable[]
+  Notifications      Notifications[]
+  Posts              Posts[]
+  PostsUsers         PostsUsers[]
+  books              UserBooks[]
+  User_Places        User_Places[]
+}
+
+model PlacesToRead {
+  id              String         @id @default(uuid())
+  nickName        String?
+  Location        String
+  Private         Boolean        @default(false)
+  Lat             Int?
+  Long            Int?
+  altLoc          String?
+  Description     String?
+  LendingTableIn  LendingTable[] @relation("inPlace")
+  LendingTableOut LendingTable[] @relation("outPlace")
+  userPlaces      User_Places[]
+}
+
+model User_Places {
+  id       String       @id @default(uuid())
+  userId   String
+  placeId  String
+  Rating   Int?
+  Review   String?
+  CheckIns Int?
+  place    PlacesToRead @relation(fields: [placeId], references: [id])
+  user     User         @relation(fields: [userId], references: [id])
+
+  @@unique([userId, placeId], name: "userId_placeId")
+}
+
+model Notifications {
+  id         String   @id @default(uuid())
+  socketIOid String
+  createdAt  DateTime @default(now())
+  userId     String
+  body       String
+  User       User     @relation(fields: [userId], references: [id])
+}
+
+model DirectMessages {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  text        String
+  senderId    String
+  recipientId String
+  recipient   User     @relation("receivedMessages", fields: [recipientId], references: [id])
+  sender      User     @relation("sentMessages", fields: [senderId], references: [id])
 }
 
 model Books {
@@ -36,6 +93,7 @@ model Books {
   content     String?
   image       String?
   ISBN10      String        @unique
+  Activity    Activity[]
   Discussions Discussions[]
   genre       Genre[]
   UserBooks   UserBooks[]
@@ -49,16 +107,16 @@ model Genre {
 }
 
 model UserBooks {
-  id        String  @id @default(uuid())
-  wishlist  Boolean @default(false)
-  owned     Boolean @default(false)
-  booksId   String
-  userId    String
-  rating    Float?
-  thumbDown Int?
-  thumbUp   Int?
-  books     Books   @relation(fields: [booksId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
+  id           String         @id @default(uuid())
+  wishlist     Boolean        @default(false)
+  owned        Boolean        @default(false)
+  booksId      String
+  userId       String
+  rating       Float?
+  review       String?
+  LendingTable LendingTable[]
+  books        Books          @relation(fields: [booksId], references: [id])
+  user         User           @relation(fields: [userId], references: [id])
 
   @@unique([userId, booksId], name: "userId_bookId")
 }
@@ -77,42 +135,113 @@ model bookdata {
 model Clubs {
   id          String        @id @default(uuid())
   name        String        @unique
-  createdBy   String?
   description String?
   image       String?
-  clubMembers ClubMembers?
+  admin       String?
+  clubMembers ClubMembers[]
   Discussions Discussions[]
 }
 
 model ClubMembers {
   id     String @id @default(uuid())
-  userId String @unique
-  clubId String @unique
+  userId String
+  clubId String
   club   Clubs  @relation(fields: [clubId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, clubId], name: "userId_clubId")
 }
 
 model Discussions {
-  id      String  @id @default(uuid())
-  userId  String
-  title   String
-  clubsId String
-  bookId  String?
-  rating  String?
-  books   Books?  @relation(fields: [bookId], references: [id])
-  clubs   Clubs   @relation(fields: [clubsId], references: [id])
-  creator User    @relation(fields: [userId], references: [id])
-  Posts   Posts[]
+  id               String             @id @default(uuid())
+  userId           String
+  title            String
+  clubsId          String
+  bookId           String?
+  thumbsDown       Int                @default(0)
+  thumbsUp         Int                @default(0)
+  books            Books?             @relation(fields: [bookId], references: [id])
+  clubs            Clubs              @relation(fields: [clubsId], references: [id])
+  creator          User               @relation(fields: [userId], references: [id])
+  DiscussionsUsers DiscussionsUsers[]
+  Posts            Posts[]
+}
+
+model DiscussionsUsers {
+  id           String      @id @default(uuid())
+  discussionId String
+  userId       String
+  thumbsUp     Boolean     @default(false)
+  thumbsDown   Boolean     @default(false)
+  discussion   Discussions @relation(fields: [discussionId], references: [id])
+  user         User        @relation(fields: [userId], references: [id])
 }
 
 model Posts {
-  id            String      @id @default(uuid())
+  id            String       @id @default(uuid())
   userId        String
   body          String
   discussionsId String
-  createdAt     DateTime    @default(now())
-  discussion    Discussions @relation(fields: [discussionsId], references: [id])
-  user          User        @relation(fields: [userId], references: [id])
+  createdAt     DateTime     @default(now())
+  thumbsDown    Int          @default(0)
+  thumbsUp      Int          @default(0)
+  discussion    Discussions  @relation(fields: [discussionsId], references: [id])
+  user          User         @relation(fields: [userId], references: [id])
+  PostsUsers    PostsUsers[]
+}
+
+model PostsUsers {
+  id         String  @id @default(uuid())
+  postId     String
+  userId     String
+  thumbsUp   Boolean @default(false)
+  thumbsDown Boolean @default(false)
+  post       Posts   @relation(fields: [postId], references: [id])
+  user       User    @relation(fields: [userId], references: [id])
+}
+
+model Activity {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  bookId    String
+  createdAt DateTime @default(now())
+  book      Books    @relation(fields: [bookId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Friendship {
+  id       String @id @default(uuid())
+  userId   String
+  friendId String
+  friend   User   @relation("friend", fields: [friendId], references: [id])
+  user     User   @relation("user", fields: [userId], references: [id])
+}
+
+model LendingTable {
+  id              String        @id @default(uuid())
+  lenderId        String
+  borrowerId      String
+  LenderReview    String?
+  LenderRating    Int?
+  BorrowRating    Int?
+  BorrowReview    String?
+  DateInPlanned   String?
+  DateIn          String?
+  Borrowed        Boolean       @default(false)
+  Returned        Boolean       @default(false)
+  Datebackplanned String?
+  DateBack        String?
+  inPlaceId       String?
+  outPlaceId      String?
+  InTime          String?
+  InDate          String?
+  OutTime         String?
+  OutDate         String?
+  BorrowID        User          @relation(fields: [borrowerId], references: [id])
+  placeIn         PlacesToRead? @relation("inPlace", fields: [inPlaceId], references: [id])
+  LenderBookId    UserBooks     @relation(fields: [lenderId], references: [id])
+  placeOut        PlacesToRead? @relation("outPlace", fields: [outPlaceId], references: [id])
 }
 
 model spatial_ref_sys {

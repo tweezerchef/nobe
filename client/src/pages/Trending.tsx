@@ -19,12 +19,13 @@ import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import axios from 'axios';
 import { useContext } from 'react';
-import { UserContext } from '../hooks/Context';
+import UserContext from '../hooks/Context';
 
 
 function Trending() {
 
-  const id = useContext(UserContext);
+  const user = useContext(UserContext);
+
 
   const [trending, setTrending] = useState<any[]>([]);
 
@@ -50,7 +51,7 @@ function Trending() {
 
     try {
       await axios.post('/api/wishlist', { isbn: isbn, title: title, author: author, email: email });
-      console.log("Added to wishlist");
+      // console.log("Added to wishlist");
     } catch (error) {
       console.error(error);
     }
@@ -117,7 +118,7 @@ function Trending() {
                   <BookmarkAddIcon />
                 </IconButton>
               </CardOverflow>
-              <Typography level="h2" sx={{ fontSize: 'md', mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box',  '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical' }}>
+              <Typography level="h2" sx={{ fontSize: 'md', mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical' }}>
                 <Link href="#multiple-actions" overlay underline="none">
                   {book.title.charAt(0).toUpperCase() + book.title.slice(1).toLowerCase()}
                 </Link>

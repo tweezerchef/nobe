@@ -150,7 +150,7 @@ ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
           club: { connect: { id: clubId } }
         }
       });
-      console.log(`Added user ${user.firstName} to club ${clubMember.clubId}`);
+      //console.log(`Added user ${user.firstName} to club ${clubMember.clubId}`);
     } else {
       console.error(`User with email ${email} not found`);
     }

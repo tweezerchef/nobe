@@ -44,7 +44,7 @@ const createClubs = (props: any) => {
           setClubImage('');
         })
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

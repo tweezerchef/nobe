@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
     Navigate,
     BrowserRouter,
@@ -6,6 +6,7 @@ import {
     Route,
     Link,
 } from 'react-router-dom';
+import UserContext from './hooks/Context';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -26,14 +27,16 @@ interface User {
 
 
 function Router() {
-    const [user, setUser] = useState<User | null>(null);
-    useEffect(() => {
-        const theUser = localStorage.getItem("user");
+    // const [user, setUser] = useState<User | null>(null);
+    // useEffect(() => {
+    //     const theUser = localStorage.getItem("user");
 
-        if (theUser && !theUser.includes("undefined")) {
-            setUser(JSON.parse(theUser));
-        }
-    }, []);
+    //     if (theUser && !theUser.includes("undefined")) {
+    //         setUser(JSON.parse(theUser));
+    //     }
+    // }, []);
+    const userContext = useContext(UserContext);
+    const user = userContext?.user;
 
     return (
         <Routes>

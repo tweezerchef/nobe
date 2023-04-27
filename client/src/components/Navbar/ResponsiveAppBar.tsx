@@ -30,19 +30,16 @@ function ResponsiveAppBar() {
     null
   );
 
+  let loggedIn = false;
+  let parsed;
 
-  // const user = localStorage.getItem("user");
-
-  const user = localStorage.getItem("user");
-
-  if (!user) {
-    throw new Error("No user found");
+  if (!localStorage.getItem("user")) {
+    // console.log('no user logged in')
+    loggedIn = false
+  } else {
+    loggedIn = true;
+    parsed = JSON.parse(localStorage.getItem("user") || '{}');
   }
-
-  const parsed = JSON.parse(user)
-  console.log(parsed);
-
-
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -118,18 +115,6 @@ function ResponsiveAppBar() {
             >
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <Link to="/">
-                    Login</Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">
-                  <Link to="/signup">
-                    Signup</Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">
                   <Link to="/trending">
                     Trending</Link>
                 </Typography>
@@ -143,7 +128,13 @@ function ResponsiveAppBar() {
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
                   <Link to="/locations">
-                    Books Near Me</Link>
+                    Near Me</Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleOpenUserMenu}>
+                <Typography textAlign="center">
+                  <Link to="/reading-spots">
+                    Top Reading Spots</Link>
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
@@ -156,17 +147,6 @@ function ResponsiveAppBar() {
                 <Typography textAlign="center">
                   <Link to="/recommended">
                     Get Recomendations</Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">
-                  <Link to="/profile">
-                    Profile</Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem onClick={logout}>
-                <Typography textAlign="center">
-                  Logout
                 </Typography>
               </MenuItem>
             </Menu>
@@ -195,18 +175,6 @@ function ResponsiveAppBar() {
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              <StyledLink to="/" >Login</StyledLink>
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              <StyledLink to="/signup" >Signup</StyledLink>
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
               <StyledLink to="/trending" >Trending</StyledLink>
             </Button>
             <Button
@@ -225,6 +193,12 @@ function ResponsiveAppBar() {
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
+              <StyledLink to="/reading-spots">Top Reading Spots</StyledLink>
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
               <StyledLink to="/user-reco-input">Build Recomendations</StyledLink>
             </Button>
             <Button
@@ -233,24 +207,12 @@ function ResponsiveAppBar() {
             >
               <StyledLink to="/recommended">Get Recommendations</StyledLink>
             </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              <StyledLink to="/profile">Profile</StyledLink>
-            </Button>
-            <Button
-              onClick={logout}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              <StyledLink to="/login">Logout</StyledLink>
-            </Button>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {/* <Avatar alt="pfp" src={parsed.picture} /> */}
+                <Avatar alt="pfp" src={loggedIn ? parsed.picture : null} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -274,11 +236,20 @@ function ResponsiveAppBar() {
                   <Link to="/profile">Profile</Link>
                 </Typography>
               </MenuItem>
-              <MenuItem onClick={logout}>
-                <Typography textAlign="center">
-                  Logout
-                </Typography>
-              </MenuItem>
+              {loggedIn ? (
+                <MenuItem onClick={logout}>
+                  <Typography textAlign="center">
+                    Logout
+                  </Typography>
+                </MenuItem>
+              ) : (
+                <MenuItem >
+                  <Typography textAlign="center">
+                    <Link to="/login">
+                      Login</Link>
+                  </Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
         </Toolbar>

@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
+import axios from 'axios';
 
 //Routes
 import UserBooks from './routes/userbooks';
@@ -18,6 +19,11 @@ import Recommendations from './routes/recommendations';
 import Review from './routes/review';
 import Wishlist from './routes/wishlist';
 import OpenAI from './routes/OpenAI';
+import BookData from './routes/BookData';
+import User from './routes/User';
+import GoogleBooks from './routes/GoogleBooks';
+
+
 
 
 dotenv.config();
@@ -26,23 +32,37 @@ const CLIENT_PATH = path.resolve(__dirname, '../client/build');
 const PORT = 8080;
 const prisma = new PrismaClient();
 
-
 //Middleware
 app.use(express.static(CLIENT_PATH));
-//app.use(cors())
-// app.use(cors({
-//   origin: 'http://ec2-18-119-156-72.us-east-2.compute.amazonaws.com:8080',
-//   methods:'GET,POST,PUT,DELETE',
-//   credentials: true,
-// }));
+
 const allowedOrigins = ['http://ec2-18-119-156-72.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
 
 app.use(cors({
   origin: allowedOrigins,
 }));
-app.use(morgan('dev'));
+//app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+
+
+
+//routes
+app.use("/location", LocationRoute);
+app.use("/recommendations", Recommendations);
+app.use("/books", UserBooks);
+app.use('/review', Review);
+// app.use("/clubs", Clubs);
+app.use("/api/clubs", Clubs);
+app.use('/api/create-club', CreateClub);
+app.use("/api/trending", Trending);
+app.use("/api/wishlist", Wishlist);
+app.use("/openai", OpenAI);
+app.use("/bookdata", BookData);
+app.use("/user", User);
+app.use("/google-books", GoogleBooks);
+
+
 
 //Authentication
 
@@ -121,7 +141,6 @@ app.post("/signup", async (req, res) => {
 
 app.get("/Login", async (req, res) => {
   const email = req.query.email as string;
-  console.log(email);
   const profile = await prisma.user.findFirst({
     where: {
       email: email,
@@ -150,7 +169,6 @@ app.get("/Login", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  console.log(req.body);
   try {
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
@@ -168,32 +186,32 @@ app.post("/login", async (req, res) => {
           message: "Unable to retrieve user profile",
         });
       }
-
-      const exists = await prisma.user.findFirst({
-        where: {
-          googleId: profile.sub,
-        },
-      })
-      console.log(exists);
+      const email = profile.email
+      const getUser  = await axios.get(`http://localhost:8080/user?email=${email}`)
+      const userData = getUser.data
       // const existsInDB = DB.find((person) => person?.email === profile?.email);
-
-      if (!exists) {
+      //console.log(userData)
+      if (!userData) {
         return res.status(400).json({
           message: "You are not registered. Please sign up",
         });
       }
+      userData.token = jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
+        expiresIn: "1d",
+      }),
 
       res.status(201).json({
         message: "Login was successful",
         user: {
-          firstName: profile?.given_name,
-          lastName: profile?.family_name,
-          picture: profile?.picture,
-          id: exists.id,
-          email: profile?.email,
-          token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
-            expiresIn: "1d",
-          }),
+          // firstName: profile?.given_name,
+          // lastName: profile?.family_name,
+          // picture: profile?.picture,
+          // id: userData.id,
+          // email: profile?.email,
+          // token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
+          //   expiresIn: "1d",
+          // }),
+          userData
         },
       });
     }
@@ -204,16 +222,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
- app.use("/location", LocationRoute);
-app.use("/recommendations", Recommendations);
-app.use("/books", UserBooks);
-app.use('/review', Review);
-// app.use("/clubs", Clubs);
-app.use("/api/clubs", Clubs);
-app.use('/api/create-club', CreateClub);
-app.use("/api/trending", Trending);
-app.use("/api/wishlist", Wishlist);
-app.use("/openai", OpenAI);
+
 
 
 
