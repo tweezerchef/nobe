@@ -23,7 +23,7 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
     } else {
       owned = true;
     }
-    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?key=&q=intitle:${title}`);
+    const response = await axios.get(`http://localhost:8080/google-books?title=${title}`);
     const bookData = response.data.items[0].volumeInfo;
     const isbn10 = bookData.industryIdentifiers[1].identifier;
 
