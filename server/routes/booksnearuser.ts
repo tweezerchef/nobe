@@ -49,20 +49,6 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         ],
       },
       select: {
-        id: true,
-        firstName: true,
-        username: true,
-        email: true,
-        googleId: true,
-        lastName: true,
-        picture: true,
-        token: true,
-        latitude: true,
-        longitude: true,
-        radius: true,
-        clubMembers: true,
-        Discussions: true,
-        Posts: true,
         books: {
           select: {
             id: true,
@@ -93,21 +79,37 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         },
       },
     })
-console.log(users, 51)
-   const ids = users.reduce<string[]>((acc, user) => {
-  acc.push(user.id);
-  return acc;
-}, []);
+    // id: true,
+    // firstName: true,
+    // username: true,
+    // email: true,
+    // googleId: true,
+    // lastName: true,
+    // picture: true,
+    // token: true,
+    // latitude: true,
+    // longitude: true,
+    // radius: true,
+    // clubMembers: true,
+    // Discussions: true,
+    // Posts: true,
 
-const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
-  where: {
-    userId: id
-  },
-  include: {
-    books: true
-  }
-}))
-const userBooks = await Promise.all(userBooksPromises);
+
+// console.log(users, 51)
+//    const ids = users.reduce<string[]>((acc, user) => {
+//   acc.push(user.id);
+//   return acc;
+// }, []);
+
+// const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
+//   where: {
+//     userId: id
+//   },
+//   include: {
+//     books: true
+//   }
+// }))
+//const userBooks = await Promise.all(userBooksPromises);
 //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
 //console.log(userBooks, 67);
 res.status(200).send({ users });
