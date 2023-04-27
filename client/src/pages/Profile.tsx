@@ -25,7 +25,7 @@ const Profile = () => {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-
+  console.log(user)
   let id: string = useParams().id || user?.id;
 
   const getUserBooks = async (type?: string) => {
