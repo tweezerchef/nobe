@@ -27,8 +27,8 @@ const UserRecoInputPage = () => {
     return (
         <div>
             <h1>  The More Books You Rate The Better Your Recommendations Will Be </h1>
-            {/* <BookDisplay books={books} id={id} /> */}
-            {books.length > 0 && <BigBook book={books[0]} id={id} />}
+            <BookDisplay books={books} id={id} />
+            {/* {books.length > 0 && <BigBook book={books[0]} id={id} />} */}
 
         </div>
     )
