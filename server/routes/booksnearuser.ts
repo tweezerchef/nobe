@@ -1,6 +1,6 @@
  const express = require('express');
  const axios = require('axios');
- import { Prisma, PrismaClient, User } from '@prisma/client'
+ import {  PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 const LocationRoute = express.Router();
 import { Request, Response } from "express";
@@ -16,26 +16,49 @@ interface QueryResult {
 }
 
 interface Coordinates {
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lon: number;
   radius: number;
 }
 
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
+  console.log(req, 26);
+
   try {
+    const { lon, lat, radius } = req.query
+    console.log(lon, lat, radius);
+     //  coordinates are sent in the request body
+    if (!lat || !lon || !radius) {
+      return res.status(400).json({ error: 'Missing coordinates or radius' });
+    }
+    // Cast lat, lon, and radius to numbers
+     const latNum = Number(lat);
+     const lonNum = Number(lon);
+     const radiusNum = Number(radius);
+    const users = await prisma.user.findMany({
+      where: {
+        AND: [
+          {
+            latitude: {
+              gte: parseFloat(latNum) - parseFloat(radiusNum) / 69.0,
+              lte: parseFloat(latNum) + parseFloat(radiusNum) / 69.0,
+            },
+          },
+          {
+            longitude: {
+              gte: parseFloat(lonNum) - parseFloat(radiusNum) / (69.0 * Math.cos(parseFloat(latNum) * Math.PI / 180.0)),
+              lte: parseFloat(lonNum) + parseFloat(radiusNum) / (69.0 * Math.cos(parseFloat(latNum) * Math.PI / 180.0)),
+            },
+          },
+        ],
+      },
+    });
 
-    const { latitude, longitude, radius } = req.body as Coordinates;
+    res.json(users);
 
-    const users = await prisma.$queryRaw<User[]>`
-      SELECT *
-      FROM users
-      WHERE ST_DWithin(
-        ST_MakePoint(users.longitude, users.latitude),
-        ST_MakePoint(${longitude}, ${latitude})::geography,
-        ${radius}
-      )
-    `;
+
+
 
 //     const { lon, lat, radius } = req.query
 //     console.log(lon, lat, radius);
@@ -66,26 +89,26 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
 //     ]
 //   }
 // });
-console.log(users, 49);
-const ids = users.reduce<string[]>((acc, user) => {
-  acc.push(user.id);
-  return acc;
-}, []);
 
-const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
-  where: {
-    userId: id
-  },
-  include: {
-    books: true
-  }
-}))
-const userBooks = await Promise.all(userBooksPromises);
+// const ids = users.reduce<string[]>((acc, user) => {
+//   acc.push(user.id);
+//   return acc;
+// }, []);
+
+// const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
+//   where: {
+//     userId: id
+//   },
+//   include: {
+//     books: true
+//   }
+// }))
+// const userBooks = await Promise.all(userBooksPromises);
 //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
 //console.log(userBooks, 65);
-res.status(200).json({ userBooks });
+// res.status(200).json({ userBooks });
   } catch (error) {
-   // console.error('Error getting users within radius:', error);
+   console.error('Error getting users within radius:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });

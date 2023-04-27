@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete'
-import BookDisplay from "../components/MattsBookDisplay/BookDisplay";
+// import BookDisplay from "../components/MattsBookDisplay/BookDisplay";
 import Navbar from "../components/Navbar/Navbar";
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
@@ -226,7 +226,7 @@ return (
     </Grid>
     </Grid>
 
-    <BookDisplay books={displayBooks} id={id} />
+    {/* <BookDisplay books={displayBooks} id={id} /> */}
     </div>
   )
 
