@@ -9,6 +9,25 @@ import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
 
+//Socket.Io
+// import { Server } from "socket.io";
+
+// const io = new Server({
+//   cors:{
+//     origin:"http://localhost:8080"
+//   }
+//  });
+
+// io.on("connection", (socket) => {
+//   console.log('someone has connected!')
+//   io.emit("test", 'this is test')
+//   socket.on('disconnect', () => {
+//     console.log('someone has left');
+//   });
+// });
+
+// io.listen(8080);
+
 //Routes
 import UserBooks from './routes/userbooks';
 import LocationRoute from './routes/booksnearuser';
