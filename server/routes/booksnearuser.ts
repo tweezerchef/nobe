@@ -24,7 +24,6 @@ interface Coordinates {
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
   console.log(req, 26);
-
   try {
     const { lon, lat, radius } = req.query
     console.log(lon, lat, radius);
