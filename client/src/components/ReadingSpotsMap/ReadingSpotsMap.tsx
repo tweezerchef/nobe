@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback, useRef } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Places from "./places";
+import axios from "axios";
 import "../../styles/mapstyles.css";
 // import { SpotContainer, Controls, Map, MapContainer } from "../../pages/style";
 
@@ -9,8 +10,8 @@ type MapOptions = google.maps.MapOptions;
 
 
 function ReadingSpotsMap() {
-  const [office, setOffice] = useState<LatLngLiteral>();
-  // console.log("office data", office);
+  const [latlng, setLatLng] = useState<LatLngLiteral>();
+  // console.log("latlng data", latlng);
   const [address, setAddress] = useState<string>("");
   // console.log("address data", address);
 
@@ -34,8 +35,8 @@ function ReadingSpotsMap() {
       <div className="controls">
         <h2>Enter your favorite reading spots</h2>
         <Places
-          setOffice={(position: any) => {
-            setOffice(position);
+          setLatLng={(position: any) => {
+            setLatLng(position);
             mapRef.current?.panTo(position);
           }}
           setAddress={setAddress}
@@ -49,9 +50,9 @@ function ReadingSpotsMap() {
           options={options}
           onLoad={onLoad}
         >
-          {office && (
+          {latlng && (
             <Marker
-              position={office}
+              position={latlng}
               onClick={handleMarkerClick}
               icon={{
                 url: "http://maps.google.com/mapfiles/kml/shapes/library_maps.png",
@@ -60,7 +61,7 @@ function ReadingSpotsMap() {
               {showInfoWindow && (
                 <InfoWindow
                   onCloseClick={handleMarkerClick}
-                  position={office}
+                  position={latlng}
                   options={{ maxWidth: 150 }}
                 >
                   <div>{address}</div>

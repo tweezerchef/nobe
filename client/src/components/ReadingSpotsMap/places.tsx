@@ -2,14 +2,15 @@ import { useState } from "react";
 import usePlacesAutoComplete, { getGeocode, getLatLng } from "use-places-autocomplete";
 import { Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption } from "@reach/combobox";
 import "@reach/combobox/styles.css";
+import axios from "axios";
 import "../../styles/mapstyles.css";
 
 type PlacesProps = {
-  setOffice: (position: google.maps.LatLngLiteral) => void;
+  setLatLng: (position: google.maps.LatLngLiteral) => void;
   setAddress: React.Dispatch<React.SetStateAction<string>>;
 };
 
-function Places({ setOffice, setAddress }: PlacesProps) {
+function Places({ setLatLng, setAddress }: PlacesProps) {
   const {
     ready,
     value,
@@ -18,15 +19,24 @@ function Places({ setOffice, setAddress }: PlacesProps) {
     clearSuggestions,
   } = usePlacesAutoComplete();
 
-  console.log({ status, data });
+  // console.log({ status, data });
 
   const handleSelect = async (val: string) => {
     setValue(val, false);
     clearSuggestions();
+
     const results = await getGeocode({ address: val });
     const { lat, lng } = await getLatLng(results[0]);
-    setOffice({ lat, lng });
+    console.log(lat, lng);
+
+    setLatLng({ lat, lng });
     setAddress(val);
+
+    try {
+      await axios.post('/api/places-to-read', { address: val, lat: lat, lng: lng });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
