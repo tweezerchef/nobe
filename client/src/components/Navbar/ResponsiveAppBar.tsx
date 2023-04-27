@@ -128,10 +128,10 @@ function ResponsiveAppBar() {
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
                   <Link to="/locations">
-                    Near Me</Link>
+                    Books Near Me</Link>
                 </Typography>
               </MenuItem>
-              <MenuItem onClick={handleOpenUserMenu}>
+              <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
                   <Link to="/reading-spots">
                     Top Reading Spots</Link>
@@ -147,6 +147,12 @@ function ResponsiveAppBar() {
                 <Typography textAlign="center">
                   <Link to="/recommended">
                     Get Recomendations</Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <Link to="/feed">
+                    Feed</Link>
                 </Typography>
               </MenuItem>
             </Menu>
@@ -207,11 +213,16 @@ function ResponsiveAppBar() {
             >
               <StyledLink to="/recommended">Get Recommendations</StyledLink>
             </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <StyledLink to="/feed">Feed</StyledLink>
+            </Button>
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="pfp" src={loggedIn ? parsed.picture : null} />
               </IconButton>
             </Tooltip>

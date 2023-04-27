@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,32 +19,27 @@ interface Book {
 }
 
 const Profile = () => {
-
   const [userBooks, setUserBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
-  const [books, setBooks] = useState<any[]>([]);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
 
+  let id: string = useParams().id || user?.id;
+
   const getUserBooks = async (type?: string) => {
     try {
-      let url = `/books/${user.id}`;
+      let url = `/books/${id}`;
       if (type) {
         url += `/${type}`;
       }
       const res = await axios.get(url);
       setUserBooks(res.data);
-      // console.log(res.data)
     } catch (err) {
       console.error(err);
     }
   }
-
-  useEffect(() => {
-    setBooks(userBooks.map((book) => book.books));
-  }, [userBooks, setBooks]);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -63,10 +58,10 @@ const Profile = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    axios.post(`/books/${user.id}`, { title, inventory })
+    axios.post(`/books/${id}`, { title, inventory })
       .then(response => {
         setTitle("");
-        setBooks(prevBooks => [...prevBooks, response.data]);
+        getUserBooks(inventory);
         // response.data.UserBooks[0].userId <-- userId
         // getUserBooks();
       })
@@ -113,8 +108,8 @@ const Profile = () => {
         <div style={{ margin: '15px' }}>
           <Typography variant="h5">{inventory} Books</Typography>
         </div>
-        {books.length > 0 ?
-          <BookDisplay books={books} id={user.id} getUserBooks={getUserBooks} setBooks={setBooks} inventory={inventory} /> :
+        {userBooks.length > 0 ?
+          <BookDisplay userBooks={userBooks} id={id} getUserBooks={getUserBooks} setUserBooks={setUserBooks} inventory={inventory} /> :
           <Typography variant="body1">No books</Typography>
         }
       </div>
