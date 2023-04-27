@@ -149,6 +149,12 @@ function ResponsiveAppBar() {
                     Get Recomendations</Link>
                 </Typography>
               </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <Link to="/feed">
+                    Feed</Link>
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <AutoStoriesIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -207,8 +213,13 @@ function ResponsiveAppBar() {
             >
               <StyledLink to="/recommended">Get Recommendations</StyledLink>
             </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <StyledLink to="/feed">Feed</StyledLink>
+            </Button>
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
