@@ -91,7 +91,6 @@ GoogleBooks.get('/ISBN10', async (req: Request, res: Response) => {
         rating: bookData.averageRating ? bookData.averageRating : null,
         ISBN10: getISBN(bookData.industryIdentifiers),
       };
-
     res.status(200).send(transformedData)
   } catch (err) {
     console.error(err);

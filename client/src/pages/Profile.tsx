@@ -27,7 +27,7 @@ const Profile = () => {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-
+  console.log(user)
   const getUserBooks = async (type?: string) => {
     try {
       let url = `/books/${user.id}`;

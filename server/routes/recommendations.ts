@@ -2,12 +2,44 @@ const { PrismaClient } = require('@prisma/client');
 import express, { Request, Response } from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
+//import findOrCreateBook from './review'
+import { title } from 'process';
 
 dotenv.config();
 
 const Recommendations = express.Router();
 
 const prisma = new PrismaClient();
+async function findOrCreateBook(ISBN10: string, title: string, author: string, image: string, description: string ) {
+  try {
+    const newBook = await prisma.books.upsert({
+      where: { ISBN10: ISBN10 },
+      update: {},
+      create: {
+        ISBN10: ISBN10,
+        title: title,
+        author: author,
+        image: image,
+        description: description,
+      },
+      select: {
+        ISBN10: true,
+        title: true,
+        author: true,
+        image: true,
+        description: true,
+        UserBooks: true,
+        Discussions: true,
+        Activity: true,
+      },
+    });
+
+    return newBook;
+  } catch (error) {
+    console.error(`Error finding or creating book with ISBN10 ${ISBN10}: ${error}`);
+    return
+  }
+}
 
 interface Book {
   image_url: string;
@@ -29,28 +61,17 @@ Recommendations.get('/random', async (req : Request, res: Response) => {
   try{
   const amazonBooks = await findRandomRows(20);
   const returnArray: object[] = [];
-  // amazonBooks.forEach(async(book: Book)=>{
-  //   const data = await axios.get(`http://localhost:8080/google-books?title=${book.title}`)
-  //   returnArray.push(data.data)
-  // } )
+
   for (const book of amazonBooks) {
+
     const data = await axios.get(`http://localhost:8080/google-books/ISBN10?ISBN10=${book.ISBN10}`);
+
     const transFormedData = data.data
-    const ISBN10 = transFormedData.ISBN10;
-    const ourBookData = await axios.get(`http://localhost:8080/bookdata?ISBN10=${ISBN10}`);
-      if(ourBookData.data && ourBookData.data !== null){
-        returnArray.push(ourBookData.data)
-      }
-      else{returnArray.push(transFormedData);}
-    }
 
-
-
-  //console.log(typeof amazonBooks);
-  // const books = amazonBooks.map((book : Book) => {
-  //   const url = book.image_url;
-  //   return { ...book, image: url };
-  // })
+    const { ISBN10, title, author, image, description } = transFormedData;
+    const ourBookData = await findOrCreateBook(ISBN10, title, author, image, description); ;
+         returnArray.push(ourBookData)
+   }
   res.send(returnArray);
   }
   catch(error){

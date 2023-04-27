@@ -30,16 +30,16 @@ function ResponsiveAppBar() {
     null
   );
 
-  let loggedIn = false;
-  let parsed;
+  // let loggedIn = false;
+  // let parsed;
 
-  if (!localStorage.getItem("user")) {
-    // console.log('no user logged in')
-    loggedIn = false
-  } else {
-    loggedIn = true;
-    parsed = JSON.parse(localStorage.getItem("user") || '{}');
-  }
+  // if (!localStorage.getItem("user")) {
+  //   // console.log('no user logged in')
+  //   loggedIn = false
+  // } else {
+  //   loggedIn = true;
+  //   parsed = JSON.parse(localStorage.getItem("user") || '{}');
+  // }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -198,11 +198,11 @@ function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            {/* <Tooltip title="Open settings"> */}
+            {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="pfp" src={loggedIn ? parsed.picture : null} />
-              </IconButton>
-            </Tooltip>
+              </IconButton> */}
+            {/* </Tooltip> */}
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -224,7 +224,7 @@ function ResponsiveAppBar() {
                   <Link to="/profile">Profile</Link>
                 </Typography>
               </MenuItem>
-              {loggedIn ? (
+              {/* {loggedIn ? (
                 <MenuItem onClick={logout}>
                   <Typography textAlign="center">
                     Logout
@@ -237,7 +237,7 @@ function ResponsiveAppBar() {
                       Login</Link>
                   </Typography>
                 </MenuItem>
-              )}
+              )} */}
             </Menu>
           </Box>
         </Toolbar>
