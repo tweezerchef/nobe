@@ -10,6 +10,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
 import BookIcon from '../NotificationBell/Notificationbell';
 import CloseBy from '../CloseBy/CloseBy';
+import { io } from "socket.io-client";
 
 const actions = [
   { icon: <FileCopyIcon />, name: 'Copy' },
@@ -20,7 +21,20 @@ const actions = [
 
 
 
+
+
   const OpenIconSpeedDial: React.FC = () => {
+
+    // React.useEffect(() => {
+    //   const socket = io("http://localhost:8080");
+    //   console.log(socket.on('test', (msg)=> {
+    //     console.log(msg);
+    //   }));
+    // }, []);
+
+
+
+
     return (
       <Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
         <SpeedDial
