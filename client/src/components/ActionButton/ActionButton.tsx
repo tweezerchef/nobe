@@ -8,14 +8,18 @@ import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
-import BookIcon from '../NotificationBell/Notificationbell';
+import BookIcon from '../NotificationBook/Notificationbook';
 import CloseBy from '../CloseBy/CloseBy';
 import { io } from "socket.io-client";
+import MessageIcon from '../MessagesIcon/messagesicon';
+import FriendIcon from '../NewFriendIcon/Newfriendicon';
+import NotificationIcon from '../NotificationMessages/Notificationmessages';
+
 
 const actions = [
-  { icon: <FileCopyIcon />, name: 'Copy' },
-  { icon: <SaveIcon />, name: 'Save' },
-  { icon: <PrintIcon />, name: 'Print' },
+  { icon: <NotificationIcon />, name: 'Notifications Feed' },
+  { icon: <FriendIcon />, name: 'Friends' },
+  { icon: <MessageIcon  />, name: 'Messages' },
   { icon: <CloseBy  />, name: 'Near By' },
 ];
 

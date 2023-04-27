@@ -23,21 +23,47 @@ async function findOrCreateBook(ISBN10: string, title: string, author: string, i
         description: description,
       },
       select: {
+        id: true,
         ISBN10: true,
         title: true,
         author: true,
         image: true,
         description: true,
-        UserBooks: true,
-        Discussions: true,
-        Activity: true,
+        UserBooks: {select: {
+          id: true,
+          wishlist: true,
+          owned: true,
+          booksId: true,
+          userId: true,
+          rating: true,
+          review: true,
+          LendingTable: true,
+          books: {
+            select: {
+              id: true,
+              title: true,
+              author: true,
+              ISBN10: true,
+              description: true,
+              image: true,
+              UserBooks: true,
+              Discussions: true,
+              Activity: true,
+            },
+          },
+          user: true,
+        },
+
+      },
+         Discussions: true,
+         Activity: true,
       },
     });
 
     return newBook;
   } catch (error) {
-    console.error(`Error finding or creating book with ISBN10 ${ISBN10}: ${error}`);
-    return
+    console.error(`Error finding or creating book with ISBN10 ${ISBN10}:`);
+    return {}
   }
 }
 
@@ -58,23 +84,20 @@ async function findRandomRows(limit: number) {
 
 
 Recommendations.get('/random', async (req : Request, res: Response) => {
-  try{
-  const amazonBooks = await findRandomRows(20);
-  const returnArray: object[] = [];
+  try {
+    const amazonBooks = await findRandomRows(20);
 
-  for (const book of amazonBooks) {
+    const returnArray = await Promise.all(amazonBooks.map(async (book: any) => {
+      const data = await axios.get(`http://localhost:8080/google-books/ISBN10?ISBN10=${book.ISBN10}`);
 
-    const data = await axios.get(`http://localhost:8080/google-books/ISBN10?ISBN10=${book.ISBN10}`);
+      const transFormedData = data.data;
+      const { ISBN10, title, author, image, description } = transFormedData;
+      const ourBookData = await findOrCreateBook(ISBN10, title, author, image, description);
+      return ourBookData;
+    }));
 
-    const transFormedData = data.data
-
-    const { ISBN10, title, author, image, description } = transFormedData;
-    const ourBookData = await findOrCreateBook(ISBN10, title, author, image, description); ;
-         returnArray.push(ourBookData)
-   }
-  res.send(returnArray);
-  }
-  catch(error){
+    res.send(returnArray);
+  } catch (error) {
     console.error(error);
     res.status(500).send(error);
   }

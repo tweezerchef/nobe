@@ -34,7 +34,7 @@ model User {
   Notifications      Notifications[]
   Posts              Posts[]
   PostsUsers         PostsUsers[]
-  books              UserBooks[]
+  UserBooks          UserBooks[]
   User_Places        User_Places[]
 }
 
@@ -43,8 +43,8 @@ model PlacesToRead {
   nickName        String?
   Location        String
   Private         Boolean        @default(false)
-  Lat             Int?
-  Long            Int?
+  Lat             Float?
+  Long            Float?
   altLoc          String?
   Description     String?
   LendingTableIn  LendingTable[] @relation("inPlace")
@@ -86,7 +86,7 @@ model DirectMessages {
 
 model Books {
   id          String        @id @default(uuid())
-  title       String
+  title       String        @unique
   author      String
   description String?
   paperback   Boolean?
@@ -97,6 +97,7 @@ model Books {
   Discussions Discussions[]
   genre       Genre[]
   UserBooks   UserBooks[]
+  Clubs_Books Clubs_Books[]
 }
 
 model Genre {
@@ -115,8 +116,8 @@ model UserBooks {
   rating       Float?
   review       String?
   LendingTable LendingTable[]
-  books        Books          @relation(fields: [booksId], references: [id])
-  user         User           @relation(fields: [userId], references: [id])
+  Books        Books          @relation(fields: [booksId], references: [id])
+  User         User           @relation(fields: [userId], references: [id])
 
   @@unique([userId, booksId], name: "userId_bookId")
 }
@@ -126,7 +127,7 @@ model bookdata {
   author     String
   image_url  String
   rating     String
-  title      String
+  title      String @unique
   url        String
   categories String
   ISBN10     String @id
@@ -140,6 +141,18 @@ model Clubs {
   admin       String?
   clubMembers ClubMembers[]
   Discussions Discussions[]
+  Clubs_Books Clubs_Books[]
+}
+
+model Clubs_Books {
+  id          String  @id @default(uuid())
+  Books       Books   @relation(fields: [booksId], references: [id])
+  booksId     String
+  Clubs       Clubs   @relation(fields: [clubId], references: [id])
+  clubId      String
+  description String?
+  startDate   String?
+  endDate     String?
 }
 
 model ClubMembers {
@@ -211,11 +224,14 @@ model Activity {
 }
 
 model Friendship {
-  id       String @id @default(uuid())
-  userId   String
-  friendId String
-  friend   User   @relation("friend", fields: [friendId], references: [id])
-  user     User   @relation("user", fields: [userId], references: [id])
+  id        String  @id @default(uuid())
+  userId    String
+  friendId  String
+  friend    User    @relation("friend", fields: [friendId], references: [id])
+  user      User    @relation("user", fields: [userId], references: [id])
+  confirmed Boolean @default(true)
+
+  @@unique([userId, friendId], name: "userId_friendId")
 }
 
 model LendingTable {
