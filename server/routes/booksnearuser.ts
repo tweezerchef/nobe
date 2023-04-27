@@ -15,97 +15,57 @@ interface QueryResult {
   id: number;
 }
 
-interface Coordinates {
-  lat: number;
-  lon: number;
-  radius: number;
-}
-
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
+  console.log(req, 26);
   console.log(req, 26);
   try {
     const { lon, lat, radius } = req.query
     console.log(lon, lat, radius);
-     //  coordinates are sent in the request body
+    //  coordinates are sent in the request body
     if (!lat || !lon || !radius) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
     }
     // Cast lat, lon, and radius to numbers
-     const latNum = Number(lat);
-     const lonNum = Number(lon);
-     const radiusNum = Number(radius);
+    const latNum = Number(lat);
+    const lonNum = Number(lon);
+    const radiusNum = Number(radius);
     const users = await prisma.user.findMany({
       where: {
         AND: [
           {
             latitude: {
-              gte: parseFloat(latNum) - parseFloat(radiusNum) / 69.0,
-              lte: parseFloat(latNum) + parseFloat(radiusNum) / 69.0,
+              gte: latNum - radiusNum / 69.0,
+              lte: latNum + radiusNum / 69.0,
             },
           },
           {
             longitude: {
-              gte: parseFloat(lonNum) - parseFloat(radiusNum) / (69.0 * Math.cos(parseFloat(latNum) * Math.PI / 180.0)),
-              lte: parseFloat(lonNum) + parseFloat(radiusNum) / (69.0 * Math.cos(parseFloat(latNum) * Math.PI / 180.0)),
+              gte: lonNum - radiusNum / (69.0 * Math.cos(latNum * Math.PI / 180.0)),
+              lte: lonNum + radiusNum / (69.0 * Math.cos(latNum * Math.PI / 180.0)),
             },
           },
         ],
       },
     });
+console.log(users, 51)
+   const ids = users.reduce<string[]>((acc, user) => {
+  acc.push(user.id);
+  return acc;
+}, []);
 
-    res.json(users);
-
-
-
-
-//     const { lon, lat, radius } = req.query
-//     console.log(lon, lat, radius);
-//      //  coordinates are sent in the request body
-//     if (!lat || !lon || !radius) {
-//       return res.status(400).json({ error: 'Missing coordinates or radius' });
-//     }
-//      // Cast lat, lon, and radius to numbers
-//      const latNum = Number(lat);
-//      const lonNum = Number(lon);
-//      const radiusNum = Number(radius);
-//  // query users within radius
-//  const users = await prisma.user.findMany({
-//   where: {
-//     AND: [
-//       {
-//         latitude: {
-//           gte: latNum - radiusNum, // latitude within radius (upper bound)
-//           lte: latNum + radiusNum // latitude within radius (lower bound)
-//         }
-//       },
-//       {
-//         longitude: {
-//           gte: lonNum - radiusNum, // longitude within radius (upper bound)
-//           lte: lonNum + radiusNum // longitude within radius (lower bound)
-//         }
-//       }
-//     ]
-//   }
-// });
-
-// const ids = users.reduce<string[]>((acc, user) => {
-//   acc.push(user.id);
-//   return acc;
-// }, []);
-
-// const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
-//   where: {
-//     userId: id
-//   },
-//   include: {
-//     books: true
-//   }
-// }))
-// const userBooks = await Promise.all(userBooksPromises);
+const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
+  where: {
+    userId: id
+  },
+  include: {
+    books: true
+  }
+}))
+const userBooks = await Promise.all(userBooksPromises);
 //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
-//console.log(userBooks, 65);
-// res.status(200).json({ userBooks });
+console.log(userBooks, 67);
+res.status(200).json({ userBooks });
   } catch (error) {
    console.error('Error getting users within radius:', error);
     res.status(500).json({ error: 'Server error' });
@@ -113,54 +73,55 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
 });
 
 
-// LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Response) => {
-//   try {
-//     const id = req.params.id;
-//     const latitude = req.body.latitude;
-//     const longitude = req.body.longitude;
-//     const userUpdateLocation = await prisma.user.update({
-//       where: {
-//         id: id,
-//       },
-//       data: {
-//         longitude: longitude,
-//         latitude: latitude
-//       },
-//     })
-//     console.log(userUpdateLocation);
-//     res.status(200).json({ userUpdateLocation })
-//   } catch (e) {
-//     console.error(e)
-//     res.status(500).json({
-//       error: 'Server error!',
-//     })
-//   }
-// })
 
-// LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response) => {
-//   console.log(req);
-//   console.log(req.body);
-//   try {
-//     const id = req.params.id;
-//     const radius = req.body.radius
-//     const userUpdateRadius = await prisma.user.update({
-//       where: {
-//         id: id,
-//       },
-//       data: {
-//         radius: radius,
+LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const id = req.params.id;
+    const latitude = req.body.latitude;
+    const longitude = req.body.longitude;
+    const userUpdateLocation = await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        longitude: longitude,
+        latitude: latitude
+      },
+    })
+    console.log(userUpdateLocation);
+    res.status(200).json({ userUpdateLocation })
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({
+      error: 'Server error!',
+    })
+  }
+})
 
-//       },
-//     })
-//     console.log(userUpdateRadius);
-//     res.status(200).json({ userUpdateRadius })
-//   } catch (e) {
-//     console.error(e)
-//     res.status(500).json({
-//       error: 'Server error!',
-//     })
-//   }
-// })
+LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response) => {
+  console.log(req);
+  console.log(req.body);
+  try {
+    const id = req.params.id;
+    const radius = req.body.radius
+    const userUpdateRadius = await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        radius: radius,
+
+      },
+    })
+    console.log(userUpdateRadius);
+    res.status(200).json({ userUpdateRadius })
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({
+      error: 'Server error!',
+    })
+  }
+})
 
 
 
