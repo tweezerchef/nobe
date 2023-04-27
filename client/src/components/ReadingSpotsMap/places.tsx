@@ -33,7 +33,7 @@ function Places({ setLatLng, setAddress }: PlacesProps) {
     setAddress(val);
 
     try {
-      await axios.post('/api/places-to-read', { address: val, lat: lat, lng: lng });
+      await axios.post('/api/places-to-read/place', { address: val, lat: lat, lng: lng });
     } catch (err) {
       console.error(err);
     }
