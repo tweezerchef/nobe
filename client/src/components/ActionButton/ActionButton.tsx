@@ -12,11 +12,13 @@ import BookIcon from '../NotificationBook/Notificationbook';
 import CloseBy from '../CloseBy/CloseBy';
 import { io } from "socket.io-client";
 import MessageIcon from '../MessagesIcon/messagesicon';
+import FriendIcon from '../NewFriendIcon/Newfriendicon';
+import NotificationIcon from '../NotificationMessages/Notificationmessages';
 
 
 const actions = [
-  { icon: <FileCopyIcon />, name: 'Copy' },
-  { icon: <SaveIcon />, name: 'Save' },
+  { icon: <NotificationIcon />, name: 'Notifications Feed' },
+  { icon: <FriendIcon />, name: 'Friends' },
   { icon: <MessageIcon  />, name: 'Messages' },
   { icon: <CloseBy  />, name: 'Near By' },
 ];
