@@ -29,9 +29,34 @@ async function findOrCreateBook(ISBN10: string, title: string, author: string, i
         author: true,
         image: true,
         description: true,
-        UserBooks: true,
-        Discussions: true,
-        Activity: true,
+        UserBooks: {select: {
+          id: true,
+          wishlist: true,
+          owned: true,
+          booksId: true,
+          userId: true,
+          rating: true,
+          review: true,
+          LendingTable: true,
+          books: {
+            select: {
+              id: true,
+              title: true,
+              author: true,
+              ISBN10: true,
+              description: true,
+              image: true,
+              UserBooks: true,
+              Discussions: true,
+              Activity: true,
+            },
+          },
+          user: true,
+        },
+
+      },
+         Discussions: true,
+         Activity: true,
       },
     });
 

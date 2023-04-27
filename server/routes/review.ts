@@ -12,7 +12,27 @@ async function findOrCreateBook(ISBN10: string, title: string, author: string, i
       where: { ISBN10: ISBN10 },
       update: {},
       create: { ISBN10 : ISBN10, title: title, author: author, image: image, description: description },
-    });
+
+    select: {
+      id: true,
+      title: true,
+      author: true,
+      ISBN10: true,
+      description: true,
+      image: true,
+      UserBooks: {
+        id: true,
+        wishlist: true,
+        owned: true,
+        booksId: true,
+        userId: true,
+        rating: true,
+        review: true,
+        LendingTable: true,
+      },
+      Discussions: true,
+      Activity: true,
+    },});
     return newbook;;
   }
 async function findOrCreateUserBook(booksId: string, userId: string, rating: number) {
