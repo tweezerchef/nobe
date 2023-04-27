@@ -81,7 +81,7 @@ app.use("/openai", OpenAI);
 app.use("/bookdata", BookData);
 app.use("/user", User);
 app.use("/google-books", GoogleBooks);
-app.use("/reading-spots");
+app.use("/reading-spots", SpotsMapRoute);
 
 
 

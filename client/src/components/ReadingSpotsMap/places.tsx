@@ -18,7 +18,7 @@ function Places({ setOffice, setAddress }: PlacesProps) {
     clearSuggestions,
   } = usePlacesAutoComplete();
 
-  // console.log({ status, data });
+  console.log({ status, data });
 
   const handleSelect = async (val: string) => {
     setValue(val, false);
