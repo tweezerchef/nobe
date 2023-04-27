@@ -26,6 +26,7 @@ BookData.get('/', async (req, res) => {
           image: true,
           UserBooks: true,
           Discussions: true,
+          Activity: true,
         },
       });
     //   console.log(book)

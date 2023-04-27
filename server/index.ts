@@ -218,6 +218,7 @@ app.post("/login", async (req, res) => {
       userData.token = jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
         expiresIn: "1d",
       }),
+      console.log(userData)
 
       res.status(201).json({
         message: "Login was successful",
