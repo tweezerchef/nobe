@@ -77,22 +77,22 @@ function Locations() {
 
   }
 
-  const saveRadius = async () => {
-    setRadiusState('loading');
-    console.log(convertRadius, 82);
-    try {
-      const res = await axios.put(`/location/${user.id}/radius`, {
-        radius: convertRadius
-      });
-      console.log(res, 84)
-      setTimeout(() => {
-        setRadiusState('success');
-      }, 1500);
-    } catch (err) {
-      console.error(err);
-    }
-
+const saveRadius = async () => {
+  setRadiusState('loading');
+  //console.log(convertRadius, 82);
+  try {
+    const res = await axios.put(`/location/${user.id}/radius`, {
+      radius: convertRadius
+    });
+    console.log(res, 84)
+    setTimeout(() => {
+      setRadiusState('success');
+    }, 1500);
+  } catch (err) {
+    //console.error(err);
   }
+
+}
 
 
   const getBooksNearMe = async () => {
@@ -105,7 +105,7 @@ function Locations() {
         setButtonState('success');
       }, 2000);
     } catch (err) {
-      console.error(err);
+     console.error(err);
     }
 
   }

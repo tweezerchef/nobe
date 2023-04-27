@@ -133,10 +133,10 @@ LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Res
         latitude: latitude
       },
     })
-    console.log(userUpdateLocation);
+    //console.log(userUpdateLocation);
     res.status(200).json({ userUpdateLocation })
   } catch (e) {
-    console.error(e)
+   // console.error(e)
     res.status(500).json({
       error: 'Server error!',
     })
