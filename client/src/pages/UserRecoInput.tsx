@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useContext } from 'react';
 import UserContext from '../hooks/Context';
 import Recommendations from '../../../server/routes/recommendations';
+import BigBook from '../components/Book/BookBig';
 
 
 
@@ -18,7 +19,7 @@ const UserRecoInputPage = () => {
     const [books, setBooks] = useState([]);
     useEffect(() => {
         axios.get('/recommendations/random')
-            .then(res => { setBooks(res.data) })
+            .then(res => { console.log(res.data), setBooks(res.data) }).then(() => console.log(books))
         //.then(data => setBooks(data));
     }, []);
 
@@ -26,7 +27,8 @@ const UserRecoInputPage = () => {
     return (
         <div>
             <h1>  The More Books You Rate The Better Your Recommendations Will Be </h1>
-            <BookDisplay books={books} id={id} />
+            {/* <BookDisplay books={books} id={id} /> */}
+            {books.length > 0 && <BigBook book={books[0]} id={id} />}
 
         </div>
     )
