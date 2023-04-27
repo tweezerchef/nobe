@@ -131,6 +131,12 @@ function ResponsiveAppBar() {
                     Near Me</Link>
                 </Typography>
               </MenuItem>
+              <MenuItem onClick={handleOpenUserMenu}>
+                <Typography textAlign="center">
+                  <Link to="/reading-spots">
+                    Top Reading Spots</Link>
+                </Typography>
+              </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
                   <Link to="/user-reco-input">
@@ -182,6 +188,12 @@ function ResponsiveAppBar() {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               <StyledLink to="/locations">Books Near Me</StyledLink>
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <StyledLink to="/reading-spots">Top Reading Spots</StyledLink>
             </Button>
             <Button
               onClick={handleCloseNavMenu}

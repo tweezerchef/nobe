@@ -8,26 +8,26 @@ import Link from '@mui/joy/Link';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import DeleteButton from '../DeleteButton/DeleteButton';
+import { Link as RouterLink } from 'react-router-dom';
+
 
 
 
 
 const BookDisplay = (props: any) => {
-    const { books: array, id, getUserBooks, setBooks, inventory } = props;
+    const { userBooks: array, id, getUserBooks, setUserBooks, inventory } = props;
     return (
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
             {array.length === 0 ? (
                 <div></div>
             ) : (
-                array.map((book: any) => (
-                    <Card key={book.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px' }}>
+                array.map((userBook: any) => (
+                    <Card key={userBook.books.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px' }}>
                         <CardOverflow>
                             <AspectRatio ratio="2">
-                                <img
-                                    src={book.image}
-                                    loading="lazy"
-                                    alt=""
-                                />
+                                <RouterLink to={`/profile/${id}`}>
+                                    <img src={userBook.books.image} loading="lazy" alt="" />
+                                </RouterLink>
                             </AspectRatio>
                             <IconButton
                                 aria-label="Like minimal photography"
@@ -48,11 +48,11 @@ const BookDisplay = (props: any) => {
                         </CardOverflow>
                         <Typography level="h2" sx={{ fontSize: 'md', mt: 2 }}>
                             <Link href="#multiple-actions" overlay underline="none">
-                                {book.title}
+                                {userBook.books.title}
                             </Link>
                         </Typography>
                         <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
-                            <Link href="#multiple-actions">{book.author}</Link>
+                            <Link href="#multiple-actions">{userBook.books.author}</Link>
                         </Typography>
                         <Divider inset="context" />
                         <CardOverflow
@@ -66,13 +66,13 @@ const BookDisplay = (props: any) => {
                             }}
                         >
                             <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
-                                {book.rating}
+                                {userBook.books.rating}
                             </Typography>
                             <Divider orientation="vertical" />
                             <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
                             </Typography>
-                            <UserStarRating book={book} id={id} />
-                            <DeleteButton book={book} id={id} getUserBooks={getUserBooks} setBooks={setBooks} inventory={inventory} />
+                            <UserStarRating book={userBook} id={id} />
+                            <DeleteButton userBook={userBook} id={id} getUserBooks={getUserBooks} setUserBooks={setUserBooks} inventory={inventory} />
                         </CardOverflow>
                     </Card>
                 ))

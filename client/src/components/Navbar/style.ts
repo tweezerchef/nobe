@@ -2,7 +2,10 @@ import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { NavProps } from './Navbar'
 
-export const StyledNavbar = styled.nav<NavProps>` display: flex;
+export const StyledNavbar = styled.nav<NavProps>`
+position: sticky;
+top: 0;
+display: flex;
 align-items: center; justify-content: flex-end;
 width: 100%;
 height: 70px;
@@ -10,6 +13,7 @@ padding: 0 30px;
 color: #ffffff;
 background-color: #202023;
 box-shadow: 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+z-index: 100;
 `;
 
 export const NavItemLink = styled(Link) <NavProps>`
