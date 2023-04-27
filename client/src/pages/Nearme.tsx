@@ -178,7 +178,6 @@ const saveRadius = async () => {
               <OutlinedInput sx={{ height: '3ch' }}
                 id="outlined-adornment-weight"
                 endAdornment={<InputAdornment position="end">mi</InputAdornment>}
-                aria-describedby="outlined-weight-helper-text"
                 onChange={handleRadiusChange}
                 value={radius}
               />
