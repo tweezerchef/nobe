@@ -126,8 +126,7 @@ User.get('/', async (req, res) => {
                 },
               },
             },
-
-        },
+          },
       }
       });
       //console.log(user)
