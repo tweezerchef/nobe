@@ -56,11 +56,8 @@ const Profile = () => {
 
   }
 
-  const addFriend = async () => {
-    const user = localStorage.getItem("user");
-    const parsed = JSON.parse(localStorage.getItem("user") || '{}');
-    const userId = parsed.id;
-
+  const follow = async () => {
+    const userId = user.id;
     const friendId = id;
 
     try {
@@ -147,7 +144,7 @@ const Profile = () => {
         } */}
         {user && <BookDisplay books={books} id={user.id} />}
       </div>
-      <button onClick={addFriend}>Add friend</button>
+      <button onClick={follow}>{`Follow`}</button>
     </div>
   );
 }
