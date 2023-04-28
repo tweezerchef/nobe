@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -8,6 +8,8 @@ import IconButton from '@mui/joy/IconButton';
 import Link from '@mui/joy/Link';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
+import UserContext from '../../hooks/Context';
+import BigBook from './BookBig';
 
 
 
@@ -15,19 +17,31 @@ import UserStarRating from '../UserStarRating/UserStarRating';
 
 
 
-const Book = (props: any) => {
+const Book = React.memo((props: any) => {
+    const [showBigBook, setShowBigBook] = useState(false);
+    const { book } = props;
+    const userContext = useContext(UserContext);
+    const user = userContext?.user;
+    console.log('user', user)
+    const id = user.id
+    console.log(book)
+    if (!book) {
+        return null;
+    }
+    const handleOnClick = () => {
+        setShowBigBook(true);
+    };
 
-    const { book, id } = props;
+    if (showBigBook) {
+        return <BigBook book={book} id={id} onClose={() => setShowBigBook(false)} />;
+    }
+
 
     return (
         <Card key={book.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px' }}>
-            <CardOverflow>
+            <CardOverflow onClick={handleOnClick}>
                 <AspectRatio ratio="2">
-                    <img
-                        src={book.image}
-                        loading="lazy"
-                        alt=""
-                    />
+                    <img src={book.image} loading="lazy" alt="" />
                 </AspectRatio>
                 <IconButton
                     aria-label="Like minimal photography"
@@ -46,7 +60,7 @@ const Book = (props: any) => {
                     <BookmarkAddIcon />
                 </IconButton>
             </CardOverflow>
-            <Typography level="h2" sx={{ fontSize: 'md', mt: 2 }}>
+            <Typography level="h2" sx={{ fontSize: 'md', mt: 2 }} onClick={handleOnClick}>
                 <Link href="#multiple-actions" overlay underline="none">
                     {book.title}
                 </Link>
@@ -69,14 +83,11 @@ const Book = (props: any) => {
                     {book.rating}
                 </Typography>
                 <Divider orientation="vertical" />
-                <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
-                </Typography>
+                <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}></Typography>
                 <UserStarRating book={book} id={id} />
             </CardOverflow>
         </Card>
+    );
+});
 
-    )
-
-}
-
-export default Book;
+export default Book

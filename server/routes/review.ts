@@ -49,14 +49,23 @@ Review.post('/', async (req: Request, res: Response) => {
 
   const { book, rating, id } = req.body;
 
-const googleTitle = book.title;
-const data = await axios.get(`http://localhost:8080/google-books?title=${googleTitle}`);
-const transFormedData = data.data
-const { ISBN10, title, author, image, description  } = transFormedData;
- findOrCreateBook(ISBN10, title, author, image, description ).then(newbook =>{
- const booksId = newbook.id;
+//const googleTitle = book.title;
+//const data = await axios.get(`http://localhost:8080/google-books?title=${googleTitle}`);
+//const transFormedData = data.data
+const { ISBN10, title, author, image, description  } = book;
+ //findOrCreateBook(ISBN10, title, author, image, description )
+ axios.post(`http://localhost:8080/bookdata/title/wishlist`,{
+  title: title,
+  ISBN10: ISBN10,
+  author: author,
+  image: image,
+  description: description,
+
+ })
+ .then(newbook =>{
+ const booksId = newbook.data.id;
  findOrCreateUserBook(booksId, id, rating).then(NewUserBook =>{
-  //console.log(NewUserBook)
+  console.log(NewUserBook)
  res.sendStatus(201)
  //.json(NewUserBook);
  })
