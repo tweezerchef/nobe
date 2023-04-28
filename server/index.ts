@@ -41,7 +41,8 @@ import OpenAI from './routes/OpenAI';
 import BookData from './routes/BookData';
 import User from './routes/User';
 import GoogleBooks from './routes/GoogleBooks';
-
+import Friendship  from './routes/friendship';
+import Activity from './routes/activity';
 
 
 
@@ -80,6 +81,8 @@ app.use("/openai", OpenAI);
 app.use("/bookdata", BookData);
 app.use("/user", User);
 app.use("/google-books", GoogleBooks);
+app.use("/api/friendship", Friendship);
+app.use("/api/activity", Activity);
 
 
 
