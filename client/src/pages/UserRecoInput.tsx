@@ -49,8 +49,8 @@ const UserRecoInputPage = () => {
                 />
                 <Button type="submit">Submit</Button>
             </form>
-            {/* <BookDisplay books={books} id={id} /> */}
-            {books.length > 0 && <BigBook book={books[0]} id={id} />}
+            <BookDisplay books={books} id={id} />
+            {/* {books.length > 0 && <BigBook book={books[0]} id={id} />} */}
 
         </div>
     )

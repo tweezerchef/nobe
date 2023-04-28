@@ -11,6 +11,7 @@ const UserStarRating = (props: any) => {
     // if (book.UserBooks.includes(id)) {
     //     console.log(book.UserBooks)
     // }
+    const { title, author, ISBN10, description, image } = book
     if (book.rating && book.rating.length === 1) {
         rating = book.rating
     }
