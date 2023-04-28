@@ -51,7 +51,7 @@ function App() {
                 <ResponsiveAppBar />
                 {isLoading ? <div>Loading...</div> : <Router />}
             </UserContext.Provider>
-            <OpenIconSpeedDial />
+            {/* <OpenIconSpeedDial /> */}
         </div>
     );
 }
