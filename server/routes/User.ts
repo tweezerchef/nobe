@@ -102,9 +102,33 @@ User.get('/', async (req, res) => {
           DiscussionsUsers: true,
           Posts:true,
           PostsUsers:true,
-          UserBooks: true,
-          User_Places: true,
+          UserBooks: {
+            select: {
+              id: true,
+              wishlist: true,
+              owned: true,
+              booksId: true,
+              userId: true,
+              rating: true,
+              review: true,
+              LendingTable: true,
+              Books: {
+                select: {
+                  id: true,
+                  title: true,
+                  author: true,
+                  ISBN10: true,
+                  description: true,
+                  image: true,
+                  UserBooks: true,
+                  Discussions: true,
+                  Activity: true,
+                },
+              },
+            },
+
         },
+      }
       });
       //console.log(user)
       res.send(user);
