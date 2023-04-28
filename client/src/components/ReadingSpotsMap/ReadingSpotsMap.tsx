@@ -16,16 +16,11 @@ interface Place {
 
 function ReadingSpotsMap() {
   const [latlng, setLatLng] = useState<LatLngLiteral>();
-  // console.log("latlng data", latlng);
   const [address, setAddress] = useState<string>("");
-  // console.log("address data", address);
-
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [savedPlaces, setSavedPlaces] = useState<Place[]>([]);
-  // console.log("saved places:", savedPlaces);
-  // savedPlaces.forEach(place => {
-  //   console.log(place.Long);
-  // });
+  const [selectedPlace, setSelectedPlace] = useState<number | null>(null);
+
 
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(() => ({ lat: 29.9511, lng: -90.0715 }), []);
@@ -47,6 +42,10 @@ function ReadingSpotsMap() {
 
   const handleMarkerClick = useCallback(() => {
     setShowInfoWindow((prev) => !prev);
+  }, []);
+
+  const handlePlaceClick = useCallback((placeId: number) => {
+    setSelectedPlace((prev) => (prev === placeId ? null : placeId));
   }, []);
 
   return (
@@ -96,8 +95,17 @@ function ReadingSpotsMap() {
               icon={{
                 url: "http://maps.google.com/mapfiles/kml/shapes/library_maps.png",
               }}
+              onClick={() => handlePlaceClick(place.id)}
             >
-
+              {selectedPlace === place.id && (
+                <InfoWindow
+                  onCloseClick={() => setSelectedPlace(null)}
+                  position={{ lat: place.Lat, lng: place.Long }}
+                  options={{ maxWidth: 150 }}
+                >
+                  <div>{place.Location}</div>
+                </InfoWindow>
+              )}
             </Marker>
           ))}
         </GoogleMap>
