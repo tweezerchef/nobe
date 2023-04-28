@@ -56,6 +56,21 @@ const Profile = () => {
 
   }
 
+  const addFriend = async () => {
+    const user = localStorage.getItem("user");
+    const parsed = JSON.parse(localStorage.getItem("user") || '{}');
+    const userId = parsed.id;
+
+    const friendId = id;
+
+    try {
+      await axios.post('/api/friendship', {userId, friendId });
+      
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
@@ -132,6 +147,7 @@ const Profile = () => {
         } */}
         {user && <BookDisplay books={books} id={user.id} />}
       </div>
+      <button onClick={addFriend}>Add friend</button>
     </div>
   );
 }
