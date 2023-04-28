@@ -35,7 +35,7 @@ function getISBN(volumeInfo: any) {
     return ''; // return an empty string when no image is found
   }
   async function getGoogleBooksData(title: string) {
-    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=intitle=${title}&key=`);
+    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=title:${title}&key=${process.env.GOOGLE_BOOKS}`);
     if (response.data.items && response.data.items.length > 0) {
       return response.data.items[0].volumeInfo;
     } else {
@@ -56,6 +56,7 @@ function getISBN(volumeInfo: any) {
 
   GoogleBooks.get('/', async (req: Request, res: Response) => {
     const title: string | undefined = req.query.title as string | undefined;
+    console.log(title)
     if (!title) {
         return res.status(400).send('Please provide a valid book title.');
     }
