@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Places from "./places";
-import Card from '@mui/material/Card';
+import { Card, Button } from '@mui/material';
 import axios from "axios";
 import "../../styles/mapstyles.css";
 
@@ -23,6 +23,7 @@ function ReadingSpotsMap() {
   const [savedPlaces, setSavedPlaces] = useState<Place[]>([]);
   console.log(savedPlaces)
   const [selectedPlace, setSelectedPlace] = useState<number | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
 
   const mapRef = useRef<GoogleMap>()
@@ -51,10 +52,12 @@ function ReadingSpotsMap() {
     setSelectedPlace((prev) => (prev === placeId ? null : placeId));
   }, []);
 
-  const handleCardClick = useCallback((place: Place) => {
-    setLatLng({ lat: place.Lat, lng: place.Long });
-    setSelectedPlace(place.id);
-    mapRef.current?.panTo({ lat: place.Lat, lng: place.Long });
+  const handleFormOpen = () => {
+    setIsFormOpen(true);
+  };
+
+  const handleCardClick = useCallback((lat: number, lng: number) => {
+    mapRef.current?.panTo({ lat, lng });
   }, []);
 
   return (
@@ -71,7 +74,7 @@ function ReadingSpotsMap() {
         <h3 className="top-spots-header">Top Spots</h3>
         <div className="cards-container">
           {savedPlaces?.map((place) => (
-            <Card key={place.id} onClick={() => handleCardClick(place)} >
+            <Card key={place.id} onClick={() => handleCardClick(place.Lat, place.Long)}>
               <div>{place.Location}</div>
               {place.Description && <div>{place.Description}</div>}
             </Card>
@@ -101,7 +104,17 @@ function ReadingSpotsMap() {
                   position={latlng}
                   options={{ maxWidth: 150 }}
                 >
-                  <div>{address}</div>
+                  <div>
+                    <div>{address}</div>
+                    <div>
+                      <Button onClick={handleFormOpen}>Add Description</Button>
+                      {isFormOpen && (
+                        <Card>
+          // MUI form here
+                        </Card>
+                      )}
+                    </div>
+                  </div>
                 </InfoWindow>
               )}
             </Marker>
@@ -122,7 +135,17 @@ function ReadingSpotsMap() {
                   position={{ lat: place.Lat, lng: place.Long }}
                   options={{ maxWidth: 150 }}
                 >
-                  <div>{place.Location}</div>
+                  <div>
+                    <div>{place.Location}</div>
+                    <div>
+                      <Button onClick={handleFormOpen} size="small">Add Description</Button>
+                      {isFormOpen && (
+                        <Card>
+
+                        </Card>
+                      )}
+                    </div>
+                  </div>
                 </InfoWindow>
               )}
             </Marker>
