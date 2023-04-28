@@ -18,7 +18,10 @@ import UserStarRating from '../UserStarRating/UserStarRating';
 
 const BigBook = (props: any) => {
 
-    const { book, id } = props;
+    const { book, id, onClose } = props;
+    const handleOnClick = () => {
+        onClose();
+    };
 
     return (
         <Card key={book.ISBN10} variant="outlined" sx={{ width: 700, height: 1000, margin: '10px', display: 'flex', flexDirection: 'column' }}>
@@ -37,6 +40,7 @@ const BigBook = (props: any) => {
                         left: '60%',
                         transform: 'translate(-50%, -50%)'
                     }}
+                    onClick={handleOnClick}
                 />
                 <IconButton
                     aria-label="Like minimal photography"
@@ -59,9 +63,9 @@ const BigBook = (props: any) => {
             <UserStarRating book={book} id={id} />
             <Box sx={{ p: 3, flexGrow: 1 }}>
                 <Typography level="h2" sx={{ fontSize: 'lg', mt: 2 }}>
-                    <Link href="#multiple-actions" overlay underline="none">
+                    <span onClick={handleOnClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
                         {book.title}
-                    </Link>
+                    </span>
                 </Typography>
                 <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
                     <Link href="#multiple-actions">{book.author}</Link>
