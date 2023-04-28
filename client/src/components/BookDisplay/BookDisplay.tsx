@@ -42,7 +42,6 @@ const BookDisplay = React.memo((props: any) => {
     if (!user) {
         return <div>Loading user...</div>;
     }
-    console.log('user', user)
     // const id = user?.id
     // if (!id) {
     //     return <div>Loading user...</div>;

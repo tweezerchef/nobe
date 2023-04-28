@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 import express, { Request, Response } from 'express';
 import axios from 'axios';
+import UserBooks from './userbooks';
 
 
 const Review = express.Router();
@@ -12,27 +13,6 @@ async function findOrCreateBook(ISBN10: string, title: string, author: string, i
       where: { ISBN10: ISBN10 },
       update: {},
       create: { ISBN10 : ISBN10, title: title, author: author, image: image, description: description },
-
-    // select: {
-    //   id: true,
-    //   title: true,
-    //   author: true,
-    //   ISBN10: true,
-    //   description: true,
-    //   image: true,
-    //   UserBooks: {
-    //     id: true,
-    //     wishlist: true,
-    //     owned: true,
-    //     booksId: true,
-    //     userId: true,
-    //     rating: true,
-    //     review: true,
-    //     LendingTable: true,
-    //   },
-    //   Discussions: true,
-    //   Activity: true,
-    // },
   });
     return newbook;;
   }
@@ -65,12 +45,26 @@ const { ISBN10, title, author, image, description  } = book;
  .then(newbook =>{
  const booksId = newbook.data.id;
  findOrCreateUserBook(booksId, id, rating).then(NewUserBook =>{
-  console.log(NewUserBook)
  res.sendStatus(201)
  //.json(NewUserBook);
  })
  })
 
+
+})
+Review.post('/WrittenReview', async (req: Request, res: Response) => {
+  const { book, review, id } = req.body;
+
+  const { ISBN10, title, author, image, description  } = book;
+
+   axios.post(`http://localhost:8080/bookdata/title/wishlist`,{
+    title: title,
+    ISBN10: ISBN10,
+    author: author,
+    image: image,
+    description: description,
+
+   })
 
 })
 

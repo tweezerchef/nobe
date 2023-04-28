@@ -1,4 +1,4 @@
-import React from 'react';
+import react, { useState } from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -7,8 +7,10 @@ import Typography from '@mui/joy/Typography';
 import IconButton from '@mui/joy/IconButton';
 import Link from '@mui/joy/Link';
 import Box from '@mui/joy/Box';
+import Button from '@mui/material/Button';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
+import UserReview from '../UserStarRating/UserReview'
 
 
 
@@ -17,11 +19,21 @@ import UserStarRating from '../UserStarRating/UserStarRating';
 
 
 const BigBook = (props: any) => {
-
+    const [reviewOpen, setReviewOpen] = useState(false);
     const { book, id, onClose } = props;
     const handleOnClick = () => {
         onClose();
     };
+
+
+    const handleClickOpen = () => {
+        setReviewOpen(true);
+    };
+
+    const handleClose = () => {
+        setReviewOpen(false);
+    };
+
 
     return (
         <Card key={book.ISBN10} variant="outlined" sx={{ width: 700, height: 1000, margin: '10px', display: 'flex', flexDirection: 'column' }}>
@@ -61,6 +73,10 @@ const BigBook = (props: any) => {
 
             </CardOverflow>
             <UserStarRating book={book} id={id} />
+            <Button variant="outlined" onClick={handleClickOpen}>
+                Add Written Review
+            </Button>
+            <UserReview open={reviewOpen} handleClose={handleClose} />
             <Box sx={{ p: 3, flexGrow: 1 }}>
                 <Typography level="h2" sx={{ fontSize: 'lg', mt: 2 }}>
                     <span onClick={handleOnClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>

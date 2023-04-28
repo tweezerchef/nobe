@@ -145,8 +145,6 @@ LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Res
 })
 
 LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response) => {
-  console.log(req);
-  console.log(req.body);
   try {
     const id = req.params.id;
     const radius = req.body.radius

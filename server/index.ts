@@ -104,7 +104,6 @@ async function verifyGoogleToken(token: string) {
 }
 
 app.post("/signup", async (req, res) => {
-  console.log(req.body);
   try {
     // console.log({ verified: verifyGoogleToken(req.body.credential) });
     if (req.body.credential) {
@@ -168,7 +167,7 @@ app.get("/Login", async (req, res) => {
       email: email,
     },
   });
-  console.log(profile);
+
 
   if (profile) {
     res.status(200).json({
@@ -221,7 +220,6 @@ app.post("/login", async (req, res) => {
       userData.token = jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
         expiresIn: "1d",
       }),
-      console.log(userData)
 
       res.status(201).json({
         message: "Login was successful",
