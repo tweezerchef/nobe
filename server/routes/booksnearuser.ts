@@ -4,6 +4,7 @@
 const prisma = new PrismaClient()
 const LocationRoute = express.Router();
 import { Request, Response } from "express";
+import UserBooks from './userbooks';
 
 interface AuthenticatedRequest extends Request {
   user: {
@@ -63,7 +64,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         clubMembers: true,
         Discussions: true,
         Posts: true,
-        books: {
+        UserBooks: {
           select: {
             id: true,
             wishlist: true,
@@ -73,7 +74,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
             rating: true,
             review: true,
             LendingTable: true,
-            books: {
+            Books: {
               select: {
                 id: true,
                 title: true,
@@ -104,7 +105,7 @@ const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
     userId: id
   },
   include: {
-    books: true
+    Books: true
   }
 }))
 const userBooks = await Promise.all(userBooksPromises);
