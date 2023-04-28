@@ -29,10 +29,13 @@ const Profile = () => {
   const [title, setTitle] = useState<string>('');
   const [isUserLoaded, setIsUserLoaded] = useState(false);
 
-  // const userContext = useContext(UserContext);
-  // const user = userContext?.user;
-  // console.log('user', user)
-  // const id = user.id
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  console.log('user', user)
+  const id = user.id
+  const friendId: string = useParams().id || "";
+
+
   //let id: string = useParams().id || user?.id;
 
   const user = JSON.parse(localStorage.getItem("user") || '{}');
@@ -61,7 +64,6 @@ const Profile = () => {
 
   const follow = async () => {
     const userId = user.id;
-    const friendId = id;
 
     try {
       await axios.post('/api/friendship', { userId, friendId });
