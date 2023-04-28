@@ -10,14 +10,20 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
 import BigBook from './BookBig';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
-
+const customTheme = createTheme({
+    typography: {
+        // This will use the default MUI typography settings
+    },
+});
 
 
 
 
 const Book = React.memo((props: any) => {
+
     const [showBigBook, setShowBigBook] = useState(false);
     const { book } = props;
     const userContext = useContext(UserContext);
@@ -36,7 +42,8 @@ const Book = React.memo((props: any) => {
 
 
     return (
-        <Card key={book.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px' }}>
+
+        <Card key={book.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px', borderRadius: 4 }}>
             <CardOverflow onClick={handleOnClick}>
                 <AspectRatio ratio="2">
                     <img src={book.image} loading="lazy" alt="" />
@@ -58,10 +65,17 @@ const Book = React.memo((props: any) => {
                     <BookmarkAddIcon />
                 </IconButton>
             </CardOverflow>
-            <Typography level="h2" sx={{ fontSize: 'md', mt: 2 }} onClick={handleOnClick}>
-                <Link href="#multiple-actions" overlay underline="none">
-                    {book.title}
-                </Link>
+            <Typography level="h1" sx={{
+                fontSize: '30px !important',
+                mt: 2,
+                '& a': {
+                    color: 'inherit !important',
+                    textDecoration: 'none !important',
+                },
+            }} onClick={handleOnClick}>
+                {/* <Link href="#multiple-actions" overlay underline="none"> */}
+                {book.title}
+                {/* </Link> */}
             </Typography>
             <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
                 <Link href="#multiple-actions">{book.author}</Link>
@@ -85,6 +99,7 @@ const Book = React.memo((props: any) => {
                 <UserStarRating book={book} id={id} />
             </CardOverflow>
         </Card>
+
     );
 });
 
