@@ -83,7 +83,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
     })
     console.log(users, 51)
     const ids = users.reduce<string[]>((acc, user) => {
-      acc.push(user.id);
+     // acc.push(user.id);
       return acc;
     }, []);
 
