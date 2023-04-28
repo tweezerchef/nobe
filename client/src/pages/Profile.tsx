@@ -38,8 +38,8 @@ const Profile = () => {
 
   //let id: string = useParams().id || user?.id;
 
-  const user = JSON.parse(localStorage.getItem("user") || '{}');
-  const id = user.id;
+  // const user = JSON.parse(localStorage.getItem("user") || '{}');
+  // const id = user.id;
 
   // const getUserBooks = async (type?: string) => {
   //   try {
