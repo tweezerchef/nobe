@@ -3,7 +3,6 @@ import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Places from "./places";
 import axios from "axios";
 import "../../styles/mapstyles.css";
-// import { SpotContainer, Controls, Map, MapContainer } from "../../pages/style";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
@@ -20,12 +19,13 @@ function ReadingSpotsMap() {
   // console.log("latlng data", latlng);
   const [address, setAddress] = useState<string>("");
   // console.log("address data", address);
+
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [savedPlaces, setSavedPlaces] = useState<Place[]>([]);
-  console.log("saved places:", savedPlaces);
-  savedPlaces.forEach(place => {
-    console.log(place.Long);
-  });
+  // console.log("saved places:", savedPlaces);
+  // savedPlaces.forEach(place => {
+  //   console.log(place.Long);
+  // });
 
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(() => ({ lat: 29.9511, lng: -90.0715 }), []);
@@ -88,7 +88,7 @@ function ReadingSpotsMap() {
               )}
             </Marker>
           )}
-          {savedPlaces && savedPlaces?.map((place) => (
+          {savedPlaces?.map((place) => (
             <Marker
               key={place.id}
               // position={new google.maps.LatLng(place.lat, place.lng)}
@@ -97,6 +97,7 @@ function ReadingSpotsMap() {
                 url: "http://maps.google.com/mapfiles/kml/shapes/library_maps.png",
               }}
             >
+
             </Marker>
           ))}
         </GoogleMap>
