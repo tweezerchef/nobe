@@ -3,9 +3,14 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
-import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
+//import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
+import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context'
-
+import UserBooks from '../../../server/routes/userbooks';
+interface UserBook {
+  Books: Book;
+  // Add any other properties if necessary
+}
 interface Book {
   books: {
     id: string;
@@ -19,26 +24,36 @@ interface Book {
 }
 
 const Profile = () => {
-  const [userBooks, setUserBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  console.log(user)
-  let id: string = useParams().id || user?.id;
+  console.log('user', user)
+  const id = user.id
+  //let id: string = useParams().id || user?.id;
 
-  const getUserBooks = async (type?: string) => {
-    try {
-      let url = `/books/${id}`;
-      if (type) {
-        url += `/${type}`;
-      }
-      const res = await axios.get(url);
-      setUserBooks(res.data);
-    } catch (err) {
-      console.error(err);
-    }
+  // const getUserBooks = async (type?: string) => {
+  //   try {
+  //     let url = `/books/${id}`;
+  //     if (type) {
+  //       url += `/${type}`;
+  //     }
+  //     const res = await axios.get(url);
+  //     setUserBooks(res.data);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
+  const getUserBooks = () => {
+    const booksArray: Book[] = [];
+    user?.UserBooks?.forEach((book: UserBook) => {
+      booksArray.push(book.Books);
+    });
+    setBooks(booksArray);
+
   }
 
   const addFriend = async () => {
@@ -61,12 +76,12 @@ const Profile = () => {
   };
 
   const ownedClicked = () => {
-    getUserBooks('Owned');
-    setInventory('Owned');
+    //getUserBooks('Owned');
+    //setInventory('Owned');
   }
 
   const wishClicked = () => {
-    getUserBooks('Wishlist')
+    //getUserBooks('Wishlist')
     setInventory('Wishlist');
   }
 
@@ -76,7 +91,7 @@ const Profile = () => {
     axios.post(`/books/${id}`, { title, inventory })
       .then(response => {
         setTitle("");
-        getUserBooks(inventory);
+        //getUserBooks(inventory);
         // response.data.UserBooks[0].userId <-- userId
         // getUserBooks();
       })
@@ -86,8 +101,11 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    getUserBooks('Owned');
-  }, [])
+    if (user && !isUserLoaded) {
+      setIsUserLoaded(true);
+      getUserBooks();
+    }
+  }, [user, isUserLoaded]);
 
   return (
     <div >
@@ -123,10 +141,11 @@ const Profile = () => {
         <div style={{ margin: '15px' }}>
           <Typography variant="h5">{inventory} Books</Typography>
         </div>
-        {userBooks.length > 0 ?
-          <BookDisplay userBooks={userBooks} id={id} getUserBooks={getUserBooks} setUserBooks={setUserBooks} inventory={inventory} /> :
+        {/* {books.length > 0 ?
+          <BookDisplay userBooks={books} id={id} getUserBooks={getUserBooks} setUserBooks={setBooks} inventory={inventory} /> :
           <Typography variant="body1">No books</Typography>
-        }
+        } */}
+        {user && <BookDisplay books={books} id={user.id} />}
       </div>
       <button onClick={addFriend}>Add friend</button>
     </div>

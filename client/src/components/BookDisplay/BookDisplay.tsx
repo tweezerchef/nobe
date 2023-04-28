@@ -1,4 +1,4 @@
-// import React from 'react';
+import React, { useContext } from 'react';
 // import AspectRatio from '@mui/joy/AspectRatio';
 // import Card from '@mui/joy/Card';
 // import CardOverflow from '@mui/joy/CardOverflow';
@@ -9,14 +9,48 @@
 // import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 // import UserStarRating from '../UserStarRating/UserStarRating';
 import Book from '../Book/Book';
+import UserContext from '../../hooks/Context';
 
 
 
 
 
 
-const BookDisplay = (props: any) => {
+// const BookDisplay = (props: any) => {
+//     const { books: array, id } = props;
+//     if (!array) {
+//         return <div>Loading...</div>;
+//     }
+
+//     return (
+//         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+//             {array.length === 0 ? (
+//                 <div></div>
+//             ) : (
+//                 array.map((book: any) => (
+//                     <Book book={book} id={id} />
+//                 ))
+//             )}
+//         </div>
+//     )
+// }
+
+const BookDisplay = React.memo((props: any) => {
     const { books: array, id } = props;
+    const userContext = useContext(UserContext);
+    const user = userContext?.user;
+    if (!user) {
+        return <div>Loading user...</div>;
+    }
+    console.log('user', user)
+    // const id = user?.id
+    // if (!id) {
+    //     return <div>Loading user...</div>;
+    // }
+    if (!array) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
             {array.length === 0 ? (
@@ -27,6 +61,6 @@ const BookDisplay = (props: any) => {
                 ))
             )}
         </div>
-    )
-}
+    );
+});
 export default BookDisplay
