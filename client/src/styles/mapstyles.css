@@ -20,8 +20,24 @@ a {
   height: calc(100vh - 70px);
 }
 
+.top-spots {
+  margin-top: 3rem;
+}
+
+.cards-container {
+  height: calc(100vh - 350px);
+  overflow-y: auto;
+  padding-top: 1rem;
+  padding-right: 10px;
+  margin-top: 1rem;
+}
+
+.cards-container>*:not(:first-child) {
+  margin-top: 1rem;
+}
+
 .controls {
-  width: 25%;
+  width: 300px;
   padding: 1rem;
   background: #14161a;
   color: #fff

@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Places from "./places";
+import Card from '@mui/material/Card';
 import axios from "axios";
 import "../../styles/mapstyles.css";
 
@@ -12,6 +13,7 @@ interface Place {
   Location: string;
   Lat: number;
   Long: number;
+  Description: string;
 }
 
 function ReadingSpotsMap() {
@@ -52,7 +54,7 @@ function ReadingSpotsMap() {
   return (
     <div className="spots-container">
       <div className="controls">
-        <h2>Enter your favorite reading spots</h2>
+        <h2>What's your favorite reading spot?</h2>
         <Places
           setLatLng={(position: any) => {
             setLatLng(position);
@@ -60,6 +62,16 @@ function ReadingSpotsMap() {
           }}
           setAddress={setAddress}
         />
+        <h3 className="top-spots">Top Spots</h3>
+        <div className="cards-container">
+          {savedPlaces?.map((place) => (
+            <Card key={place.id}>
+              <div>{place.Location}</div>
+              {place.Description && <div>{place.Description}</div>}
+            </Card>
+          ))}
+        </div>
+
       </div>
       <div className="spots-map">
         <GoogleMap
