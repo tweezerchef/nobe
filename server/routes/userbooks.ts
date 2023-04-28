@@ -19,7 +19,6 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
     let wishlist;
     let owned;
-    console.log(googleTitle)
     if (inventory === 'Wishlist') {
       wishlist = true;
     } else {
@@ -50,8 +49,7 @@ const userBook = await prisma.userBooks.create({
           Books: { connect: { id: bookID } },
         },
         include: { Books: true },
-      });
-      console.log(userBook)
+      })
 
     // const bookData = response.data.items[0].volumeInfo;
     // const isbn10 = bookData.industryIdentifiers[1].identifier;

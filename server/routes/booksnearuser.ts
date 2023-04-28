@@ -50,21 +50,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         ],
       },
       select: {
-        id: true,
-        firstName: true,
-        username: true,
-        email: true,
-        googleId: true,
-        lastName: true,
-        picture: true,
-        token: true,
-        latitude: true,
-        longitude: true,
-        radius: true,
-        clubMembers: true,
-        Discussions: true,
-        Posts: true,
-        UserBooks: {
+       UserBooks: {
           select: {
             id: true,
             wishlist: true,
@@ -85,6 +71,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
                 UserBooks: true,
                 Discussions: true,
                 Activity: true,
+                Clubs_Books:true
               },
             },
           },
@@ -96,7 +83,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
     })
     console.log(users, 51)
     const ids = users.reduce<string[]>((acc, user) => {
-      acc.push(user.id);
+     // acc.push(user.id);
       return acc;
     }, []);
 
@@ -211,7 +198,7 @@ LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response
 //       }
 //     }
 //   });
-//   // Send the response to the React front-end
+//
 //   console.log(users);
 //   res.status(200).json({ users });
 // } catch (error) {
