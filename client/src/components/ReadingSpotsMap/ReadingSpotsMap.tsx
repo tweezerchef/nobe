@@ -19,6 +19,7 @@ function ReadingSpotsMap() {
   const [address, setAddress] = useState<string>("");
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [savedPlaces, setSavedPlaces] = useState<Place[]>([]);
+  console.log(savedPlaces)
   const [selectedPlace, setSelectedPlace] = useState<number | null>(null);
 
 
