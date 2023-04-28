@@ -1,5 +1,6 @@
 export { };
 import * as React from "react";
+import { useState, useEffect, useRef, useContext } from 'react';
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,6 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import UserContext from '../../hooks/Context'
 
 const StyledLink = styled(Link)`
   color: white;
@@ -30,15 +32,15 @@ function ResponsiveAppBar() {
     null
   );
 
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  
   let loggedIn = false;
-  let parsed;
 
-  if (!localStorage.getItem("user")) {
-    // console.log('no user logged in')
+  if (!user) {
     loggedIn = false
   } else {
     loggedIn = true;
-    parsed = JSON.parse(localStorage.getItem("user") || '{}');
   }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -223,7 +225,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="pfp" src={loggedIn ? parsed.picture : null} />
+                <Avatar alt="pfp" src={loggedIn ? user.picture : null} />
               </IconButton>
             </Tooltip>
             <Menu

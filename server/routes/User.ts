@@ -74,7 +74,7 @@ User.get('/', async (req, res) => {
   User.get('/id', async (req, res) => {
 
     const id = req.query.id;
-    //console.log('id', id)
+    // console.log('id', id)
   try {
       const user = await prisma.user.findFirst({
         where: {
@@ -112,7 +112,50 @@ User.get('/', async (req, res) => {
       console.error(error);
       res.status(500).send("Error retrieving book data");
     }
-  });
+  }),
+  User.get('/:id', async (req, res) => {
+
+    const id = req.params.id;
+    console.log('id', id)
+  try {
+      const user = await prisma.user.findFirst({
+        where: {
+          id: id,
+        },
+        select: {
+          // include all columns from the books table
+          id: true,
+          firstName: true,
+          username: true,
+          email:true,
+          googleId: true,
+          lastName: true,
+          picture: true,
+          token: true,
+          latitude: true,
+          longitude: true,
+          radius: true,
+          NotificationsCount : true,
+          clubMembers: true,
+          Activity: true,
+          receivedMessages: true,
+          sentMessages: true,
+          Discussions: true,
+          DiscussionsUsers: true,
+          Posts:true,
+          PostsUsers:true,
+          UserBooks: true,
+          User_Places: true,
+        },
+      });
+      //console.log(user)
+      res.send(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error retrieving book data");
+    }
+  }
+  );
 
 
 
