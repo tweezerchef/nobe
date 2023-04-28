@@ -1,4 +1,9 @@
 import * as React from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
+import axios from 'axios';
+import UserContext from '../hooks/Context'
+
+
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
@@ -12,97 +17,78 @@ import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 import StarIcon from '@mui/icons-material/Star';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
+interface Activity {
+  createdAt: string;
+  userId: string;
+  user: {
+    firstName: string;
+    lastName: string;
+  }
+  book: {
+    title: string;
+  }
+}
+
 export default function CustomizedTimeline() {
+
+  const [activity, setActivity] = useState<Activity[]>([]);
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+
+  const userId = user.id;
+  const getFeed = async () => {
+    try {
+      const response = await axios.get('/api/activity', {
+        params: {
+          userId: userId,
+        }
+      });
+      console.log(response.data);
+      setActivity(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getFeed();
+  }, [])
+
+
+
   return (
-    <Timeline position="alternate">
-      <TimelineItem>
-        <TimelineOppositeContent
-          sx={{ m: 'auto 0' }}
-          align="right"
-          variant="body2"
-          color="text.secondary"
-        >
-          12:30 pm
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineConnector />
-          <TimelineDot>
-            <BookmarkAddIcon />
-          </TimelineDot>
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent sx={{ py: '12px', px: 2 }}>
-          <Typography variant="h6" component="span">
-            Kevin added Dune to their wishist
-          </Typography>
-        </TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-        <TimelineOppositeContent
-          sx={{ m: 'auto 0' }}
-          align="right"
-          variant="body2"
-          color="text.secondary"
-        >
-          11:30 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineConnector />
-          <TimelineDot>
-            <LocationSearchingIcon />
-          </TimelineDot>
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent sx={{ py: '12px', px: 2 }}>
-          <Typography variant="h6" component="span">
-            Neil checked in at NOLA Public Library
-          </Typography>
-        </TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-      <TimelineOppositeContent
-          sx={{ m: 'auto 0' }}
-          align="right"
-          variant="body2"
-          color="text.secondary"
-        >
-          11:00 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineConnector />
-          <TimelineDot color="primary" variant="outlined">
-            <StarIcon />
-          </TimelineDot>
-          <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
-        </TimelineSeparator>
-        <TimelineContent sx={{ py: '12px', px: 2 }}>
-          <Typography variant="h6" component="span">
-            Tom rated Hillbilly Elegy 5 stars
-          </Typography>
-        </TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-      <TimelineOppositeContent
-          sx={{ m: 'auto 0' }}
-          align="right"
-          variant="body2"
-          color="text.secondary"
-        >
-          10:30 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
-          <TimelineDot color="secondary">
-            <PersonAddIcon />
-          </TimelineDot>
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent sx={{ py: '12px', px: 2 }}>
-          <Typography variant="h6" component="span">
-            Matt added Michael as a friend
-          </Typography>
-        </TimelineContent>
-      </TimelineItem>
-    </Timeline>
-  );
+
+      <>
+        {activity.length === 0 && <div>loading</div>}
+        {activity.length > 0 && (
+          <Timeline position="alternate">
+            {activity.map((data: Activity) => (
+              <TimelineItem key={data.createdAt}>
+                <TimelineOppositeContent
+                  sx={{ m: 'auto 0' }}
+                  align="right"
+                  variant="body2"
+                  color="text.secondary"
+                >
+                  {data.createdAt}
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                  <TimelineConnector />
+                  <TimelineDot>
+                    <BookmarkAddIcon />
+                  </TimelineDot>
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent sx={{ py: '12px', px: 2 }}>
+                  <Typography variant="h6" component="span">
+                    {`${data.user.firstName} added ${data.book.title} to their wishlist`}
+                  </Typography>
+                </TimelineContent>
+              </TimelineItem>
+            ))}
+          </Timeline>
+        )}
+      </>
+    );
 }
