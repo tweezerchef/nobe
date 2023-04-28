@@ -56,7 +56,7 @@ const Profile = () => {
 
   }
 
-  const addFriend = async () => {
+  const follow = async () => {
     const userId = user.id;
     const friendId = id;
 
@@ -144,7 +144,7 @@ const Profile = () => {
         } */}
         {user && <BookDisplay books={books} id={user.id} />}
       </div>
-      <button onClick={addFriend}>{`Follow`}</button>
+      <button onClick={follow}>{`Follow`}</button>
     </div>
   );
 }
