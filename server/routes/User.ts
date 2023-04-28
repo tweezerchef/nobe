@@ -29,12 +29,42 @@ User.get('/', async (req, res) => {
           latitude: true,
           longitude: true,
           radius: true,
+          NotificationsCount : true,
           clubMembers: true,
+          Activity: true,
+          receivedMessages: true,
+          sentMessages: true,
           Discussions: true,
+          DiscussionsUsers: true,
           Posts:true,
-          books: true,
+          PostsUsers:true,
+          UserBooks: {
+            select: {
+              id: true,
+              wishlist: true,
+              owned: true,
+              booksId: true,
+              userId: true,
+              rating: true,
+              review: true,
+              LendingTable: true,
+              Books: {
+                select: {
+                  id: true,
+                  title: true,
+                  author: true,
+                  ISBN10: true,
+                  description: true,
+                  image: true,
+                  UserBooks: true,
+                  Discussions: true,
+                  Activity: true,
+                },
+              },
+            },
+
         },
-      });
+      }});
       res.send(user);
     } catch (error) {
       console.error(error);
@@ -61,10 +91,17 @@ User.get('/', async (req, res) => {
           latitude: true,
           longitude: true,
           radius: true,
+          NotificationsCount : true,
           clubMembers: true,
+          Activity: true,
+          receivedMessages: true,
+          sentMessages: true,
           Discussions: true,
+          DiscussionsUsers: true,
           Posts:true,
-          books: true,
+          PostsUsers:true,
+          UserBooks: true,
+          User_Places: true,
         },
       });
       res.send(user);

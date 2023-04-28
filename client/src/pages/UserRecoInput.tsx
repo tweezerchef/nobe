@@ -27,11 +27,11 @@ const UserRecoInputPage = () => {
         setTitle(event.target.value);
     };
 
-    // useEffect(() => {
-    //     axios.get('/recommendations/random')
-    //         .then(res => { console.log(res.data), setBooks(res.data) }).then(() => console.log(books))
-    //     //.then(data => setBooks(data));
-    // }, []);
+    useEffect(() => {
+        axios.get('/recommendations/random')
+            .then(res => { console.log(res.data), setBooks(res.data) }).then(() => console.log(books))
+        //.then(data => setBooks(data));
+    }, []);
     useEffect(() => {
         console.log(books);
     }, [books]);
