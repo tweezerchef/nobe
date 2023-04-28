@@ -23,8 +23,6 @@ function App() {
                     const user = JSON.parse(storedUser);
                     const { id } = user;
                     const response = await axios.get(`/user/id?id=${id}`);
-                    console.log(response.data);
-                    console.log('poop');
                     setUserAndSave(response.data);
                 } catch (error) {
                     console.error('Error fetching user data:', error);
@@ -62,7 +60,7 @@ function App() {
                     <OpenIconSpeedDial />
                 </ChatContext.Provider>
             </UserContext.Provider>
-            <OpenIconSpeedDial />
+            {/* <OpenIconSpeedDial /> */}
         </div>
     );
 }

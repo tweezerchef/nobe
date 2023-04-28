@@ -48,7 +48,7 @@ BookData.get('/', async (req, res) => {
               //     Activity: true,
               //   },
               // },
-              user: true,
+              User: true,
             }},
           Discussions: true,
           Activity: true,
@@ -77,6 +77,7 @@ BookData.post('/title/owned', async (req, res) => {
     description: true,
     image: true,
     UserBooks: {
+      select:{
       id: true,
       wishlist: true,
       owned: true,
@@ -86,7 +87,8 @@ BookData.post('/title/owned', async (req, res) => {
       review: true,
       LendingTable: true,
       User: true,
-    },
+    }
+  },
     Discussions: true,
     Activity: true,
     Clubs_Books: true,
@@ -128,11 +130,12 @@ res.send(newBook)
 })
 BookData.get('/title', async (req, res) => {
   const title = req.query.title;
-  console.log('poop')
 try {
     const book = await prisma.books.findFirst({
       where: {
-        title: title,
+        title: {
+          contains: title,
+        },
       },
       select: {
         id: true,
@@ -141,7 +144,11 @@ try {
         ISBN10: true,
         description: true,
         image: true,
-        UserBooks: {
+        Discussions: true,
+        Activity: true,
+        Clubs_Books: true,
+        UserBooks:{
+          select:{
           id: true,
           wishlist: true,
           owned: true,
@@ -151,13 +158,11 @@ try {
           review: true,
           LendingTable: true,
           User: true,
-        },
-        Discussions: true,
-        Activity: true,
-        Clubs_Books: true,
+        }
+      }
+
       }
     });
-  //   console.log(book)
     res.send([book]);
   } catch (error) {
     console.error(error);

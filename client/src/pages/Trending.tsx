@@ -26,7 +26,6 @@ function Trending() {
 
   const user = useContext(UserContext);
 
-
   const [trending, setTrending] = useState<any[]>([]);
 
   async function fetchTrending(category: string) {
@@ -51,7 +50,6 @@ function Trending() {
 
     try {
       await axios.post('/api/wishlist', { isbn: isbn, title: title, author: author, email: email });
-      // console.log("Added to wishlist");
     } catch (error) {
       console.error(error);
     }
