@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Places from "./places";
 import axios from "axios";
@@ -8,14 +8,25 @@ import "../../styles/mapstyles.css";
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
 
+interface Place {
+  id: number;
+  Location: string;
+  Lat: number;
+  Long: number;
+}
 
 function ReadingSpotsMap() {
   const [latlng, setLatLng] = useState<LatLngLiteral>();
   // console.log("latlng data", latlng);
   const [address, setAddress] = useState<string>("");
   // console.log("address data", address);
-
   const [showInfoWindow, setShowInfoWindow] = useState(false);
+  const [savedPlaces, setSavedPlaces] = useState<Place[]>([]);
+  console.log("saved places:", savedPlaces);
+  savedPlaces.forEach(place => {
+    console.log(place.Long);
+  });
+
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(() => ({ lat: 29.9511, lng: -90.0715 }), []);
   const options = useMemo<MapOptions>(() => ({
@@ -25,6 +36,14 @@ function ReadingSpotsMap() {
   }), []);
 
   const onLoad = useCallback((map: any) => (mapRef.current = map), []);
+
+  useEffect(() => {
+    const fetchSavedPlaces = async () => {
+      const response = await axios.get('/api/places-to-read/places');
+      setSavedPlaces(response.data);
+    };
+    fetchSavedPlaces();
+  }, []);
 
   const handleMarkerClick = useCallback(() => {
     setShowInfoWindow((prev) => !prev);
@@ -69,6 +88,17 @@ function ReadingSpotsMap() {
               )}
             </Marker>
           )}
+          {savedPlaces && savedPlaces?.map((place) => (
+            <Marker
+              key={place.id}
+              // position={new google.maps.LatLng(place.lat, place.lng)}
+              position={{ lat: place.Lat, lng: place.Long }}
+              icon={{
+                url: "http://maps.google.com/mapfiles/kml/shapes/library_maps.png",
+              }}
+            >
+            </Marker>
+          ))}
         </GoogleMap>
       </div>
     </div>

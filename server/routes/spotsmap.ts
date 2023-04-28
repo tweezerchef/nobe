@@ -39,4 +39,9 @@ SpotsMapRoute.post("/place", async (req: Request, res: Response) => {
   }
 });
 
+SpotsMapRoute.get('/places', async (req: Request, res: Response) => {
+  const places = await prisma.placesToRead.findMany();
+  res.json(places);
+});
+
 export default SpotsMapRoute;

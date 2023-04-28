@@ -27,7 +27,7 @@ function Places({ setLatLng, setAddress }: PlacesProps) {
 
     const results = await getGeocode({ address: val });
     const { lat, lng } = await getLatLng(results[0]);
-    console.log(lat, lng);
+    // console.log("lat and lng", typeof lat, typeof lng);
 
     setLatLng({ lat, lng });
     setAddress(val);

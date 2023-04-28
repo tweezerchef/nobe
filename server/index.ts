@@ -43,6 +43,8 @@ import User from './routes/User';
 import GoogleBooks from './routes/GoogleBooks';
 import SpotsMapRoute from './routes/spotsmap';
 
+import Friendship from './routes/friendship';
+import Activity from './routes/activity';
 
 
 
@@ -82,6 +84,8 @@ app.use("/bookdata", BookData);
 app.use("/user", User);
 app.use("/google-books", GoogleBooks);
 app.use("/api/places-to-read", SpotsMapRoute);
+app.use("/api/friendship", Friendship);
+app.use("/api/activity", Activity);
 
 
 
