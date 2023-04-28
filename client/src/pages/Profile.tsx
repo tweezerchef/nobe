@@ -60,6 +60,9 @@ const Profile = () => {
 
   //let id: string = useParams().id || user?.id;
 
+  // const user = JSON.parse(localStorage.getItem("user") || '{}');
+  // const id = user.id;
+
   // const getUserBooks = async (type?: string) => {
   //   try {
   //     let url = `/books/${id}`;
@@ -121,13 +124,18 @@ const Profile = () => {
       });
   };
 
+  // useEffect(() => {
+  //   if (user && !isUserLoaded) {
+  //     setIsUserLoaded(true);
+  //     getUserBooks();
+  //   }
+  // }, [user, isUserLoaded]);
   useEffect(() => {
-    if (user && !isUserLoaded) {
-      setIsUserLoaded(true);
+    if (user && user.UserBooks) {
       getUserBooks();
       getProfile();
     }
-  }, [user, isUserLoaded]);
+  }, []);
 
   return (
     <div >
@@ -176,7 +184,8 @@ const Profile = () => {
           <BookDisplay userBooks={books} id={id} getUserBooks={getUserBooks} setUserBooks={setBooks} inventory={inventory} /> :
           <Typography variant="body1">No books</Typography>
         } */}
-        {user && <BookDisplay books={books} id={user.id} />}
+        {/* {user && <BookDisplay books={books} id={user.id} />} */}
+        <BookDisplay books={books} id={id} />
       </div>
     </div>
   );

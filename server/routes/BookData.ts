@@ -130,8 +130,6 @@ res.send(newBook)
 })
 BookData.get('/title', async (req, res) => {
   const title = req.query.title;
-  console.log('poop')
-  console.log(title)
 try {
     const book = await prisma.books.findFirst({
       where: {
@@ -165,7 +163,6 @@ try {
 
       }
     });
-     console.log(book)
     res.send([book]);
   } catch (error) {
     console.error(error);

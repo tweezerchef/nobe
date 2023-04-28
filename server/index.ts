@@ -8,32 +8,32 @@ import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
-
+import { Server } from "socket.io";
 //Socket.Io
-// import { Server } from "socket.io";
 
-// const io = new Server({
-//   cors:{
-//     origin:"http://localhost:8080"
-//   }
-//  });
 
-// io.on("connection", (socket) => {
-//   console.log('someone has connected!')
-//   io.emit("test", 'this is test')
-//   socket.on('disconnect', () => {
-//     console.log('someone has left');
-//   });
-// });
+const io = new Server({
+  cors:{
+    origin:"http://localhost:8080"
+  }
+ });
 
-// io.listen(8080);
+io.on("connection", (socket) => {
+  console.log('someone has connected!')
+  io.emit("test", 'this is test')
+  socket.on('disconnect', () => {
+    console.log('someone has left');
+  });
+});
+
+io.listen(3000);
 
 //Routes
 import UserBooks from './routes/userbooks';
 import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
-import Trending from './routes/trending';
+import Trending from './routes/Trending';
 import Recommendations from './routes/recommendations';
 import Review from './routes/review';
 import Wishlist from './routes/wishlist';
@@ -107,7 +107,6 @@ async function verifyGoogleToken(token: string) {
 }
 
 app.post("/signup", async (req, res) => {
-  console.log(req.body);
   try {
     // console.log({ verified: verifyGoogleToken(req.body.credential) });
     if (req.body.credential) {
@@ -171,7 +170,7 @@ app.get("/Login", async (req, res) => {
       email: email,
     },
   });
-  console.log(profile);
+
 
   if (profile) {
     res.status(200).json({
