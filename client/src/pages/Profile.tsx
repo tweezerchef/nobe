@@ -65,7 +65,7 @@ const Profile = () => {
 
     try {
       await axios.post('/api/friendship', {userId, friendId });
-      
+
     } catch (error) {
       console.error(error)
     }

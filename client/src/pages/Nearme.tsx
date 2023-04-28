@@ -19,6 +19,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import UserContext from '../hooks/Context'
 
+interface UserBook {
+  Books: Book;
+  // Add any other properties if necessary
+}
+
 
 interface Book {
   books: {
@@ -44,7 +49,7 @@ function Locations() {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const id = user?.id;
+  const id = user.id;
 
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
@@ -57,13 +62,14 @@ function Locations() {
   const [radiusState, setRadiusState] = useState('idle');
   const [userLongitude, setUserLongitude] = useState(0);
   const [userLatitude, setUserLatitude] = useState(0);
+  //const [isUserLoaded, setIsUserLoaded] = useState(false);
 
 
   const saveLocation = async () => {
     setLocationState('loading');
     // console.log(userLongitude, userLongitude, 63)
     try {
-      const res = await axios.put(`/location/${user.id}/coordinates`, {
+      const res = await axios.put(`/location/${id}/coordinates`, {
         longitude: userLongitude,
         latitude: userLatitude
       });
@@ -81,10 +87,10 @@ const saveRadius = async () => {
   setRadiusState('loading');
   //console.log(convertRadius, 82);
   try {
-    const res = await axios.put(`/location/${user.id}/radius`, {
+    const res = await axios.put(`/location/${id}/radius`, {
       radius: convertRadius
     });
-    console.log(res, 84)
+   // console.log(res, 84)
     setTimeout(() => {
       setRadiusState('success');
     }, 1500);
@@ -100,7 +106,7 @@ const saveRadius = async () => {
     try {
       const res = await axios.get('/location/locations', { params: { lon: longitude, lat: latitude, radius: radius } });
       console.log(res.data, 99);
-      setBooksNearBy(res.data.userBooks);
+      setBooksNearBy(res.data);
       setTimeout(() => {
         setButtonState('success');
       }, 2000);
@@ -110,13 +116,17 @@ const saveRadius = async () => {
 
   }
 
-  console.log(booksNearBy, 'booksNeaBy')
 
-  useEffect(() => {
-    const ownedBooks = booksNearBy.flat().filter(book => book.owned === true).map((book) => book.books);
-    // console.log(ownedBooks, '69');
-    setDisplayBooks(ownedBooks);
-  }, [booksNearBy]);
+
+// useEffect(() => {
+//     const ownedBooks = booksNearBy.flat().filter(book => book.owned === true).map((book) => book.books);
+//     // console.log(ownedBooks, '69');
+//     setDisplayBooks(ownedBooks);
+//   }, [booksNearBy]);
+
+
+  console.log(displayBooks, 131)
+
 
 
   useEffect(() => {
@@ -224,7 +234,7 @@ const saveRadius = async () => {
           </ButtonGroup>
         </Grid>
       </Grid>
-      {/* <BookDisplay books={displayBooks} id={id} /> */}
+      {user && <BookDisplay books={displayBooks} id={user.id} />}
     </div>
   )
 
