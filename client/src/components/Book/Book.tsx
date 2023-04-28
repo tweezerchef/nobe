@@ -22,9 +22,7 @@ const Book = React.memo((props: any) => {
     const { book } = props;
     const userContext = useContext(UserContext);
     const user = userContext?.user;
-    console.log('user', user)
     const id = user.id
-    console.log(book)
     if (!book) {
         return null;
     }
