@@ -25,7 +25,6 @@ const Profile = () => {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  console.log(user)
   let id: string = useParams().id || user?.id;
 
   const getUserBooks = async (type?: string) => {
@@ -42,10 +41,7 @@ const Profile = () => {
   }
 
   const addFriend = async () => {
-    const user = localStorage.getItem("user");
-    const parsed = JSON.parse(localStorage.getItem("user") || '{}');
-    const userId = parsed.id;
-
+    const userId = user.id;
     const friendId = id;
 
     try {
@@ -128,7 +124,7 @@ const Profile = () => {
           <Typography variant="body1">No books</Typography>
         }
       </div>
-      <button onClick={addFriend}>Add friend</button>
+      <button onClick={addFriend}>{`Follow`}</button>
     </div>
   );
 }

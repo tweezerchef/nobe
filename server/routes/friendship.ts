@@ -11,8 +11,6 @@ const Friendship = express.Router();
 Friendship.post('/', async (req, res) => {
   const {userId, friendId } = req.body;
 
-  console.log('userid', userId)
-  console.log('friendId', friendId)
 
   try {
     const friendship = await prisma.friendship.create({
