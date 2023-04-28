@@ -91,9 +91,9 @@ const Profile = () => {
     if (chatContext && user) {
       const newMessage = {
         text: message,
-        sender: id,
+        senderId: id,
         name: user.firstName,
-        recipient: friendId,
+        recipientId: friendId,
         createdAt: new Date(),
       };
       try {

@@ -12,12 +12,12 @@ interface AuthenticatedRequest extends Request {
 const prisma = new PrismaClient();
 const DirectMessages = express.Router();
 
-DirectMessages.post('/api/direct-messages', async (req: AuthenticatedRequest, res: Response) => {
+DirectMessages.post('/', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { text, senderId, recipientId } = req.body;
-
+    console.log(senderId)
     // Create the DirectMessage in the database
-    const newMessage = await prisma.directMessage.create({
+    const newMessage = await prisma.directMessages.create({
       data: {
         text,
         senderId,
