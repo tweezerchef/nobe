@@ -51,10 +51,16 @@ function ReadingSpotsMap() {
     setSelectedPlace((prev) => (prev === placeId ? null : placeId));
   }, []);
 
+  const handleCardClick = useCallback((place: Place) => {
+    setLatLng({ lat: place.Lat, lng: place.Long });
+    setSelectedPlace(place.id);
+    mapRef.current?.panTo({ lat: place.Lat, lng: place.Long });
+  }, []);
+
   return (
     <div className="spots-container">
       <div className="controls">
-        <h2>What's your favorite reading spot?</h2>
+        <h2 className="favorite-header">What's your favorite reading spot?</h2>
         <Places
           setLatLng={(position: any) => {
             setLatLng(position);
@@ -62,10 +68,10 @@ function ReadingSpotsMap() {
           }}
           setAddress={setAddress}
         />
-        <h3 className="top-spots">Top Spots</h3>
+        <h3 className="top-spots-header">Top Spots</h3>
         <div className="cards-container">
           {savedPlaces?.map((place) => (
-            <Card key={place.id}>
+            <Card key={place.id} onClick={() => handleCardClick(place)} >
               <div>{place.Location}</div>
               {place.Description && <div>{place.Description}</div>}
             </Card>

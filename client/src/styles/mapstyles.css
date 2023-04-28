@@ -20,7 +20,11 @@ a {
   height: calc(100vh - 70px);
 }
 
-.top-spots {
+.favorite-header {
+  margin-bottom: 1rem;
+}
+
+.top-spots-header {
   margin-top: 3rem;
 }
 
@@ -30,6 +34,7 @@ a {
   padding-top: 1rem;
   padding-right: 10px;
   margin-top: 1rem;
+  cursor: pointer;
 }
 
 .cards-container>*:not(:first-child) {
