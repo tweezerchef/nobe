@@ -33,6 +33,9 @@ const Profile = () => {
   const user = userContext?.user;
   console.log('user', user)
   const id = user.id
+  const friendId: string = useParams().id || "";
+
+
   //let id: string = useParams().id || user?.id;
 
   // const getUserBooks = async (type?: string) => {
@@ -58,7 +61,6 @@ const Profile = () => {
 
   const follow = async () => {
     const userId = user.id;
-    const friendId = id;
 
     try {
       await axios.post('/api/friendship', {userId, friendId });
