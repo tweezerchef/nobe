@@ -27,12 +27,13 @@ const Profile = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   console.log('user', user)
-
-  let id: string = useParams().id || user?.id;
+  const id = user.id
+  //let id: string = useParams().id || user?.id;
 
   // const getUserBooks = async (type?: string) => {
   //   try {
@@ -85,8 +86,11 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    getUserBooks();
-  }, [])
+    if (user && !isUserLoaded) {
+      setIsUserLoaded(true);
+      getUserBooks();
+    }
+  }, [user, isUserLoaded]);
 
   return (
     <div >
@@ -126,7 +130,7 @@ const Profile = () => {
           <BookDisplay userBooks={books} id={id} getUserBooks={getUserBooks} setUserBooks={setBooks} inventory={inventory} /> :
           <Typography variant="body1">No books</Typography>
         } */}
-        <BookDisplay books={books} id={id} />
+        {user && <BookDisplay books={books} id={user.id} />}
       </div>
     </div>
   );
