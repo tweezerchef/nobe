@@ -1,15 +1,7 @@
 import React from 'react';
 import { Counter } from './style'
-//import { useHistory } from 'react-router-dom';
-
-
 
 const CloseBy: React.FC = () => {
-  // const history = useHistory();
-
-  // const handleDivClick = () => {
-  //   history.push('/locations');
-  // };
 
   return (
     <div className="CloseByIcon">

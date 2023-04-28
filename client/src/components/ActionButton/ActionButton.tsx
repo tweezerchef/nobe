@@ -15,6 +15,7 @@ import MessageIcon from '../MessagesIcon/messagesicon';
 import FriendIcon from '../NewFriendIcon/Newfriendicon';
 import NotificationIcon from '../NotificationMessages/Notificationmessages';
 import Draggable from "react-draggable";
+import ForumIcon from '../DiscussionForum/Discussionforum';
 
 
 const actions = [
@@ -22,6 +23,7 @@ const actions = [
   { icon: <FriendIcon />, name: 'Friends' },
   { icon: <MessageIcon  />, name: 'Messages' },
   { icon: <CloseBy  />, name: 'Near By' },
+  { icon: <ForumIcon  />, name: 'Discussions' },
 ];
 
 
@@ -30,12 +32,12 @@ const actions = [
 
   const OpenIconSpeedDial: React.FC = () => {
 
-    // React.useEffect(() => {
-    //   const socket = io("http://localhost:8080");
-    //   console.log(socket.on('test', (msg)=> {
-    //     console.log(msg);
-    //   }));
-    // }, []);
+    React.useEffect(() => {
+      const socket = io("http://localhost:3000");
+      console.log(socket.on('test', (msg)=> {
+        console.log(msg);
+      }));
+    }, []);
 
 
 
