@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChatContainer, ChatHeader, ChatBody, ChatFooter, ChatInput, ChatButton } from '../../Styled';
+import axios from 'axios';
 
 interface Message {
   text: string;

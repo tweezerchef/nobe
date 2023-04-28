@@ -48,7 +48,7 @@ const Profile = () => {
     setBooks(booksArray);
   }
 
-  const sendMessage = (message: string) => {
+  const sendMessage = async (message: string) => {
     if (chatContext && user) {
       const newMessage = {
         text: message,
@@ -57,7 +57,12 @@ const Profile = () => {
         recipient: userId,
         createdAt: new Date(),
       };
-      chatContext.setMessages([...chatContext.messages, newMessage]);
+      try {
+        const response = await axios.post('/direct-messages', newMessage);
+        chatContext.setMessages([...chatContext.messages, response.data]);
+      } catch (error) {
+        console.log('Error sending message:', error);
+      }
     }
   };
 
