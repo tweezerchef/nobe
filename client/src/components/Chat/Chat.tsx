@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { ChatContainer, ChatHeader, ChatBody, ChatFooter, ChatInput, ChatButton } from '../../Styled';
 
+interface Message {
+  text: string;
+  name: string;
+  sender: string;
+}
 
-type ChatProps = {
-  messages: string[];
+interface ChatProps {
+  messages: Message[];
   onSend: (message: string) => void;
-};
+}
 
 function Chat({ messages, onSend }: ChatProps) {
   const [message, setMessage] = useState<string>('');
@@ -25,10 +30,13 @@ function Chat({ messages, onSend }: ChatProps) {
 
   return (
     <ChatContainer>
-      <ChatHeader>React Js Chat Application</ChatHeader>
+      <ChatHeader>Direct Messages</ChatHeader>
       <ChatBody>
-        {messages.map((message, index) => (
-          <div key={index}>{message}</div>
+        {messages.map((message: Message, index: number) => (
+          <div>
+            <div key={index}>{message.name} @ time</div>
+            <div>{message.text}</div>
+          </div>
         ))}
       </ChatBody>
       <ChatFooter>

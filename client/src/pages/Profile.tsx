@@ -6,6 +6,7 @@ import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField,
 //import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context'
+import ChatContext from '../hooks/ChatContext';
 import UserBooks from '../../../server/routes/userbooks';
 import Chat from '../components/Chat/Chat'
 interface UserBook {
@@ -29,33 +30,46 @@ const Profile = () => {
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
   const [isUserLoaded, setIsUserLoaded] = useState(false);
-
+  const [showChat, setShowChat] = useState(false);
+  const chatContext = useContext(ChatContext);
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   console.log('user', user)
   const id = user.id
-  //let id: string = useParams().id || user?.id;
 
-  // const getUserBooks = async (type?: string) => {
-  //   try {
-  //     let url = `/books/${id}`;
-  //     if (type) {
-  //       url += `/${type}`;
-  //     }
-  //     const res = await axios.get(url);
-  //     setUserBooks(res.data);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
+  const { userId } = useParams<{ userId: string }>();
+
+
   const getUserBooks = () => {
     const booksArray: Book[] = [];
     user?.UserBooks?.forEach((book: UserBook) => {
       booksArray.push(book.Books);
     });
     setBooks(booksArray);
-
   }
+
+  const sendMessage = (message: string) => {
+    if (chatContext && user) {
+      const newMessage = {
+        text: message,
+        sender: id,
+        name: user.firstName,
+        recipient: userId,
+        createdAt: new Date(),
+      };
+      chatContext.setMessages([...chatContext.messages, newMessage]);
+    }
+  };
+
+  if (!chatContext) {
+    return <div>Loading chat...</div>;
+  }
+
+  const { messages } = chatContext;
+
+  const handleChatButtonClick = () => {
+    setShowChat(!showChat);
+  };
 
   const addFriend = async () => {
     const user = localStorage.getItem("user");
@@ -86,6 +100,8 @@ const Profile = () => {
     setInventory('Wishlist');
   }
 
+
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -93,8 +109,6 @@ const Profile = () => {
       .then(response => {
         setTitle("");
         //getUserBooks(inventory);
-        // response.data.UserBooks[0].userId <-- userId
-        // getUserBooks();
       })
       .catch(error => {
         console.error(error);
@@ -142,13 +156,13 @@ const Profile = () => {
         <div style={{ margin: '15px' }}>
           <Typography variant="h5">{inventory} Books</Typography>
         </div>
-        {/* {books.length > 0 ?
-          <BookDisplay userBooks={books} id={id} getUserBooks={getUserBooks} setUserBooks={setBooks} inventory={inventory} /> :
-          <Typography variant="body1">No books</Typography>
-        } */}
         {user && <BookDisplay books={books} id={user.id} />}
       </div>
       <button onClick={addFriend}>Add friend</button>
+      <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleChatButtonClick}>
+        Chat
+      </Button>
+      {showChat && <Chat messages={messages} onSend={sendMessage} />}
     </div>
   );
 }
