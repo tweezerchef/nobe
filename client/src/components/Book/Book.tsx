@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -8,6 +8,7 @@ import IconButton from '@mui/joy/IconButton';
 import Link from '@mui/joy/Link';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
+import UserContext from '../../hooks/Context';
 
 
 
@@ -15,9 +16,18 @@ import UserStarRating from '../UserStarRating/UserStarRating';
 
 
 
-const Book = (props: any) => {
+const Book = React.memo((props: any) => {
 
-    const { book, id } = props;
+    const { book } = props;
+    const userContext = useContext(UserContext);
+    const user = userContext?.user;
+    console.log('user', user)
+    const id = user.id
+    console.log(book)
+    if (!book) {
+        return null;
+    }
+
 
     return (
         <Card key={book.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px' }}>
@@ -77,6 +87,6 @@ const Book = (props: any) => {
 
     )
 
-}
+})
 
 export default Book;

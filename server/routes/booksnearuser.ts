@@ -4,6 +4,7 @@
 const prisma = new PrismaClient()
 const LocationRoute = express.Router();
 import { Request, Response } from "express";
+import UserBooks from './userbooks';
 
 interface AuthenticatedRequest extends Request {
   user: {
