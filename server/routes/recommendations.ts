@@ -108,16 +108,16 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
   const responseArray: any[] = [];
   const { id } = req.params
 
-  const topRatedBooks = await prisma.userBooks.findMany({where: {userId: id,}, orderBy: { rating:'desc',},take: 20, include: { books: true,}, });
+  const topRatedBooks = await prisma.userBooks.findMany({where: {userId: id,}, orderBy: { rating:'desc',},take: 20, include: { Books: true,}, });
 
-  const lowRatedBooks = await prisma.userBooks.findMany({ where: { userId: id, rating: { lte: 2, }, }, orderBy: { rating: 'asc', }, take: 20, include: { books: true, }, });
+  const lowRatedBooks = await prisma.userBooks.findMany({ where: { userId: id, rating: { lte: 2, }, }, orderBy: { rating: 'asc', }, take: 20, include: { Books: true, }, });
 
  const lowTitles = await lowRatedBooks.reduce((acc: string[] , book: any) => {
-    acc.push(book.books.title);
+    acc.push(book.Books.title);
     return acc;
   },[]).join(', ')
   const topTitles = await topRatedBooks.reduce((acc: string[] , book: any) => {
-    acc.push(book.books.title);
+    acc.push(book.Books.title);
     return acc;
   },[]).join(', ')
 
@@ -131,10 +131,12 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
       const promises = data.map(async (book: any) => {
         const data = await axios.get(`http://localhost:8080/google-books?title=${book}`);
        const transFormedData = data.data
+       //console.log('TransFormedData: ', transFormedData)
        const ISBN10 = transFormedData.ISBN10;
          const ourBookData = await axios.get(`http://localhost:8080/bookdata?ISBN10=${ISBN10}`);
          if(ourBookData.data && ourBookData.data !== null){
-           responseArray.push(ourBookData.data)
+          //console.log('ourBookData', ourBookData);
+          responseArray.push(ourBookData.data)
          }
          else{responseArray.push(transFormedData);}
        });
@@ -142,6 +144,7 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
     return Promise.all(promises);
   })
   .then(() => {
+    //console.log('response', responseArray)
    const uniqueBooks = responseArray.filter((book, index, self) =>
    index === self.findIndex((b) => (
      b.title === book.title && b.author === book.author && b.ISBN10 === book.ISBN10
