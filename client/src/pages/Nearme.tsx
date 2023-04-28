@@ -18,6 +18,7 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import UserContext from '../hooks/Context'
+import UserDisplay from "../components/UserDisplay/Userdisplay";
 
 interface UserBook {
   Books: Book;
@@ -116,7 +117,14 @@ const saveRadius = async () => {
 
   }
 
+  // const booksNearMe = () => {
+  //   const booksArray: Book[] = [];
+  //   user?.UserBooks?.forEach((book: UserBook) => {
+  //     booksArray.push(book.Books);
+  //   });
+  //   setBooks(booksArray);
 
+  // }
 
 // useEffect(() => {
 //     const ownedBooks = booksNearBy.flat().filter(book => book.owned === true).map((book) => book.books);
@@ -234,7 +242,7 @@ const saveRadius = async () => {
           </ButtonGroup>
         </Grid>
       </Grid>
-      {user && <BookDisplay books={displayBooks} id={user.id} />}
+      {/* { booksNearBy.map(user => <UserDisplay user={user} key={user.id} />)} */}
     </div>
   )
 
