@@ -1,6 +1,6 @@
- const express = require('express');
- const axios = require('axios');
- import {  PrismaClient } from '@prisma/client'
+const express = require('express');
+const axios = require('axios');
+import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 const LocationRoute = express.Router();
 import { Request, Response } from "express";
@@ -22,7 +22,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
   //console.log(req, 26);
   try {
     const { lon, lat, radius } = req.query
-   // console.log(lon, lat, radius);
+    // console.log(lon, lat, radius);
     //  coordinates are sent in the request body
     if (!lat || !lon || !radius) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
@@ -94,26 +94,26 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         },
       },
     })
-console.log(users, 51)
-   const ids = users.reduce<string[]>((acc, user) => {
-  acc.push(user.id);
-  return acc;
-}, []);
+    console.log(users, 51)
+    const ids = users.reduce<string[]>((acc, user) => {
+      acc.push(user.id);
+      return acc;
+    }, []);
 
-const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
-  where: {
-    userId: id
-  },
-  include: {
-    Books: true
-  }
-}))
-const userBooks = await Promise.all(userBooksPromises);
-//const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
-//console.log(userBooks, 67);
-res.status(200).send({ users });
+    const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
+      where: {
+        userId: id
+      },
+      include: {
+        Books: true
+      }
+    }))
+    const userBooks = await Promise.all(userBooksPromises);
+    //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
+    //console.log(userBooks, 67);
+    res.status(200).send({ users });
   } catch (error) {
-   //console.error('Error getting users within radius:', error);
+    //console.error('Error getting users within radius:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -137,7 +137,7 @@ LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Res
     //console.log(userUpdateLocation);
     res.status(200).json({ userUpdateLocation })
   } catch (e) {
-   // console.error(e)
+    // console.error(e)
     res.status(500).json({
       error: 'Server error!',
     })
