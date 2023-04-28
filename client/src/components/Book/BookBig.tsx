@@ -76,7 +76,7 @@ const BigBook = (props: any) => {
             <Button variant="outlined" onClick={handleClickOpen}>
                 Add Written Review
             </Button>
-            <UserReview open={reviewOpen} handleClose={handleClose} />
+            <UserReview book={book} id={id} open={reviewOpen} handleClose={handleClose} />
             <Box sx={{ p: 3, flexGrow: 1 }}>
                 <Typography level="h2" sx={{ fontSize: 'lg', mt: 2 }}>
                     <span onClick={handleOnClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>

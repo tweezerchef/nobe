@@ -33,7 +33,7 @@ import UserBooks from './routes/userbooks';
 import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
-import Trending from './routes/trending';
+import Trending from './routes/Trending';
 import Recommendations from './routes/recommendations';
 import Review from './routes/review';
 import Wishlist from './routes/wishlist';

@@ -54,6 +54,7 @@ const { ISBN10, title, author, image, description  } = book;
 })
 Review.post('/WrittenReview', async (req: Request, res: Response) => {
   const { book, review, id } = req.body;
+  console.log('poop')
 
   const { ISBN10, title, author, image, description  } = book;
 
@@ -64,7 +65,19 @@ Review.post('/WrittenReview', async (req: Request, res: Response) => {
     image: image,
     description: description,
 
-   })
+   }).then(async(newbook) => {
+    const booksId = newbook.data.id;
+    const userId = id
+    const newUserBook = await prisma.UserBooks.upsert({
+      where: { userId_bookId: { userId, booksId } },
+      update: {review: review},
+      create: { booksId: booksId, userId: userId, review: review},
+
+})
+console.log(newUserBook);
+
+    }).then(()=> res.sendStatus(200)).catch((error)=> {console.log(error),res.sendStatus(500)});
+
 
 })
 

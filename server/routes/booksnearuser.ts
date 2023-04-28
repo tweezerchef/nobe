@@ -50,21 +50,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         ],
       },
       select: {
-        id: true,
-        firstName: true,
-        username: true,
-        email: true,
-        googleId: true,
-        lastName: true,
-        picture: true,
-        token: true,
-        latitude: true,
-        longitude: true,
-        radius: true,
-        clubMembers: true,
-        Discussions: true,
-        Posts: true,
-        UserBooks: {
+       UserBooks: {
           select: {
             id: true,
             wishlist: true,
@@ -85,6 +71,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
                 UserBooks: true,
                 Discussions: true,
                 Activity: true,
+                Clubs_Books:true
               },
             },
           },
@@ -94,24 +81,24 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         },
       },
     })
-console.log(users, 51)
-   const ids = users.reduce<string[]>((acc, user) => {
-  acc.push(user.id);
-  return acc;
-}, []);
+// console.log(users, 51)
+//    const ids = users.reduce<string[]>((acc, user) => {
+//   acc.push(user.id);
+//   return acc;
+// }, []);
 
-const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
-  where: {
-    userId: id
-  },
-  include: {
-    Books: true
-  }
-}))
-const userBooks = await Promise.all(userBooksPromises);
+// const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
+//   where: {
+//     userId: id
+//   },
+//   include: {
+//     books: true
+//   }
+// }))
+//const userBooks = await Promise.all(userBooksPromises);
 //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
-//console.log(userBooks, 67);
-res.status(200).send({ users });
+console.log(users, 67);
+res.status(200).send( users );
   } catch (error) {
    //console.error('Error getting users within radius:', error);
     res.status(500).json({ error: 'Server error' });
@@ -145,6 +132,8 @@ LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Res
 })
 
 LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response) => {
+  console.log(req);
+  console.log(req.body);
   try {
     const id = req.params.id;
     const radius = req.body.radius
@@ -209,7 +198,7 @@ LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response
 //       }
 //     }
 //   });
-//   // Send the response to the React front-end
+//
 //   console.log(users);
 //   res.status(200).json({ users });
 // } catch (error) {
