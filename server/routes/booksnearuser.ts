@@ -17,11 +17,11 @@ interface QueryResult {
 
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
-  console.log(req, 26);
-  console.log(req, 26);
+  //console.log(req, 26);
+  //console.log(req, 26);
   try {
     const { lon, lat, radius } = req.query
-    console.log(lon, lat, radius);
+   // console.log(lon, lat, radius);
     //  coordinates are sent in the request body
     if (!lat || !lon || !radius) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
@@ -45,9 +45,54 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
               lte: lonNum + radiusNum / (69.0 * Math.cos(latNum * Math.PI / 180.0)),
             },
           },
+
         ],
       },
-    });
+      select: {
+        id: true,
+        firstName: true,
+        username: true,
+        email: true,
+        googleId: true,
+        lastName: true,
+        picture: true,
+        token: true,
+        latitude: true,
+        longitude: true,
+        radius: true,
+        clubMembers: true,
+        Discussions: true,
+        Posts: true,
+        books: {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks: true,
+                Discussions: true,
+                Activity: true,
+              },
+            },
+          },
+          where: {
+            owned: true,
+          },
+        },
+      },
+    })
 console.log(users, 51)
    const ids = users.reduce<string[]>((acc, user) => {
   acc.push(user.id);
@@ -64,10 +109,10 @@ const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
 }))
 const userBooks = await Promise.all(userBooksPromises);
 //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
-console.log(userBooks, 67);
-res.status(200).json({ userBooks });
+//console.log(userBooks, 67);
+res.status(200).send({ users });
   } catch (error) {
-   console.error('Error getting users within radius:', error);
+   //console.error('Error getting users within radius:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -88,10 +133,10 @@ LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Res
         latitude: latitude
       },
     })
-    console.log(userUpdateLocation);
+    //console.log(userUpdateLocation);
     res.status(200).json({ userUpdateLocation })
   } catch (e) {
-    console.error(e)
+   // console.error(e)
     res.status(500).json({
       error: 'Server error!',
     })
