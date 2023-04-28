@@ -54,7 +54,7 @@ Wishlist.post('/', async (req, res) => {
         bookId: book.id,
       },
     })
-
+    
     const userBook = await prisma.userBooks.create({
       data: {
         wishlist: true,

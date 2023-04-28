@@ -20,7 +20,10 @@ Activity.get('/', async (req, res) => {
     where: { id: userIdStr },
   }).friendships() ?? [];
 
+
   const followingIds = following.map(item => item.friendId);
+
+  console.log('followingIds', followingIds)  
 
   const users = await prisma.activity.findMany({
     where: {

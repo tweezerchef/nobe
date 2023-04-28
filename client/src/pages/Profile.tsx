@@ -33,7 +33,13 @@ const Profile = () => {
   const user = userContext?.user;
   console.log('user', user)
   const id = user.id
+  const friendId: string = useParams().id || "";
+
+
   //let id: string = useParams().id || user?.id;
+
+  // const user = JSON.parse(localStorage.getItem("user") || '{}');
+  // const id = user.id;
 
   // const getUserBooks = async (type?: string) => {
   //   try {
@@ -58,10 +64,9 @@ const Profile = () => {
 
   const follow = async () => {
     const userId = user.id;
-    const friendId = id;
 
     try {
-      await axios.post('/api/friendship', {userId, friendId });
+      await axios.post('/api/friendship', { userId, friendId });
 
     } catch (error) {
       console.error(error)
@@ -97,12 +102,17 @@ const Profile = () => {
       });
   };
 
+  // useEffect(() => {
+  //   if (user && !isUserLoaded) {
+  //     setIsUserLoaded(true);
+  //     getUserBooks();
+  //   }
+  // }, [user, isUserLoaded]);
   useEffect(() => {
-    if (user && !isUserLoaded) {
-      setIsUserLoaded(true);
+    if (user && user.UserBooks) {
       getUserBooks();
     }
-  }, [user, isUserLoaded]);
+  }, []);
 
   return (
     <div >
@@ -142,7 +152,8 @@ const Profile = () => {
           <BookDisplay userBooks={books} id={id} getUserBooks={getUserBooks} setUserBooks={setBooks} inventory={inventory} /> :
           <Typography variant="body1">No books</Typography>
         } */}
-        {user && <BookDisplay books={books} id={user.id} />}
+        {/* {user && <BookDisplay books={books} id={user.id} />} */}
+        <BookDisplay books={books} id={id} />
       </div>
       <button onClick={follow}>{`Follow`}</button>
     </div>

@@ -33,7 +33,7 @@ import UserBooks from './routes/userbooks';
 import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
-import Trending from './routes/trending';
+import Trending from './routes/Trending';
 import Recommendations from './routes/recommendations';
 import Review from './routes/review';
 import Wishlist from './routes/wishlist';
@@ -41,7 +41,9 @@ import OpenAI from './routes/OpenAI';
 import BookData from './routes/BookData';
 import User from './routes/User';
 import GoogleBooks from './routes/GoogleBooks';
-import Friendship  from './routes/friendship';
+import SpotsMapRoute from './routes/spotsmap';
+
+import Friendship from './routes/friendship';
 import Activity from './routes/activity';
 
 
@@ -81,6 +83,7 @@ app.use("/openai", OpenAI);
 app.use("/bookdata", BookData);
 app.use("/user", User);
 app.use("/google-books", GoogleBooks);
+app.use("/api/places-to-read", SpotsMapRoute);
 app.use("/api/friendship", Friendship);
 app.use("/api/activity", Activity);
 
@@ -104,7 +107,6 @@ async function verifyGoogleToken(token: string) {
 }
 
 app.post("/signup", async (req, res) => {
-  console.log(req.body);
   try {
     // console.log({ verified: verifyGoogleToken(req.body.credential) });
     if (req.body.credential) {
@@ -168,7 +170,7 @@ app.get("/Login", async (req, res) => {
       email: email,
     },
   });
-  console.log(profile);
+
 
   if (profile) {
     res.status(200).json({
@@ -209,7 +211,7 @@ app.post("/login", async (req, res) => {
         });
       }
       const email = profile.email
-      const getUser  = await axios.get(`http://localhost:8080/user?email=${email}`)
+      const getUser = await axios.get(`http://localhost:8080/user?email=${email}`)
       const userData = getUser.data
       // const existsInDB = DB.find((person) => person?.email === profile?.email);
       //console.log(userData)
@@ -221,7 +223,7 @@ app.post("/login", async (req, res) => {
       userData.token = jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
         expiresIn: "1d",
       }),
-      console.log(userData)
+        console.log(userData)
 
       res.status(201).json({
         message: "Login was successful",
