@@ -3,6 +3,7 @@ import Router from './Router';
 import ResponsiveAppBar from './components/Navbar/ResponsiveAppBar';
 import OpenIconSpeedDial from './components/ActionButton/ActionButton';
 import UserContext, { UserContextType } from './hooks/Context';
+import ChatContext, { ChatContextType } from './hooks/ChatContext';
 import Navbar from './components/Navbar/Navbar';
 import axios from 'axios';
 

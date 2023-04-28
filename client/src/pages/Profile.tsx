@@ -7,6 +7,7 @@ import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField,
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context'
 import UserBooks from '../../../server/routes/userbooks';
+import Chat from '../components/Chat/Chat'
 interface UserBook {
   Books: Book;
   // Add any other properties if necessary
@@ -64,8 +65,8 @@ const Profile = () => {
     const friendId = id;
 
     try {
-      await axios.post('/api/friendship', {userId, friendId });
-      
+      await axios.post('/api/friendship', { userId, friendId });
+
     } catch (error) {
       console.error(error)
     }
