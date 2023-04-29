@@ -2,16 +2,12 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { ChatContainer, ChatHeader, ChatBody, ChatFooter, ChatInput, ChatButton, ChatSidebar, SidebarHeader, SidebarBody, ConversationLink, ChatWrapper } from '../../Styled';
 import UserContext from '../../hooks/Context';
 import axios from 'axios';
+import io from 'socket.io-client';
 
 interface Message {
   text: string;
   name: string;
   sender: string;
-}
-
-interface ChatProps {
-  messages: Message[];
-  onSend: (message: string) => void;
 }
 
 interface Conversation {
@@ -37,7 +33,8 @@ function Chat() {
   const [chatMessages, setChatMessages] = useState<Message[]>([])
   const [searchQuery, setSearchQuery] = useState('');
   const [conversations, setConversations] = useState<Conversation[]>([])
-  const [currentConvo, setCurrentConvo] = useState<Conversation | null>(null)
+  const [currentConvo, setCurrentConvo] = useState<Conversation | null>(null);
+  const [socket, setSocket] = useState<any>(null);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -61,9 +58,9 @@ function Chat() {
       try {
         const response = await axios.post(`/direct-messages/${currentConvo.id}/messages`, newMessage);
         setChatMessages([...chatMessages, response.data]);
-        setCurrentConvo({
-          ...currentConvo,
-          messages: [...currentConvo.messages, response.data],
+        socket.emit('new-message', {
+          conversationId: currentConvo.id,
+          message: response.data,
         });
       } catch (error) {
         console.log('Error sending message:', error);
@@ -71,9 +68,28 @@ function Chat() {
     }
   };
 
+
   useEffect(() => {
-    setConversations(user.Conversations)
-  }, [])
+    setConversations(user.Conversations);
+
+    const newSocket = io('http://localhost:3000');
+    setSocket(newSocket);
+
+    newSocket.on('new-message', (data: any) => {
+      const { conversationId, message } = data;
+      // if (conversationId === currentConvo?.id) {
+      setChatMessages((prevMessages) => [...prevMessages, message]);
+      // }
+    });
+
+    newSocket.on('connect_error', (error: any) => {
+      console.log('Socket connection error:', error);
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
   console.log(user)
   console.log(conversations)
 
@@ -93,19 +109,15 @@ function Chat() {
         otherUser: searchQuery
       });
       const newConversation: any = response.data;
-      setConversations(prevConversations => [...prevConversations, newConversation])
+      console.log(newConversation)
+      setConversations(prevConversations => [...prevConversations, newConversation]);
+      setCurrentConvo(newConversation);
 
     } catch (error) {
       console.error(error);
     }
     setSearchQuery('')
   };
-
-  // const conversations = [
-  //   { id: 1, name: 'Alice' },
-  //   { id: 2, name: 'Bob' },
-  //   { id: 3, name: 'Charlie' },
-  // ];
 
   return (
     <ChatContainer>
@@ -127,7 +139,14 @@ function Chat() {
             {conversations.map((conversation: any, index: number) => {
               const otherUser = conversation.members.find((member: any) => member.firstName !== user.firstName);
               const otherUserName = otherUser ? otherUser.firstName : '';
-              return <ConversationLink key={index} onClick={() => setCurrentConvo(conversation)}>{otherUserName}</ConversationLink>;
+              return <ConversationLink
+                key={index}
+                onClick={() => {
+                  setCurrentConvo(conversation)
+                  setChatMessages(conversation.messages)
+                }
+                }>
+                {otherUserName}</ConversationLink>;
             })}
 
           </SidebarBody>
@@ -136,7 +155,7 @@ function Chat() {
           <ChatHeader>Direct Messages</ChatHeader>
           {currentConvo && (
             <ChatBody>
-              {currentConvo.messages.map((message: any, index: number) => {
+              {chatMessages.map((message: any, index: number) => {
                 const sender = currentConvo.members.find((member: any) => member.id === message.senderId);
                 const senderFirstName = sender ? sender.firstName : '';
                 return (
