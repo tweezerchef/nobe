@@ -35,26 +35,28 @@ const OpenIconSpeedDial: React.FC = () => {
 
   const [userFirstName, setUserFistName] = useState("");
   const [onlineUser, setOnlineUser] = useState("");
-  const [socket, setSocket] = useState<any>(null);
+  // const [socket, setSocket] = useState<any>(null);
   const [notifications, setNotifications] = useState<any>([]);
   const [notificationCount, setNotificationCount] = useState(0);
 
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  // const id = user.id;
+  //const id = user.id;
+   console.log(user);
 
+   const socket = io("http://localhost:3000");
 
-  // React.useEffect(() => {
-  //   const socket = io("http://localhost:3000");
-  //   console.log(socket.on('test', (msg)=> {
-  //     console.log(msg);
-  //   }));
-  // }, []);
 
   React.useEffect(() => {
-    setSocket(io("http://localhost:3000"));
- }, []);
+    console.log(socket.on('test', (msg)=> {
+      console.log(msg);
+    }));
+  }, []);
+
+//   React.useEffect(() => {
+//     setSocket(io("http://localhost:3000"));
+//  }, []);
 
  React.useEffect(() => {
    if (socket) {

@@ -49,18 +49,18 @@ interface User {
 
 let onlineUsers: User[] = [];
 
-const addNewUser = (firstName: string, socketId: string, id:string) => {
-  !onlineUsers.some((user) => user.id === id) &&
-  onlineUsers.push({firstName, socketId, id})
-}
+// const addNewUser = (user: any, socketId:string ) => {
+//   !onlineUsers.some((user) => user.id === id) &&
+//   onlineUsers.push({user.firstName, socketId, user.id})
+// }
 
-const removeUser = (socketId: string) =>{
-  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId)
-}
+// const removeUser = (socketId: string) =>{
+//   onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId)
+// }
 
-const getUser = (id: string) => {
-  return onlineUsers.find((user) => user.id === id)
-}
+// const getUser = (id: string) => {
+//   return onlineUsers.find((user) => user.id === id)
+// }
 
 // [
 //   {
@@ -81,20 +81,21 @@ const getUser = (id: string) => {
 
 
 io.on("connection", (socket) => {
-  // console.log('someone has connected!')
-  // io.emit("test", 'this is test')
-socket.on("newUser", (user)=> {
-  addNewUser(user.firstName, socket.id, user.id);
-})
+  console.log('someone has connected!')
+  io.emit("test", 'this is test')
+// socket.on("newUser", (user)=> {
+//   addNewUser(user.firstName, socket.id, user.id);
+// })
 
-socket.on("addFollower", ({senderId, receiverId, type}) =>{
-  const receiver = getUser(receiverId);
-  if (receiver) {
-    io.to(receiver.socketId).emit("getFollower");
-  }
-});
+// socket.on("addFollower", ({senderId, receiverId, type}) =>{
+//   const receiver = getUser(receiverId);
+//   if (receiver) {
+//     io.to(receiver.socketId).emit("getFollower");
+//   }
+// });
   socket.on('disconnect', () => {
-    removeUser(socket.id);
+    console.log('someone has disconnected');
+    // removeUser(socket.id);
   });
 });
 
