@@ -169,7 +169,7 @@ const Profile = () => {
         ) : null}
 
         <div style={{ margin: '15px' }}>
-          {/* <Typography variant="h5">{inventory} Books</Typography> */}
+          <Typography variant="h5">{inventory} Books</Typography>
         </div>
         <BookDisplay books={books} id={id} />
       </div>
