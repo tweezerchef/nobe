@@ -8,6 +8,8 @@ import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context'
 import UserBooks from '../../../server/routes/userbooks';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import Avatar from "@mui/material/Avatar";
+
 
 interface UserBook {
   Books: Book;
@@ -28,7 +30,7 @@ interface Book {
 interface UserProfile {
   id: string;
   firstName: string;
-  // Add any other properties if necessary
+  picture: string;
 }
 
 
@@ -139,7 +141,9 @@ const Profile = () => {
 
   return (
     <div >
-
+      {/* {friendId === "" ? null : (
+      <Avatar style={{display: 'flex', alignItems: 'center'}} src={profile?.picture}/>
+      )} */}
       <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
         <Typography variant="h4">{friendId === "" ? `${user.firstName}'s` : `${profile?.firstName}'s`} Books</Typography>
         {friendId === "" ? null : (
