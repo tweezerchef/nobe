@@ -47,16 +47,12 @@ const Profile = () => {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  console.log('user', user)
   const id = user.id
   const friendId: string = useParams().id || "";
-
-  console.log('friendId', friendId)
 
   const getProfile = async () => {
     try {
       const response = await axios.get(`/user/${friendId}`);
-      console.log('profile', response.data);
       setProfile(response.data);
     } catch (error) {
       console.error(error);
