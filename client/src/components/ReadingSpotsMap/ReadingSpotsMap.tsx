@@ -72,6 +72,9 @@ function ReadingSpotsMap() {
 
   const handleFormSubmit = async () => {
     try {
+      if (!description) {
+        return;
+      }
       await axios.post(`/api/places-to-read/places/${selectedPlace}/description`, { Description: description });
       setDescription("");
       setIsAddingDescription(false);
