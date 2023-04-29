@@ -58,7 +58,7 @@ a {
 }
 
 .spots-map {
-  width: 80%;
+  width: 100%;
   height: calc(100vh - 70px);
 }
 
