@@ -4,7 +4,8 @@ import axios from 'axios';
 import { Typography, Grid, TextField, Button } from '@material-ui/core';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context'
-import ChatContext from '../hooks/ChatContext';
+// import ChatContext from '../hooks/ChatContext';
+import UserBooks from '../../../server/routes/userbooks';
 import Chat from '../components/Chat/Chat'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Avatar from "@mui/material/Avatar";
@@ -39,7 +40,7 @@ const Profile = () => {
   const [showChat, setShowChat] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
 
-  const chatContext = useContext(ChatContext);
+  // const chatContext = useContext(ChatContext);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -64,29 +65,13 @@ const Profile = () => {
     setBooks(booksArray);
   }
 
-  const sendMessage = async (message: string) => {
-    if (chatContext && user) {
-      const newMessage = {
-        text: message,
-        senderId: id,
-        name: user.firstName,
-        recipientId: friendId,
-        createdAt: new Date(),
-      };
-      try {
-        const response = await axios.post('/direct-messages', newMessage);
-        chatContext.setMessages([...chatContext.messages, response.data]);
-      } catch (error) {
-        console.log('Error sending message:', error);
-      }
-    }
-  };
 
-  if (!chatContext) {
-    return <div>Loading chat...</div>;
-  }
 
-  const { messages } = chatContext;
+  // if (!chatContext) {
+  //   return <div>Loading chat...</div>;
+  // }
+
+  // const { messages } = chatContext;
 
   const handleChatButtonClick = () => {
     setShowChat(!showChat);
@@ -191,7 +176,7 @@ const Profile = () => {
       <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleChatButtonClick}>
         Chat
       </Button>
-      {showChat && <Chat messages={messages} onSend={sendMessage} />}
+      {showChat && <Chat />}
     </div>
   );
 }
