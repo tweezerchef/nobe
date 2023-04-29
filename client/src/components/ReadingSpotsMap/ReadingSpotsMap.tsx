@@ -169,7 +169,7 @@ function ReadingSpotsMap() {
           {savedPlaces?.map((place) => (
             <Marker
               key={place.id}
-              // position={new google.maps.LatLng(place.lat, place.lng)}
+              // position={new google.maps.LatLng(place.Lat, place.Long)}
               position={{ lat: place.Lat, lng: place.Long }}
               icon={{
                 url: "http://maps.google.com/mapfiles/kml/shapes/library_maps.png",
@@ -184,6 +184,7 @@ function ReadingSpotsMap() {
                 >
                   <div>
                     <div>{place.Location}</div>
+                    {place.Description && <div>{place.Description}</div>}
                     <div>
                       {!isAddingDescription && (
                         <Button onClick={handleFormOpen}>Add Description</Button>
