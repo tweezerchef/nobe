@@ -45,6 +45,7 @@ import SpotsMapRoute from './routes/spotsmap';
 
 import Friendship from './routes/friendship';
 import Activity from './routes/activity';
+import DirectMessages from './routes/directMessages';
 
 
 
@@ -86,6 +87,7 @@ app.use("/google-books", GoogleBooks);
 app.use("/api/places-to-read", SpotsMapRoute);
 app.use("/api/friendship", Friendship);
 app.use("/api/activity", Activity);
+app.use("/direct-messages", DirectMessages);
 
 
 
