@@ -10,7 +10,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
 import BookIcon from '../NotificationBook/Notificationbook';
 import CloseBy from '../CloseBy/CloseBy';
-import { io } from "socket.io-client";
+ import { io } from "socket.io-client";
 import MessageIcon from '../MessagesIcon/messagesicon';
 import FriendIcon from '../NewFriendIcon/Newfriendicon';
 import NotificationIcon from '../NotificationMessages/Notificationmessages';
@@ -32,12 +32,12 @@ const actions = [
 
 const OpenIconSpeedDial: React.FC = () => {
 
-  // React.useEffect(() => {
-  //   const socket = io("http://localhost:3000");
-  //   console.log(socket.on('test', (msg)=> {
-  //     console.log(msg);
-  //   }));
-  // }, []);
+  React.useEffect(() => {
+    const socket = io("http://localhost:3000");
+    console.log(socket.on('test', (msg)=> {
+      console.log(msg);
+    }));
+  }, []);
 
 
 

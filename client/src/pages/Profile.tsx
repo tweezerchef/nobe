@@ -15,7 +15,6 @@ import Avatar from "@mui/material/Avatar";
 
 interface UserBook {
   Books: Book;
-  // Add any other properties if necessary
 }
 interface Book {
   books: {
