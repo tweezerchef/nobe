@@ -32,12 +32,12 @@ const actions = [
 
 const OpenIconSpeedDial: React.FC = () => {
 
-  // React.useEffect(() => {
-  //   const socket = io("http://localhost:3000");
-  //   console.log(socket.on('test', (msg)=> {
-  //     console.log(msg);
-  //   }));
-  // }, []);
+  React.useEffect(() => {
+    const socket = io("http://localhost:3000");
+    console.log(socket.on('test', (msg)=> {
+      console.log(msg);
+    }));
+  }, []);
 
 
 
