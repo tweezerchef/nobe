@@ -26,7 +26,6 @@ function ReadingSpotsMap() {
   const [description, setDescription] = useState<string>("");
   const [isAddingDescription, setIsAddingDescription] = useState(false);
 
-
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(() => ({ lat: 29.9511, lng: -90.0715 }), []);
   const options = useMemo<MapOptions>(() => ({
@@ -42,8 +41,9 @@ function ReadingSpotsMap() {
       const response = await axios.get('/api/places-to-read/places');
       setSavedPlaces(response.data);
     };
+    setDescription("");
     fetchSavedPlaces();
-  }, []);
+  }, [selectedPlace]);
 
   const handleMarkerClick = useCallback(() => {
     setShowInfoWindow((prev) => !prev);
@@ -73,15 +73,14 @@ function ReadingSpotsMap() {
   const handleFormSubmit = async () => {
     try {
       await axios.post(`/api/places-to-read/places/${selectedPlace}/description`, { Description: description });
-      fetchSavedPlaces();
       setDescription("");
       setIsAddingDescription(false);
       setIsFormOpen(false);
+      fetchSavedPlaces();
     } catch (error) {
       console.error(error);
     }
   };
-
 
   const fetchSavedPlaces = async () => {
     try {
@@ -92,11 +91,6 @@ function ReadingSpotsMap() {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    setDescription("");
-    fetchSavedPlaces();
-  }, [selectedPlace]);
 
   return (
     <div className="spots-container">
