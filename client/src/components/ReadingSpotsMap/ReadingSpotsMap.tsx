@@ -25,7 +25,6 @@ function ReadingSpotsMap() {
   const [selectedPlace, setSelectedPlace] = useState<number | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
-
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(() => ({ lat: 29.9511, lng: -90.0715 }), []);
   const options = useMemo<MapOptions>(() => ({
@@ -80,7 +79,6 @@ function ReadingSpotsMap() {
             </Card>
           ))}
         </div>
-
       </div>
       <div className="spots-map">
         <GoogleMap
@@ -102,7 +100,7 @@ function ReadingSpotsMap() {
                 <InfoWindow
                   onCloseClick={handleMarkerClick}
                   position={latlng}
-                  options={{ maxWidth: 150 }}
+                  options={{ maxWidth: 250 }}
                 >
                   <div>
                     <div>{address}</div>
@@ -110,7 +108,7 @@ function ReadingSpotsMap() {
                       <Button onClick={handleFormOpen}>Add Description</Button>
                       {isFormOpen && (
                         <Card>
-          // MUI form here
+
                         </Card>
                       )}
                     </div>
@@ -133,7 +131,7 @@ function ReadingSpotsMap() {
                 <InfoWindow
                   onCloseClick={() => setSelectedPlace(null)}
                   position={{ lat: place.Lat, lng: place.Long }}
-                  options={{ maxWidth: 150 }}
+                  options={{ maxWidth: 250 }}
                 >
                   <div>
                     <div>{place.Location}</div>
