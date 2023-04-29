@@ -50,7 +50,7 @@ export default function CustomizedTimeline() {
         }
       });
       console.log(response.data);
-      setActivity(response.data);
+      setActivity(response.data.reverse());
     } catch (error) {
       console.error(error);
     }

@@ -1,15 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState} from 'react';
 import Book from '../Book/Book';
 import UserContext from '../../hooks/Context';
 import BookDisplay from '../BookDisplay/BookDisplay';
 import Avatar from '@mui/material/Avatar';
-import Link from '@mui/material/Link';
+import { Link } from 'react-router-dom';
+
+
 
 
 
 function UserDisplay({ user }: { user: any }) {
   const userBooks = user.UserBooks;
-  console.log(userBooks, 10)
+  //console.log(userBooks, 10)
 
   // const userContext = useContext(UserContext);
   // const profile = userContext?.user;
@@ -28,23 +30,19 @@ function UserDisplay({ user }: { user: any }) {
   //   }
   // }, []);
 
+
+
   useEffect(() => {
     const booksArray = userBooks?.map((userbook: any) => userbook.Books);
-    console.log(booksArray, 20);
+   // console.log(booksArray, 20);
     setBooks(booksArray);
   }, [userBooks]);
 
-  console.log(books, 24)
+  //console.log(books, 24)
 
   return (
     <div>
-       <Link
-      component="button"
-      variant="body2"
-      onClick={() => {
-        console.info("I'm a button.");
-      }}
-    >
+       <Link to={`/profile/${user.id}`} >
         <div className="user-firstName">{user.firstName}</div>
         <Avatar alt="user-image" src={user.picture} />
         </Link>
