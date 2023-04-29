@@ -7,8 +7,6 @@ import UserContext from '../hooks/Context'
 import ChatContext from '../hooks/ChatContext';
 import Chat from '../components/Chat/Chat'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import Avatar from "@mui/material/Avatar";
-
 
 interface UserBook {
   Books: Book;
@@ -143,9 +141,7 @@ const Profile = () => {
   return (
 
     <div >
-      {/* {friendId === "" ? null : (
-      <Avatar style={{display: 'flex', alignItems: 'center'}} src={profile?.picture}/>
-      )} */}
+
       <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
         <Typography variant="h4">{friendId === "" ? `${user.firstName}'s` : `${profile?.firstName}'s`} Books</Typography>
         {friendId === "" ? null : (
