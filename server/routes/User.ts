@@ -38,6 +38,7 @@ User.get('/', async (req, res) => {
         PostsUsers: true,
         Conversations: {
           select: {
+            id: true,
             members: true,
             messages: true,
           }
@@ -119,6 +120,7 @@ User.get('/id', async (req, res) => {
         PostsUsers: true,
         Conversations: {
           select: {
+            id: true,
             members: true,
             messages: true,
           }
@@ -203,6 +205,7 @@ User.get('/id', async (req, res) => {
           User_Places: true,
           Conversations: {
             select: {
+              id: true,
               members: true,
               messages: true,
             }
