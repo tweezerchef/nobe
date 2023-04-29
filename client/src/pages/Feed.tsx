@@ -18,6 +18,7 @@ import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 import StarIcon from '@mui/icons-material/Star';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import IconButton from '@mui/joy/IconButton';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 
 
 
@@ -80,7 +81,7 @@ export default function CustomizedTimeline() {
               </TimelineOppositeContent>
               <TimelineSeparator>
                 <TimelineConnector />
-                {data.type === 'wishlist' ? (
+                {data.type.toLowerCase() === "wishlist" ? (
                   <IconButton
                     aria-label="Like minimal photography"
                     size="md"
@@ -91,12 +92,25 @@ export default function CustomizedTimeline() {
                   >
                     <BookmarkAddIcon />
                   </IconButton>
-                ) : null}
+                ) : (
+                  <IconButton
+                    aria-label="Like minimal photography"
+                    size="md"
+                    variant="solid"
+                    color="success"
+                    sx={{
+                    }}
+                  >
+                    <LocalMallIcon />
+                  </IconButton>
+                )}
                 <TimelineConnector />
               </TimelineSeparator>
               <TimelineContent sx={{ py: '12px', px: 2 }}>
                 <Typography variant="h6" component="span">
-                  {`${data.user.firstName} added ${data.book.title} to their wishlist`}
+                  {data.type.toLowerCase() === "wishlist" ? (`${data.user.firstName} added ${data.book.title} to their wishlist`) : (
+                    `${data.user.firstName} added ${data.book.title} to their owned books`
+                  )}
                 </Typography>
               </TimelineContent>
             </TimelineItem>
