@@ -1,5 +1,5 @@
-export { };
-import * as React from "react";
+
+import React from "react";
 import { useState, useEffect, useRef, useContext } from 'react';
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -17,6 +17,8 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import UserContext from '../../hooks/Context'
+import ModeToggle from "../ColorMode/ColorModeToggle";
+
 
 const StyledLink = styled(Link)`
   color: white !important;
@@ -24,8 +26,14 @@ const StyledLink = styled(Link)`
   text-transform: capitalize !important;
   display: block !important;
 `;
+interface ResponsiveAppBarProps {
+  setMode: () => void;
+  setJoyMode: () => void;
+}
 
-function ResponsiveAppBar() {
+
+function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -288,6 +296,7 @@ function ResponsiveAppBar() {
                 </MenuItem>
               )}
             </Menu>
+            <ModeToggle setMode={setMode} setJoyMode={setJoyMode} />
           </Box>
         </Toolbar>
       </Container>
