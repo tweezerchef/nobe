@@ -63,7 +63,7 @@ function ReadingSpotsMap() {
   const handleFormCancel = () => {
     setIsFormOpen(false);
     setIsAddingDescription(false);
-    setShowInfoWindow(true);
+    setShowInfoWindow(false);
   };
 
   const handleCardClick = useCallback((lat: number, lng: number) => {
