@@ -24,6 +24,7 @@ function ReadingSpotsMap() {
   const [selectedPlace, setSelectedPlace] = useState<number | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [description, setDescription] = useState<string>("");
+  const [isAddingDescription, setIsAddingDescription] = useState(false);
 
 
   const mapRef = useRef<GoogleMap>()
@@ -51,10 +52,18 @@ function ReadingSpotsMap() {
   const handlePlaceClick = useCallback((placeId: number) => {
     setSelectedPlace((prev) => (prev === placeId ? null : placeId));
     setIsFormOpen(false);
+    setIsAddingDescription(false);
   }, []);
 
   const handleFormOpen = () => {
     setIsFormOpen(true);
+    setIsAddingDescription(true);
+  };
+
+  const handleFormCancel = () => {
+    setIsFormOpen(false);
+    setIsAddingDescription(false);
+    setShowInfoWindow(true);
   };
 
   const handleCardClick = useCallback((lat: number, lng: number) => {
@@ -66,10 +75,12 @@ function ReadingSpotsMap() {
       await axios.post(`/api/places-to-read/places/${selectedPlace}/description`, { Description: description });
       fetchSavedPlaces();
       setDescription("");
+      setIsAddingDescription(false);
     } catch (error) {
       console.error(error);
     }
   };
+
 
   const fetchSavedPlaces = async () => {
     try {
@@ -131,7 +142,9 @@ function ReadingSpotsMap() {
                   <div>
                     <div>{address}</div>
                     <div>
-                      <Button onClick={handleFormOpen}>Add Description</Button>
+                      {!isAddingDescription && (
+                        <Button onClick={handleFormOpen}>Add Description</Button>
+                      )}
                       {isFormOpen && (
                         <Card>
                           <DialogContent>
@@ -146,7 +159,7 @@ function ReadingSpotsMap() {
                             />
                           </DialogContent>
                           <DialogActions>
-                            <Button onClick={() => setIsFormOpen(false)}>Cancel</Button>
+                            <Button onClick={handleFormCancel}>Cancel</Button>
                             <Button onClick={handleFormSubmit}>Save</Button>
                           </DialogActions>
                         </Card>
@@ -176,7 +189,9 @@ function ReadingSpotsMap() {
                   <div>
                     <div>{place.Location}</div>
                     <div>
-                      <Button onClick={handleFormOpen} size="small">Add Description</Button>
+                      {!isAddingDescription && (
+                        <Button onClick={handleFormOpen}>Add Description</Button>
+                      )}
                       {isFormOpen && (
                         <Card>
                           <DialogContent>
@@ -191,7 +206,7 @@ function ReadingSpotsMap() {
                             />
                           </DialogContent>
                           <DialogActions>
-                            <Button onClick={() => setIsFormOpen(false)}>Cancel</Button>
+                            <Button onClick={handleFormCancel}>Cancel</Button>
                             <Button onClick={handleFormSubmit}>Save</Button>
                           </DialogActions>
                         </Card>
