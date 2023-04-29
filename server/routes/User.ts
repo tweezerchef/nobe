@@ -10,137 +10,138 @@ const User = express.Router();
 const prisma = new PrismaClient();
 
 User.get('/', async (req, res) => {
-    const email = req.query.email;
+  const email = req.query.email;
   try {
-      const user = await prisma.user.findFirst({
-        where: {
-          email: email,
-        },
-        select: {
-          // include all columns from the books table
-          id: true,
-          firstName: true,
-          username: true,
-          email:true,
-          googleId: true,
-          lastName: true,
-          picture: true,
-          token: true,
-          latitude: true,
-          longitude: true,
-          radius: true,
-          NotificationsCount : true,
-          clubMembers: true,
-          Activity: true,
-          receivedMessages: true,
-          sentMessages: true,
-          Discussions: true,
-          DiscussionsUsers: true,
-          Posts:true,
-          PostsUsers:true,
-          UserBooks: {
-            select: {
-              id: true,
-              wishlist: true,
-              owned: true,
-              booksId: true,
-              userId: true,
-              rating: true,
-              review: true,
-              LendingTable: true,
-              Books: {
-                select: {
-                  id: true,
-                  title: true,
-                  author: true,
-                  ISBN10: true,
-                  description: true,
-                  image: true,
-                  UserBooks: true,
-                  Discussions: true,
-                  Activity: true,
-                },
-              },
-            },
-
-        },
-      }});
-      res.send(user);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send("Error retrieving book data");
-    }
-  });
-  User.get('/id', async (req, res) => {
-
-    const id = req.query.id;
-    // console.log('id', id)
-  try {
-      const user = await prisma.user.findFirst({
-        where: {
-          id: id,
-        },
-        select: {
-          // include all columns from the books table
-          id: true,
-          firstName: true,
-          username: true,
-          email:true,
-          googleId: true,
-          lastName: true,
-          picture: true,
-          token: true,
-          latitude: true,
-          longitude: true,
-          radius: true,
-          NotificationsCount : true,
-          clubMembers: true,
-          Activity: true,
-          receivedMessages: true,
-          sentMessages: true,
-          Discussions: true,
-          DiscussionsUsers: true,
-          Posts:true,
-          PostsUsers:true,
-          UserBooks: {
-            select: {
-              id: true,
-              wishlist: true,
-              owned: true,
-              booksId: true,
-              userId: true,
-              rating: true,
-              review: true,
-              LendingTable: true,
-              Books: {
-                select: {
-                  id: true,
-                  title: true,
-                  author: true,
-                  ISBN10: true,
-                  description: true,
-                  image: true,
-                  UserBooks: true,
-                  Discussions: true,
-                  Activity: true,
-                },
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email,
+      },
+      select: {
+        // include all columns from the books table
+        id: true,
+        firstName: true,
+        username: true,
+        email: true,
+        googleId: true,
+        lastName: true,
+        picture: true,
+        token: true,
+        latitude: true,
+        longitude: true,
+        radius: true,
+        NotificationsCount: true,
+        clubMembers: true,
+        Activity: true,
+        Discussions: true,
+        DiscussionsUsers: true,
+        Posts: true,
+        PostsUsers: true,
+        Conversations: true,
+        DirectMessages: true,
+        UserBooks: {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            Books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks: true,
+                Discussions: true,
+                Activity: true,
               },
             },
           },
+
+        },
       }
-      });
-      //console.log(user)
-      res.send(user);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send("Error retrieving book data");
-    }
-  }),
+    });
+    res.send(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error retrieving book data");
+  }
+});
+User.get('/id', async (req, res) => {
+
+  const id = req.query.id;
+  // console.log('id', id)
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        id: id,
+      },
+      select: {
+        // include all columns from the books table
+        id: true,
+        firstName: true,
+        username: true,
+        email: true,
+        googleId: true,
+        lastName: true,
+        picture: true,
+        token: true,
+        latitude: true,
+        longitude: true,
+        radius: true,
+        NotificationsCount: true,
+        clubMembers: true,
+        Activity: true,
+        Discussions: true,
+        DiscussionsUsers: true,
+        Posts: true,
+        PostsUsers: true,
+        Conversations: true,
+        DirectMessages: true,
+        UserBooks: {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            Books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks: true,
+                Discussions: true,
+                Activity: true,
+              },
+            },
+          },
+        },
+      }
+    });
+    //console.log(user)
+    res.send(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error retrieving book data");
+  }
+}),
   User.get('/:id', async (req, res) => {
 
     const id = req.params.id;
     console.log('id', id)
-  try {
+    try {
       const user = await prisma.user.findFirst({
         where: {
           id: id,
@@ -150,7 +151,7 @@ User.get('/', async (req, res) => {
           id: true,
           firstName: true,
           username: true,
-          email:true,
+          email: true,
           googleId: true,
           lastName: true,
           picture: true,
@@ -158,17 +159,17 @@ User.get('/', async (req, res) => {
           latitude: true,
           longitude: true,
           radius: true,
-          NotificationsCount : true,
+          NotificationsCount: true,
           clubMembers: true,
           Activity: true,
-          receivedMessages: true,
-          sentMessages: true,
           Discussions: true,
           DiscussionsUsers: true,
-          Posts:true,
-          PostsUsers:true,
+          Posts: true,
+          PostsUsers: true,
           UserBooks: true,
           User_Places: true,
+          Conversations: true,
+          DirectMessages: true,
         },
       });
       //console.log(user)
