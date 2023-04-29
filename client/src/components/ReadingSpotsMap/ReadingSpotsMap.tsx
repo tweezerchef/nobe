@@ -106,11 +106,11 @@ function ReadingSpotsMap() {
                     <div>{address}</div>
                     <div>
                       <Button onClick={handleFormOpen}>Add Description</Button>
-                      {isFormOpen && (
+                      {/* {isFormOpen && (
                         <Card>
 
                         </Card>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </InfoWindow>
@@ -137,11 +137,11 @@ function ReadingSpotsMap() {
                     <div>{place.Location}</div>
                     <div>
                       <Button onClick={handleFormOpen} size="small">Add Description</Button>
-                      {isFormOpen && (
+                      {/* {isFormOpen && (
                         <Card>
 
                         </Card>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </InfoWindow>
