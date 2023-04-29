@@ -1,28 +1,24 @@
 import React from 'react';
+// import { pink } from '@mui/material/colors';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from "react-router-dom";
-
-import { GlobalStyle } from './reset.css';
+import { BrowserRouter } from "react-router-dom";;
 import AppWrapper from './AppWrapper';
-import {
-  Experimental_CssVarsProvider as MaterialCssVarsProvider,
-  THEME_ID,
-} from '@mui/material/styles';
-import { CssVarsProvider as JoyCssVarsProvider } from '@mui/joy/styles';
-import { experimental_extendTheme as materialExtendTheme } from '@mui/material/styles';
-const materialTheme = materialExtendTheme();
+import { StyledEngineProvider } from '@mui/material/styles';
+
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 root.render(
-  <BrowserRouter>
-    <MaterialCssVarsProvider theme={{ [THEME_ID]: materialTheme }}>
-      <JoyCssVarsProvider>
-        <GlobalStyle />
-        <AppWrapper />
-      </JoyCssVarsProvider>
-    </MaterialCssVarsProvider>
-  </BrowserRouter>
+  // <BrowserRouter>
+  //   <MaterialCssVarsProvider theme={{ [THEME_ID]: materialTheme }}>
+  //     <JoyCssVarsProvider>
+  <StyledEngineProvider injectFirst>
+    <AppWrapper />
+  </StyledEngineProvider>
+  //     </JoyCssVarsProvider>
+  //   </MaterialCssVarsProvider>
+  // </BrowserRouter>
 );
