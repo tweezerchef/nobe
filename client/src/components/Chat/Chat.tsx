@@ -14,13 +14,33 @@ interface ChatProps {
   onSend: (message: string) => void;
 }
 
+interface Conversation {
+  members: {
+    id: string;
+    firstName: string;
+    username: string | null;
+    email: string;
+    googleId: string;
+  }[];
+  messages: {
+    id: string;
+    createdAt: string;
+    text: string;
+    isRead: boolean;
+    senderId: string;
+  }[];
+}
+
 function Chat({ messages, onSend }: ChatProps) {
   const [message, setMessage] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [conversations, setConversations] = useState<[]>([])
+  const [currentConvo, setCurrentConvo] = useState<Conversation | null>(null)
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user.id
+  console.log(user)
 
   const handleSend = (): void => {
     if (message.trim() !== '') {
@@ -29,6 +49,11 @@ function Chat({ messages, onSend }: ChatProps) {
     }
   };
 
+  useEffect(() => {
+    setConversations(user.Conversations)
+  })
+
+  console.log(conversations)
 
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -51,11 +76,11 @@ function Chat({ messages, onSend }: ChatProps) {
     setSearchQuery('')
   };
 
-  const conversations = [
-    { id: 1, name: 'Alice' },
-    { id: 2, name: 'Bob' },
-    { id: 3, name: 'Charlie' },
-  ];
+  // const conversations = [
+  //   { id: 1, name: 'Alice' },
+  //   { id: 2, name: 'Bob' },
+  //   { id: 3, name: 'Charlie' },
+  // ];
 
   return (
     <ChatContainer>
@@ -74,21 +99,30 @@ function Chat({ messages, onSend }: ChatProps) {
                 <button type="submit">Search</button>
               </div>
             </form>
-            {conversations.map((conversation, index) => (
-              <ConversationLink key={index}>{conversation.name}</ConversationLink>
-            ))}
+            {conversations.map((conversation: any, index: number) => {
+              const otherUser = conversation.members.find((member: any) => member.firstName !== user.firstName);
+              const otherUserName = otherUser ? otherUser.firstName : '';
+              return <ConversationLink key={index} onClick={() => setCurrentConvo(conversation)}>{otherUserName}</ConversationLink>;
+            })}
+
           </SidebarBody>
         </ChatSidebar>
         <div>
           <ChatHeader>Direct Messages</ChatHeader>
-          <ChatBody>
-            {messages.map((message: Message, index: number) => (
-              <div>
-                <div key={index}>{message.name} @ time</div>
-                <div>{message.text}</div>
-              </div>
-            ))}
-          </ChatBody>
+          {currentConvo && (
+            <ChatBody>
+              {currentConvo.messages.map((message: any, index: number) => {
+                const sender = currentConvo.members.find((member: any) => member.id === message.senderId);
+                const senderFirstName = sender ? sender.firstName : '';
+                return (
+                  <div key={index}>
+                    <div>{senderFirstName} @ {message.createdAt}</div>
+                    <div>{message.text}</div>
+                  </div>
+                );
+              })}
+            </ChatBody>
+          )}
           <ChatFooter>
             <ChatInput
               type="text"
