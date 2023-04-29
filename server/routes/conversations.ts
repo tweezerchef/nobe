@@ -28,9 +28,14 @@ Conversations.post('/', async (req: AuthenticatedRequest, res: Response) => {
           ],
         },
       },
+      select: {
+        id: true,
+        members: true,
+        messages: true,
+      },
     });
 
-    res.json({ conversation });
+    res.json(conversation);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Could not create conversation' });
