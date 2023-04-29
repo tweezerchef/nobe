@@ -87,12 +87,12 @@ io.on("connection", (socket) => {
 //   addNewUser(user.firstName, socket.id, user.id);
 // })
 
-// socket.on("addFollower", ({senderId, receiverId, type}) =>{
-//   const receiver = getUser(receiverId);
-//   if (receiver) {
-//     io.to(receiver.socketId).emit("getFollower");
-//   }
-// });
+  socket.on('new-message', (data) => {
+    console.log('New message:', data);
+    io.emit('new-message', data);
+  });
+
+
   socket.on('disconnect', () => {
     console.log('someone has disconnected');
     // removeUser(socket.id);

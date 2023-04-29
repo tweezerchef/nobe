@@ -24,9 +24,11 @@ import UserContext from '../hooks/Context';
 
 function Trending() {
 
-  const user = useContext(UserContext);
-
   const [trending, setTrending] = useState<any[]>([]);
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const id = user.id
 
   async function fetchTrending(category: string) {
     const response = await fetch(`/api/trending?category=${category}`);
@@ -38,18 +40,31 @@ function Trending() {
     fetchTrending(event.target.value)
   }
 
-  const addToWishlist = async (isbn: string, title: string, author: string) => {
+  // const addToWishlist = async (isbn: string, title: string, author: string) => {
 
-    const user = localStorage.getItem("user");
+  //   const user = localStorage.getItem("user");
 
-    if (!user) {
-      throw new Error("No user found");
-    }
-    const parsed = JSON.parse(user)
-    const email = parsed.email
+  //   if (!user) {
+  //     throw new Error("No user found");
+  //   }
+  //   const parsed = JSON.parse(user)
+  //   const email = parsed.email
+
+  //   try {
+  //     await axios.post('/api/wishlist', { isbn: isbn, title: title, author: author, email: email });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  const addToWishlist = async (title: string) => {
+
+    const inventory = "Wishlist"
 
     try {
-      await axios.post('/api/wishlist', { isbn: isbn, title: title, author: author, email: email });
+      const response = await axios.post(`/books/${id}`, { title, inventory
+      });
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -111,7 +126,7 @@ function Trending() {
                     bottom: 0,
                     transform: 'translateY(50%)',
                   }}
-                  onClick={() => addToWishlist(book.primary_isbn10, book.title, book.author)}
+                  onClick={() => addToWishlist(book.title)}
                 >
                   <BookmarkAddIcon />
                 </IconButton>

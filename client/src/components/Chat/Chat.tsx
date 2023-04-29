@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { ChatContainer, ChatHeader, ChatBody, ChatFooter, ChatInput, ChatButton, ChatSidebar, SidebarHeader, SidebarBody, ConversationLink, ChatWrapper } from '../../Styled';
 import UserContext from '../../hooks/Context';
 import axios from 'axios';
+import io from 'socket.io-client';
 
 interface Message {
   text: string;
@@ -9,12 +10,8 @@ interface Message {
   sender: string;
 }
 
-interface ChatProps {
-  messages: Message[];
-  onSend: (message: string) => void;
-}
-
 interface Conversation {
+  id: string;
   members: {
     id: string;
     firstName: string;
@@ -31,34 +28,76 @@ interface Conversation {
   }[];
 }
 
-function Chat({ messages, onSend }: ChatProps) {
+function Chat() {
   const [message, setMessage] = useState<string>('');
+  const [chatMessages, setChatMessages] = useState<Message[]>([])
   const [searchQuery, setSearchQuery] = useState('');
-  const [conversations, setConversations] = useState<[]>([])
-  const [currentConvo, setCurrentConvo] = useState<Conversation | null>(null)
+  const [conversations, setConversations] = useState<Conversation[]>([])
+  const [currentConvo, setCurrentConvo] = useState<Conversation | null>(null);
+  const [socket, setSocket] = useState<any>(null);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user.id
-  console.log(user)
 
-  const handleSend = (): void => {
+  const handleSend = (event: React.FormEvent) => {
+    event.preventDefault();
     if (message.trim() !== '') {
-      onSend(message);
+      sendMessage(message);
       setMessage('');
     }
   };
 
-  useEffect(() => {
-    setConversations(user.Conversations)
-  })
+  const sendMessage = async (message: string) => {
+    if (currentConvo && user) {
+      const newMessage = {
+        text: message,
+        senderId: user.id,
+        createdAt: new Date(),
+      };
+      try {
+        const response = await axios.post(`/direct-messages/${currentConvo.id}/messages`, newMessage);
+        setChatMessages([...chatMessages, response.data]);
+        socket.emit('new-message', {
+          conversationId: currentConvo.id,
+          message: response.data,
+        });
+      } catch (error) {
+        console.log('Error sending message:', error);
+      }
+    }
+  };
 
+
+  useEffect(() => {
+    setConversations(user.Conversations);
+
+    const newSocket = io('http://localhost:3000');
+    setSocket(newSocket);
+
+    newSocket.on('new-message', (data: any) => {
+      const { conversationId, message } = data;
+      // if (conversationId === currentConvo?.id) {
+      setChatMessages((prevMessages) => [...prevMessages, message]);
+      // }
+    });
+
+    newSocket.on('connect_error', (error: any) => {
+      console.log('Socket connection error:', error);
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+  console.log(user)
   console.log(conversations)
 
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
-      handleSend();
+      sendMessage(message);
+      setMessage('');
     }
   };
 
@@ -69,18 +108,16 @@ function Chat({ messages, onSend }: ChatProps) {
         currentUser: id,
         otherUser: searchQuery
       });
-      const newConversation = response.data;
+      const newConversation: any = response.data;
+      console.log(newConversation)
+      setConversations(prevConversations => [...prevConversations, newConversation]);
+      setCurrentConvo(newConversation);
+
     } catch (error) {
       console.error(error);
     }
     setSearchQuery('')
   };
-
-  // const conversations = [
-  //   { id: 1, name: 'Alice' },
-  //   { id: 2, name: 'Bob' },
-  //   { id: 3, name: 'Charlie' },
-  // ];
 
   return (
     <ChatContainer>
@@ -102,7 +139,14 @@ function Chat({ messages, onSend }: ChatProps) {
             {conversations.map((conversation: any, index: number) => {
               const otherUser = conversation.members.find((member: any) => member.firstName !== user.firstName);
               const otherUserName = otherUser ? otherUser.firstName : '';
-              return <ConversationLink key={index} onClick={() => setCurrentConvo(conversation)}>{otherUserName}</ConversationLink>;
+              return <ConversationLink
+                key={index}
+                onClick={() => {
+                  setCurrentConvo(conversation)
+                  setChatMessages(conversation.messages)
+                }
+                }>
+                {otherUserName}</ConversationLink>;
             })}
 
           </SidebarBody>
@@ -111,7 +155,7 @@ function Chat({ messages, onSend }: ChatProps) {
           <ChatHeader>Direct Messages</ChatHeader>
           {currentConvo && (
             <ChatBody>
-              {currentConvo.messages.map((message: any, index: number) => {
+              {chatMessages.map((message: any, index: number) => {
                 const sender = currentConvo.members.find((member: any) => member.id === message.senderId);
                 const senderFirstName = sender ? sender.firstName : '';
                 return (

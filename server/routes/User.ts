@@ -38,6 +38,7 @@ User.get('/', async (req, res) => {
         PostsUsers: true,
         Conversations: {
           select: {
+            id: true,
             members: true,
             messages: true,
           }
@@ -60,7 +61,19 @@ User.get('/', async (req, res) => {
                 ISBN10: true,
                 description: true,
                 image: true,
-                UserBooks: true,
+                UserBooks:{
+                  select: {
+                  id: true,
+                  wishlist: true,
+                  owned: true,
+                  booksId: true,
+                  userId: true,
+                  rating: true,
+                  review: true,
+                  LendingTable: true,
+                  User: true
+                  }
+                },
                 Discussions: true,
                 Activity: true,
               },
@@ -107,6 +120,7 @@ User.get('/id', async (req, res) => {
         PostsUsers: true,
         Conversations: {
           select: {
+            id: true,
             members: true,
             messages: true,
           }
@@ -129,12 +143,25 @@ User.get('/id', async (req, res) => {
                 ISBN10: true,
                 description: true,
                 image: true,
-                UserBooks: true,
+                UserBooks:{
+                  select: {
+                  id: true,
+                  wishlist: true,
+                  owned: true,
+                  booksId: true,
+                  userId: true,
+                  rating: true,
+                  review: true,
+                  LendingTable: true,
+                  User: true
+                  }
+                },
                 Discussions: true,
                 Activity: true,
               },
             },
           },
+
         },
       }
     });
@@ -178,6 +205,7 @@ User.get('/id', async (req, res) => {
           User_Places: true,
           Conversations: {
             select: {
+              id: true,
               members: true,
               messages: true,
             }

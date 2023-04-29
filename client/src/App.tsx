@@ -11,7 +11,7 @@ import {
     Experimental_CssVarsProvider as MaterialCssVarsProvider, useTheme as useMaterialTheme,
     THEME_ID
 } from '@mui/material/styles';
-import { CssVarsProvider as JoyCssVarsProvider } from '@mui/joy/styles';
+
 interface AppProps {
     setMaterialMode: () => void;
     setJoyMode: () => void;
@@ -67,8 +67,7 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
     };
 
     return (
-        // <MaterialCssVarsProvider theme={{ [THEME_ID]: materialTheme }}>
-        //     <JoyCssVarsProvider>
+
         <div className="App">
             <UserContext.Provider value={userContextValue}>
                 <ChatContext.Provider value={chatContextValue}>
@@ -78,8 +77,7 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
                 </ChatContext.Provider>
             </UserContext.Provider>
         </div>
-        //     </JoyCssVarsProvider>
-        // </MaterialCssVarsProvider>
+
     );
 }
 
