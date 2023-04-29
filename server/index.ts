@@ -13,10 +13,10 @@ import { Server } from "socket.io";
 
 
 const io = new Server({
-  cors:{
-    origin:"http://localhost:8080"
+  cors: {
+    origin: "http://localhost:8080"
   }
- });
+});
 
 io.on("connection", (socket) => {
   console.log('someone has connected!')
@@ -33,7 +33,7 @@ import UserBooks from './routes/userbooks';
 import LocationRoute from './routes/booksnearuser';
 import Clubs from './routes/clubs';
 import CreateClub from './routes/createClub';
-import Trending from './routes/Trending';
+import Trending from './routes/trending';
 import Recommendations from './routes/recommendations';
 import Review from './routes/review';
 import Wishlist from './routes/wishlist';
@@ -45,6 +45,7 @@ import SpotsMapRoute from './routes/spotsmap';
 
 import Friendship from './routes/friendship';
 import Activity from './routes/activity';
+import DirectMessages from './routes/directMessages';
 
 
 
@@ -86,6 +87,7 @@ app.use("/google-books", GoogleBooks);
 app.use("/api/places-to-read", SpotsMapRoute);
 app.use("/api/friendship", Friendship);
 app.use("/api/activity", Activity);
+app.use("/direct-messages", DirectMessages);
 
 
 
