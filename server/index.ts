@@ -89,6 +89,7 @@ import SpotsMapRoute from './routes/spotsmap';
 import Friendship from './routes/friendship';
 import Activity from './routes/activity';
 import DirectMessages from './routes/directMessages';
+import Conversations from './routes/conversations';
 
 
 
@@ -131,6 +132,7 @@ app.use("/api/places-to-read", SpotsMapRoute);
 app.use("/api/friendship", Friendship);
 app.use("/api/activity", Activity);
 app.use("/direct-messages", DirectMessages);
+app.use("/conversations", Conversations);
 
 
 
