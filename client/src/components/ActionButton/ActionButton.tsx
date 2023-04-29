@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import Box from '@mui/material/Box';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
@@ -10,13 +10,14 @@ import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
 import BookIcon from '../NotificationBook/Notificationbook';
 import CloseBy from '../CloseBy/CloseBy';
- import { io } from "socket.io-client";
+ import { io, Socket } from "socket.io-client";
 import MessageIcon from '../MessagesIcon/messagesicon';
 import FriendIcon from '../NewFriendIcon/Newfriendicon';
 import NotificationIcon from '../NotificationMessages/Notificationmessages';
 import Draggable from "react-draggable";
 import ForumIcon from '../DiscussionForum/Discussionforum';
-
+import  React, { useState, useContext } from 'react';
+import UserContext from '../../hooks/Context'
 
 const actions = [
   { icon: <NotificationIcon />, name: 'Notifications Feed' },
@@ -28,19 +29,34 @@ const actions = [
 
 
 
-
-
 const OpenIconSpeedDial: React.FC = () => {
 
-  React.useEffect(() => {
-    const socket = io("http://localhost:3000");
-    console.log(socket.on('test', (msg)=> {
-      console.log(msg);
-    }));
-  }, []);
+  const [userFirstName, setUserFistName] = useState("");
+  const [onlineUser, setOnlineUser] = useState("");
+  const [socket, setSocket] = useState(null);
 
 
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const id = user.id;
 
+
+  // React.useEffect(() => {
+  //   const socket = io("http://localhost:3000");
+  //   console.log(socket.on('test', (msg)=> {
+  //     console.log(msg);
+  //   }));
+  // }, []);
+
+//   React.useEffect(() => {
+//     setSocket(io("http://localhost:3000"));
+//  }, []);
+
+//  React.useEffect(() => {
+//    if (socket) {
+//      socket.emit("newUser", user);
+//    }
+//  }, [socket, user]);
 
   return (
     <Draggable>

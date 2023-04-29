@@ -11,22 +11,61 @@ import axios from 'axios';
 import { Server } from "socket.io";
 //Socket.Io
 
-
 const io = new Server({
   cors: {
     origin: "http://localhost:8080"
   }
 });
 
+interface User {
+  firstName: string;
+  socketId: string;
+  id: string
+}
+
+let onlineUsers: User[] = [];
+
+const addNewUser = (firstName: string, socketId: string, id:string) => {
+  !onlineUsers.some((user) => user.id === id) &&
+  onlineUsers.push({firstName, socketId, id})
+}
+
+const removeUser = (socketId) =>{
+  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId)
+}
+
+const getUser = (id) => {
+  return onlineUsers.find((user) => user.id === id)
+}
+
+// [
+//   {
+//     firstName:'tom',
+//     socketId: "gplplh",
+//     id:'honon'
+//   },
+//   {
+//     firstName:'neil',
+//     socketId: "ghghhffdh",
+//     id:'oinion'
+//   },{
+//     firstName:'matt',
+//     socketId: "hfaoh",
+//     id: 'ahfono'
+//   },
+// ]
+
+
 io.on("connection", (socket) => {
-  console.log('someone has connected!')
-  io.emit("test", 'this is test')
-
-
+  // console.log('someone has connected!')
+  // io.emit("test", 'this is test')
+socket.on("newUser", (user)=> {
+  addNewUser(user.firstName, socket.id, user.id);
+})
 
 
   socket.on('disconnect', () => {
-    console.log('someone has left');
+    removeUser(socket.id);
   });
 });
 

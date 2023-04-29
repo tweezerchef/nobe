@@ -110,7 +110,7 @@ const saveRadius = async () => {
     try {
       const res = await axios.get('/location/locations', { params: { lon: longitude, lat: latitude, radius: radius } });
       //console.log(res.data, 99);
-      setBooksNearBy(res.data);
+      //setBooksNearBy(res.data);
       setTimeout(() => {
         setButtonState('success');
       }, 2000);
@@ -136,7 +136,7 @@ const saveRadius = async () => {
 //   }, [booksNearBy]);
 
 
-  console.log(displayBooks, 131)
+  //console.log(displayBooks, 131)
 
 
 
