@@ -94,8 +94,9 @@ function ReadingSpotsMap() {
   };
 
   useEffect(() => {
+    setDescription("");
     fetchSavedPlaces();
-  }, []);
+  }, [selectedPlace]);
 
   return (
     <div className="spots-container">
