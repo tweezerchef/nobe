@@ -1,13 +1,10 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField, Checkbox, FormControlLabel, Button } from '@material-ui/core';
-//import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
+import { Typography, Grid, TextField, Button } from '@material-ui/core';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context'
 import ChatContext from '../hooks/ChatContext';
-import UserBooks from '../../../server/routes/userbooks';
 import Chat from '../components/Chat/Chat'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Avatar from "@mui/material/Avatar";
@@ -39,7 +36,6 @@ const Profile = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
-  const [isUserLoaded, setIsUserLoaded] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
 
@@ -59,23 +55,7 @@ const Profile = () => {
     }
   }
 
-  //let id: string = useParams().id || user?.id;
 
-  // const user = JSON.parse(localStorage.getItem("user") || '{}');
-  // const id = user.id;
-
-  // const getUserBooks = async (type?: string) => {
-  //   try {
-  //     let url = `/books/${id}`;
-  //     if (type) {
-  //       url += `/${type}`;
-  //     }
-  //     const res = await axios.get(url);
-  //     setUserBooks(res.data);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
   const getUserBooks = () => {
     const booksArray: Book[] = [];
     user?.UserBooks?.forEach((book: UserBook) => {
@@ -152,12 +132,7 @@ const Profile = () => {
       });
   };
 
-  // useEffect(() => {
-  //   if (user && !isUserLoaded) {
-  //     setIsUserLoaded(true);
-  //     getUserBooks();
-  //   }
-  // }, [user, isUserLoaded]);
+
   useEffect(() => {
     if (user && user.UserBooks) {
       getUserBooks();
@@ -166,6 +141,7 @@ const Profile = () => {
   }, []);
 
   return (
+
     <div >
       {/* {friendId === "" ? null : (
       <Avatar style={{display: 'flex', alignItems: 'center'}} src={profile?.picture}/>

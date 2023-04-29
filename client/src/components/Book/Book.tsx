@@ -43,7 +43,7 @@ const Book = React.memo((props: any) => {
 
     return (
 
-        <Card key={book.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px', borderRadius: 4 }}>
+        <Card key={book.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px' }}>
             <CardOverflow onClick={handleOnClick}>
                 <AspectRatio ratio="2">
                     <img src={book.image} loading="lazy" alt="" />
