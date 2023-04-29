@@ -10,7 +10,7 @@ import {
 } from '@mui/material/styles';
 import { useColorScheme as useJoyColorScheme } from '@mui/joy/styles';
 import { experimental_extendTheme as materialExtendTheme } from '@mui/material/styles';
-import { pink } from '@mui/material/colors';
+import { blue } from '@mui/material/colors';
 import CssBaseline from '@mui/material/CssBaseline';
 
 const materialTheme = materialExtendTheme({
@@ -18,17 +18,17 @@ const materialTheme = materialExtendTheme({
         light: {
             palette: {
                 primary: {
-                    main: pink[600],
+                    main: blue[400],
                 },
                 background: {
-                    default: '#f5f5f5', // The background color for light mode
+                    default: '#c9c0c0', // The background color for light mode
                 },
             },
         },
         dark: {
             palette: {
                 primary: {
-                    main: pink[400],
+                    main: blue[800],
                 },
                 background: {
                     default: '#303030', // The background color for dark mode

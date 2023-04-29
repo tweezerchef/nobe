@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserReview from '../UserStarRating/UserReview'
+import Reviews from './Reviews'
 
 
 
@@ -20,7 +21,8 @@ import UserReview from '../UserStarRating/UserReview'
 
 const BigBook = (props: any) => {
     const [reviewOpen, setReviewOpen] = useState(false);
-    const { book, id, onClose } = props;
+    const { book, id, onClose, userRating } = props;
+    const { UserBooks } = book
     const handleOnClick = () => {
         onClose();
     };
@@ -72,7 +74,7 @@ const BigBook = (props: any) => {
                 </IconButton>
 
             </CardOverflow>
-            <UserStarRating book={book} id={id} />
+            <UserStarRating book={book} id={id} value={userRating} />
             <Button variant="outlined" onClick={handleClickOpen}>
                 Add Written Review
             </Button>
@@ -86,7 +88,7 @@ const BigBook = (props: any) => {
                 <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
                     <Link href="#multiple-actions">{book.author}</Link>
                 </Typography>
-                <Typography level="body1">
+                {/* <Typography level="body1">
                     {book.description}
                 </Typography>
                 <Typography level="body2">
@@ -94,7 +96,7 @@ const BigBook = (props: any) => {
                 </Typography>
                 <Typography level="body2">
                     Placeholder Data 3: {book.placeholderData3}
-                </Typography>
+                </Typography> */}
                 <Divider inset="context" />
                 <Box
                     sx={{
@@ -106,7 +108,7 @@ const BigBook = (props: any) => {
                     }}
                 >
                     <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
-                        {book.rating}
+                        <Reviews UserBooks={UserBooks} />
                     </Typography>
                     <Divider orientation="vertical" />
                     <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
