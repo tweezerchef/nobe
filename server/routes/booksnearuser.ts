@@ -69,8 +69,13 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         DiscussionsUsers: true,
         Posts: true,
         PostsUsers: true,
-        Conversations: true,
-        DirectMessages: true,
+        Conversations: {
+          select: {
+            id: true,
+            members: true,
+            messages: true,
+          }
+        },
         UserBooks: {
           select: {
             id: true,
@@ -81,7 +86,6 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
             rating: true,
             review: true,
             LendingTable: true,
-            User: true,
             Books: {
               select: {
                 id: true,
@@ -90,9 +94,21 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
                 ISBN10: true,
                 description: true,
                 image: true,
+                UserBooks:{
+                  select: {
+                  id: true,
+                  wishlist: true,
+                  owned: true,
+                  booksId: true,
+                  userId: true,
+                  rating: true,
+                  review: true,
+                  LendingTable: true,
+                  User: true
+                  }
+                },
                 Discussions: true,
                 Activity: true,
-                Clubs_Books: true,
               },
             },
           },
@@ -102,22 +118,6 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         },
       },
     })
-    // console.log(users, 51)
-    //    const ids = users.reduce<string[]>((acc, user) => {
-    //   acc.push(user.id);
-    //   return acc;
-    // }, []);
-
-    // const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
-    //   where: {
-    //     userId: id
-    //   },
-    //   include: {
-    //     books: true
-    //   }
-    // }))
-    //const userBooks = await Promise.all(userBooksPromises);
-    //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
     console.log(users, 67);
     res.status(200).send(users);
   } catch (error) {

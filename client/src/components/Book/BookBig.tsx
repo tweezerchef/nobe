@@ -21,7 +21,7 @@ import Reviews from './Reviews'
 
 const BigBook = (props: any) => {
     const [reviewOpen, setReviewOpen] = useState(false);
-    const { book, id, onClose } = props;
+    const { book, id, onClose, userRating } = props;
     const { UserBooks } = book
     const handleOnClick = () => {
         onClose();
@@ -74,7 +74,7 @@ const BigBook = (props: any) => {
                 </IconButton>
 
             </CardOverflow>
-            <UserStarRating book={book} id={id} />
+            <UserStarRating book={book} id={id} value={userRating} />
             <Button variant="outlined" onClick={handleClickOpen}>
                 Add Written Review
             </Button>

@@ -11,6 +11,7 @@ import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
 import BigBook from './BookBig';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import UserBooks from '../../../../server/routes/userbooks';
 
 
 // const customTheme = createTheme({
@@ -35,9 +36,17 @@ const Book = React.memo((props: any) => {
     const handleOnClick = () => {
         setShowBigBook(true);
     };
+    let value = 0
+
+    book.UserBooks.every((entry: any) => {
+        if (entry.userId === id && entry.rating !== 0) {
+            value = entry.rating;
+            return false
+        }
+    })
 
     if (showBigBook) {
-        return <BigBook book={book} id={id} onClose={() => setShowBigBook(false)} />;
+        return <BigBook book={book} id={id} userRating={value} onClose={() => setShowBigBook(false)} />;
     }
 
 
@@ -67,11 +76,11 @@ const Book = React.memo((props: any) => {
             </CardOverflow>
             <Typography level="body1" sx={{ fontSize: "1.5rem !important", mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical' }} >
                 <Link onClick={handleOnClick}>
-                {book.title}
+                    {book.title}
                 </Link>
-                
+
                 {/* <Link href="#multiple-actions" overlay underline="none"> */}
-                
+
                 {/* </Link> */}
             </Typography>
             <Typography level="body2" sx={{ mt: 0.5, mb: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -92,7 +101,7 @@ const Book = React.memo((props: any) => {
                     {book.rating}
                 </Typography>
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}></Typography>
-                <UserStarRating book={book} id={id} />
+                <UserStarRating book={book} id={id} value={value} />
             </CardOverflow>
         </Card>
 

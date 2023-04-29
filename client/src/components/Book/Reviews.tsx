@@ -8,8 +8,6 @@ import ListItemContent from '@mui/joy/ListItemContent';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Typography from '@mui/joy/Typography';
 import MiniStar from './MiniStar';
-import { url } from 'inspector';
-
 
 interface UserBook {
     title: string;
@@ -21,8 +19,6 @@ interface UserBook {
         rating: number
         firstName: string;
     };
-
-    // Add more properties as needed
 }
 interface ReviewsProps {
     UserBooks: UserBook[]
@@ -30,7 +26,9 @@ interface ReviewsProps {
 
 
 const Reviews = ({ UserBooks }: ReviewsProps) => {
-    const UserBook = UserBooks?.length >= 2 ? UserBooks[1] : null;
+    const filteredUserBooks = UserBooks.filter(
+        (userBook) => userBook.review || userBook.User.rating
+    );
 
     return (
         <Box sx={{ width: 320 }}>
@@ -48,20 +46,22 @@ const Reviews = ({ UserBooks }: ReviewsProps) => {
                 aria-labelledby="ellipsis-list-demo"
                 sx={{ '--ListItemDecorator-size': '56px' }}
             >
-                <ListItem>
-                    <ListItemDecorator sx={{ alignSelf: 'flex-start' }}>
-                        <Avatar src={UserBook?.User.picture} />
-                    </ListItemDecorator>
-                    <ListItemContent>
-                        <MiniStar value={UserBook?.rating ?? 0} />
-                        <Typography level="body1" noWrap>
-                            {UserBook?.User.firstName}'s Review: {UserBook?.review}
-                        </Typography>
-                    </ListItemContent>
-                </ListItem>
+                {filteredUserBooks.map((userBook, index) => (
+                    <ListItem key={index}>
+                        <ListItemDecorator sx={{ alignSelf: 'flex-start' }}>
+                            <Avatar src={userBook.User.picture} />
+                        </ListItemDecorator>
+                        <ListItemContent>
+                            <MiniStar value={userBook.rating} />
+                            <Typography level="body1" noWrap>
+                                {userBook.User.firstName}'s Review: {userBook.review}
+                            </Typography>
+                        </ListItemContent>
+                    </ListItem>
+                ))}
             </List>
         </Box>
     );
-}
+};
 
 export default Reviews

@@ -6,18 +6,11 @@ import axios from 'axios';
 
 
 const UserStarRating = (props: any) => {
-    const { book, id } = props;
-    let rating = 0;
-    // if (book.UserBooks.includes(id)) {
-    //     console.log(book.UserBooks)
-    // }
-    const { title, author, ISBN10, description, image } = book
-    if (book.rating && book.rating.length === 1) {
-        rating = book.rating
-    }
-    //console.log(book.rating)
-    const [value, setValue] = React.useState<number | null>(rating);
+    const { book, id, } = props;
 
+    const rating = props.value;
+
+    const [value, setValue] = React.useState<number | null>(rating);
 
     const handleRatingChange = (event: React.ChangeEvent<{}>, newValue: number | null) => {
 
@@ -38,7 +31,7 @@ const UserStarRating = (props: any) => {
                 '& > legend': { mt: 2 },
             }}
         >
-            <Typography sx={{ fontSize: 'md' }} component="legend"></Typography>
+            <Typography sx={{ fontSize: 'md' }} component="legend">Your Rating</Typography>
             <Rating
                 name="simple-controlled"
                 value={value}
