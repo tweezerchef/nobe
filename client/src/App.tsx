@@ -1,16 +1,31 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+// export { }
+import react, { useState, useEffect } from 'react';
 import Router from './Router';
 import ResponsiveAppBar from './components/Navbar/ResponsiveAppBar';
 import OpenIconSpeedDial from './components/ActionButton/ActionButton';
 import UserContext, { UserContextType } from './hooks/Context';
 import ChatContext, { ChatContextType } from './hooks/ChatContext';
 import axios from 'axios';
-import { CssVarsProvider } from '@mui/joy/styles';
-function App() {
+import {
+    experimental_extendTheme as materialExtendTheme,
+    Experimental_CssVarsProvider as MaterialCssVarsProvider, useTheme as useMaterialTheme,
+    THEME_ID
+} from '@mui/material/styles';
+import { CssVarsProvider as JoyCssVarsProvider } from '@mui/joy/styles';
+interface AppProps {
+    setMaterialMode: () => void;
+    setJoyMode: () => void;
+}
+
+const materialTheme = materialExtendTheme();
+function App({ setMaterialMode, setJoyMode }: AppProps) {
     const [user, setUser] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isLoaded, setIsLoaded] = useState(false);
     const [messages, setMessages] = useState<any[]>([]);
+
+    //const { setMode: setJoyMode } = useJoyColorScheme();
+    // const [mounted, setMounted] = React.useState(false);
 
 
 
@@ -52,20 +67,19 @@ function App() {
     };
 
     return (
-        // <CssVarsProvider
-        //     modeStorageKey="your-app-dark-mode"
-        // >
+        // <MaterialCssVarsProvider theme={{ [THEME_ID]: materialTheme }}>
+        //     <JoyCssVarsProvider>
         <div className="App">
             <UserContext.Provider value={userContextValue}>
                 <ChatContext.Provider value={chatContextValue}>
-                    <ResponsiveAppBar />
+                    <ResponsiveAppBar setMode={setMaterialMode} setJoyMode={setJoyMode} />
                     {isLoading ? <div>Loading...</div> : <Router />}
                     <OpenIconSpeedDial />
                 </ChatContext.Provider>
             </UserContext.Provider>
-            {/* <OpenIconSpeedDial /> */}
         </div>
-        // </CssVarsProvider>
+        //     </JoyCssVarsProvider>
+        // </MaterialCssVarsProvider>
     );
 }
 

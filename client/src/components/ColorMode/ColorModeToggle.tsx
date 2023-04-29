@@ -1,30 +1,50 @@
-import react, { useEffect, useLayoutEffect } from 'react';
-import { useColorScheme } from '@mui/joy/styles';
-import Button from '@mui/joy/Button';
+import * as React from "react";
+import type { } from "@mui/material/themeCssVarsAugmentation";
+import {
+    useColorScheme as useMaterialColorScheme,
+    Experimental_CssVarsProvider as MaterialCssVarsProvider,
+    experimental_extendTheme as extendMaterialTheme,
+    useTheme as useMaterialTheme,
+    THEME_ID
+} from "@mui/material/styles";
+
+import IconButton from "@mui/material/IconButton";
+
+// Icons
+import DarkMode from "@mui/icons-material/DarkMode";
+import LightMode from "@mui/icons-material/LightMode";
 
 
-const useEnhancedEffect =
-    typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
-export function ColorModeToggle() {
-    const { mode, setMode } = useColorScheme();
+import type { } from "@mui/material/themeCssVarsAugmentation";
+
+interface ModeToggleProps {
+    setMode: (mode: 'dark' | 'light') => void;
+    setJoyMode: (mode: 'dark' | 'light') => void;
+}
+
+const ModeToggle = ({ setMode, setJoyMode }: ModeToggleProps) => {
+    const { mode } = useMaterialColorScheme();
     const [mounted, setMounted] = React.useState(false);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setMounted(true);
     }, []);
 
     if (!mounted) {
         return null;
     }
-    return (
-        <Button
-            variant="outlined"
-            color="neutral"
-            onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
-        >
-            {mode === 'dark' ? 'Turn light' : 'Turn dark'}
-        </Button>
-    );
-}
 
+    return (
+        <IconButton
+            onClick={() => {
+                setMode(mode === 'dark' ? 'light' : 'dark');
+                setJoyMode(mode === 'dark' ? 'light' : 'dark');
+            }}
+        >
+            {mode === 'dark' ? <DarkMode /> : <LightMode />}
+        </IconButton>
+    );
+};
+
+export default ModeToggle;
