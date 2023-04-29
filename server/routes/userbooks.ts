@@ -24,32 +24,43 @@ UserBooks.post('/:id', async (req: AuthenticatedRequest, res: Response) => {
     } else {
       owned = true;
     }
+
+    console.log('inventory', inventory)
+
     //console.log()
     const response = await axios.get(`http://localhost:8080/google-books?title=${googleTitle}`);
-    const {title, ISBN10, author, image, description} = response.data
-   //console.log(title, ISBN10, author, image, description )
+    const { title, ISBN10, author, image, description } = response.data
+    //console.log(title, ISBN10, author, image, description )
 
 
 
 
-   const newBook= await axios.post(`http://localhost:8080/bookdata/title/wishlist`,{
-    title: title,
-    ISBN10: ISBN10,
-    author: author,
-    image: image,
-    description: description,
+    const newBook = await axios.post(`http://localhost:8080/bookdata/title/wishlist`, {
+      title: title,
+      ISBN10: ISBN10,
+      author: author,
+      image: image,
+      description: description,
 
-   })
-const bookID =  newBook.data.id
-const userBook = await prisma.userBooks.create({
-        data: {
-          wishlist,
-          owned,
-          User: { connect: { id: id } },
-          Books: { connect: { id: bookID } },
-        },
-        include: { Books: true },
-      })
+    })
+    const bookID = newBook.data.id
+    const userBook = await prisma.userBooks.create({
+      data: {
+        wishlist,
+        owned,
+        User: { connect: { id: id } },
+        Books: { connect: { id: bookID } },
+      },
+      include: { Books: true },
+    })
+
+    const activity = await prisma.activity.create({
+      data: {
+        userId: id,
+        type: (wishlist ? "Wishlist" : "Owned"),
+        bookId: bookID,
+      },
+    })
 
     // const bookData = response.data.items[0].volumeInfo;
     // const isbn10 = bookData.industryIdentifiers[1].identifier;
@@ -133,7 +144,7 @@ const userBook = await prisma.userBooks.create({
   }
   //);
 
-   // }
+  // }
   //}
   catch (error) {
     console.error(error);
