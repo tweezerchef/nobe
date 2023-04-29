@@ -24,8 +24,6 @@ model User {
   NotificationsCount Int                @default(0)
   Activity           Activity[]
   clubMembers        ClubMembers[]
-  receivedMessages   DirectMessages[]   @relation("receivedMessages")
-  sentMessages       DirectMessages[]   @relation("sentMessages")
   Discussions        Discussions[]
   DiscussionsUsers   DiscussionsUsers[]
   friends            Friendship[]       @relation("friend")
@@ -36,6 +34,8 @@ model User {
   PostsUsers         PostsUsers[]
   UserBooks          UserBooks[]
   User_Places        User_Places[]
+  Conversations      Conversations[]    @relation("conversationMembers")
+  DirectMessages     DirectMessages[]
 }
 
 model PlacesToRead {
@@ -74,14 +74,21 @@ model Notifications {
   User       User     @relation(fields: [userId], references: [id])
 }
 
+model Conversations {
+  id       String           @id @default(uuid())
+  members  User[]           @relation("conversationMembers")
+  messages DirectMessages[] @relation("conversation")
+}
+
 model DirectMessages {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  text        String
-  senderId    String
-  recipientId String
-  recipient   User     @relation("receivedMessages", fields: [recipientId], references: [id])
-  sender      User     @relation("sentMessages", fields: [senderId], references: [id])
+  id             String        @id @default(uuid())
+  createdAt      DateTime      @default(now())
+  text           String
+  isRead         Boolean       @default(false)
+  sender         User          @relation(fields: [senderId], references: [id])
+  senderId       String
+  conversation   Conversations @relation("conversation", fields: [conversationId], references: [id])
+  conversationId String
 }
 
 model Books {

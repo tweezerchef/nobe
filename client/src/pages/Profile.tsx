@@ -13,7 +13,6 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 interface UserBook {
   Books: Book;
-  // Add any other properties if necessary
 }
 interface Book {
   books: {
@@ -30,7 +29,6 @@ interface Book {
 interface UserProfile {
   id: string;
   firstName: string;
-  // Add any other properties if necessary
 }
 
 
