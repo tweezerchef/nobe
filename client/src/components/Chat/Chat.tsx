@@ -15,6 +15,7 @@ interface ChatProps {
 }
 
 interface Conversation {
+  id: string;
   members: {
     id: string;
     firstName: string;
@@ -31,34 +32,56 @@ interface Conversation {
   }[];
 }
 
-function Chat({ messages, onSend }: ChatProps) {
+function Chat() {
   const [message, setMessage] = useState<string>('');
+  const [chatMessages, setChatMessages] = useState<Message[]>([])
   const [searchQuery, setSearchQuery] = useState('');
-  const [conversations, setConversations] = useState<[]>([])
+  const [conversations, setConversations] = useState<Conversation[]>([])
   const [currentConvo, setCurrentConvo] = useState<Conversation | null>(null)
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user.id
-  console.log(user)
 
-  const handleSend = (): void => {
+  const handleSend = (event: React.FormEvent) => {
+    event.preventDefault();
     if (message.trim() !== '') {
-      onSend(message);
+      sendMessage(message);
       setMessage('');
+    }
+  };
+
+  const sendMessage = async (message: string) => {
+    if (currentConvo && user) {
+      const newMessage = {
+        text: message,
+        senderId: user.id,
+        createdAt: new Date(),
+      };
+      try {
+        const response = await axios.post(`/direct-messages/${currentConvo.id}/messages`, newMessage);
+        setChatMessages([...chatMessages, response.data]);
+        setCurrentConvo({
+          ...currentConvo,
+          messages: [...currentConvo.messages, response.data],
+        });
+      } catch (error) {
+        console.log('Error sending message:', error);
+      }
     }
   };
 
   useEffect(() => {
     setConversations(user.Conversations)
-  })
-
+  }, [])
+  console.log(user)
   console.log(conversations)
 
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
-      handleSend();
+      sendMessage(message);
+      setMessage('');
     }
   };
 
@@ -69,7 +92,9 @@ function Chat({ messages, onSend }: ChatProps) {
         currentUser: id,
         otherUser: searchQuery
       });
-      const newConversation = response.data;
+      const newConversation: any = response.data;
+      setConversations(prevConversations => [...prevConversations, newConversation])
+
     } catch (error) {
       console.error(error);
     }
