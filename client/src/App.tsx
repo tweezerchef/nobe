@@ -3,13 +3,16 @@ import Router from './Router';
 import ResponsiveAppBar from './components/Navbar/ResponsiveAppBar';
 import OpenIconSpeedDial from './components/ActionButton/ActionButton';
 import UserContext, { UserContextType } from './hooks/Context';
+import ChatContext, { ChatContextType } from './hooks/ChatContext';
 import Navbar from './components/Navbar/Navbar';
 import axios from 'axios';
+
 
 function App() {
     const [user, setUser] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [messages, setMessages] = useState<any[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,11 +46,19 @@ function App() {
         setUser: setUserAndSave,
     };
 
+    const chatContextValue: ChatContextType = {
+        messages,
+        setMessages,
+    };
+
     return (
         <div className="App">
             <UserContext.Provider value={userContextValue}>
-                <ResponsiveAppBar />
-                {isLoading ? <div>Loading...</div> : <Router />}
+                <ChatContext.Provider value={chatContextValue}>
+                    <ResponsiveAppBar />
+                    {isLoading ? <div>Loading...</div> : <Router />}
+                    <OpenIconSpeedDial />
+                </ChatContext.Provider>
             </UserContext.Provider>
             {/* <OpenIconSpeedDial /> */}
         </div>

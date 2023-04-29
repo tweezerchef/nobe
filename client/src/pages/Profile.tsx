@@ -6,7 +6,9 @@ import { Typography, Grid, Card, CardMedia, CardContent, FormControl, TextField,
 //import BookDisplay from '../components/MattsBookDisplay/BookDisplay';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context'
+import ChatContext from '../hooks/ChatContext';
 import UserBooks from '../../../server/routes/userbooks';
+import Chat from '../components/Chat/Chat'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Avatar from "@mui/material/Avatar";
 
@@ -39,8 +41,10 @@ const Profile = () => {
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
   const [isUserLoaded, setIsUserLoaded] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
 
+  const chatContext = useContext(ChatContext);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -83,8 +87,35 @@ const Profile = () => {
       booksArray.push(book.Books);
     });
     setBooks(booksArray);
-
   }
+
+  const sendMessage = async (message: string) => {
+    if (chatContext && user) {
+      const newMessage = {
+        text: message,
+        senderId: id,
+        name: user.firstName,
+        recipientId: friendId,
+        createdAt: new Date(),
+      };
+      try {
+        const response = await axios.post('/direct-messages', newMessage);
+        chatContext.setMessages([...chatContext.messages, response.data]);
+      } catch (error) {
+        console.log('Error sending message:', error);
+      }
+    }
+  };
+
+  if (!chatContext) {
+    return <div>Loading chat...</div>;
+  }
+
+  const { messages } = chatContext;
+
+  const handleChatButtonClick = () => {
+    setShowChat(!showChat);
+  };
 
   const follow = async () => {
     const userId = user.id;
@@ -111,6 +142,8 @@ const Profile = () => {
     setInventory('Wishlist');
   }
 
+
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -118,8 +151,6 @@ const Profile = () => {
       .then(response => {
         setTitle("");
         //getUserBooks(inventory);
-        // response.data.UserBooks[0].userId <-- userId
-        // getUserBooks();
       })
       .catch(error => {
         console.error(error);
@@ -184,15 +215,15 @@ const Profile = () => {
         <div style={{ margin: '15px' }}>
           <Typography variant="h5">{inventory} Books</Typography>
         </div>
-        {/* {books.length > 0 ?
-          <BookDisplay userBooks={books} id={id} getUserBooks={getUserBooks} setUserBooks={setBooks} inventory={inventory} /> :
-          <Typography variant="body1">No books</Typography>
-        } */}
-        {/* {user && <BookDisplay books={books} id={user.id} />} */}
         <BookDisplay books={books} id={id} />
       </div>
+      <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleChatButtonClick}>
+        Chat
+      </Button>
+      {showChat && <Chat messages={messages} onSend={sendMessage} />}
     </div>
   );
 }
+
 
 export default Profile;

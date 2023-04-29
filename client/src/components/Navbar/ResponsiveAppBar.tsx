@@ -34,7 +34,7 @@ function ResponsiveAppBar() {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  
+
   let loggedIn = false;
 
   if (!user) {
@@ -64,7 +64,7 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ bgcolor: "skyblue !important" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AutoStoriesIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -224,7 +224,7 @@ function ResponsiveAppBar() {
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="pfp" src={loggedIn ? user.picture : null} />
               </IconButton>
             </Tooltip>
