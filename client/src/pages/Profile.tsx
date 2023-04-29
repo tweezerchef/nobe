@@ -134,7 +134,7 @@ const Profile = () => {
 
   const ownedClicked = () => {
     //getUserBooks('Owned');
-    //setInventory('Owned');
+    setInventory('Owned');
   }
 
   const wishClicked = () => {
