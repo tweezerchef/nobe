@@ -14,15 +14,44 @@ const DirectMessages = express.Router();
 
 DirectMessages.post('/', async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { text, senderId, recipientId } = req.body;
-    console.log(senderId)
-    // Create the DirectMessage in the database
+    const { text, senderId, recipientId, createdAt } = req.body;
+
+    let conversation = await prisma.conversations.findFirst({
+      where: {
+        AND: [
+          { members: { some: { id: senderId } } },
+          { members: { some: { id: recipientId } } }
+        ]
+      },
+      include: {
+        messages: true
+      }
+    });
+
+    if (!conversation) {
+      conversation = await prisma.conversations.create({
+        data: {
+          members: {
+            connect: [
+              { id: senderId },
+              { id: recipientId }
+            ]
+          }
+        }
+      });
+    }
+
     const newMessage = await prisma.directMessages.create({
       data: {
         text,
-        senderId,
-        recipientId,
-      },
+        createdAt,
+        sender: {
+          connect: { id: senderId }
+        },
+        conversation: {
+          connect: { id: conversation.id }
+        }
+      }
     });
 
     res.json(newMessage);
@@ -31,6 +60,7 @@ DirectMessages.post('/', async (req: AuthenticatedRequest, res: Response) => {
     res.status(500).json({ error: 'Something went wrong' });
   }
 });
+
 
 
 

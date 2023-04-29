@@ -46,6 +46,9 @@ interface Props {
 
 
 
+
+
+
 function Locations() {
 
   const userContext = useContext(UserContext);
@@ -242,7 +245,7 @@ const saveRadius = async () => {
           </ButtonGroup>
         </Grid>
       </Grid>
-      {/* { booksNearBy.map(user => <UserDisplay user={user} key={user.id} />)} */}
+      { booksNearBy.map(user => <UserDisplay user={user} key={user.id} />)}
     </div>
   )
 

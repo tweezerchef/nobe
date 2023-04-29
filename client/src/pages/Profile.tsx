@@ -12,7 +12,6 @@ import { CssVarsProvider } from '@mui/joy';
 
 interface UserBook {
   Books: Book;
-  // Add any other properties if necessary
 }
 interface Book {
   books: {
@@ -29,7 +28,6 @@ interface Book {
 interface UserProfile {
   id: string;
   firstName: string;
-  // Add any other properties if necessary
 }
 
 
