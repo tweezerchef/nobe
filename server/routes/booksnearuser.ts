@@ -54,7 +54,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         id: true,
         firstName: true,
         username: true,
-        email:true,
+        email: true,
         googleId: true,
         lastName: true,
         picture: true,
@@ -62,17 +62,17 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         latitude: true,
         longitude: true,
         radius: true,
-        NotificationsCount : true,
+        NotificationsCount: true,
         clubMembers: true,
         Activity: true,
-        receivedMessages: true,
-        sentMessages: true,
         Discussions: true,
         DiscussionsUsers: true,
-        Posts:true,
-        PostsUsers:true,
+        Posts: true,
+        PostsUsers: true,
+        Conversations: true,
+        DirectMessages: true,
         UserBooks: {
-          select:{
+          select: {
             id: true,
             wishlist: true,
             owned: true,
@@ -93,33 +93,33 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
                 Discussions: true,
                 Activity: true,
                 Clubs_Books: true,
+              },
+            },
           },
+          where: {
+            owned: true,
+          },
+        },
       },
-   },
-   where: {
-    owned: true,
-  },
-  },
-},
-})
-// console.log(users, 51)
-//    const ids = users.reduce<string[]>((acc, user) => {
-//   acc.push(user.id);
-//   return acc;
-// }, []);
+    })
+    // console.log(users, 51)
+    //    const ids = users.reduce<string[]>((acc, user) => {
+    //   acc.push(user.id);
+    //   return acc;
+    // }, []);
 
-// const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
-//   where: {
-//     userId: id
-//   },
-//   include: {
-//     books: true
-//   }
-// }))
-//const userBooks = await Promise.all(userBooksPromises);
-//const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
-console.log(users, 67);
-res.status(200).send( users );
+    // const userBooksPromises = ids.map(id => prisma.userBooks.findMany({
+    //   where: {
+    //     userId: id
+    //   },
+    //   include: {
+    //     books: true
+    //   }
+    // }))
+    //const userBooks = await Promise.all(userBooksPromises);
+    //const books = userBooks.flatMap(userBooksArr => userBooksArr.map(userBook => userBook.books));
+    console.log(users, 67);
+    res.status(200).send(users);
   } catch (error) {
     //console.error('Error getting users within radius:', error);
     res.status(500).json({ error: 'Server error' });
