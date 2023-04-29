@@ -46,12 +46,12 @@ const BookDisplay = (props: any) => {
                                 <BookmarkAddIcon />
                             </IconButton>
                         </CardOverflow>
-                        <Typography level="h2" sx={{ fontSize: 'md', mt: 2 }}>
+                        <Typography level="h2" sx={{ fontSize: 'md', mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical' }}>
                             <Link href="#multiple-actions" overlay underline="none">
                                 {userBook.books.title}
                             </Link>
                         </Typography>
-                        <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
+                        <Typography level="body2" sx={{ mt: 0.5, mb: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                             <Link href="#multiple-actions">{userBook.books.author}</Link>
                         </Typography>
                         <Divider inset="context" />
@@ -68,7 +68,6 @@ const BookDisplay = (props: any) => {
                             <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
                                 {userBook.books.rating}
                             </Typography>
-                            <Divider orientation="vertical" />
                             <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
                             </Typography>
                             <UserStarRating book={userBook} id={id} />
