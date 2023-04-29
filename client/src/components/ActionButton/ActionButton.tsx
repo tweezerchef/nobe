@@ -10,7 +10,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
 import BookIcon from '../NotificationBook/Notificationbook';
 import CloseBy from '../CloseBy/CloseBy';
- import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 import MessageIcon from '../MessagesIcon/messagesicon';
 import FriendIcon from '../NewFriendIcon/Newfriendicon';
 import NotificationIcon from '../NotificationMessages/Notificationmessages';
@@ -34,7 +34,7 @@ const OpenIconSpeedDial: React.FC = () => {
 
   React.useEffect(() => {
     const socket = io("http://localhost:3000");
-    console.log(socket.on('test', (msg)=> {
+    console.log(socket.on('test', (msg) => {
       console.log(msg);
     }));
   }, []);
@@ -44,7 +44,7 @@ const OpenIconSpeedDial: React.FC = () => {
 
   return (
     <Draggable>
-      <Box sx={{ width: 100, height: 80, transform: 'translateZ(0px)', flexGrow: 1 }}>
+      <Box sx={{ position: 'fixed', width: 100, height: 80, transform: 'translateZ(0px)', bottom: 0, right: 0, flexGrow: 1 }}>
         <SpeedDial
           ariaLabel="SpeedDial openIcon example"
           sx={{ position: 'absolute', bottom: 16, right: 16 }}

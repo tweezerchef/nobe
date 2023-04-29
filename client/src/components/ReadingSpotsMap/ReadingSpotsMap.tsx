@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Places from "./places";
-import { Card, Button } from '@mui/material';
+import { Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import axios from "axios";
 import "../../styles/mapstyles.css";
 
@@ -21,9 +21,10 @@ function ReadingSpotsMap() {
   const [address, setAddress] = useState<string>("");
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [savedPlaces, setSavedPlaces] = useState<Place[]>([]);
-  console.log(savedPlaces)
   const [selectedPlace, setSelectedPlace] = useState<number | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [description, setDescription] = useState<string>("");
+
 
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(() => ({ lat: 29.9511, lng: -90.0715 }), []);
@@ -49,6 +50,7 @@ function ReadingSpotsMap() {
 
   const handlePlaceClick = useCallback((placeId: number) => {
     setSelectedPlace((prev) => (prev === placeId ? null : placeId));
+    setIsFormOpen(false);
   }, []);
 
   const handleFormOpen = () => {
@@ -57,6 +59,30 @@ function ReadingSpotsMap() {
 
   const handleCardClick = useCallback((lat: number, lng: number) => {
     mapRef.current?.panTo({ lat, lng });
+  }, []);
+
+  const handleFormSubmit = async () => {
+    try {
+      await axios.post(`/api/places-to-read/places/${selectedPlace}/description`, { Description: description });
+      fetchSavedPlaces();
+      setDescription("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchSavedPlaces = async () => {
+    try {
+      const response = await axios.get('/api/places-to-read/places');
+      setSavedPlaces(response.data);
+      setSelectedPlace(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSavedPlaces();
   }, []);
 
   return (
@@ -106,11 +132,25 @@ function ReadingSpotsMap() {
                     <div>{address}</div>
                     <div>
                       <Button onClick={handleFormOpen}>Add Description</Button>
-                      {/* {isFormOpen && (
+                      {isFormOpen && (
                         <Card>
-
+                          <DialogContent>
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              label="Description"
+                              fullWidth
+                              variant="outlined"
+                              value={description}
+                              onChange={(e) => setDescription(e.target.value)}
+                            />
+                          </DialogContent>
+                          <DialogActions>
+                            <Button onClick={() => setIsFormOpen(false)}>Cancel</Button>
+                            <Button onClick={handleFormSubmit}>Save</Button>
+                          </DialogActions>
                         </Card>
-                      )} */}
+                      )}
                     </div>
                   </div>
                 </InfoWindow>
@@ -137,11 +177,25 @@ function ReadingSpotsMap() {
                     <div>{place.Location}</div>
                     <div>
                       <Button onClick={handleFormOpen} size="small">Add Description</Button>
-                      {/* {isFormOpen && (
+                      {isFormOpen && (
                         <Card>
-
+                          <DialogContent>
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              label="Description"
+                              fullWidth
+                              variant="outlined"
+                              value={description}
+                              onChange={(e) => setDescription(e.target.value)}
+                            />
+                          </DialogContent>
+                          <DialogActions>
+                            <Button onClick={() => setIsFormOpen(false)}>Cancel</Button>
+                            <Button onClick={handleFormSubmit}>Save</Button>
+                          </DialogActions>
                         </Card>
-                      )} */}
+                      )}
                     </div>
                   </div>
                 </InfoWindow>
