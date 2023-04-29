@@ -31,14 +31,18 @@ const actions = [
 
 const OpenIconSpeedDial: React.FC = () => {
 
+  //const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
+
   const [userFirstName, setUserFistName] = useState("");
   const [onlineUser, setOnlineUser] = useState("");
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState<any>(null);
+  const [notifications, setNotifications] = useState<any>([]);
+  const [notificationCount, setNotificationCount] = useState(0);
 
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const id = user.id;
+  // const id = user.id;
 
 
   // React.useEffect(() => {
@@ -48,15 +52,16 @@ const OpenIconSpeedDial: React.FC = () => {
   //   }));
   // }, []);
 
-//   React.useEffect(() => {
-//     setSocket(io("http://localhost:3000"));
-//  }, []);
+  React.useEffect(() => {
+    setSocket(io("http://localhost:3000"));
+ }, []);
 
-//  React.useEffect(() => {
-//    if (socket) {
-//      socket.emit("newUser", user);
-//    }
-//  }, [socket, user]);
+ React.useEffect(() => {
+   if (socket) {
+     socket?.emit("newUser", user);
+   }
+ }, [socket, user]);
+
 
   return (
     <Draggable>

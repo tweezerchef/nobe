@@ -9,6 +9,23 @@ import Sheet from '@mui/joy/Sheet';
 const NotificationIcon: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
 
+
+  // const displayNotifications = () => {
+  //   let action;
+  // if(type === 1){
+  //   action= "has followed"
+  // } else if (type === 2){
+  //   action = "has messaged"
+  // } else if (type === 3){
+  //   action = "has added books that are near"
+  // } else {
+  //   action = "has added a new book to discussion for"
+  // }
+  // return (
+  //   <span className='notification'>{`${senderName} ${action} you` </span>
+  // )
+  // }
+
   return (
 <React.Fragment>
     <div className="CloseByIcon">

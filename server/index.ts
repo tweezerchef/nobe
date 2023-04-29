@@ -17,6 +17,30 @@ const io = new Server({
   }
 });
 
+
+// interface ServerToClientEvents {
+//   noArg: () => void;
+//   basicEmit: (a: number, b: string, c: Buffer) => void;
+//   withAck: (d: string, callback: (e: number) => void) => void;
+// }
+
+// interface ClientToServerEvents {
+//   hello: () => void;
+//   addNewUser: () => void;
+// }
+
+// interface InterServerEvents {
+//   ping: () => void;
+// }
+
+// interface SocketData {
+//   name: string;
+//   age: number;
+// }
+
+
+
+
 interface User {
   firstName: string;
   socketId: string;
@@ -30,11 +54,11 @@ const addNewUser = (firstName: string, socketId: string, id:string) => {
   onlineUsers.push({firstName, socketId, id})
 }
 
-const removeUser = (socketId) =>{
+const removeUser = (socketId: string) =>{
   onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId)
 }
 
-const getUser = (id) => {
+const getUser = (id: string) => {
   return onlineUsers.find((user) => user.id === id)
 }
 
@@ -63,7 +87,12 @@ socket.on("newUser", (user)=> {
   addNewUser(user.firstName, socket.id, user.id);
 })
 
-
+socket.on("addFollower", ({senderId, receiverId, type}) =>{
+  const receiver = getUser(receiverId);
+  if (receiver) {
+    io.to(receiver.socketId).emit("getFollower");
+  }
+});
   socket.on('disconnect', () => {
     removeUser(socket.id);
   });
