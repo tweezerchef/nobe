@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import Router from './Router';
 import ResponsiveAppBar from './components/Navbar/ResponsiveAppBar';
 import OpenIconSpeedDial from './components/ActionButton/ActionButton';
 import UserContext, { UserContextType } from './hooks/Context';
 import ChatContext, { ChatContextType } from './hooks/ChatContext';
-import Navbar from './components/Navbar/Navbar';
 import axios from 'axios';
-
-
+import { CssVarsProvider } from '@mui/joy/styles';
 function App() {
     const [user, setUser] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isLoaded, setIsLoaded] = useState(false);
     const [messages, setMessages] = useState<any[]>([]);
+
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,6 +52,9 @@ function App() {
     };
 
     return (
+        // <CssVarsProvider
+        //     modeStorageKey="your-app-dark-mode"
+        // >
         <div className="App">
             <UserContext.Provider value={userContextValue}>
                 <ChatContext.Provider value={chatContextValue}>
@@ -62,6 +65,7 @@ function App() {
             </UserContext.Provider>
             {/* <OpenIconSpeedDial /> */}
         </div>
+        // </CssVarsProvider>
     );
 }
 

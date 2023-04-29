@@ -10,3 +10,10 @@ import axios from 'axios';
 
 
 
+// const Reviews = ({ reviews }) => {
+
+
+
+// }
+
+// export default Reviews
