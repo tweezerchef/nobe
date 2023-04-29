@@ -76,6 +76,7 @@ function ReadingSpotsMap() {
       fetchSavedPlaces();
       setDescription("");
       setIsAddingDescription(false);
+      setIsFormOpen(false);
     } catch (error) {
       console.error(error);
     }
@@ -86,7 +87,7 @@ function ReadingSpotsMap() {
     try {
       const response = await axios.get('/api/places-to-read/places');
       setSavedPlaces(response.data);
-      setSelectedPlace(null);
+      // setSelectedPlace(null);
     } catch (error) {
       console.error(error);
     }
