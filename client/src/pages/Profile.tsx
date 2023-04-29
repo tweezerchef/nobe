@@ -6,7 +6,8 @@ import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context'
 import ChatContext from '../hooks/ChatContext';
 import Chat from '../components/Chat/Chat'
-
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import Avatar from "@mui/material/Avatar";
 
 
 interface UserBook {
@@ -27,6 +28,7 @@ interface Book {
 interface UserProfile {
   id: string;
   firstName: string;
+  picture: string;
 }
 
 
@@ -41,16 +43,12 @@ const Profile = () => {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  console.log('user', user)
   const id = user.id
   const friendId: string = useParams().id || "";
-
-  console.log('friendId', friendId)
 
   const getProfile = async () => {
     try {
       const response = await axios.get(`/user/${friendId}`);
-      console.log('profile', response.data);
       setProfile(response.data);
     } catch (error) {
       console.error(error);
@@ -111,7 +109,7 @@ const Profile = () => {
 
   const ownedClicked = () => {
     //getUserBooks('Owned');
-    //setInventory('Owned');
+    setInventory('Owned');
   }
 
   const wishClicked = () => {
@@ -145,6 +143,9 @@ const Profile = () => {
   return (
 
     <div >
+      {/* {friendId === "" ? null : (
+      <Avatar style={{display: 'flex', alignItems: 'center'}} src={profile?.picture}/>
+      )} */}
       <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
         <Typography variant="h4">{friendId === "" ? `${user.firstName}'s` : `${profile?.firstName}'s`} Books</Typography>
         {friendId === "" ? null : (

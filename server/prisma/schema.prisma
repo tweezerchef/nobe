@@ -24,6 +24,7 @@ model User {
   NotificationsCount Int                @default(0)
   Activity           Activity[]
   clubMembers        ClubMembers[]
+  DirectMessages     DirectMessages[]
   Discussions        Discussions[]
   DiscussionsUsers   DiscussionsUsers[]
   friends            Friendship[]       @relation("friend")
@@ -35,7 +36,6 @@ model User {
   UserBooks          UserBooks[]
   User_Places        User_Places[]
   Conversations      Conversations[]    @relation("conversationMembers")
-  DirectMessages     DirectMessages[]
 }
 
 model PlacesToRead {
@@ -76,19 +76,19 @@ model Notifications {
 
 model Conversations {
   id       String           @id @default(uuid())
-  members  User[]           @relation("conversationMembers")
   messages DirectMessages[] @relation("conversation")
+  members  User[]           @relation("conversationMembers")
 }
 
 model DirectMessages {
   id             String        @id @default(uuid())
   createdAt      DateTime      @default(now())
   text           String
-  isRead         Boolean       @default(false)
-  sender         User          @relation(fields: [senderId], references: [id])
   senderId       String
-  conversation   Conversations @relation("conversation", fields: [conversationId], references: [id])
   conversationId String
+  isRead         Boolean       @default(false)
+  conversation   Conversations @relation("conversation", fields: [conversationId], references: [id])
+  sender         User          @relation(fields: [senderId], references: [id])
 }
 
 model Books {
@@ -101,10 +101,10 @@ model Books {
   image       String?
   ISBN10      String        @unique
   Activity    Activity[]
+  Clubs_Books Clubs_Books[]
   Discussions Discussions[]
   genre       Genre[]
   UserBooks   UserBooks[]
-  Clubs_Books Clubs_Books[]
 }
 
 model Genre {
@@ -147,19 +147,19 @@ model Clubs {
   image       String?
   admin       String?
   clubMembers ClubMembers[]
-  Discussions Discussions[]
   Clubs_Books Clubs_Books[]
+  Discussions Discussions[]
 }
 
 model Clubs_Books {
   id          String  @id @default(uuid())
-  Books       Books   @relation(fields: [booksId], references: [id])
   booksId     String
-  Clubs       Clubs   @relation(fields: [clubId], references: [id])
   clubId      String
   description String?
   startDate   String?
   endDate     String?
+  Books       Books   @relation(fields: [booksId], references: [id])
+  Clubs       Clubs   @relation(fields: [clubId], references: [id])
 }
 
 model ClubMembers {
@@ -234,9 +234,9 @@ model Friendship {
   id        String  @id @default(uuid())
   userId    String
   friendId  String
+  confirmed Boolean @default(true)
   friend    User    @relation("friend", fields: [friendId], references: [id])
   user      User    @relation("user", fields: [userId], references: [id])
-  confirmed Boolean @default(true)
 
   @@unique([userId, friendId], name: "userId_friendId")
 }
