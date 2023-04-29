@@ -36,8 +36,12 @@ User.get('/', async (req, res) => {
         DiscussionsUsers: true,
         Posts: true,
         PostsUsers: true,
-        Conversations: true,
-        DirectMessages: true,
+        Conversations: {
+          select: {
+            members: true,
+            messages: true,
+          }
+        },
         UserBooks: {
           select: {
             id: true,
@@ -101,8 +105,12 @@ User.get('/id', async (req, res) => {
         DiscussionsUsers: true,
         Posts: true,
         PostsUsers: true,
-        Conversations: true,
-        DirectMessages: true,
+        Conversations: {
+          select: {
+            members: true,
+            messages: true,
+          }
+        },
         UserBooks: {
           select: {
             id: true,
@@ -168,8 +176,12 @@ User.get('/id', async (req, res) => {
           PostsUsers: true,
           UserBooks: true,
           User_Places: true,
-          Conversations: true,
-          DirectMessages: true,
+          Conversations: {
+            select: {
+              members: true,
+              messages: true,
+            }
+          },
         },
       });
       //console.log(user)
