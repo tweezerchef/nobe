@@ -136,7 +136,7 @@ const saveRadius = async () => {
 //   }, [booksNearBy]);
 
 
-  console.log(displayBooks, 131)
+  //console.log(displayBooks, 131)
 
 
 
@@ -180,35 +180,7 @@ const saveRadius = async () => {
   return (
     <div>
       <Grid style={{ display: "flex", justifyContent: "center" }} container rowSpacing={1} columnSpacing={{ xs: 1 }}>
-        <Grid xs={3}>
-          <Card sx={{ height: 150, width: 300 }}>
-            <h1>Enter Address</h1>
-            <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
-              <GeoapifyGeocoderAutocomplete
-                placeholder="Enter address here"
-                placeSelect={onPlaceSelect}
-                suggestionsChange={onSuggectionChange}
-              />
-            </GeoapifyContext>
-          </Card>
-        </Grid>
-        <Grid xs={3}>
-          <Card sx={{ height: 150, width: 300 }}>
-            <h1>Set Radius</h1>
-            <FormControl sx={{ m: 1, width: '18ch' }} variant="outlined">
-              <OutlinedInput sx={{ height: '3ch' }}
-                id="outlined-adornment-weight"
-                endAdornment={<InputAdornment position="end">mi</InputAdornment>}
-                onChange={handleRadiusChange}
-                value={radius}
-              />
-              <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
-              <Slider defaultValue={0} value={radius}
-                onChange={handleRadiusChange} aria-label="Default" valueLabelDisplay="auto" />
-            </FormControl>
-          </Card>
-        </Grid>
-        <Grid xs={3}>
+      <Grid xs={3}>
           <ButtonGroup
             orientation="vertical"
             style={{ display: "flex", justifyContent: "right" }}>
@@ -243,6 +215,34 @@ const saveRadius = async () => {
               color="blue"
             />
           </ButtonGroup>
+        </Grid>
+        <Grid xs={3}>
+          <Card sx={{ height: 200, width: 400 }}>
+            <h1>Enter Address</h1>
+            <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
+              <GeoapifyGeocoderAutocomplete
+                placeholder="Enter address here"
+                placeSelect={onPlaceSelect}
+                suggestionsChange={onSuggectionChange}
+              />
+            </GeoapifyContext>
+          </Card>
+        </Grid>
+        <Grid xs={3}>
+          <Card sx={{ height: 200, width: 400 }}>
+            <h1>Set Radius</h1>
+            <FormControl sx={{ m: 1, width: '18ch' }} variant="outlined">
+              <OutlinedInput sx={{ height: '3ch' }}
+                id="outlined-adornment-weight"
+                endAdornment={<InputAdornment position="end">mi</InputAdornment>}
+                onChange={handleRadiusChange}
+                value={radius}
+              />
+              <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
+              <Slider defaultValue={0} value={radius}
+                onChange={handleRadiusChange} aria-label="Default" valueLabelDisplay="auto" />
+            </FormControl>
+          </Card>
         </Grid>
       </Grid>
       { booksNearBy.map(user => <UserDisplay user={user} key={user.id} />)}

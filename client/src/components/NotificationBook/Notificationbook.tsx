@@ -1,11 +1,35 @@
-import React from 'react';
+import  React, { useState, useContext, useEffect } from 'react';
 import { Counter } from './style'
-
+import { io, Socket } from "socket.io-client";
 interface BookIconProps {
   openIcon: JSX.Element;
 }
 
+
+
+
+
 const BookIcon: React.FC<BookIconProps> = ({ openIcon }) => {
+
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [socket, setSocket] = useState<any>(null);
+
+  // useEffect(() => {
+  //   const newSocket = io('http://localhost:3000');
+  //   setSocket(newSocket);
+  //   newSocket.onAny()) => {
+
+  //   });
+
+  //   newSocket.on('connect_error', (error: any) => {
+  //     console.log('Socket connection error:', error);
+  //   });
+
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, []);
+
   return (
     <div className="BookIcon">
       <Counter> 2 </Counter>
