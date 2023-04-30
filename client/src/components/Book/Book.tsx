@@ -10,16 +10,18 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
 import BigBook from './BookBig';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import UserBooks from '../../../../server/routes/userbooks';
-
-
-// const customTheme = createTheme({
-//     typography: {
-//         // This will use the default MUI typography settings
-//     },
-// });
-
+import styled from 'styled-components'
+const BigBookOverlay = styled.div`
+  position: fixed;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+`;
 
 
 
@@ -46,7 +48,11 @@ const Book = React.memo((props: any) => {
         })
     }
     if (showBigBook) {
-        return <BigBook book={book} id={id} userRating={value} onClose={() => setShowBigBook(false)} />;
+        return (
+            <BigBookOverlay>
+                <BigBook book={book} id={id} userRating={value} onClose={() => setShowBigBook(false)} />
+            </BigBookOverlay>
+        );
     }
 
 
@@ -78,10 +84,6 @@ const Book = React.memo((props: any) => {
                 <Link onClick={handleOnClick}>
                     {book.title}
                 </Link>
-
-                {/* <Link href="#multiple-actions" overlay underline="none"> */}
-
-                {/* </Link> */}
             </Typography>
             <Typography level="body2" sx={{ mt: 0.5, mb: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 <Link href="#multiple-actions">{book.author}</Link>
