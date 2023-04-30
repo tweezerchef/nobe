@@ -1,18 +1,64 @@
-import React from 'react';
+import  React, { useState, useContext, useEffect } from 'react';
 import { Counter } from './style'
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
+import { io, Socket } from "socket.io-client";
 
 
-const NotificationIcon: React.FC = () => {
+
+function NotificationIcon () {
   const [open, setOpen] = React.useState<boolean>(false);
+
+
+  const [socket, setSocket] = useState<any>(null);
+  const [notifications, setNotifications] = useState<any>([]);
+  const [notificationCount, setNotificationCount] = useState(0);
+
+
+  console.log(notifications, 64)
+  useEffect(() => {
+    const newSocket = io('http://localhost:3000');
+    setSocket(newSocket);
+    newSocket.on('new-follower', (data: any) => {
+      console.log(data, 65 )
+      const { sender, receiver, message } = data;
+      setNotifications((prevMessage: any) => [...prevMessage, message]);
+      let count = 0;
+      count++
+      setNotificationCount(count);
+    });
+
+    newSocket.on('connect_error', (error: any) => {
+      console.log('Socket connection error:', error);
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+
+  // const displayNotifications = () => {
+  //   let action;
+  // if(type === 1){
+  //   action= "has followed"
+  // } else if (type === 2){
+  //   action = "has messaged"
+  // } else if (type === 3){
+  //   action = "has added books that are near"
+  // } else {
+  //   action = "has added a new book to discussion for"
+  // }
+  // return (
+  //   <span className='notification'>{`${senderName} ${action} you` </span>
+  // )
+  // }
 
   return (
 <React.Fragment>
     <div className="CloseByIcon">
-      <Counter> 2 </Counter>
+      <Counter>{notificationCount}</Counter>
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
 width="25" height="25"
 viewBox="0 0 50 50" onClick={() => setOpen(true)}>
@@ -47,20 +93,9 @@ viewBox="0 0 50 50" onClick={() => setOpen(true)}>
             }}
             onClick={() => setOpen(false)}
           />
-          <Typography
-            component="h2"
-            id="modal-title"
-            level="h4"
-            textColor="inherit"
-            fontWeight="lg"
-            mb={1}
-          >
-            This is the modal title
-          </Typography>
           <Typography id="modal-desc" textColor="text.tertiary">
-            Make sure to use <code>aria-labelledby</code> on the modal dialog with an
-            optional <code>aria-describedby</code> attribute.
-          </Typography>
+  { notifications.map((message: any) => <div>{message}</div>)}
+        </Typography>
         </Sheet>
       </Modal>
 </div>

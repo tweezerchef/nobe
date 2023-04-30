@@ -8,7 +8,7 @@ import UserContext from '../hooks/Context'
 import UserBooks from '../../../server/routes/userbooks';
 import Chat from '../components/Chat/Chat'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-
+import io from 'socket.io-client';
 interface UserBook {
   Books: Book;
 }
@@ -37,6 +37,7 @@ const Profile = () => {
   const [title, setTitle] = useState<string>('');
   const [showChat, setShowChat] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [socket, setSocket] = useState<any>(null);
 
   // const chatContext = useContext(ChatContext);
 
@@ -44,10 +45,11 @@ const Profile = () => {
   const user = userContext?.user;
   const id = user.id
   const friendId: string = useParams().id || "";
-
+  const newSocket = io('http://localhost:3000');
   const getProfile = async () => {
     try {
-      const response = await axios.get(`/user/${friendId}`);
+      const response = await axios.get(`/user/id?id=${friendId}`);
+      console.log(response.data)
       setProfile(response.data);
     } catch (error) {
       console.error(error);
@@ -77,10 +79,13 @@ const Profile = () => {
 
   const follow = async () => {
     const userId = user.id;
-
+    const userFirstName = user.firstName;
+    console.log(user, 82)
     try {
+      newSocket.emit('new-follow', {
+        message: `${userFirstName} has followed you`
+      })
       await axios.post('/api/friendship', { userId, friendId });
-
     } catch (error) {
       console.error(error)
     }
@@ -116,11 +121,15 @@ const Profile = () => {
   };
 
 
+
   useEffect(() => {
     if (user && user.UserBooks) {
       getUserBooks();
       getProfile();
     }
+    newSocket.on('new-follow', (data: any) => {
+      console.log('new follow:', data.message);
+    });
   }, []);
 
   return (

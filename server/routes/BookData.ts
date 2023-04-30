@@ -266,7 +266,7 @@ try {
         res.status(500).send("Error retrieving book data from Google Books");
       }
     }
-    res.send([book]);
+    res.send(book);
   }
 });
 BookData.get('/title', async (req, res) => {

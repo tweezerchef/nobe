@@ -92,15 +92,21 @@ async function findRandomRows(limit: number) {
 
 
 Recommendations.get('/random', async (req : Request, res: Response) => {
+  console.log('get random')
   try {
-    const amazonBooks = await findRandomRows(20);
+    const amazonBooks = await findRandomRows(20)
+    console.log(amazonBooks);
 
     const returnArray = await Promise.all(amazonBooks.map(async (book: any) => {
-      const data = await axios.get(`http://localhost:8080/google-books/ISBN10?ISBN10=${book.ISBN10}`);
+      console.log('yes')
+      console.log(book.title)
+      const data = await axios.get(`http://localhost:8080/google-books?title=${book.title}`);
 
       const transFormedData = data.data;
+      console.log(transFormedData)
       const { ISBN10, title, author, image, description } = transFormedData;
       const ourBookData = findOrCreateBook(ISBN10, title, author, image, description);
+      console.log(ourBookData)
       return ourBookData;
     }));
 
@@ -153,14 +159,14 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
     // Don't forget to return Promise.all() to wait for all promises to resolve
     return Promise.all(promises);
   })
-  .then(() => {
-   const uniqueBooks = responseArray.filter((book, index, self) =>
-   index === self.findIndex((b) => (
-     b.title === book.title && b.author === book.author && b.ISBN10 === book.ISBN10
-   ))
- )
- return uniqueBooks})
- .then((response)=>( res.status(200).send(response)))
+//   .then(() => {
+//    const uniqueBooks = responseArray.filter((book, index, self) =>
+//    index === self.findIndex((b) => (
+//      b.title === book.title && b.author === book.author && b.ISBN10 === book.ISBN10
+//    ))
+//  )
+//  return uniqueBooks})
+ .then((response)=>( res.status(200).send(responseArray)))
  .catch((error) => console.error('Error:', error));
 });
 

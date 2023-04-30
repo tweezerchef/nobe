@@ -15,7 +15,7 @@ const BookPage = () => {
     const [title, setTitle] = useState<string>('');
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        axios.get(`/bookdata/title/searchOne?title=${title}`).then(response => { setBooks(response.data[0]), console.log(response.data[0]) })
+        axios.get(`/bookdata/title/searchOne?title=${title}`).then(response => { setBooks(response.data), console.log(response.data) })
         //.then(() => console.log(books))
     }
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
