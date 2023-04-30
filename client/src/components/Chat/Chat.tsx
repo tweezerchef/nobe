@@ -76,7 +76,7 @@ function Chat() {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const id = user.id
+
 
   const handleSend = (event: React.FormEvent) => {
     event.preventDefault();
@@ -95,7 +95,6 @@ function Chat() {
       };
       try {
         const response = await axios.post(`/direct-messages/${currentConvo.id}/messages`, newMessage);
-        // setChatMessages([...chatMessages, response.data]);
         socket.emit('new-message', {
           conversationId: currentConvo.id,
           message: response.data,
@@ -108,8 +107,10 @@ function Chat() {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
-      sendMessage(message);
-      setMessage('');
+      if (message.trim() !== '') {
+        sendMessage(message);
+        setMessage('');
+      }
     }
   };
 
@@ -118,7 +119,7 @@ function Chat() {
       event.preventDefault();
       try {
         const response = await axios.post('/conversations', {
-          currentUser: id,
+          currentUser: user.id,
           otherUser: searchQuery
         });
         const newConversation: any = response.data;
@@ -141,7 +142,16 @@ function Chat() {
     newSocket.on('new-message', (data: any) => {
       const { conversationId, message } = data;
       if (conversationId === currentConvo?.id) {
-        setChatMessages((prevMessages) => [...prevMessages, message]);
+        setChatMessages((prevMessages) => {
+          const updatedMessages = [...prevMessages, message];
+          if (currentConvo) {
+            const conversationIndex = user.Conversations.findIndex((conversation: Conversation) => conversation.id === currentConvo.id);
+            if (conversationIndex !== -1) {
+              user.Conversations[conversationIndex].messages = updatedMessages;
+            }
+          }
+          return updatedMessages;
+        });
       }
     });
 
@@ -152,7 +162,7 @@ function Chat() {
     return () => {
       newSocket.disconnect();
     };
-  }, [currentConvo]);
+  }, [currentConvo, user]);
 
   return (
     <div>
@@ -172,8 +182,9 @@ function Chat() {
               const otherUser = conversation.members.find((member: any) => member.firstName !== user.firstName);
               const otherUserName = otherUser ? otherUser.firstName : '';
               return <ListItem button key={index} onClick={() => {
-                setCurrentConvo(conversation)
-                setChatMessages(conversation.messages)
+                setCurrentConvo(conversation);
+                setChatMessages(conversation.messages);
+                // updateUser();
               }
               }>
                 <ListItemText >{otherUserName}</ListItemText>
