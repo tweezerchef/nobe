@@ -78,9 +78,11 @@ const Profile = () => {
 
   const follow = async () => {
     const userId = user.id;
+    const userFirstName = user.firstName;
+    console.log(user, 82)
     try {
       newSocket.emit('new-follow', {
-        message: 'you have a new follower'
+        message: `${userFirstName}has followed you`
       })
       await axios.post('/api/friendship', { userId, friendId });
     } catch (error) {

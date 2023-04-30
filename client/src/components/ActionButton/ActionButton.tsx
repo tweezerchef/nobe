@@ -19,6 +19,9 @@ import ForumIcon from '../DiscussionForum/Discussionforum';
 import  React, { useState, useContext, useEffect } from 'react';
 import UserContext from '../../hooks/Context'
 
+
+
+
 const actions = [
   { icon: <NotificationIcon />, name: 'Notifications Feed' },
   { icon: <FriendIcon />, name: 'Friends' },
@@ -43,7 +46,7 @@ const OpenIconSpeedDial: React.FC = () => {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   //const id = user.id;
-   console.log(user);
+   //console.log(user);
 
 
 //   React.useEffect(() => {
@@ -61,24 +64,24 @@ const OpenIconSpeedDial: React.FC = () => {
   //     console.log(msg);
   //   }));
   // }, []);
-console.log(notifications, 64)
-useEffect(() => {
-  const newSocket = io('http://localhost:3000');
-  setSocket(newSocket);
-  newSocket.on('new-follower', (data: any) => {
-    console.log(data, 65 )
-    const { sender, receiver, message } = data;
-    setNotifications((prevMessage: any) => [...prevMessage, message]);
-  });
+// console.log(notifications, 64)
+// useEffect(() => {
+//   const newSocket = io('http://localhost:3000');
+//   setSocket(newSocket);
+//   newSocket.on('new-follower', (data: any) => {
+//     console.log(data, 65 )
+//     const { sender, receiver, message } = data;
+//     setNotifications((prevMessage: any) => [...prevMessage, message]);
+//   });
 
-  newSocket.on('connect_error', (error: any) => {
-    console.log('Socket connection error:', error);
-  });
+//   newSocket.on('connect_error', (error: any) => {
+//     console.log('Socket connection error:', error);
+//   });
 
-  return () => {
-    newSocket.disconnect();
-  };
-}, []);
+//   return () => {
+//     newSocket.disconnect();
+//   };
+// }, []);
 
 //  React.useEffect(() => {
 //    if (socket) {
