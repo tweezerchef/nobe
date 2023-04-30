@@ -83,6 +83,7 @@ function Chat() {
     if (message.trim() !== '') {
       sendMessage(message);
       setMessage('');
+      console.log(chatMessages)
     }
   };
 
