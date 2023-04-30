@@ -5,12 +5,15 @@ import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import { io, Socket } from "socket.io-client";
+import Button from '../Button/Button';
 
 interface NotificationIconProps {
   notifications: any;
+  notificationCount: number;
+  markAsRead: any;
 }
 
-const NotificationIcon: React.FC<NotificationIconProps> = ({notifications}) => {
+const NotificationIcon: React.FC<NotificationIconProps> = ({notifications, notificationCount, markAsRead}) => {
   const [open, setOpen] = React.useState<boolean>(false);
 
 
@@ -60,7 +63,7 @@ const NotificationIcon: React.FC<NotificationIconProps> = ({notifications}) => {
   return (
 <React.Fragment>
     <div className="CloseByIcon">
-      {/* <Counter>{notificationCount}</Counter> */}
+    { notificationCount === 0 ? null : (<Counter></Counter>)}
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
 width="25" height="25"
 viewBox="0 0 50 50" onClick={() => setOpen(true)}>
@@ -95,6 +98,9 @@ viewBox="0 0 50 50" onClick={() => setOpen(true)}>
             }}
             onClick={() => setOpen(false)}
           />
+          <Typography id="modal-modal-title"  component="h2">
+              <Button onClick={markAsRead}> Mark As Read </Button>
+    </Typography>
           <Typography id="modal-desc" textColor="text.tertiary">
   { notifications.map((message: any) => <div>{message}</div>)}
         </Typography>

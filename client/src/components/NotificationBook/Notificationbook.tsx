@@ -17,7 +17,7 @@ const BookIcon: React.FC<BookIconProps> = ({ openIcon, notificationCount }) => {
 
   return (
     <div className="BookIcon">
-      <Counter>{notificationCount}</Counter>
+      { notificationCount === 0 ? null : (<Counter>{notificationCount}</Counter>)}
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
         width="40" height="40"
         viewBox="0 0 50 50">
