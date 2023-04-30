@@ -12,14 +12,14 @@ const UserRecoInputPage = () => {
     const id = user?.id
     const [books, setBooks] = useState([]);
     const [title, setTitle] = useState<string>('');
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        axios.get(`/bookdata/title/searchOne?title=${title}`).then(response => setBooks(response.data))
-        //.then(() => console.log(books))
-    }
-    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.target.value);
-    };
+    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    //     event.preventDefault();
+    //     axios.get(`/bookdata/title/searchOne?title=${title}`).then(response => setBooks(response.data))
+    //     //.then(() => console.log(books))
+    // }
+    // const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setTitle(event.target.value);
+    // };
 
     useEffect(() => {
         axios.get('/recommendations/random')
@@ -31,7 +31,7 @@ const UserRecoInputPage = () => {
     return (
         <div>
             <h1>  The More Books You Rate The Better Your Recommendations Will Be </h1>
-            <form onSubmit={handleSubmit} >
+            {/* <form onSubmit={handleSubmit} >
                 <TextField
                     label="Book Title"
                     value={title}
@@ -39,7 +39,7 @@ const UserRecoInputPage = () => {
                     fullWidth
                 />
                 <Button type="submit">Submit</Button>
-            </form>
+            </form> */}
             <BookDisplay books={books} id={id} />
             {/* {books.length > 0 && <BigBook book={books[0]} id={id} />} */}
 

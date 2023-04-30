@@ -78,6 +78,7 @@ function getISBN(volumeInfo: any) {
 }})
 
 GoogleBooks.get('/ISBN10', async (req: Request, res: Response) => {
+  console.log('poop')
     const ISBN10: string | undefined = req.query.ISBN10 as string | undefined;
     if (!ISBN10) {
         return res.status(400).send('Please provide a valid book ISBN10.');
