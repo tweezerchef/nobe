@@ -7,10 +7,10 @@ import "../../styles/mapstyles.css";
 
 type PlacesProps = {
   setLatLng: (position: google.maps.LatLngLiteral) => void;
-  setAddress: React.Dispatch<React.SetStateAction<string>>;
+  setLocation: React.Dispatch<React.SetStateAction<string>>;
 };
 
-function Places({ setLatLng, setAddress }: PlacesProps) {
+function Places({ setLatLng, setLocation }: PlacesProps) {
   const {
     ready,
     value,
@@ -30,7 +30,7 @@ function Places({ setLatLng, setAddress }: PlacesProps) {
     // console.log("lat and lng", typeof lat, typeof lng);
 
     setLatLng({ lat, lng });
-    setAddress(val);
+    setLocation(val);
 
     try {
       await axios.post('/api/places-to-read/place', { address: val, lat: lat, lng: lng });
