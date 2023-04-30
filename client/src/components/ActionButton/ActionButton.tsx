@@ -91,8 +91,7 @@ const OpenIconSpeedDial: React.FC = () => {
 
 
   return (
-
-      // <Box sx={{ width: 100, height: 80, transform: 'translateZ(0px)', flexGrow: 1 }}>
+    <Draggable>
         <SpeedDial
           ariaLabel="SpeedDial openIcon example"
           sx={{ position: 'absolute'}}
@@ -107,7 +106,12 @@ const OpenIconSpeedDial: React.FC = () => {
             />
           ))}
         </SpeedDial>
-      // </Box>
+        </Draggable>
   );
 }
 export default OpenIconSpeedDial;
+
+ // <Draggable>
+      {/* // <Box sx={{ width: 100, height: 80, transform: 'translateZ(0px)', flexGrow: 1 }}> */}
+        {/* // </Box> */}
+      // </Draggable>
