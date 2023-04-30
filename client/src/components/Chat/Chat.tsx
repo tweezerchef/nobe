@@ -123,7 +123,11 @@ function Chat() {
           otherUser: searchQuery
         });
         const newConversation: any = response.data;
-        setConversations(prevConversations => [...prevConversations, newConversation]);
+        setConversations((prevConversations) => {
+          const updatedConversations = [...prevConversations, newConversation];
+          user.Conversations = updatedConversations;
+          return updatedConversations
+        });
         setCurrentConvo(newConversation);
       } catch (error) {
         console.error(error);
