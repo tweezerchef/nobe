@@ -3,6 +3,41 @@ import { ChatContainer, ChatHeader, ChatBody, ChatFooter, ChatInput, ChatButton,
 import UserContext from '../../hooks/Context';
 import axios from 'axios';
 import io from 'socket.io-client';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import Fab from '@material-ui/core/Fab';
+import SendIcon from '@material-ui/icons/Send';
+import moment from 'moment';
+
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+  chatSection: {
+    width: '800px',
+    height: '60vh'
+  },
+  headBG: {
+    backgroundColor: '#e0e0e0'
+  },
+  borderRight500: {
+    borderRight: '1px solid #e0e0e0'
+  },
+  messageArea: {
+    height: '50vh',
+    overflowY: 'auto'
+  }
+});
 
 interface Message {
   text: string;
@@ -29,6 +64,9 @@ interface Conversation {
 }
 
 function Chat() {
+
+  const classes = useStyles();
+
   const [message, setMessage] = useState<string>('');
   const [chatMessages, setChatMessages] = useState<Message[]>([])
   const [searchQuery, setSearchQuery] = useState('');
@@ -68,6 +106,34 @@ function Chat() {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (event.key === 'Enter') {
+      sendMessage(message);
+      setMessage('');
+    }
+  };
+
+  const handleSearch = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      try {
+        const response = await axios.post('/conversations', {
+          currentUser: id,
+          otherUser: searchQuery
+        });
+        const newConversation: any = response.data;
+        setConversations(prevConversations => [...prevConversations, newConversation]);
+        setCurrentConvo(newConversation);
+      } catch (error) {
+        console.error(error);
+      }
+      setSearchQuery('')
+    }
+  };
+
+  useEffect(() => {
+    setConversations(user.Conversations);
+  }, []);
 
   useEffect(() => {
     const newSocket = io('http://localhost:3000');
@@ -88,94 +154,76 @@ function Chat() {
     };
   }, [currentConvo]);
 
-  useEffect(() => {
-    setConversations(user.Conversations);
-  }, []);
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (event.key === 'Enter') {
-      sendMessage(message);
-      setMessage('');
-    }
-  };
-
-  const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post('/conversations', {
-        currentUser: id,
-        otherUser: searchQuery
-      });
-      const newConversation: any = response.data;
-      setConversations(prevConversations => [...prevConversations, newConversation]);
-      setCurrentConvo(newConversation);
-    } catch (error) {
-      console.error(error);
-    }
-    setSearchQuery('')
-  };
-
   return (
-    <ChatContainer>
-      <ChatWrapper>
-        <ChatSidebar>
-          <SidebarHeader>Conversations</SidebarHeader>
-          <SidebarBody>
-            <form onSubmit={handleSearch}>
-              <div className="search-bar">
-                <input
-                  type="text"
-                  placeholder="Search users..."
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                />
-                <button type="submit">Search</button>
-              </div>
-            </form>
+    <div>
+      <Grid container>
+        <Grid item xs={12} >
+          <Typography variant="h5" className="header-message">Direct Messages</Typography>
+        </Grid>
+      </Grid>
+      <Grid container component={Paper} className={classes.chatSection}>
+        <Grid item xs={3} className={classes.borderRight500}>
+          <Grid item xs={12} style={{ padding: '10px' }}>
+            <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search" variant="outlined" fullWidth />
+          </Grid>
+          <Divider />
+          <List>
             {conversations.map((conversation: any, index: number) => {
               const otherUser = conversation.members.find((member: any) => member.firstName !== user.firstName);
               const otherUserName = otherUser ? otherUser.firstName : '';
-              return <ConversationLink
-                key={index}
-                onClick={() => {
-                  setCurrentConvo(conversation)
-                  setChatMessages(conversation.messages)
-                }
-                }>
-                {otherUserName}</ConversationLink>;
+              return <ListItem button key={index} onClick={() => {
+                setCurrentConvo(conversation)
+                setChatMessages(conversation.messages)
+              }
+              }>
+                <ListItemText >{otherUserName}</ListItemText>
+              </ListItem>
             })}
-
-          </SidebarBody>
-        </ChatSidebar>
-        <div>
-          <ChatHeader>Direct Messages</ChatHeader>
+          </List>
+        </Grid>
+        <Grid item xs={9}>
           {currentConvo && (
-            <ChatBody>
+            <List className={classes.messageArea}>
               {chatMessages.map((message: any, index: number) => {
                 const sender = currentConvo.members.find((member: any) => member.id === message.senderId);
                 const senderFirstName = sender ? sender.firstName : '';
                 return (
-                  <div key={index}>
-                    <div>{senderFirstName} @ {message.createdAt}</div>
-                    <div>{message.text}</div>
-                  </div>
-                );
+                  <ListItem key={index}>
+                    <Grid container>
+                      <Grid item xs={12}>
+                        <ListItemText primary={
+                          <Typography align="right" component="span" variant="body2">
+                            {senderFirstName} {moment(message.createdAt).isValid()
+                              ? moment(message.createdAt).fromNow()
+                              : 'just now'}
+                          </Typography>
+                        }></ListItemText>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <ListItemText secondary={
+                          <Typography align="right" component="span" variant="body2">
+                            {message.text}
+                          </Typography>
+                        }></ListItemText>
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                )
               })}
-            </ChatBody>
+            </List>
           )}
-          <ChatFooter>
-            <ChatInput
-              type="text"
-              placeholder="Type your message here..."
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-            <ChatButton onClick={handleSend}>Send</ChatButton>
-          </ChatFooter>
-        </div>
-      </ChatWrapper>
-    </ChatContainer>
+          <Divider />
+          <Grid container style={{ padding: '20px' }} alignItems="center">
+            <Grid item xs={11}>
+              <TextField value={message} onChange={(event) => setMessage(event.target.value)} onKeyDown={handleKeyDown} id="outlined-basic-email" label="Type Something" fullWidth />
+            </Grid>
+            <Grid container justifyContent="flex-end" item xs={1}>
+              <Fab color="primary" aria-label="add"><SendIcon onClick={handleSend} /></Fab>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </div>
   );
 
 }
