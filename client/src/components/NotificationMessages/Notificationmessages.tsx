@@ -6,38 +6,40 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import { io, Socket } from "socket.io-client";
 
+interface NotificationIconProps {
+  notifications: any;
+}
 
-
-function NotificationIcon () {
+const NotificationIcon: React.FC<NotificationIconProps> = ({notifications}) => {
   const [open, setOpen] = React.useState<boolean>(false);
 
 
-  const [socket, setSocket] = useState<any>(null);
-  const [notifications, setNotifications] = useState<any>([]);
-  const [notificationCount, setNotificationCount] = useState(0);
+  // const [socket, setSocket] = useState<any>(null);
+  // const [notifications, setNotifications] = useState<any>([]);
+  // const [notificationCount, setNotificationCount] = useState(0);
 
 
-  console.log(notifications, 64)
-  useEffect(() => {
-    const newSocket = io('http://localhost:3000');
-    setSocket(newSocket);
-    newSocket.on('new-follower', (data: any) => {
-      console.log(data, 65 )
-      const { sender, receiver, message } = data;
-      setNotifications((prevMessage: any) => [...prevMessage, message]);
-      let count = 0;
-      count++
-      setNotificationCount(count);
-    });
+  // console.log(notifications, 64)
+  // useEffect(() => {
+  //   const newSocket = io('http://localhost:3000');
+  //   setSocket(newSocket);
+  //   newSocket.on('new-follower', (data: any) => {
+  //     console.log(data, 65 )
+  //     const { sender, receiver, message } = data;
+  //     setNotifications((prevMessage: any) => [...prevMessage, message]);
+  //     let count = 0;
+  //     count++
+  //     setNotificationCount(count);
+  //   });
 
-    newSocket.on('connect_error', (error: any) => {
-      console.log('Socket connection error:', error);
-    });
+  //   newSocket.on('connect_error', (error: any) => {
+  //     console.log('Socket connection error:', error);
+  //   });
 
-    return () => {
-      newSocket.disconnect();
-    };
-  }, []);
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, []);
 
   // const displayNotifications = () => {
   //   let action;
@@ -58,7 +60,7 @@ function NotificationIcon () {
   return (
 <React.Fragment>
     <div className="CloseByIcon">
-      <Counter>{notificationCount}</Counter>
+      {/* <Counter>{notificationCount}</Counter> */}
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
 width="25" height="25"
 viewBox="0 0 50 50" onClick={() => setOpen(true)}>

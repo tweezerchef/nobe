@@ -3,36 +3,21 @@ import { Counter } from './style'
 import { io, Socket } from "socket.io-client";
 interface BookIconProps {
   openIcon: JSX.Element;
+  notificationCount: number;
 }
 
 
 
 
 
-const BookIcon: React.FC<BookIconProps> = ({ openIcon }) => {
+const BookIcon: React.FC<BookIconProps> = ({ openIcon, notificationCount }) => {
 
-  const [notificationCount, setNotificationCount] = useState(0);
   const [socket, setSocket] = useState<any>(null);
 
-  // useEffect(() => {
-  //   const newSocket = io('http://localhost:3000');
-  //   setSocket(newSocket);
-  //   newSocket.onAny()) => {
-
-  //   });
-
-  //   newSocket.on('connect_error', (error: any) => {
-  //     console.log('Socket connection error:', error);
-  //   });
-
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, []);
 
   return (
     <div className="BookIcon">
-      <Counter> 2 </Counter>
+      <Counter>{notificationCount}</Counter>
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
         width="40" height="40"
         viewBox="0 0 50 50">

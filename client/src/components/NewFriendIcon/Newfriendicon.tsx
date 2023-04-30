@@ -6,7 +6,7 @@ import { Counter } from './style'
 const FriendIcon: React.FC = () => {
   return (
     <div className="CloseByIcon">
-      <Counter> 2 </Counter>
+      {/* <Counter> 2 </Counter> */}
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
 width="25" height="25"
 viewBox="0 0 24 24">
