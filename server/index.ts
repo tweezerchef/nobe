@@ -22,7 +22,10 @@ io.on("connection", (socket) => {
   console.log('someone has connected!')
   io.emit("test", 'this is test')
 
-
+  socket.on('new-message', (data) => {
+    console.log('New message:', data);
+    io.emit('new-message', data);
+  });
 
 
   socket.on('disconnect', () => {
