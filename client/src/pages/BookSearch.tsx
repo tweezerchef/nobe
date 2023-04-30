@@ -1,36 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
+import BigBook from '../components/Book/BookBig';
 import axios from 'axios';
 import { useContext } from 'react';
 import UserContext from '../hooks/Context';
 import { TextField, Button } from '@material-ui/core';
 
 
-const UserRecoInputPage = () => {
+const BookPage = () => {
     const userContext = useContext(UserContext);
     const user = userContext?.user;
     const id = user?.id
-    const [books, setBooks] = useState([]);
+    const [book, setBooks] = useState<any | null>(null);
     const [title, setTitle] = useState<string>('');
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        axios.get(`/bookdata/title/searchOne?title=${title}`).then(response => setBooks(response.data))
+        axios.get(`/bookdata/title/searchOne?title=${title}`).then(response => { setBooks(response.data[0]), console.log(response.data[0]) })
         //.then(() => console.log(books))
     }
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
     };
 
-    useEffect(() => {
-        axios.get('/recommendations/random')
-            .then(res => { console.log(res.data), setBooks(res.data) }).then(() => console.log(books))
-    }, []);
-
-
-
     return (
         <div>
-            <h1>  The More Books You Rate The Better Your Recommendations Will Be </h1>
+            <h1> Search For A Book </h1>
             <form onSubmit={handleSubmit} >
                 <TextField
                     label="Book Title"
@@ -40,7 +34,7 @@ const UserRecoInputPage = () => {
                 />
                 <Button type="submit">Submit</Button>
             </form>
-            <BookDisplay books={books} id={id} />
+            {book && <BigBook book={book} id={id} />}
             {/* {books.length > 0 && <BigBook book={books[0]} id={id} />} */}
 
         </div>
@@ -49,4 +43,4 @@ const UserRecoInputPage = () => {
 
 }
 
-export default UserRecoInputPage;
+export default BookPage;
