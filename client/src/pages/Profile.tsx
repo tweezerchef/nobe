@@ -36,8 +36,8 @@ const ChatOverlay = styled(Paper)`
   top: 100%; // Position the chat right below the button
   left: 0; // Align the chat with the left edge of the button
   z-index: 1000;
-  width: 600px; // Set a fixed width for the chat
-  height: 400px; // Set a fixed height for the chat
+  width: 800px; // Set a fixed width for the chat
+  height: 600px; // Set a fixed height for the chat
   overflow-y: auto;
   background-color: white;
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);

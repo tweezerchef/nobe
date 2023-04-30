@@ -34,9 +34,12 @@ const useStyles = makeStyles({
     borderRight: '1px solid #e0e0e0'
   },
   messageArea: {
-    height: '50vh',
-    overflowY: 'auto'
-  }
+    height: 'calc(100% - 100px)', // Deduct space for the input and the header
+    overflowY: 'auto',
+  },
+  textField: {
+    width: '100%',
+  },
 });
 
 interface Message {
@@ -168,7 +171,7 @@ function Chat() {
   return (
     <div>
       <Grid container>
-        <Grid item xs={12} >
+        <Grid item xs={12}>
           <Typography variant="h5" className="header-message">Direct Messages</Typography>
         </Grid>
       </Grid>
@@ -182,18 +185,37 @@ function Chat() {
             {conversations.map((conversation: any, index: number) => {
               const otherUser = conversation.members.find((member: any) => member.firstName !== user.firstName);
               const otherUserName = otherUser ? otherUser.firstName : '';
-              return <ListItem button key={index} onClick={() => {
-                setCurrentConvo(conversation);
-                setChatMessages(conversation.messages);
-                // updateUser();
-              }
-              }>
-                <ListItemText >{otherUserName}</ListItemText>
-              </ListItem>
+              return (
+                <ListItem button key={index} onClick={() => {
+                  setCurrentConvo(conversation);
+                  setChatMessages(conversation.messages);
+                }}>
+                  <ListItemText>{otherUserName}</ListItemText>
+                </ListItem>
+              );
             })}
           </List>
         </Grid>
         <Grid item xs={9}>
+          <Grid container style={{ padding: '20px' }} alignItems="center">
+            <Grid item xs={11}>
+              <TextField
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                onKeyDown={handleKeyDown}
+                id="outlined-basic-email"
+                label="Type Something"
+                variant="outlined"
+                className={classes.textField} // Apply the 100% width style
+              />
+            </Grid>
+            <Grid container justifyContent="flex-end" item xs={1}>
+              <Fab color="primary" aria-label="add">
+                <SendIcon onClick={handleSend} />
+              </Fab>
+            </Grid>
+          </Grid>
+          <Divider />
           {currentConvo && (
             <List className={classes.messageArea}>
               {chatMessages.map((message: any, index: number) => {
@@ -224,19 +246,11 @@ function Chat() {
               })}
             </List>
           )}
-          <Divider />
-          <Grid container style={{ padding: '20px' }} alignItems="center">
-            <Grid item xs={11}>
-              <TextField value={message} onChange={(event) => setMessage(event.target.value)} onKeyDown={handleKeyDown} id="outlined-basic-email" label="Type Something" fullWidth />
-            </Grid>
-            <Grid container justifyContent="flex-end" item xs={1}>
-              <Fab color="primary" aria-label="add"><SendIcon onClick={handleSend} /></Fab>
-            </Grid>
-          </Grid>
         </Grid>
       </Grid>
     </div>
   );
+
 
 }
 
