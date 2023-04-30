@@ -21,6 +21,7 @@ import UserRecoInputPage from './pages/UserRecoInput';
 import Recommended from './pages/Recommended';
 import ReadingSpots from './pages/ReadingSpots';
 import Feed from './pages/Feed'
+import BookSearch from './pages/BookSearch';
 
 interface User {
     email: string;
@@ -62,6 +63,7 @@ function Router() {
             <Route path="/recommended" element={<Recommended />} />
             <Route path="/reading-spots" element={<ReadingSpots />} />
             <Route path="/feed" element={<Feed />} />
+            <Route path="/booksearch" element={<BookSearch />} />
         </Routes>
     );
 }
