@@ -145,11 +145,13 @@ function ReadingSpotsMap() {
                     <div className="location">{location}</div>
                     <div>
                       {!isAddingDescription && (
-                        <Button onClick={handleFormOpen}>Add Reviewn</Button>
+                        <Button onClick={handleFormOpen}>Add Review</Button>
                       )}
                       {isFormOpen && (
                         <Card>
-                          <Dialog open={open}>
+                          <Dialog open={open} fullWidth
+                            maxWidth="md">
+                            <DialogTitle>Leave This Spot a Review</DialogTitle>
                             <DialogContent>
                               <TextField
                                 autoFocus
@@ -199,7 +201,9 @@ function ReadingSpotsMap() {
                       )}
                       {isFormOpen && (
                         <Card>
-                          <Dialog open={open}>
+                          <Dialog open={open} fullWidth
+                            maxWidth="md">
+                            <DialogTitle>Leave This Spot a Review</DialogTitle>
                             <DialogContent>
                               <TextField
                                 autoFocus
