@@ -116,8 +116,16 @@ function ReadingSpotsMap() {
             <ListItemButton
               key={place.id}
               onClick={() => handleCardClick(place.Lat, place.Long)}
+              sx={{
+                border: '1px solid #ccc',
+                bgcolor: '#f0f0f0',
+                borderRadius: '4px',
+                '&:hover': {
+                  bgcolor: '#ddd'
+                }
+              }}
             >
-              <ListItemText primary={<Typography color={"white"}>{place.Location}</Typography>} />
+              <ListItemText primary={<Typography color={"gray"}>{place.Location}</Typography>} />
             </ListItemButton>
           ))}
         </List>
