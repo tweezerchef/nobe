@@ -54,7 +54,7 @@ const { ISBN10, title, author, image, description  } = book;
 })
 Review.post('/WrittenReview', async (req: Request, res: Response) => {
   const { book, review, id } = req.body;
-  console.log('poop')
+
 
   const { ISBN10, title, author, image, description  } = book;
 
@@ -74,9 +74,8 @@ Review.post('/WrittenReview', async (req: Request, res: Response) => {
       create: { booksId: booksId, userId: userId, review: review},
 
 })
-console.log(newUserBook);
 
-    }).then(()=> res.sendStatus(200)).catch((error)=> {console.log(error),res.sendStatus(500)});
+    }).then(()=> res.sendStatus(200)).catch((error)=> {console.error(error),res.sendStatus(500)});
 
 
 })

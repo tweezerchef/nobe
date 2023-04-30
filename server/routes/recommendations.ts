@@ -12,53 +12,61 @@ const Recommendations = express.Router();
 const prisma = new PrismaClient();
 async function findOrCreateBook(ISBN10: string, title: string, author: string, image: string, description: string ) {
   try {
-    const newBook = await prisma.books.upsert({
-      where: { ISBN10: ISBN10 },
+    const newBook = await prisma.Books.upsert({
+      where: { title: title },
       update: {},
-      create: {
-        ISBN10: ISBN10,
-        title: title,
-        author: author,
-        image: image,
-        description: description,
-      },
+      create: { ISBN10 : ISBN10, title: title, author: author, image: image, description: description },
+
       select: {
+        // include all columns from the books table
         id: true,
-        ISBN10: true,
         title: true,
         author: true,
-        image: true,
+        ISBN10: true,
         description: true,
-        UserBooks: {select: {
-          id: true,
-          wishlist: true,
-          owned: true,
-          booksId: true,
-          userId: true,
-          rating: true,
-          review: true,
-          LendingTable: true,
-          books: {
-            select: {
-              id: true,
-              title: true,
-              author: true,
-              ISBN10: true,
-              description: true,
-              image: true,
-              UserBooks: true,
-              Discussions: true,
-              Activity: true,
+        image: true,
+        UserBooks:  {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            Books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks:{
+                  select: {
+                  id: true,
+                  wishlist: true,
+                  owned: true,
+                  booksId: true,
+                  userId: true,
+                  rating: true,
+                  review: true,
+                  LendingTable: true,
+                  User: true
+                  }
+                },
+                Discussions: true,
+                Activity: true,
+              },
             },
-          },
-          user: true,
-        },
+            User: true,
+          }},
+        Discussions: true,
+        Activity: true,
+      },
 
-      },
-         Discussions: true,
-         Activity: true,
-      },
-    });
+  });;
 
     return newBook;
   } catch (error) {
@@ -92,7 +100,7 @@ Recommendations.get('/random', async (req : Request, res: Response) => {
 
       const transFormedData = data.data;
       const { ISBN10, title, author, image, description } = transFormedData;
-      const ourBookData = await findOrCreateBook(ISBN10, title, author, image, description);
+      const ourBookData = findOrCreateBook(ISBN10, title, author, image, description);
       return ourBookData;
     }));
 
@@ -131,26 +139,26 @@ Recommendations.get('/recommended', async (req : Request, res : Response) => {
       const promises = data.map(async (book: any) => {
         const data = await axios.get(`http://localhost:8080/google-books?title=${book}`);
        const transFormedData = data.data
-       //console.log('TransFormedData: ', transFormedData)
-       const ISBN10 = transFormedData.ISBN10;
-         const ourBookData = await axios.get(`http://localhost:8080/bookdata?ISBN10=${ISBN10}`);
+      //  console.log('TransFormedData: ', transFormedData)
+       const title = transFormedData.title;
+
+         const ourBookData = await axios.get(`http://localhost:8080/bookdata/title?title=${title}`);
          if(ourBookData.data && ourBookData.data !== null){
-          //console.log('ourBookData', ourBookData);
           responseArray.push(ourBookData.data)
          }
-         else{responseArray.push(transFormedData);}
+         else{
+          responseArray.push(transFormedData);
+        }
        });
     // Don't forget to return Promise.all() to wait for all promises to resolve
     return Promise.all(promises);
   })
   .then(() => {
-    //console.log('response', responseArray)
    const uniqueBooks = responseArray.filter((book, index, self) =>
    index === self.findIndex((b) => (
      b.title === book.title && b.author === book.author && b.ISBN10 === book.ISBN10
    ))
  )
-//console.log('yes', uniqueBooks)
  return uniqueBooks})
  .then((response)=>( res.status(200).send(response)))
  .catch((error) => console.error('Error:', error));

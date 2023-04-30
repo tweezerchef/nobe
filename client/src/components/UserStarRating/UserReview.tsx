@@ -19,15 +19,15 @@ const UserReview: React.FC<UserReviewProps> = ({ open, handleClose, book, id }) 
     const [review, setReview] = useState('');
 
     const handleReviewChange = ((event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault()
         setReview(event.target.value)
     })
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault;
-        axios.post('/review/WrittenReview', { review, book, id }).then(handleClose)
+        event.preventDefault(); // Add this line to prevent default form submission behavior
+        axios.post('/review/WrittenReview', { review, book, id }).then(handleClose);
+    };
 
-
-    }
     return (
         <div>
             <Dialog open={open} onClose={handleClose}>

@@ -35,19 +35,31 @@ BookData.get('/', async (req, res) => {
               rating: true,
               review: true,
               LendingTable: true,
-              // Books: {
-              //   select: {
-              //     id: true,
-              //     title: true,
-              //     author: true,
-              //     ISBN10: true,
-              //     description: true,
-              //     image: true,
-              //     UserBooks: true,
-              //     Discussions: true,
-              //     Activity: true,
-              //   },
-              // },
+              Books: {
+                select: {
+                  id: true,
+                  title: true,
+                  author: true,
+                  ISBN10: true,
+                  description: true,
+                  image: true,
+                  UserBooks:{
+                    select: {
+                    id: true,
+                    wishlist: true,
+                    owned: true,
+                    booksId: true,
+                    userId: true,
+                    rating: true,
+                    review: true,
+                    LendingTable: true,
+                    User: true
+                    }
+                  },
+                  Discussions: true,
+                  Activity: true,
+                },
+              },
               User: true,
             }},
           Discussions: true,
@@ -69,30 +81,55 @@ BookData.post('/title/owned', async (req, res) => {
     update: {owned: owned},
     create: { ISBN10 : ISBN10, title: title, author: author, image: image, description: description },
 
-  select: {
-    id: true,
-    title: true,
-    author: true,
-    ISBN10: true,
-    description: true,
-    image: true,
-    UserBooks: {
-      select:{
+    select: {
+      // include all columns from the books table
       id: true,
-      wishlist: true,
-      owned: true,
-      booksId: true,
-      userId: true,
-      rating: true,
-      review: true,
-      LendingTable: true,
-      User: true,
-    }
-  },
-    Discussions: true,
-    Activity: true,
-    Clubs_Books: true,
-  },});
+      title: true,
+      author: true,
+      ISBN10: true,
+      description: true,
+      image: true,
+      UserBooks:  {
+        select: {
+          id: true,
+          wishlist: true,
+          owned: true,
+          booksId: true,
+          userId: true,
+          rating: true,
+          review: true,
+          LendingTable: true,
+          Books: {
+            select: {
+              id: true,
+              title: true,
+              author: true,
+              ISBN10: true,
+              description: true,
+              image: true,
+              UserBooks:{
+                select: {
+                id: true,
+                wishlist: true,
+                owned: true,
+                booksId: true,
+                userId: true,
+                rating: true,
+                review: true,
+                LendingTable: true,
+                User: true
+                }
+              },
+              Discussions: true,
+              Activity: true,
+            },
+          },
+          User: true,
+        }},
+      Discussions: true,
+      Activity: true,
+    },
+  });
 res.send(newBook)
 })
 BookData.post('/title/wishlist', async (req, res) => {
@@ -102,32 +139,136 @@ BookData.post('/title/wishlist', async (req, res) => {
     update: {},
     create: { ISBN10 : ISBN10, title: title, author: author, image: image, description: description },
 
-  select: {
-    id: true,
-    title: true,
-    author: true,
-    ISBN10: true,
-    description: true,
-    image: true,
-    // UserBooks: {
-    //   //id: true,
-    //   wishlist: true,
-    //   owned: true,
-    //   booksId: true,
-    //   userId: true,
-    //   rating: true,
-    //   review: true,
-    //   LendingTable: true,
-    //   User: true,
-    // },
-    Discussions: true,
-    Activity: true,
-    Clubs_Books: true,
-  },});
+    select: {
+      // include all columns from the books table
+      id: true,
+      title: true,
+      author: true,
+      ISBN10: true,
+      description: true,
+      image: true,
+      UserBooks:  {
+        select: {
+          id: true,
+          wishlist: true,
+          owned: true,
+          booksId: true,
+          userId: true,
+          rating: true,
+          review: true,
+          LendingTable: true,
+          Books: {
+            select: {
+              id: true,
+              title: true,
+              author: true,
+              ISBN10: true,
+              description: true,
+              image: true,
+              UserBooks:{
+                select: {
+                id: true,
+                wishlist: true,
+                owned: true,
+                booksId: true,
+                userId: true,
+                rating: true,
+                review: true,
+                LendingTable: true,
+                User: true
+                }
+              },
+              Discussions: true,
+              Activity: true,
+            },
+          },
+          User: true,
+        }},
+      Discussions: true,
+      Activity: true,
+    },
+
+});
 
 
 res.send(newBook)
 })
+BookData.get('/title/searchOne', async (req, res) => {
+  let book
+  const title = req.query.title;
+try {
+     book = await prisma.books.findFirst({
+      where: {
+        title: {
+          contains: title,
+        },
+      },
+      select: {
+        // include all columns from the books table
+        id: true,
+        title: true,
+        author: true,
+        ISBN10: true,
+        description: true,
+        image: true,
+        UserBooks:  {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            Books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks:{
+                  select: {
+                  id: true,
+                  wishlist: true,
+                  owned: true,
+                  booksId: true,
+                  userId: true,
+                  rating: true,
+                  review: true,
+                  LendingTable: true,
+                  User: true
+                  }
+                },
+                Discussions: true,
+                Activity: true,
+              },
+            },
+            User: true,
+          }},
+        Discussions: true,
+        Activity: true,
+      },
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error retrieving book data");
+  } finally {
+    if (!book || book === null) {
+      try {
+        const data = await axios.get(`http://localhost:8080/google-books?title=${title}`);
+        book = data.data;
+      } catch (googleBooksError) {
+        console.error(googleBooksError);
+        res.status(500).send("Error retrieving book data from Google Books");
+      }
+    }
+    res.send([book]);
+  }
+});
 BookData.get('/title', async (req, res) => {
   const title = req.query.title;
 try {
@@ -138,32 +279,55 @@ try {
         },
       },
       select: {
+        // include all columns from the books table
         id: true,
         title: true,
         author: true,
         ISBN10: true,
         description: true,
         image: true,
+        UserBooks:  {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            Books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks:{
+                  select: {
+                  id: true,
+                  wishlist: true,
+                  owned: true,
+                  booksId: true,
+                  userId: true,
+                  rating: true,
+                  review: true,
+                  LendingTable: true,
+                  User: true
+                  }
+                },
+                Discussions: true,
+                Activity: true,
+              },
+            },
+            User: true,
+          }},
         Discussions: true,
         Activity: true,
-        Clubs_Books: true,
-        UserBooks:{
-          select:{
-          id: true,
-          wishlist: true,
-          owned: true,
-          booksId: true,
-          userId: true,
-          rating: true,
-          review: true,
-          LendingTable: true,
-          User: true,
-        }
-      }
-
-      }
+      },
     });
-    res.send([book]);
+    res.send(book);
   } catch (error) {
     console.error(error);
     res.status(500).send("Error retrieving book data");

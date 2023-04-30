@@ -22,7 +22,7 @@ import Reviews from './Reviews'
 const BigBook = (props: any) => {
     const [reviewOpen, setReviewOpen] = useState(false);
     const { book, id, onClose, userRating } = props;
-    const { UserBooks } = book
+    const UserBooks = book?.UserBooks
     const handleOnClick = () => {
         onClose();
     };
@@ -108,7 +108,11 @@ const BigBook = (props: any) => {
                     }}
                 >
                     <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
-                        <Reviews UserBooks={UserBooks} />
+                        {UserBooks && (
+                            <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
+                                <Reviews UserBooks={UserBooks} />
+                            </Typography>
+                        )}
                     </Typography>
                     <Divider orientation="vertical" />
                     <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>

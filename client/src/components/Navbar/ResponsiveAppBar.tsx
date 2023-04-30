@@ -95,7 +95,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
             Nobe
           </Typography>
 
-          <Box sx={{ flexGrow: "1 !important" , display: { xs: "flex !important", md: "none !important", color: "white !important" } }}>
+          <Box sx={{ flexGrow: "1 !important", display: { xs: "flex !important", md: "none !important", color: "white !important" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -129,7 +129,17 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               }}
               >
                 <Typography
+                >
+                  <Link to="/booksearch" >
+                    BookSearch</Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu} sx={{
+                display: "block !important", padding: "8px !important"
+              }}
               >
+                <Typography
+                >
                   <Link to="/trending" >
                     Trending</Link>
                 </Typography>
@@ -138,7 +148,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
                 display: "block !important", padding: "8px !important"
               }} >
                 <Typography
-              >
+                >
                   <Link to="/clubs" >
                     Clubs</Link>
                 </Typography>
@@ -246,6 +256,12 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               sx={{ my: "2 !important", color: "white !important", display: "block !important" }}
             >
               <StyledLink to="/feed">Feed</StyledLink>
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: "2 !important", color: "white !important", display: "block !important" }}
+            >
+              <StyledLink to="/booksearch">Book Search</StyledLink>
             </Button>
           </Box>
           <Box sx={{ flexGrow: "0 !important", display: "block !important" }}>
