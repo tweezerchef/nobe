@@ -37,14 +37,14 @@ const Book = React.memo((props: any) => {
         setShowBigBook(true);
     };
     let value = 0
-
-    book.UserBooks.every((entry: any) => {
-        if (entry.userId === id && entry.rating !== 0) {
-            value = entry.rating;
-            return false
-        }
-    })
-
+    if (book.UserBooks && book.UserBooks.length > 0) {
+        book.UserBooks.every((entry: any) => {
+            if (entry.userId === id && entry.rating !== 0) {
+                value = entry.rating;
+                return false
+            }
+        })
+    }
     if (showBigBook) {
         return <BigBook book={book} id={id} userRating={value} onClose={() => setShowBigBook(false)} />;
     }
