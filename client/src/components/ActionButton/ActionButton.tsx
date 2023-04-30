@@ -16,7 +16,7 @@ import FriendIcon from '../NewFriendIcon/Newfriendicon';
 import NotificationIcon from '../NotificationMessages/Notificationmessages';
 import Draggable from "react-draggable";
 import ForumIcon from '../DiscussionForum/Discussionforum';
-import  React, { useState, useContext } from 'react';
+import  React, { useState, useContext, useEffect } from 'react';
 import UserContext from '../../hooks/Context'
 
 const actions = [
@@ -35,7 +35,7 @@ const OpenIconSpeedDial: React.FC = () => {
 
   const [userFirstName, setUserFistName] = useState("");
   const [onlineUser, setOnlineUser] = useState("");
-  // const [socket, setSocket] = useState<any>(null);
+   const [socket, setSocket] = useState<any>(null);
   const [notifications, setNotifications] = useState<any>([]);
   const [notificationCount, setNotificationCount] = useState(0);
 
@@ -45,24 +45,46 @@ const OpenIconSpeedDial: React.FC = () => {
   //const id = user.id;
    console.log(user);
 
-   const socket = io("http://localhost:3000");
-
-
-  React.useEffect(() => {
-    console.log(socket.on('test', (msg)=> {
-      console.log(msg);
-    }));
-  }, []);
 
 //   React.useEffect(() => {
 //     setSocket(io("http://localhost:3000"));
 //  }, []);
 
- React.useEffect(() => {
-   if (socket) {
-     socket?.emit("newUser", user);
-   }
- }, [socket, user]);
+  // React.useEffect(() => {
+  //   console.log(socket.on('test', (msg: any)=> {
+  //     console.log(msg);
+  //   }));
+  // }, []);
+
+// React.useEffect(() => {
+  //   console.log(socket.on('test', (msg: any)=> {
+  //     console.log(msg);
+  //   }));
+  // }, []);
+
+useEffect(() => {
+  const newSocket = io('http://localhost:3000');
+  setSocket(newSocket);
+  newSocket.on('new-follower', (data: any) => {
+    console.log(data, 65 )
+    const { sender, receiver, message } = data;
+    setNotifications((prevMessage: any) => [...prevMessage, message]);
+
+  });
+  newSocket.on('connect_error', (error: any) => {
+    console.log('Socket connection error:', error);
+  });
+
+  return () => {
+    newSocket.disconnect();
+  };
+}, []);
+
+//  React.useEffect(() => {
+//    if (socket) {
+//      socket?.emit("newUser", user);
+//    }
+//  }, [socket, user]);
 
 
   return (

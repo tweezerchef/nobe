@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 function UserDisplay({ user }: { user: any }) {
   const userBooks = user.UserBooks;
-  //console.log(userBooks, 10)
+  console.log(userBooks, 10)
 
   // const userContext = useContext(UserContext);
   // const profile = userContext?.user;
@@ -38,7 +38,7 @@ function UserDisplay({ user }: { user: any }) {
     setBooks(booksArray);
   }, [userBooks]);
 
-  //console.log(books, 24)
+  console.log(books, 24)
 
   return (
     <div>

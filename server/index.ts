@@ -92,6 +92,10 @@ io.on("connection", (socket) => {
     io.emit('new-message', data);
   });
 
+  socket.on('new-follow', (data) => {
+    console.log('newFollower:', data);
+      io.emit('new-follower', data)
+  })
 
   socket.on('disconnect', () => {
     console.log('someone has disconnected');
