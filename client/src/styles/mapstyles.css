@@ -17,7 +17,7 @@ a {
 
 .spots-container {
   display: flex;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 60px);
 }
 
 .favorite-header {
@@ -29,7 +29,7 @@ a {
 }
 
 .cards-container {
-  height: calc(100vh - 350px);
+  height: calc(90vh - 350px);
   overflow-y: auto;
   padding-top: 1rem;
   padding-right: 10px;
@@ -54,7 +54,7 @@ a {
 
 .map-container {
   width: 100%;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 60px);
 }
 
 .spots-map {

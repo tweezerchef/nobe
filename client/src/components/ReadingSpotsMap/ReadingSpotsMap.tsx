@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import { FixedSizeList } from 'react-window';
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Places from "./places";
-import { Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Portal } from '@mui/material';
+import { Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Portal, List, ListItem, ListItemText, ListItemButton, Typography } from '@mui/material';
 import axios from "axios";
 import "../../styles/mapstyles.css";
 
@@ -110,14 +111,16 @@ function ReadingSpotsMap() {
           setLocation={setLocation}
         />
         <h3 className="top-spots-header">Top Spots</h3>
-        <div className="cards-container">
+        <List className="cards-container">
           {savedPlaces?.map((place) => (
-            <Card key={place.id} onClick={() => handleCardClick(place.Lat, place.Long)}>
-              <div>{place.Location}</div>
-              {place.Description && <div>{place.Description}</div>}
-            </Card>
+            <ListItemButton
+              key={place.id}
+              onClick={() => handleCardClick(place.Lat, place.Long)}
+            >
+              <ListItemText primary={<Typography color={"white"}>{place.Location}</Typography>} />
+            </ListItemButton>
           ))}
-        </div>
+        </List>
       </div>
       <div className="spots-map">
         <GoogleMap
