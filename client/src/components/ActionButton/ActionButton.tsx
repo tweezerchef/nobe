@@ -92,12 +92,12 @@ const OpenIconSpeedDial: React.FC = () => {
 
   return (
 
-      <Box sx={{ width: 100, height: 80, transform: 'translateZ(0px)', flexGrow: 1 }}>
+      // <Box sx={{ width: 100, height: 80, transform: 'translateZ(0px)', flexGrow: 1 }}>
         <SpeedDial
           ariaLabel="SpeedDial openIcon example"
-          sx={{ position: 'absolute', bottom: 16, right: 16 }}
+          sx={{ position: 'absolute'}}
           icon={<BookIcon openIcon={<EditIcon />} />}
-          direction={'up'}
+          direction={'down'}
         >
           {actions.map((action) => (
             <SpeedDialAction
@@ -107,7 +107,7 @@ const OpenIconSpeedDial: React.FC = () => {
             />
           ))}
         </SpeedDial>
-      </Box>
+      // </Box>
   );
 }
 export default OpenIconSpeedDial;

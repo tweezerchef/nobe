@@ -25,6 +25,9 @@ function NotificationIcon () {
       console.log(data, 65 )
       const { sender, receiver, message } = data;
       setNotifications((prevMessage: any) => [...prevMessage, message]);
+      let count = 0;
+      count++
+      setNotificationCount(count);
     });
 
     newSocket.on('connect_error', (error: any) => {
@@ -90,19 +93,9 @@ viewBox="0 0 50 50" onClick={() => setOpen(true)}>
             }}
             onClick={() => setOpen(false)}
           />
-          <Typography
-            component="h2"
-            id="modal-title"
-            level="h4"
-            textColor="inherit"
-            fontWeight="lg"
-            mb={1}
-          >
-            This is the modal title
-          </Typography>
           <Typography id="modal-desc" textColor="text.tertiary">
-
-          </Typography>
+  { notifications.map((message: any) => <div>{message}</div>)}
+        </Typography>
         </Sheet>
       </Modal>
 </div>

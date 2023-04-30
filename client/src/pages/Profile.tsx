@@ -82,7 +82,7 @@ const Profile = () => {
     console.log(user, 82)
     try {
       newSocket.emit('new-follow', {
-        message: `${userFirstName}has followed you`
+        message: `${userFirstName} has followed you`
       })
       await axios.post('/api/friendship', { userId, friendId });
     } catch (error) {
