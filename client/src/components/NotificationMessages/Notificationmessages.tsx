@@ -5,8 +5,12 @@ import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 
+interface NotificationIconProps {
+  notifications: any[];
+  notificationCount: number;
+}
 
-const NotificationIcon: React.FC = () => {
+function NotificationIcon ({ notifications, notificationCount }: {notifications: any, notificationCount: any}) {
   const [open, setOpen] = React.useState<boolean>(false);
 
 

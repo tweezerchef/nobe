@@ -35,7 +35,7 @@ const OpenIconSpeedDial: React.FC = () => {
 
   const [userFirstName, setUserFistName] = useState("");
   const [onlineUser, setOnlineUser] = useState("");
-   const [socket, setSocket] = useState<any>(null);
+  const [socket, setSocket] = useState<any>(null);
   const [notifications, setNotifications] = useState<any>([]);
   const [notificationCount, setNotificationCount] = useState(0);
 
@@ -61,7 +61,7 @@ const OpenIconSpeedDial: React.FC = () => {
   //     console.log(msg);
   //   }));
   // }, []);
-
+console.log(notifications, 64)
 useEffect(() => {
   const newSocket = io('http://localhost:3000');
   setSocket(newSocket);
@@ -69,8 +69,8 @@ useEffect(() => {
     console.log(data, 65 )
     const { sender, receiver, message } = data;
     setNotifications((prevMessage: any) => [...prevMessage, message]);
-
   });
+
   newSocket.on('connect_error', (error: any) => {
     console.log('Socket connection error:', error);
   });
