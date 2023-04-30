@@ -37,6 +37,7 @@ function Places({ setLatLng, setAddress }: PlacesProps) {
     } catch (err) {
       console.error(err);
     }
+    setValue("");
   };
 
   return (
