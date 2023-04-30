@@ -95,7 +95,7 @@ function Chat() {
       };
       try {
         const response = await axios.post(`/direct-messages/${currentConvo.id}/messages`, newMessage);
-        setChatMessages([...chatMessages, response.data]);
+        // setChatMessages([...chatMessages, response.data]);
         socket.emit('new-message', {
           conversationId: currentConvo.id,
           message: response.data,
