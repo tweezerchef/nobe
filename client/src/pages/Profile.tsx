@@ -47,7 +47,8 @@ const Profile = () => {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(`/user/${friendId}`);
+      const response = await axios.get(`/user/id?id=${friendId}`);
+      console.log(response.data)
       setProfile(response.data);
     } catch (error) {
       console.error(error);
