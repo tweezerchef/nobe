@@ -22,19 +22,11 @@ import UserContext from '../../hooks/Context'
 
 
 
-const actions = [
-  { icon: <NotificationIcon />, name: 'Notifications Feed' },
-  { icon: <FriendIcon />, name: 'Friends' },
-  { icon: <MessageIcon />, name: 'Messages' },
-  { icon: <CloseBy />, name: 'Near By' },
-  { icon: <ForumIcon />, name: 'Discussions' },
-];
+
 
 
 
 const OpenIconSpeedDial: React.FC = () => {
-
-  //const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
 
   const [userFirstName, setUserFistName] = useState("");
   const [onlineUser, setOnlineUser] = useState("");
@@ -42,12 +34,38 @@ const OpenIconSpeedDial: React.FC = () => {
   const [notifications, setNotifications] = useState<any>([]);
   const [notificationCount, setNotificationCount] = useState(0);
 
-
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   //const id = user.id;
    //console.log(user);
 
+  const markAsRead = () => {
+    setNotifications([])
+    setNotificationCount(0);
+  }
+  //const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
+// creating the notfication for adding a new friend
+ //console.log(notifications, 64)
+ useEffect(() => {
+  const newSocket = io('http://localhost:3000');
+  setSocket(newSocket);
+  newSocket.on('new-follower', (data: any) => {
+    console.log(data, 65 )
+    const { sender, receiver, message } = data;
+    setNotifications((prevMessage: any) => [...prevMessage, message]);
+    let count = 0;
+    count++
+    setNotificationCount(count);
+  });
+
+  newSocket.on('connect_error', (error: any) => {
+    console.log('Socket connection error:', error);
+  });
+
+  return () => {
+    newSocket.disconnect();
+  };
+}, []);
 
 //   React.useEffect(() => {
 //     setSocket(io("http://localhost:3000"));
@@ -65,14 +83,15 @@ const OpenIconSpeedDial: React.FC = () => {
   //   }));
   // }, []);
 // console.log(notifications, 64)
+
 // useEffect(() => {
 //   const newSocket = io('http://localhost:3000');
 //   setSocket(newSocket);
-//   newSocket.on('new-follower', (data: any) => {
-//     console.log(data, 65 )
-//     const { sender, receiver, message } = data;
-//     setNotifications((prevMessage: any) => [...prevMessage, message]);
-//   });
+//   newSocket.onAny(() => {
+//     let count = 0;
+//     count++;
+//     setNotificationCount(count);
+//   })
 
 //   newSocket.on('connect_error', (error: any) => {
 //     console.log('Socket connection error:', error);
@@ -89,14 +108,21 @@ const OpenIconSpeedDial: React.FC = () => {
 //    }
 //  }, [socket, user]);
 
+const actions = [
+  { icon: <NotificationIcon notifications={notifications} notificationCount={notificationCount} markAsRead={markAsRead}/>, name: 'Notifications Feed' },
+  { icon: <FriendIcon notificationCount={notificationCount}/>, name: 'Friends' },
+  { icon: <MessageIcon />, name: 'Messages' },
+  { icon: <CloseBy />, name: 'Near By' },
+  { icon: <ForumIcon />, name: 'Discussions' },
+];
 
   return (
     <Draggable>
         <SpeedDial
           ariaLabel="SpeedDial openIcon example"
           sx={{ position: 'absolute'}}
-          icon={<BookIcon openIcon={<EditIcon />} />}
-          direction={'down'}
+          icon={<BookIcon notificationCount={notificationCount} openIcon={<EditIcon />} />}
+          direction={'up'}
         >
           {actions.map((action) => (
             <SpeedDialAction
