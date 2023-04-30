@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
-import { FixedSizeList } from 'react-window';
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Places from "./places";
-import { Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Portal, List, ListItem, ListItemText, ListItemButton, Typography } from '@mui/material';
+import { Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, List, ListItemText, ListItemButton, Typography } from '@mui/material';
 import axios from "axios";
 import "../../styles/mapstyles.css";
 
