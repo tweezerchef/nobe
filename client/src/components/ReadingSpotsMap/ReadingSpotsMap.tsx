@@ -199,21 +199,23 @@ function ReadingSpotsMap() {
                       )}
                       {isFormOpen && (
                         <Card>
-                          <DialogContent>
-                            <TextField
-                              autoFocus
-                              margin="dense"
-                              label="Description"
-                              fullWidth
-                              variant="outlined"
-                              value={description}
-                              onChange={(e) => setDescription(e.target.value)}
-                            />
-                          </DialogContent>
-                          <DialogActions>
-                            <Button onClick={handleFormCancel}>Cancel</Button>
-                            <Button onClick={handleFormSubmit}>Save</Button>
-                          </DialogActions>
+                          <Dialog open={open}>
+                            <DialogContent>
+                              <TextField
+                                autoFocus
+                                margin="dense"
+                                label="Description"
+                                fullWidth
+                                variant="outlined"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                              />
+                            </DialogContent>
+                            <DialogActions>
+                              <Button onClick={handleFormCancel}>Cancel</Button>
+                              <Button onClick={handleFormSubmit}>Save</Button>
+                            </DialogActions>
+                          </Dialog>
                         </Card>
                       )}
                     </div>
