@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Places from "./places";
 import { Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
@@ -25,6 +25,7 @@ function ReadingSpotsMap() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [description, setDescription] = useState<string>("");
   const [isAddingDescription, setIsAddingDescription] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(() => ({ lat: 29.9511, lng: -90.0715 }), []);
@@ -36,15 +37,6 @@ function ReadingSpotsMap() {
 
   const onLoad = useCallback((map: any) => (mapRef.current = map), []);
 
-  useEffect(() => {
-    const fetchSavedPlaces = async () => {
-      const response = await axios.get('/api/places-to-read/places');
-      setSavedPlaces(response.data);
-    };
-    setDescription("");
-    fetchSavedPlaces();
-  }, [selectedPlace]);
-
   const handleMarkerClick = useCallback(() => {
     setShowInfoWindow((prev) => !prev);
   }, []);
@@ -53,6 +45,10 @@ function ReadingSpotsMap() {
     setSelectedPlace((prev) => (prev === placeId ? null : placeId));
     setIsFormOpen(false);
     setIsAddingDescription(false);
+  }, []);
+
+  const handleCardClick = useCallback((lat: number, lng: number) => {
+    mapRef.current?.panTo({ lat, lng });
   }, []);
 
   const handleFormOpen = () => {
@@ -65,10 +61,6 @@ function ReadingSpotsMap() {
     setIsAddingDescription(false);
     setShowInfoWindow(false);
   };
-
-  const handleCardClick = useCallback((lat: number, lng: number) => {
-    mapRef.current?.panTo({ lat, lng });
-  }, []);
 
   const handleFormSubmit = async () => {
     try {
@@ -95,6 +87,15 @@ function ReadingSpotsMap() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    const fetchSavedPlaces = async () => {
+      const response = await axios.get('/api/places-to-read/places');
+      setSavedPlaces(response.data);
+    };
+    setDescription("");
+    fetchSavedPlaces();
+  }, [selectedPlace]);
 
   return (
     <div className="spots-container">
