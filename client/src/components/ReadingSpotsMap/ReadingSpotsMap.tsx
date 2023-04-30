@@ -1,7 +1,7 @@
-import { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Places from "./places";
-import { Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Portal } from '@mui/material';
 import axios from "axios";
 import "../../styles/mapstyles.css";
 
@@ -18,13 +18,14 @@ interface Place {
 
 function ReadingSpotsMap() {
   const [latlng, setLatLng] = useState<LatLngLiteral>();
-  const [address, setAddress] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [savedPlaces, setSavedPlaces] = useState<Place[]>([]);
   const [selectedPlace, setSelectedPlace] = useState<number | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [description, setDescription] = useState<string>("");
   const [isAddingDescription, setIsAddingDescription] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(() => ({ lat: 29.9511, lng: -90.0715 }), []);
@@ -36,15 +37,6 @@ function ReadingSpotsMap() {
 
   const onLoad = useCallback((map: any) => (mapRef.current = map), []);
 
-  useEffect(() => {
-    const fetchSavedPlaces = async () => {
-      const response = await axios.get('/api/places-to-read/places');
-      setSavedPlaces(response.data);
-    };
-    setDescription("");
-    fetchSavedPlaces();
-  }, [selectedPlace]);
-
   const handleMarkerClick = useCallback(() => {
     setShowInfoWindow((prev) => !prev);
   }, []);
@@ -55,9 +47,14 @@ function ReadingSpotsMap() {
     setIsAddingDescription(false);
   }, []);
 
+  const handleCardClick = useCallback((lat: number, lng: number) => {
+    mapRef.current?.panTo({ lat, lng });
+  }, []);
+
   const handleFormOpen = () => {
     setIsFormOpen(true);
     setIsAddingDescription(true);
+    setOpen(true);
   };
 
   const handleFormCancel = () => {
@@ -65,10 +62,6 @@ function ReadingSpotsMap() {
     setIsAddingDescription(false);
     setShowInfoWindow(false);
   };
-
-  const handleCardClick = useCallback((lat: number, lng: number) => {
-    mapRef.current?.panTo({ lat, lng });
-  }, []);
 
   const handleFormSubmit = async () => {
     try {
@@ -96,6 +89,15 @@ function ReadingSpotsMap() {
     }
   };
 
+  useEffect(() => {
+    const fetchSavedPlaces = async () => {
+      const response = await axios.get('/api/places-to-read/places');
+      setSavedPlaces(response.data);
+    };
+    setDescription("");
+    fetchSavedPlaces();
+  }, [selectedPlace]);
+
   return (
     <div className="spots-container">
       <div className="controls">
@@ -105,7 +107,7 @@ function ReadingSpotsMap() {
             setLatLng(position);
             mapRef.current?.panTo(position);
           }}
-          setAddress={setAddress}
+          setLocation={setLocation}
         />
         <h3 className="top-spots-header">Top Spots</h3>
         <div className="cards-container">
@@ -140,28 +142,32 @@ function ReadingSpotsMap() {
                   options={{ maxWidth: 250 }}
                 >
                   <div>
-                    <div>{address}</div>
+                    <div className="location">{location}</div>
                     <div>
                       {!isAddingDescription && (
-                        <Button onClick={handleFormOpen}>Add Description</Button>
+                        <Button onClick={handleFormOpen}>Add Review</Button>
                       )}
                       {isFormOpen && (
                         <Card>
-                          <DialogContent>
-                            <TextField
-                              autoFocus
-                              margin="dense"
-                              label="Description"
-                              fullWidth
-                              variant="outlined"
-                              value={description}
-                              onChange={(e) => setDescription(e.target.value)}
-                            />
-                          </DialogContent>
-                          <DialogActions>
-                            <Button onClick={handleFormCancel}>Cancel</Button>
-                            <Button onClick={handleFormSubmit}>Save</Button>
-                          </DialogActions>
+                          <Dialog open={open} fullWidth
+                            maxWidth="md">
+                            <DialogTitle>Leave This Spot a Review</DialogTitle>
+                            <DialogContent>
+                              <TextField
+                                autoFocus
+                                margin="dense"
+                                label="Description"
+                                fullWidth
+                                variant="outlined"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                              />
+                            </DialogContent>
+                            <DialogActions>
+                              <Button onClick={handleFormCancel}>Cancel</Button>
+                              <Button onClick={handleFormSubmit}>Save</Button>
+                            </DialogActions>
+                          </Dialog>
                         </Card>
                       )}
                     </div>
@@ -187,29 +193,33 @@ function ReadingSpotsMap() {
                   options={{ maxWidth: 250 }}
                 >
                   <div>
-                    <div>{place.Location}</div>
-                    {place.Description && <div>{place.Description}</div>}
+                    <div className="location">{place.Location}</div>
+                    {place.Description && <div className="description">{place.Description}</div>}
                     <div>
                       {!isAddingDescription && (
-                        <Button onClick={handleFormOpen}>Add Description</Button>
+                        <Button onClick={handleFormOpen}>Add Review</Button>
                       )}
                       {isFormOpen && (
                         <Card>
-                          <DialogContent>
-                            <TextField
-                              autoFocus
-                              margin="dense"
-                              label="Description"
-                              fullWidth
-                              variant="outlined"
-                              value={description}
-                              onChange={(e) => setDescription(e.target.value)}
-                            />
-                          </DialogContent>
-                          <DialogActions>
-                            <Button onClick={handleFormCancel}>Cancel</Button>
-                            <Button onClick={handleFormSubmit}>Save</Button>
-                          </DialogActions>
+                          <Dialog open={open} fullWidth
+                            maxWidth="md">
+                            <DialogTitle>Leave This Spot a Review</DialogTitle>
+                            <DialogContent>
+                              <TextField
+                                autoFocus
+                                margin="dense"
+                                label="Description"
+                                fullWidth
+                                variant="outlined"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                              />
+                            </DialogContent>
+                            <DialogActions>
+                              <Button onClick={handleFormCancel}>Cancel</Button>
+                              <Button onClick={handleFormSubmit}>Save</Button>
+                            </DialogActions>
+                          </Dialog>
                         </Card>
                       )}
                     </div>

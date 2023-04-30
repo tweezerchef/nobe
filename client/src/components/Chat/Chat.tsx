@@ -70,16 +70,13 @@ function Chat() {
 
 
   useEffect(() => {
-    setConversations(user.Conversations);
-
     const newSocket = io('http://localhost:3000');
     setSocket(newSocket);
-
     newSocket.on('new-message', (data: any) => {
       const { conversationId, message } = data;
-      // if (conversationId === currentConvo?.id) {
-      setChatMessages((prevMessages) => [...prevMessages, message]);
-      // }
+      if (conversationId === currentConvo?.id) {
+        setChatMessages((prevMessages) => [...prevMessages, message]);
+      }
     });
 
     newSocket.on('connect_error', (error: any) => {
@@ -89,10 +86,11 @@ function Chat() {
     return () => {
       newSocket.disconnect();
     };
-  }, []);
-  console.log(user)
-  console.log(conversations)
+  }, [currentConvo]);
 
+  useEffect(() => {
+    setConversations(user.Conversations);
+  }, []);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
@@ -109,10 +107,8 @@ function Chat() {
         otherUser: searchQuery
       });
       const newConversation: any = response.data;
-      console.log(newConversation)
       setConversations(prevConversations => [...prevConversations, newConversation]);
       setCurrentConvo(newConversation);
-
     } catch (error) {
       console.error(error);
     }
