@@ -47,7 +47,7 @@ const OpenIconSpeedDial: React.FC = () => {
   // creating the notfication for adding a new friend
   //console.log(notifications, 64)
   useEffect(() => {
-    const newSocket = io('http://ec2-3-19-30-206.us-east-2.compute.amazonaws.com:3000');
+    const newSocket = io('http://localhost:3000');
     setSocket(newSocket);
     newSocket.on('new-follower', (data: any) => {
       console.log(data, 65)
