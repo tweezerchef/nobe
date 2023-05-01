@@ -13,7 +13,7 @@ import { Server } from "socket.io";
 
 const io = new Server({
   cors: {
-    origin: "http://localhost:8080"
+    origin: "http://ec2-3-19-30-206.us-east-2.compute.amazonaws.com:8080"
   }
 });
 
@@ -83,9 +83,9 @@ let onlineUsers: User[] = [];
 io.on("connection", (socket) => {
   console.log('someone has connected!')
   io.emit("test", 'this is test')
-// socket.on("newUser", (user)=> {
-//   addNewUser(user.firstName, socket.id, user.id);
-// })
+  // socket.on("newUser", (user)=> {
+  //   addNewUser(user.firstName, socket.id, user.id);
+  // })
 
   socket.on('new-message', (data) => {
     console.log('New message:', data);
@@ -94,7 +94,7 @@ io.on("connection", (socket) => {
 
   socket.on('new-follow', (data) => {
     console.log('newFollower:', data);
-      io.emit('new-follower', data)
+    io.emit('new-follower', data)
   })
 
   socket.on('disconnect', () => {
@@ -136,7 +136,7 @@ const prisma = new PrismaClient();
 //Middleware
 app.use(express.static(CLIENT_PATH));
 
-const allowedOrigins = ['http://ec2-18-119-156-72.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
+const allowedOrigins = ['http://ec2-3-19-30-206.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
 
 app.use(cors({
   origin: allowedOrigins,
@@ -305,20 +305,20 @@ app.post("/login", async (req, res) => {
         expiresIn: "1d",
       }),
 
-      res.status(201).json({
-        message: "Login was successful",
-        user: {
-          // firstName: profile?.given_name,
-          // lastName: profile?.family_name,
-          // picture: profile?.picture,
-          // id: userData.id,
-          // email: profile?.email,
-          // token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
-          //   expiresIn: "1d",
-          // }),
-          userData
-        },
-      });
+        res.status(201).json({
+          message: "Login was successful",
+          user: {
+            // firstName: profile?.given_name,
+            // lastName: profile?.family_name,
+            // picture: profile?.picture,
+            // id: userData.id,
+            // email: profile?.email,
+            // token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
+            //   expiresIn: "1d",
+            // }),
+            userData
+          },
+        });
     }
   } catch (error: any) {
     res.status(500).json({
