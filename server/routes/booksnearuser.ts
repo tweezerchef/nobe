@@ -18,11 +18,11 @@ interface QueryResult {
 
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
-  //console.log(req, 26);
+  console.log(req, 21);
   //console.log(req, 26);
   try {
     const { lon, lat, radius } = req.query
-    // console.log(lon, lat, radius);
+     console.log(lon, lat, radius, 25);
     //  coordinates are sent in the request body
     if (!lat || !lon || !radius) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
@@ -129,6 +129,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
 
 
 LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Response) => {
+  //console.log(req);
   try {
     const id = req.params.id;
     const latitude = req.body.latitude;
@@ -142,7 +143,7 @@ LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Res
         latitude: latitude
       },
     })
-    //console.log(userUpdateLocation);
+    console.log(userUpdateLocation, 145);
     res.status(200).json({ userUpdateLocation })
   } catch (e) {
     // console.error(e)
@@ -153,21 +154,22 @@ LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Res
 })
 
 LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response) => {
-  console.log(req);
-  console.log(req.body);
+ // console.log(req);
+  //console.log(req.body);
   try {
     const id = req.params.id;
     const radius = req.body.radius
+    const radNum = Number(radius);
     const userUpdateRadius = await prisma.user.update({
       where: {
         id: id,
       },
       data: {
-        radius: radius,
+        radius: radNum,
 
       },
     })
-    console.log(userUpdateRadius);
+    //console.log(userUpdateRadius);
     res.status(200).json({ userUpdateRadius })
   } catch (e) {
     console.error(e)
