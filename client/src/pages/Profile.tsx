@@ -58,7 +58,7 @@ const Profile = () => {
   const user = userContext?.user;
   const id = user.id
   const friendId: string = useParams().id || "";
-  const newSocket = io('http://localhost:3000');
+  const newSocket = io('http://ec2-3-19-30-206.us-east-2.compute.amazonaws.com:3000');
   const getProfile = async () => {
     try {
       const response = await axios.get(`/user/id?id=${friendId}`);

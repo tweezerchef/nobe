@@ -145,7 +145,7 @@ function Chat() {
   }, []);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3000');
+    const newSocket = io('http://ec2-3-19-30-206.us-east-2.compute.amazonaws.com:3000');
     setSocket(newSocket);
     newSocket.on('new-message', (data: any) => {
       const { conversationId, message } = data;
