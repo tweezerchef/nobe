@@ -24,10 +24,6 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
     const [isLoaded, setIsLoaded] = useState(false);
     const [messages, setMessages] = useState<any[]>([]);
 
-    //const { setMode: setJoyMode } = useJoyColorScheme();
-    // const [mounted, setMounted] = React.useState(false);
-
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -73,7 +69,7 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
                 <ChatContext.Provider value={chatContextValue}>
                     <ResponsiveAppBar setMode={setMaterialMode} setJoyMode={setJoyMode} />
                     {isLoading ? <div>Loading...</div> : <Router />}
-                    <OpenIconSpeedDial/>
+                    <OpenIconSpeedDial />
                 </ChatContext.Provider>
             </UserContext.Provider>
         </div>

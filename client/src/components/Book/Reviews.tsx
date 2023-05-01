@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import List from '@mui/joy/List';
@@ -15,6 +16,7 @@ interface UserBook {
     rating: number;
     review: string;
     User: {
+        id: string;
         picture: string;
         rating: number
         firstName: string;
@@ -47,17 +49,19 @@ const Reviews = ({ UserBooks }: ReviewsProps) => {
                 sx={{ '--ListItemDecorator-size': '56px' }}
             >
                 {filteredUserBooks.map((userBook, index) => (
-                    <ListItem key={index}>
-                        <ListItemDecorator sx={{ alignSelf: 'flex-start' }}>
-                            <Avatar src={userBook.User.picture} />
-                        </ListItemDecorator>
-                        <ListItemContent>
-                            <MiniStar value={userBook.rating} />
-                            <Typography level="body1" noWrap>
-                                {userBook.User.firstName}'s Review: {userBook.review}
-                            </Typography>
-                        </ListItemContent>
-                    </ListItem>
+                    <Link to={`/profile/${userBook.User.id}`} >
+                        <ListItem key={index}>
+                            <ListItemDecorator sx={{ alignSelf: 'flex-start' }}>
+                                <Avatar src={userBook.User.picture} />
+                            </ListItemDecorator>
+                            <ListItemContent>
+                                <MiniStar value={userBook.rating} />
+                                <Typography level="body1" noWrap>
+                                    {userBook.User.firstName}'s Review: {userBook.review}
+                                </Typography>
+                            </ListItemContent>
+                        </ListItem>
+                    </Link>
                 ))}
             </List>
         </Box>

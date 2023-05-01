@@ -10,13 +10,13 @@ import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
 import BookIcon from '../NotificationBook/Notificationbook';
 import CloseBy from '../CloseBy/CloseBy';
- import { io, Socket } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import MessageIcon from '../MessagesIcon/messagesicon';
 import FriendIcon from '../NewFriendIcon/Newfriendicon';
 import NotificationIcon from '../NotificationMessages/Notificationmessages';
 import Draggable from "react-draggable";
 import ForumIcon from '../DiscussionForum/Discussionforum';
-import  React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import UserContext from '../../hooks/Context'
 
 
@@ -37,39 +37,39 @@ const OpenIconSpeedDial: React.FC = () => {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   //const id = user.id;
-   //console.log(user);
+  //console.log(user);
 
   const markAsRead = () => {
     setNotifications([])
     setNotificationCount(0);
   }
   //const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
-// creating the notfication for adding a new friend
- //console.log(notifications, 64)
- useEffect(() => {
-  const newSocket = io('http://localhost:3000');
-  setSocket(newSocket);
-  newSocket.on('new-follower', (data: any) => {
-    console.log(data, 65 )
-    const { sender, receiver, message } = data;
-    setNotifications((prevMessage: any) => [...prevMessage, message]);
-    let count = 0;
-    count++
-    setNotificationCount(count);
-  });
+  // creating the notfication for adding a new friend
+  //console.log(notifications, 64)
+  useEffect(() => {
+    const newSocket = io('http://localhost:3000');
+    setSocket(newSocket);
+    newSocket.on('new-follower', (data: any) => {
+      console.log(data, 65)
+      const { sender, receiver, message } = data;
+      setNotifications((prevMessage: any) => [...prevMessage, message]);
+      let count = 0;
+      count++
+      setNotificationCount(count);
+    });
 
-  newSocket.on('connect_error', (error: any) => {
-    console.log('Socket connection error:', error);
-  });
+    newSocket.on('connect_error', (error: any) => {
+      console.log('Socket connection error:', error);
+    });
 
-  return () => {
-    newSocket.disconnect();
-  };
-}, []);
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
-//   React.useEffect(() => {
-//     setSocket(io("http://localhost:3000"));
-//  }, []);
+  //   React.useEffect(() => {
+  //     setSocket(io("http://localhost:3000"));
+  //  }, []);
 
   // React.useEffect(() => {
   //   console.log(socket.on('test', (msg: any)=> {
@@ -77,67 +77,67 @@ const OpenIconSpeedDial: React.FC = () => {
   //   }));
   // }, []);
 
-// React.useEffect(() => {
+  // React.useEffect(() => {
   //   console.log(socket.on('test', (msg: any)=> {
   //     console.log(msg);
   //   }));
   // }, []);
-// console.log(notifications, 64)
+  // console.log(notifications, 64)
 
-// useEffect(() => {
-//   const newSocket = io('http://localhost:3000');
-//   setSocket(newSocket);
-//   newSocket.onAny(() => {
-//     let count = 0;
-//     count++;
-//     setNotificationCount(count);
-//   })
+  // useEffect(() => {
+  //   const newSocket = io('http://localhost:3000');
+  //   setSocket(newSocket);
+  //   newSocket.onAny(() => {
+  //     let count = 0;
+  //     count++;
+  //     setNotificationCount(count);
+  //   })
 
-//   newSocket.on('connect_error', (error: any) => {
-//     console.log('Socket connection error:', error);
-//   });
+  //   newSocket.on('connect_error', (error: any) => {
+  //     console.log('Socket connection error:', error);
+  //   });
 
-//   return () => {
-//     newSocket.disconnect();
-//   };
-// }, []);
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, []);
 
-//  React.useEffect(() => {
-//    if (socket) {
-//      socket?.emit("newUser", user);
-//    }
-//  }, [socket, user]);
+  //  React.useEffect(() => {
+  //    if (socket) {
+  //      socket?.emit("newUser", user);
+  //    }
+  //  }, [socket, user]);
 
-const actions = [
-  { icon: <NotificationIcon notifications={notifications} notificationCount={notificationCount} markAsRead={markAsRead}/>, name: 'Notifications Feed' },
-  { icon: <FriendIcon notificationCount={notificationCount}/>, name: 'Friends' },
-  { icon: <MessageIcon />, name: 'Messages' },
-  { icon: <CloseBy />, name: 'Near By' },
-  { icon: <ForumIcon />, name: 'Discussions' },
-];
+  const actions = [
+    { icon: <NotificationIcon notifications={notifications} notificationCount={notificationCount} markAsRead={markAsRead} />, name: 'Notifications Feed' },
+    { icon: <FriendIcon notificationCount={notificationCount} />, name: 'Friends' },
+    { icon: <MessageIcon />, name: 'Messages' },
+    { icon: <CloseBy />, name: 'Near By' },
+    { icon: <ForumIcon />, name: 'Discussions' },
+  ];
 
   return (
     <Draggable>
-        <SpeedDial
-          ariaLabel="SpeedDial openIcon example"
-          sx={{ position: 'absolute'}}
-          icon={<BookIcon notificationCount={notificationCount} openIcon={<EditIcon />} />}
-          direction={'up'}
-        >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-            />
-          ))}
-        </SpeedDial>
-        </Draggable>
+      <SpeedDial
+        ariaLabel="SpeedDial openIcon example"
+        sx={{ position: 'absolute' }}
+        icon={<BookIcon notificationCount={notificationCount} openIcon={<EditIcon />} />}
+        direction={'up'}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+          />
+        ))}
+      </SpeedDial>
+    </Draggable>
   );
 }
 export default OpenIconSpeedDial;
 
- // <Draggable>
-      {/* // <Box sx={{ width: 100, height: 80, transform: 'translateZ(0px)', flexGrow: 1 }}> */}
-        {/* // </Box> */}
+// <Draggable>
+{/* // <Box sx={{ width: 100, height: 80, transform: 'translateZ(0px)', flexGrow: 1 }}> */ }
+{/* // </Box> */ }
       // </Draggable>
