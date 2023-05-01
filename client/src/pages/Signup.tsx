@@ -12,28 +12,10 @@ import Button from "../components/Button/Button";
 declare const google: any;
 
 const Signup = () => {
-    const { handleGoogle, loading, error } = useFetch("/signup");
+    const { handleGoogle, loading, error } = useFetch("/auth/signup");
 
 
-    // useEffect(() => {
-    //     /* global google */
-    //     if (window.google) {
-    //         google.accounts.id.initialize({
-    //             client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-    //             callback: handleGoogle,
-    //         });
 
-    //         google.accounts.id.renderButton(document.getElementById("signUpDiv"), {
-    //             // type: "standard",
-    //             theme: "filled_black",
-    //             // size: "small",
-    //             text: "continue_with",
-    //             shape: "pill",
-    //         });
-
-    //         // google.accounts.id.prompt()
-    //     }
-    // }, [handleGoogle]);
     const loadGoogleScript = () => {
         return new Promise((resolve) => {
             const script = document.createElement("script");

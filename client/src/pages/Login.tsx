@@ -15,7 +15,7 @@ function Login() {
     const loginHandler = () => {
 
         axios
-            .get("/Login", {
+            .get("/auth/Login", {
                 params: {
                     email: email,
                 },
@@ -35,7 +35,7 @@ function Login() {
             });
     };
     const { handleGoogle, loading, error } = useFetch(
-        "/login"
+        "auth/login"
     );
     const loadGoogleScript = () => {
         return new Promise((resolve) => {
