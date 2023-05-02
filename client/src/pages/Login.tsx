@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { EntryPage, PageHeader } from './style'; import EntryCard from '../components/EntryCard/EntryCard'; import InputGroup from '../components/Input Group/InputGroup'; import Input from '../components/Input/Input'; import Button from '../components/Button';
-import useFetch from '../hooks/useFetch';
-import Signup from './Signup';
+import useFetch from '../hooks/useFetch';;
 import axios from 'axios';
+import UserContext from '../hooks/Context';
+
 declare const google: any;
 declare const handleGoogle: string;
 
@@ -11,31 +12,33 @@ declare const handleGoogle: string;
 function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const userContext = useContext(UserContext);
+    const setUser = userContext?.setUser;
+
 
     const loginHandler = () => {
-
         axios
-            .get("/Login", {
-                params: {
-                    email: email,
-                },
+            .post("/auth/login-email", {
+                email: email,
+                password: password,
             })
             .then((response) => {
-
-                let { user } = response.data;
-                user = JSON.stringify(user)
-                //console.log(user)
-                localStorage.setItem("user", user);
-                // // Handle success
-
-                navigate("/home");
+                if (response && setUser) {
+                    let { user } = response.data;
+                    console.log(user)
+                    setUser(user)
+                    user = JSON.stringify(user);
+                    localStorage.setItem("user", user);
+                    navigate("/home");
+                }
             })
             .catch((error) => {
-                console.error(error)
+                console.error(error);
             });
     };
     const { handleGoogle, loading, error } = useFetch(
-        "/login"
+        "auth/login"
     );
     const loadGoogleScript = () => {
         return new Promise((resolve) => {
@@ -74,7 +77,8 @@ function Login() {
     }, [handleGoogle]);
     return (
         <EntryPage>
-            <PageHeader to="/">AWESOME LOGO</PageHeader> <EntryCard>
+            <PageHeader to="/">AWESOME LOGO</PageHeader>
+            <EntryCard>
                 <h2>Log in</h2>
                 <form onSubmit={(e) => e.preventDefault()}>
                     <InputGroup>
@@ -89,9 +93,25 @@ function Login() {
                     </InputGroup>
                     <InputGroup>
                         <label htmlFor="login-password">Password</label>
-                        <Input type="password" placeholder="Password" id="login-password" /> </InputGroup>
-                    <Button full onClick={loginHandler}>Log in</Button>
-                    <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+                        <Input
+                            type="password"
+                            placeholder="Password"
+                            id="login-password"
+                            value={password}
+                            onChange={(e: any) => setPassword(e.target.value)}
+                        />
+                    </InputGroup>
+                    <Button full onClick={loginHandler}>
+                        Log in
+                    </Button>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
+                    >
                         <div id="loginDiv"></div>
                     </div>
                     <div
