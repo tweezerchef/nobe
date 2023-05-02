@@ -314,7 +314,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               )}
             </Menu>
             <ModeToggle setMode={setMode} setJoyMode={setJoyMode} />
-           {/* <OpenIconSpeedDial/> */}
+           <OpenIconSpeedDial/>
           </Box>
         </Toolbar>
       </Container>
