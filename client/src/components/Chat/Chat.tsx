@@ -122,18 +122,22 @@ function Chat() {
     if (event.key === 'Enter') {
       event.preventDefault();
       try {
-        console.log(user.id)
         const response = await axios.post('/conversations', {
           currentUser: user.id,
           otherUser: searchQuery
         });
+
         const newConversation: any = response.data;
-        setConversations((prevConversations) => {
-          const updatedConversations = [...prevConversations, newConversation];
-          user.Conversations = updatedConversations;
-          return updatedConversations
-        });
-        setCurrentConvo(newConversation);
+
+        if (newConversation) {
+          setConversations((prevConversations) => {
+            const updatedConversations = [...prevConversations, newConversation];
+            user.Conversations = updatedConversations;
+            return updatedConversations
+          });
+          setCurrentConvo(newConversation);
+          setChatMessages(newConversation.messages)
+        }
       } catch (error) {
         console.error(error);
       }
@@ -143,6 +147,7 @@ function Chat() {
 
   useEffect(() => {
     setConversations(user.Conversations);
+
   }, []);
 
   useEffect(() => {
