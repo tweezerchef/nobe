@@ -122,6 +122,7 @@ function Chat() {
     if (event.key === 'Enter') {
       event.preventDefault();
       try {
+        console.log(user.id)
         const response = await axios.post('/conversations', {
           currentUser: user.id,
           otherUser: searchQuery
