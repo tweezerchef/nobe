@@ -148,9 +148,6 @@ const Profile = () => {
       getUserBooks("Owned");
       getProfile();
     }
-    newSocket.on('new-follow', (data: any) => {
-      console.log('new follow:', data.message);
-    });
   }, []);
 
   const style = {

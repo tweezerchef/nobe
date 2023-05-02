@@ -58,10 +58,6 @@ const OpenIconSpeedDial: React.FC = () => {
       setNotificationCount(count);
     });
 
-    newSocket.on('connect_error', (error: any) => {
-      console.log('Socket connection error:', error);
-    });
-
     return () => {
       newSocket.disconnect();
     };
@@ -117,20 +113,20 @@ const OpenIconSpeedDial: React.FC = () => {
   ];
 
   return (
-      <SpeedDial
-        ariaLabel="SpeedDial openIcon example"
-        sx={{ top: 1, position: 'fixed' }}
-        icon={<BookIcon notificationCount={notificationCount} openIcon={<EditIcon />} />}
-        direction={'down'}
-      >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-          />
-        ))}
-      </SpeedDial>
+    <SpeedDial
+      ariaLabel="SpeedDial openIcon example"
+      sx={{ top: 1, position: 'fixed' }}
+      icon={<BookIcon notificationCount={notificationCount} openIcon={<EditIcon />} />}
+      direction={'down'}
+    >
+      {actions.map((action) => (
+        <SpeedDialAction
+          key={action.name}
+          icon={action.icon}
+          tooltipTitle={action.name}
+        />
+      ))}
+    </SpeedDial>
   );
 }
 export default OpenIconSpeedDial;
