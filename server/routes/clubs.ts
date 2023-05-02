@@ -158,5 +158,23 @@ ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
   addUserToClub(email, id)
 });
 
+ClubsRoute.delete('/:id/leave', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    const club = await prisma.clubs.update({
+      where: { id: req.params.id },
+      data: {
+        members: {
+          delete: { email },
+        },
+      },
+    });
+    res.json(club);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 
 export default ClubsRoute;

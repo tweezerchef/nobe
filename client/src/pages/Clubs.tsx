@@ -15,8 +15,6 @@ export interface Club {
 
 function Clubs() {
   const [clubs, setClubs] = useState<Club[]>([]);
-  const [showForm, setShowForm] = useState(false);
-  const [newClubName, setNewClubName] = useState('');
 
   useEffect(() => {
     async function fetchClubs() {
