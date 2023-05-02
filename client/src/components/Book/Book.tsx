@@ -68,12 +68,12 @@ const Book = React.memo((props: any) => {
                 <WishListButton book={book} />
             </CardOverflow>
             <Typography level="body1" sx={{ fontSize: "1.5rem !important", mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical' }} >
-                <Link onClick={handleOnClick}>
+                <span onClick={handleOnClick}>
                     {book.title}
-                </Link>
+                </span>
             </Typography>
             <Typography level="body2" sx={{ mt: 0.5, mb: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                <Link href="#multiple-actions">{book.author}</Link>
+                {book.author}
             </Typography>
             <Divider inset="context" />
             <CardOverflow

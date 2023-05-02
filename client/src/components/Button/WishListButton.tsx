@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import UserContext from "../../hooks/Context";
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import IconButton from '@mui/joy/IconButton';
-import Book from "../Book/Book";
+import { Tooltip } from "@material-ui/core";
 
 
 
@@ -12,25 +12,23 @@ const WishListButton = (props: any) => {
     const { book } = props;
     const userContext = useContext(UserContext);
     const user = userContext?.user;
-    const id = user.id
-    //console.log(book)
+    const id = user.id;
 
-    const addToWishlist = async () => {
-        console.log(book)
+    const addToWishlist = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
 
         const response = await axios.post(`/user-books/wishlist`, {
-            book, id
+            book,
+            id,
         });
+
         console.log(response.data);
-        //  catch (error) {
-        //     console.error(error);
-        // }
     };
 
     return (
-        <>
+        <Tooltip title="Add to Wishlist" placement="top-end">
             <IconButton
-                aria-label="Like minimal photography"
+                aria-label="Add to Wishlist"
                 size="md"
                 variant="solid"
                 color="danger"
@@ -42,12 +40,12 @@ const WishListButton = (props: any) => {
                     bottom: 0,
                     transform: 'translateY(50%)',
                 }}
-                onClick={() => addToWishlist()}
+                onClick={addToWishlist}
             >
                 <BookmarkAddIcon />
             </IconButton>
-        </>
-    )
-}
+        </Tooltip>
+    );
+};
 
 export default WishListButton;

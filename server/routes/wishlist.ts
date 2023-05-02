@@ -103,7 +103,7 @@ Wishlist.post('/:id', async (req, res) => {
 
 
 
-    const newBook = await axios.post(`http://localhost:8080/bookdata/title/owned`, {
+    const newBook = await axios.post(`http://localhost:8080/bookdata/title/wishlist`, {
       title: title,
       ISBN10: ISBN10,
       author: author,
