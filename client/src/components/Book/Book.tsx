@@ -40,10 +40,10 @@ const Book = React.memo((props: any) => {
     };
     let value = 0
     if (book.UserBooks && book.UserBooks.length > 0) {
-        book.UserBooks.every((entry: any) => {
+        book.UserBooks.forEach((entry: any) => {
             if (entry.userId === id && entry.rating !== 0) {
                 value = entry.rating;
-                return false
+                console.log('value', value)
             }
         })
     }
