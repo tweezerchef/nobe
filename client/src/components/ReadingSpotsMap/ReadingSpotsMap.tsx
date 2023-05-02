@@ -39,6 +39,7 @@ function ReadingSpotsMap() {
 
   const handleMarkerClick = useCallback(() => {
     setShowInfoWindow((prev) => !prev);
+    fetchSavedPlaces();
   }, []);
 
   const handlePlaceClick = useCallback((placeId: number) => {
@@ -79,24 +80,19 @@ function ReadingSpotsMap() {
     }
   };
 
-  const fetchSavedPlaces = async () => {
+  const fetchSavedPlaces = useCallback(async () => {
     try {
       const response = await axios.get('/api/places-to-read/places');
       setSavedPlaces(response.data);
-      // setSelectedPlace(null);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    const fetchSavedPlaces = async () => {
-      const response = await axios.get('/api/places-to-read/places');
-      setSavedPlaces(response.data);
-    };
     setDescription("");
     fetchSavedPlaces();
-  }, [selectedPlace]);
+  }, [selectedPlace, fetchSavedPlaces]);
 
   return (
     <div className="spots-container">
