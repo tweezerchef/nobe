@@ -16,7 +16,7 @@ Conversations.post('/', async (req: AuthenticatedRequest, res: Response) => {
   const { currentUser, otherUser } = req.body;
 
   try {
-    // const creator = await prisma.user.findUnique({ where: { id: currentUser } });
+
     const receiver = await prisma.user.findFirst({ where: { firstName: otherUser } });
 
     const conversation = await prisma.conversations.create({
