@@ -113,10 +113,9 @@ const OpenIconSpeedDial: React.FC = () => {
   ];
 
   return (
-
     <SpeedDial
       ariaLabel="SpeedDial openIcon example"
-      sx={{ position: 'absolute', top: 1, right: 1, mr: 32 }}
+      sx={{ top: 1, position: 'fixed' }}
       icon={<BookIcon notificationCount={notificationCount} openIcon={<EditIcon />} />}
       direction={'down'}
     >
@@ -128,7 +127,6 @@ const OpenIconSpeedDial: React.FC = () => {
         />
       ))}
     </SpeedDial>
-
   );
 }
 export default OpenIconSpeedDial;

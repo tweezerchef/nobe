@@ -69,7 +69,6 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
                 <ChatContext.Provider value={chatContextValue}>
                     <ResponsiveAppBar setMode={setMaterialMode} setJoyMode={setJoyMode} />
                     {isLoading ? <div>Loading...</div> : <Router />}
-                    <OpenIconSpeedDial />
                 </ChatContext.Provider>
             </UserContext.Provider>
         </div>
