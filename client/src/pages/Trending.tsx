@@ -62,7 +62,8 @@ function Trending() {
     const inventory = "Wishlist"
 
     try {
-      const response = await axios.post(`/books/${id}`, { title, inventory
+      const response = await axios.post(`/books/${id}`, {
+        title, inventory
       });
       console.log(response.data);
     } catch (error) {
@@ -99,7 +100,7 @@ function Trending() {
           <MenuItem value="young-adult-paperback-monthly">Young Adult Paperback Monthly</MenuItem>
         </Select>
       </FormControl>
-      <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', overflowY: 'auto', maxWidth: '100%', maxHeight: 'calc(100vh - 200px' }}>
         {trending.length === 0 ? (
           <div></div>
         ) : (

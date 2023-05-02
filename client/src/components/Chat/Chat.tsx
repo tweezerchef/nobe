@@ -82,7 +82,7 @@ function Chat() {
 
 
   const handleSend = (event: React.FormEvent) => {
-    event.preventDefault();
+    // event.preventDefault();
     if (message.trim() !== '') {
       sendMessage(message);
       setMessage('');
