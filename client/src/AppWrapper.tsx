@@ -12,6 +12,7 @@ import { useColorScheme as useJoyColorScheme } from '@mui/joy/styles';
 import { experimental_extendTheme as materialExtendTheme } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import CssBaseline from '@mui/material/CssBaseline';
+import { GlobalStyle } from './reset.css';
 
 const materialTheme = materialExtendTheme({
     colorSchemes: {
@@ -41,6 +42,7 @@ const materialTheme = materialExtendTheme({
 function AppWrapper() {
     return (
         <BrowserRouter>
+            <GlobalStyle />
             <MaterialCssVarsProvider theme={{ [THEME_ID]: materialTheme }}>
                 <JoyCssVarsProvider>
                     <CssBaseline enableColorScheme />

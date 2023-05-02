@@ -21,8 +21,9 @@ const BookDisplay = React.memo((props: any) => {
             display: 'flex',
             justifyContent: 'center',
             maxWidth: '100%',
-            maxHeight: 'calc(100vh - 200px)', // Adjust this value according to your header height
-            overflowY: 'auto',
+            maxHeight: 'calc(100vh - 170px)', // Adjust this value according to your header height
+            // overflowY: 'auto',
+            alignItems: 'center',
         }}>
             <div style={{
                 display: 'flex',
