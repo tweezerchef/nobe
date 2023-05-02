@@ -9,7 +9,7 @@ const DeleteButton = (props: any) => {
   const { userBook, id, getUserBooks, setUserBooks, inventory } = props;
   console.log(userBook)
   const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    axios.delete(`/books/${id}`, {
+    axios.delete(`/user-books/${id}`, {
       data: {
         bookId: userBook.books.id,
       },
