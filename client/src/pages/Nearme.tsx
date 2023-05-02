@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import axios from "axios";
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete'
 import BookDisplay from "../components/BookDisplay/BookDisplay";
@@ -71,6 +71,11 @@ function Locations() {
   //const [isUserLoaded, setIsUserLoaded] = useState(false);
   const [open, setOpen] = React.useState(false);
 
+  const location = useLocation();
+
+console.log(location.state, 76);
+
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -134,6 +139,13 @@ const saveRadius = async () => {
 
   // }
 
+useEffect(() => {
+    if(!location.state === null){
+     const myData = location.state
+     setDisplayBooks(myData);
+    }
+  }, [location]);
+
 // useEffect(() => {
 //     const ownedBooks = booksNearBy.flat().filter(book => book.owned === true).map((book) => book.books);
 //     // console.log(ownedBooks, '69');
@@ -190,9 +202,10 @@ const saveRadius = async () => {
 
 
 
-  //console.log(displayBooks, 154);
+  console.log(displayBooks, 206);
 
   return (
+
     <div>
      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '60px', background: 'rgb(32, 32, 35)'}}>
@@ -263,7 +276,15 @@ const saveRadius = async () => {
           </div>
     </div>
     </div>
-    { booksNearBy.map(user => <UserDisplay user={user} key={user.id} />)}
+    {location.state === null ? (
+      booksNearBy.map((user: any) => (
+        <UserDisplay user={user} key={user.id} />
+      ))
+    ) : (
+      location.state.map((user: any) => (
+        <UserDisplay user={user} key={user.id} />
+      ))
+    )}
     </div>
   )
 

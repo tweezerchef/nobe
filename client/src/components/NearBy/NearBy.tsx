@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete'
@@ -16,11 +16,6 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import UserContext from '../../hooks/Context'
-
-
-
-
-
 
 
 function NearBy() {
@@ -45,11 +40,24 @@ function NearBy() {
   const navigate = useNavigate();
 
 
-  const handleLookForBooksClick = () => {
-    // 👇️ navigate to /
-    navigate('/locations');
-  };
-
+  const handleLookForBooksClick = async () => {
+    try {
+      const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      const data = await response.data
+      navigate('/locations', { state: data });
+    } catch (error) {
+      console.error(error);
+    }
+  };// 👇️ navigate to /
+//   const res = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+//   console.log(res.data, 99);
+//   setBooksNearBy(res.data);
+//   setTimeout(() => {
+//     setButtonState('success');
+//   }, 2000);
+// } catch (err) {
+//  console.error(err);
+// }
   const saveLocation = async () => {
     setLocationState('loading');
     // console.log(userLongitude, userLongitude, 63)
