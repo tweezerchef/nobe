@@ -151,19 +151,29 @@ function Chat() {
 
   useEffect(() => {
     const newSocket = io('http://localhost:3000');
+
     setSocket(newSocket);
+
     newSocket.on('new-message', (data: any) => {
       const { conversationId, message } = data;
-      if (conversationId === currentConvo?.id) {
-        setChatMessages((prevMessages) => {
-          const updatedMessages = [...prevMessages, message];
-          if (currentConvo) {
-            const conversationIndex = user.Conversations.findIndex((conversation: Conversation) => conversation.id === currentConvo.id);
-            if (conversationIndex !== -1) {
-              user.Conversations[conversationIndex].messages = updatedMessages;
-            }
-          }
-          return updatedMessages;
+
+      const conversationIndex = conversations.findIndex(
+        (conversation: Conversation) => conversation.id === conversationId
+      );
+
+      if (conversationIndex !== -1) {
+        if (currentConvo?.id === conversationId) {
+          setChatMessages(prevMessages => [...prevMessages, message]);
+        }
+        const updatedConvo = {
+          ...conversations[conversationIndex],
+          messages: [...conversations[conversationIndex].messages, message],
+        };
+        setConversations(prevConversations => {
+          const updatedConversations = [...prevConversations];
+          updatedConversations[conversationIndex] = updatedConvo;
+          user.Conversations[conversationIndex] = updatedConvo;
+          return updatedConversations;
         });
       }
     });
@@ -171,7 +181,7 @@ function Chat() {
     return () => {
       newSocket.disconnect();
     };
-  }, [currentConvo, user]);
+  }, [currentConvo, conversations]);
 
   return (
     <div>
