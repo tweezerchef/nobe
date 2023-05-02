@@ -20,10 +20,19 @@ const UserRecoInputPage = () => {
 
 
     return (
-        <div>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            height: '100%',
+        }}>
             <h1>  The More Books You Rate The Better Your Recommendations Will Be </h1>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: '20px' }}>
 
-            <BookDisplay books={books} id={id} />
+                <BookDisplay books={books} id={id} />
+            </div>
 
         </div>
     )
