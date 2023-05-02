@@ -206,7 +206,7 @@ useEffect(() => {
 
   return (
 
-    <div>
+    <div style={{ overflow: 'auto' }}>
      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '60px', background: 'rgb(32, 32, 35)'}}>
           <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%' }}>

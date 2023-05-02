@@ -19,6 +19,7 @@ import styled from 'styled-components';
 import UserContext from '../../hooks/Context'
 import ModeToggle from "../ColorMode/ColorModeToggle";
 import OpenIconSpeedDial from "../ActionButton/ActionButton";
+import NotificationMobile from "../NotificationMessages/Notificationsmobile";
 
 
 const StyledLink = styled(Link)`
@@ -194,6 +195,13 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
                     Feed</Link>
                 </Typography>
               </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu} sx={{
+                display: "block !important", padding: "8px !important"
+              }}>
+                <Typography >
+                  Notifications
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <AutoStoriesIcon sx={{ display: { xs: "flex !important", md: "none !important", color: "white !important" }, mr: 1 }} />
@@ -264,6 +272,9 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
             >
               <StyledLink to="/booksearch">Book Search</StyledLink>
             </Button>
+            <Button sx={{ my: "2 !important", color: "white !important", display: "block !important", borderRadius: '50%' }}>
+            <OpenIconSpeedDial/>
+          </Button>
           </Box>
           <Box sx={{ flexGrow: "0 !important", display: "block !important" }}>
             <Tooltip title="Open settings">
@@ -314,7 +325,6 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               )}
             </Menu>
             <ModeToggle setMode={setMode} setJoyMode={setJoyMode} />
-           {/* <OpenIconSpeedDial/> */}
           </Box>
         </Toolbar>
       </Container>
