@@ -17,9 +17,18 @@ const Recommended = () => {
 
 
     return (
-        <div>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%', // Added this property
+            height: '100%', // Added this property
+        }}>
             <h1> Your Personalized Recommendations List</h1>
-            <BookDisplay books={books} id={id} />
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: '20px' }}>
+                <BookDisplay books={books} id={id} />
+            </div>
         </div>
     )
 
