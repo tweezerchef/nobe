@@ -13,7 +13,7 @@ import { Server } from "socket.io";
 
 const io = new Server({
   cors: {
-    origin: "http://ec2-3-19-30-206.us-east-2.compute.amazonaws.com:8080"
+    origin: "http://localhost:8080"
   }
 });
 
