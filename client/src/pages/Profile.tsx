@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext,  } from 'react';
 import axios from 'axios';
 import { Typography, Grid, TextField, Button, Box } from '@material-ui/core';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
@@ -102,7 +102,7 @@ const Profile = () => {
   const follow = async () => {
     const userId = user.id;
     const userFirstName = user.firstName;
-    console.log(user, 82)
+    //console.log(user, 82)
     try {
       newSocket.emit('new-follow', {
         message: `${userFirstName} has followed you`
