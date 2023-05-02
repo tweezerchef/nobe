@@ -199,10 +199,10 @@ const Profile = () => {
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-            <Box sx={style}>
-            <NearBy/>
-        </Box>
-      </Modal>
+              <Box sx={style}>
+                <NearBy />
+              </Box>
+            </Modal>
           </div>
         </div>
 

@@ -73,7 +73,7 @@ Auth.post("/signup-email", async (req: Request, res: Response) => {
   } catch (err: any) {
     console.error(err);
 
-    if (err.code === 'P2002') { // err is a type of unknown please fix this
+    if (err.code === 'P2002') {
       return res.status(409).json({ error: 'invalid_request', error_description: 'Email already in use' });
     }
 
@@ -176,20 +176,11 @@ Auth.post("/login-email", async (req: Request, res: Response) => {
   res.status(200).json({
     message: "Login was successful",
     user: user
-    // {
-    //   nickname: user.nickname,
-    //   email: user.email,
-    //   id: user.id,
-    //   token: jwt.sign({ email: user.email }, process.env.JWT_SECRET as jwt.Secret, {
-    //     expiresIn: "1d",
-    //   }),
-    // },
   });
 });
 
 Auth.post("/signup", async (req, res) => {
   try {
-    // console.log({ verified: verifyGoogleToken(req.body.credential) });
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
 
@@ -207,8 +198,6 @@ Auth.post("/signup", async (req, res) => {
         });
       }
 
-      //this needs to be changed to add the user to the database
-      // DB.push(profile);
       const createdUser = await prisma.user.create({
         data: {
           firstName: profile.given_name ?? "",
