@@ -122,18 +122,22 @@ function Chat() {
     if (event.key === 'Enter') {
       event.preventDefault();
       try {
-        console.log(user.id)
         const response = await axios.post('/conversations', {
           currentUser: user.id,
           otherUser: searchQuery
         });
+
         const newConversation: any = response.data;
-        setConversations((prevConversations) => {
-          const updatedConversations = [...prevConversations, newConversation];
-          user.Conversations = updatedConversations;
-          return updatedConversations
-        });
-        setCurrentConvo(newConversation);
+
+        if (newConversation) {
+          setConversations((prevConversations) => {
+            const updatedConversations = [...prevConversations, newConversation];
+            user.Conversations = updatedConversations;
+            return updatedConversations
+          });
+          setCurrentConvo(newConversation);
+          setChatMessages(newConversation.messages)
+        }
       } catch (error) {
         console.error(error);
       }
@@ -147,31 +151,37 @@ function Chat() {
 
   useEffect(() => {
     const newSocket = io('http://localhost:3000');
+
     setSocket(newSocket);
+
     newSocket.on('new-message', (data: any) => {
       const { conversationId, message } = data;
-      if (conversationId === currentConvo?.id) {
-        setChatMessages((prevMessages) => {
-          const updatedMessages = [...prevMessages, message];
-          if (currentConvo) {
-            const conversationIndex = user.Conversations.findIndex((conversation: Conversation) => conversation.id === currentConvo.id);
-            if (conversationIndex !== -1) {
-              user.Conversations[conversationIndex].messages = updatedMessages;
-            }
-          }
-          return updatedMessages;
+
+      const conversationIndex = conversations.findIndex(
+        (conversation: Conversation) => conversation.id === conversationId
+      );
+
+      if (conversationIndex !== -1) {
+        if (currentConvo?.id === conversationId) {
+          setChatMessages(prevMessages => [...prevMessages, message]);
+        }
+        const updatedConvo = {
+          ...conversations[conversationIndex],
+          messages: [...conversations[conversationIndex].messages, message],
+        };
+        setConversations(prevConversations => {
+          const updatedConversations = [...prevConversations];
+          updatedConversations[conversationIndex] = updatedConvo;
+          user.Conversations[conversationIndex] = updatedConvo;
+          return updatedConversations;
         });
       }
-    });
-
-    newSocket.on('connect_error', (error: any) => {
-      console.log('Socket connection error:', error);
     });
 
     return () => {
       newSocket.disconnect();
     };
-  }, [currentConvo, user]);
+  }, [currentConvo, conversations]);
 
   return (
     <div>
@@ -186,6 +196,7 @@ function Chat() {
             <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search" variant="outlined" fullWidth />
           </Grid>
           <Divider />
+
           <List>
             {conversations.map((conversation: any, index: number) => {
               const otherUser = conversation.members.find((member: any) => member.firstName !== user.firstName);
@@ -222,34 +233,45 @@ function Chat() {
           </Grid>
           <Divider />
           {currentConvo && (
-            <List className={classes.messageArea}>
-              {chatMessages.map((message: any, index: number) => {
-                const sender = currentConvo.members.find((member: any) => member.id === message.senderId);
-                const senderFirstName = sender ? sender.firstName : '';
+            <>
+              {(() => {
+                const otherUser = currentConvo.members.find((member: any) => member.firstName !== user.firstName);
+                const otherUserFirstName = otherUser ? otherUser.firstName : '';
                 return (
-                  <ListItem key={index}>
-                    <Grid container>
-                      <Grid item xs={12}>
-                        <ListItemText primary={
-                          <Typography align="right" component="span" variant="body2">
-                            {senderFirstName} {moment(message.createdAt).isValid()
-                              ? moment(message.createdAt).fromNow()
-                              : 'just now'}
-                          </Typography>
-                        }></ListItemText>
+                  <Typography variant="h6" className="header-message">
+                    Chat with {otherUserFirstName}
+                  </Typography>
+                );
+              })()}
+              <List className={classes.messageArea}>
+                {chatMessages.map((message: any, index: number) => {
+                  const sender = currentConvo.members.find((member: any) => member.id === message.senderId);
+                  const senderFirstName = sender ? sender.firstName : '';
+                  return (
+                    <ListItem key={index}>
+                      <Grid container>
+                        <Grid item xs={12}>
+                          <ListItemText primary={
+                            <Typography align="right" component="span" variant="body2">
+                              {senderFirstName} {moment(message.createdAt).isValid()
+                                ? moment(message.createdAt).fromNow()
+                                : 'just now'}
+                            </Typography>
+                          }></ListItemText>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <ListItemText secondary={
+                            <Typography align="right" component="span" variant="body2">
+                              {message.text}
+                            </Typography>
+                          }></ListItemText>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={12}>
-                        <ListItemText secondary={
-                          <Typography align="right" component="span" variant="body2">
-                            {message.text}
-                          </Typography>
-                        }></ListItemText>
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-                )
-              })}
-            </List>
+                    </ListItem>
+                  )
+                })}
+              </List>
+            </>
           )}
         </Grid>
       </Grid>

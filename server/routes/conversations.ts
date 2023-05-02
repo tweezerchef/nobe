@@ -16,10 +16,32 @@ Conversations.post('/', async (req: AuthenticatedRequest, res: Response) => {
   const { currentUser, otherUser } = req.body;
 
   try {
-
+    // Find the receiver user
     const receiver = await prisma.user.findFirst({ where: { firstName: otherUser } });
 
-    const conversation = await prisma.conversations.create({
+    // Check if a conversation with the same set of members already exists
+    const existingConversation = await prisma.conversations.findFirst({
+      where: {
+        AND: [
+          { members: { some: { id: currentUser } } },
+          { members: { some: { id: receiver.id } } },
+        ]
+      },
+      select: {
+        id: true,
+        members: true,
+        messages: true,
+      },
+    })
+
+    if (existingConversation) {
+      // Return existing conversation instead of creating a new one
+      res.json(null);
+      return;
+    }
+
+    // Create a new conversation with the specified members
+    const newConversation = await prisma.conversations.create({
       data: {
         members: {
           connect: [
@@ -35,12 +57,13 @@ Conversations.post('/', async (req: AuthenticatedRequest, res: Response) => {
       },
     });
 
-    res.json(conversation);
+    res.json(newConversation);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Could not create conversation' });
   }
 });
+
 
 
 export default Conversations;
