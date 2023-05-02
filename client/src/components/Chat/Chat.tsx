@@ -147,7 +147,6 @@ function Chat() {
 
   useEffect(() => {
     setConversations(user.Conversations);
-
   }, []);
 
   useEffect(() => {
@@ -169,10 +168,6 @@ function Chat() {
       }
     });
 
-    newSocket.on('connect_error', (error: any) => {
-      console.log('Socket connection error:', error);
-    });
-
     return () => {
       newSocket.disconnect();
     };
@@ -191,6 +186,7 @@ function Chat() {
             <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search" variant="outlined" fullWidth />
           </Grid>
           <Divider />
+
           <List>
             {conversations.map((conversation: any, index: number) => {
               const otherUser = conversation.members.find((member: any) => member.firstName !== user.firstName);
@@ -227,34 +223,45 @@ function Chat() {
           </Grid>
           <Divider />
           {currentConvo && (
-            <List className={classes.messageArea}>
-              {chatMessages.map((message: any, index: number) => {
-                const sender = currentConvo.members.find((member: any) => member.id === message.senderId);
-                const senderFirstName = sender ? sender.firstName : '';
+            <>
+              {(() => {
+                const otherUser = currentConvo.members.find((member: any) => member.firstName !== user.firstName);
+                const otherUserFirstName = otherUser ? otherUser.firstName : '';
                 return (
-                  <ListItem key={index}>
-                    <Grid container>
-                      <Grid item xs={12}>
-                        <ListItemText primary={
-                          <Typography align="right" component="span" variant="body2">
-                            {senderFirstName} {moment(message.createdAt).isValid()
-                              ? moment(message.createdAt).fromNow()
-                              : 'just now'}
-                          </Typography>
-                        }></ListItemText>
+                  <Typography variant="h6" className="header-message">
+                    Chat with {otherUserFirstName}
+                  </Typography>
+                );
+              })()}
+              <List className={classes.messageArea}>
+                {chatMessages.map((message: any, index: number) => {
+                  const sender = currentConvo.members.find((member: any) => member.id === message.senderId);
+                  const senderFirstName = sender ? sender.firstName : '';
+                  return (
+                    <ListItem key={index}>
+                      <Grid container>
+                        <Grid item xs={12}>
+                          <ListItemText primary={
+                            <Typography align="right" component="span" variant="body2">
+                              {senderFirstName} {moment(message.createdAt).isValid()
+                                ? moment(message.createdAt).fromNow()
+                                : 'just now'}
+                            </Typography>
+                          }></ListItemText>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <ListItemText secondary={
+                            <Typography align="right" component="span" variant="body2">
+                              {message.text}
+                            </Typography>
+                          }></ListItemText>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={12}>
-                        <ListItemText secondary={
-                          <Typography align="right" component="span" variant="body2">
-                            {message.text}
-                          </Typography>
-                        }></ListItemText>
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-                )
-              })}
-            </List>
+                    </ListItem>
+                  )
+                })}
+              </List>
+            </>
           )}
         </Grid>
       </Grid>

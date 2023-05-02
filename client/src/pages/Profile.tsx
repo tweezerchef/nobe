@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import React, { useState, useEffect, useRef, useContext,  } from 'react';
+import React, { useState, useEffect, useRef, useContext, } from 'react';
 import axios from 'axios';
 import { Typography, Grid, TextField, Button, Box } from '@material-ui/core';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
@@ -149,9 +149,6 @@ const Profile = () => {
       getUserBooks();
       getProfile();
     }
-    newSocket.on('new-follow', (data: any) => {
-      console.log('new follow:', data.message);
-    });
   }, []);
 
   const style = {
