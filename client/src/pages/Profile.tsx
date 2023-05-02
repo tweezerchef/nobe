@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import React, { useState, useEffect, useRef, useContext,  } from 'react';
+import React, { useState, useEffect, useRef, useContext, } from 'react';
 import axios from 'axios';
 import { Typography, Grid, TextField, Button, Box } from '@material-ui/core';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
@@ -15,6 +15,8 @@ import NearBy from '../components/NearBy/NearBy';
 import styled from 'styled-components';
 import { Paper } from '@mui/material';
 interface UserBook {
+  wishlist: any;
+  owned: any;
   Books: Book;
 }
 interface Book {
@@ -79,13 +81,21 @@ const Profile = () => {
   }
 
 
-  const getUserBooks = () => {
+  const getUserBooks = (query: string) => {
     const booksArray: Book[] = [];
-    user?.UserBooks?.forEach((book: UserBook) => {
-      booksArray.push(book.Books);
-    });
-    setBooks(booksArray);
-  }
+    if (query == "Owned") {
+      user?.UserBooks?.forEach((book: UserBook) => {
+        if (book.owned) booksArray.push(book.Books);
+      });
+      setBooks(booksArray);
+    }
+    if (query == "Wishlist") {
+      user?.UserBooks?.forEach((book: UserBook) => {
+        if (book.wishlist) booksArray.push(book.Books);
+      });
+      setBooks(booksArray);
+    }
+  };
 
 
 
@@ -118,12 +128,12 @@ const Profile = () => {
   };
 
   const ownedClicked = () => {
-    //getUserBooks('Owned');
+    getUserBooks('Owned');
     setInventory('Owned');
   }
 
   const wishClicked = () => {
-    //getUserBooks('Wishlist')
+    getUserBooks('Wishlist')
     setInventory('Wishlist');
   }
 
@@ -146,7 +156,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (user && user.UserBooks) {
-      getUserBooks();
+      getUserBooks("Owned");
       getProfile();
     }
     newSocket.on('new-follow', (data: any) => {
