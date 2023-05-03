@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Stack from '@mui/material/Stack';
-// import Button from '@mui/material/Button';
-import { Button, Card, CardContent, Typography, TextField, FormControl, FormLabel } from "@material-ui/core";
+import { Button, Card, CardContent, Typography, TextField, FormControl } from "@material-ui/core";
 import { ClubHeader } from './style'
 import axios from "axios";
 
@@ -28,7 +27,6 @@ function ClubDiscussion() {
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
   const [showForm, setShowForm] = useState(false);
 
-
   useEffect(() => {
     async function fetchDiscussion() {
       try {
@@ -46,7 +44,6 @@ function ClubDiscussion() {
   const handleJoinClub = async () => {
     try {
       const user = localStorage.getItem("user");
-
       if (!user) {
         throw new Error("No user found");
       }
@@ -60,7 +57,6 @@ function ClubDiscussion() {
         setHasJoined(true);
         return;
       }
-
       await axios.post(`/api/clubs/${id}/join`, { email });
       setHasJoined(true);
     } catch (error) {
@@ -101,7 +97,7 @@ function ClubDiscussion() {
             disabled={hasJoined}
             onClick={handleJoinClub}
           >
-            {hasJoined ? "Joined" : "Join"}
+            {hasJoined ? "Leave" : "Join"}
           </Button>
           <Button
             variant="contained"
@@ -140,7 +136,6 @@ function ClubDiscussion() {
         </Card>
       ))}
     </div>
-
   )
 }
 
