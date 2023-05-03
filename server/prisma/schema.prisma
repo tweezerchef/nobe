@@ -80,7 +80,7 @@ model User_Places {
 
 model Notifications {
   id         String   @id @default(uuid())
-  socketIOid String
+  socketIOid String?
   createdAt  DateTime @default(now())
   userId     String
   recipient  String?
