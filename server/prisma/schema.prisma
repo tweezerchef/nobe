@@ -249,15 +249,16 @@ model PostsUsers {
 }
 
 model Activity {
-  id        String        @id @default(uuid())
-  userId    String
-  type      String
-  bookId    String?
-  placeId   String?
-  createdAt DateTime      @default(now())
-  book      Books?        @relation(fields: [bookId], references: [id])
-  user      User          @relation(fields: [userId], references: [id])
-  place     PlacesToRead? @relation(fields: [placeId], references: [id])
+  id          String        @id @default(uuid())
+  userId      String
+  type        String
+  description String?
+  bookId      String?
+  placeId     String?
+  createdAt   DateTime      @default(now())
+  book        Books?        @relation(fields: [bookId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
+  place       PlacesToRead? @relation(fields: [placeId], references: [id])
 }
 
 model Friendship {
