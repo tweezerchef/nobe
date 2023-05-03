@@ -112,16 +112,20 @@ Wishlist.post('/:id', async (req, res) => {
 
     })
     const bookID = newBook.data.id
-    const userBook = await prisma.userBooks.create({
-      data: {
-        wishlist,
-        owned,
-        User: { connect: { id: id } },
-        Books: { connect: { id: bookID } },
+    const userBook = await prisma.userBooks.upsert({
+      where: {
+        userId_bookId: { userId: id, booksId: bookID },
       },
-      include: { Books: true },
-    })
+      update: { wishlist: wishlist },
+      create: {
+        wishlist: true,
+        rating: null,
+        review: null,
+        userId: id,
+        booksId: bookID,
 
+      },
+    });
     const activity = await prisma.activity.create({
       data: {
         userId: id,
@@ -129,9 +133,6 @@ Wishlist.post('/:id', async (req, res) => {
         bookId: bookID,
       },
     })
-
-
-
   }
   //);
 
