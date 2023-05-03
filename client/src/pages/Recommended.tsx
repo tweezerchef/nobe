@@ -12,7 +12,6 @@ const Recommended = () => {
     const [books, setBooks] = useState([]);
     useEffect(() => {
         axios.get('/recommendations/recommended/?id=' + id).then(res => setBooks(res.data))
-        //.then(data => setBooks(data));
     }, []);
 
 
@@ -22,8 +21,8 @@ const Recommended = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            width: '100%', // Added this property
-            height: '100%', // Added this property
+            width: '100%',
+            height: '100%',
         }}>
             <h1> Your Personalized Recommendations List</h1>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: '20px' }}>

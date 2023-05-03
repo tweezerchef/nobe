@@ -9,6 +9,7 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
 // import DeleteButton from '../DeleteButton/DeleteButton';
 import { Link as RouterLink } from 'react-router-dom';
+import { Container } from '@material-ui/core';
 
 
 
@@ -17,7 +18,8 @@ import { Link as RouterLink } from 'react-router-dom';
 const BookDisplay = (props: any) => {
     const { userBooks: array, id, getUserBooks, setUserBooks, inventory } = props;
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <Container component="div" maxWidth={false} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+
             {array.length === 0 ? (
                 <div></div>
             ) : (
@@ -76,7 +78,7 @@ const BookDisplay = (props: any) => {
                     </Card>
                 ))
             )}
-        </div>
+        </Container>
     )
 }
 export default BookDisplay

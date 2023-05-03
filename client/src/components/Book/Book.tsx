@@ -4,14 +4,13 @@ import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
-import IconButton from '@mui/joy/IconButton';
-import Link from '@mui/joy/Link';
-import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
 import BigBook from './BookBig';
+import LendingLibraryButton from '../Button/LendingLibraryButton';
 import styled from 'styled-components'
+
 const BigBookOverlay = styled.div`
   position: fixed;
   z-index: 10;
@@ -62,10 +61,12 @@ const Book = React.memo((props: any) => {
         <Card key={book.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px' }}>
             <CardOverflow onClick={handleOnClick}>
                 <AspectRatio ratio="2">
-                    <img src={book.image} loading="lazy" alt="" />
+                    <img src={book.image} loading="lazy" alt="No Image Found" />
                 </AspectRatio>
 
+                <LendingLibraryButton book={book} />
                 <WishListButton book={book} />
+
             </CardOverflow>
             <Typography level="body1" sx={{ fontSize: "1.5rem !important", mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical' }} >
                 <span onClick={handleOnClick}>

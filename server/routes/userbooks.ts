@@ -33,10 +33,14 @@ UserBooks.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
     res.status(500).json({ error: 'Something went wrong' })
   }
 });
+
 UserBooks.post('/wishlist', async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { id, book } = req.body;
+    const { id, book, color } = req.body;
     const { title, ISBN10, author, image, description } = book
+    let wishlist = false
+    if (color === 'danger') wishlist = true;
+
     const newBook = await axios.post(`http://localhost:8080/bookdata/title/wishlist`, {
       title: title,
       ISBN10: ISBN10,
@@ -50,15 +54,14 @@ UserBooks.post('/wishlist', async (req: AuthenticatedRequest, res: Response) => 
       where: {
         userId_bookId: { userId: id, booksId: bookID },
       },
-      update: { wishlist: true },
+      update: { wishlist: wishlist },
       create: {
         wishlist: true,
         rating: null,
         review: null,
         userId: id,
         booksId: bookID,
-        // Books: { connect: { id: bookID } },
-        // User: { connectOrCreate: { where: { id }, create: { id } } },
+
       },
     });
     res.send(userBook).status(200)
@@ -69,15 +72,52 @@ UserBooks.post('/wishlist', async (req: AuthenticatedRequest, res: Response) => 
   }
 });
 
-interface UserBooksQuery {
-  where: {
-    userId: string;
-    owned?: boolean;
-    wishlist?: boolean;
-  };
-  include: {
-    books: true;
-  };
-}
+UserBooks.post('/lendinglibrary', async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { id, book, color } = req.body;
+    const { title, ISBN10, author, image, description } = book
+    let owned = false
+    if (color === 'danger') owned = true;
+
+    const newBook = await axios.post(`http://localhost:8080/bookdata/title/wishlist`, {
+      title: title,
+      ISBN10: ISBN10,
+      author: author,
+      image: image,
+      description: description,
+
+    })
+    const bookID = newBook.data.id
+    const userBook = await prisma.userBooks.upsert({
+      where: {
+        userId_bookId: { userId: id, booksId: bookID },
+      },
+      update: { owned: owned },
+      create: {
+        owned: true,
+        rating: null,
+        review: null,
+        userId: id,
+        booksId: bookID,
+
+      },
+    });
+    res.send(userBook).status(200)
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+// interface UserBooksQuery {
+//   where: {
+//     userId: string;
+//     owned?: boolean;
+//     wishlist?: boolean;
+//   };
+//   include: {
+//     books: true;
+//   };
+// }
 
 export default UserBooks;
