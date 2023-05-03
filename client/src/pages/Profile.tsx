@@ -4,13 +4,9 @@ import axios from 'axios';
 import { Typography, Grid, TextField, Button, Box } from '@material-ui/core';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context'
-// import ChatContext from '../hooks/ChatContext';
-import UserBooks from '../../../server/routes/userbooks';
 import Chat from '../components/Chat/Chat'
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import io from 'socket.io-client';
 import Modal from '@mui/material/Modal'
-import { style } from '@mui/system';
 import NearBy from '../components/NearBy/NearBy';
 import styled from 'styled-components';
 import { Paper } from '@mui/material';
@@ -36,6 +32,7 @@ interface UserProfile {
   firstName: string;
   picture: string;
 }
+
 const ChatOverlay = styled(Paper)`
   position: absolute;
   top: 100%;
@@ -98,13 +95,6 @@ const Profile = () => {
   };
 
 
-
-  // if (!chatContext) {
-  //   return <div>Loading chat...</div>;
-  // }
-
-  // const { messages } = chatContext;
-
   const handleChatButtonClick = () => {
     setShowChat(!showChat);
   };
@@ -139,18 +129,17 @@ const Profile = () => {
 
 
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
 
-    axios.post(`/books/${id}`, { title, inventory })
-      .then(response => {
-        setTitle("");
-        //getUserBooks(inventory);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
+  //   axios.post(`/user-books/${id}`, { title, inventory })
+  //     .then(response => {
+  //       setTitle("");
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     });
+  // };
 
 
 
@@ -159,9 +148,6 @@ const Profile = () => {
       getUserBooks("Owned");
       getProfile();
     }
-    newSocket.on('new-follow', (data: any) => {
-      console.log('new follow:', data.message);
-    });
   }, []);
 
   const style = {
@@ -219,7 +205,7 @@ const Profile = () => {
         {friendId === "" ? (
 
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <form onSubmit={handleSubmit} >
+            {/* <form onSubmit={handleSubmit} >
               <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12}>
                   <TextField
@@ -237,7 +223,7 @@ const Profile = () => {
                 <Grid item xs={12}>
                 </Grid>
               </Grid>
-            </form>
+            </form> */}
           </div>
 
         ) : null}

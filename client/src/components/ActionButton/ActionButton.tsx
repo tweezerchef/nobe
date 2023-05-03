@@ -58,10 +58,6 @@ const OpenIconSpeedDial: React.FC = () => {
       setNotificationCount(count);
     });
 
-    newSocket.on('connect_error', (error: any) => {
-      console.log('Socket connection error:', error);
-    });
-
     return () => {
       newSocket.disconnect();
     };

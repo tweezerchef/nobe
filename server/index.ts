@@ -4,10 +4,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
-import { OAuth2Client } from "google-auth-library";
-import jwt from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
-import axios from 'axios';
 import { Server } from "socket.io";
 //Socket.Io
 
@@ -152,7 +149,7 @@ app.use(express.json());
 //routes
 app.use("/location", LocationRoute);
 app.use("/recommendations", Recommendations);
-app.use("/books", UserBooks);
+app.use("/user-books", UserBooks);
 app.use('/review', Review);
 // app.use("/clubs", Clubs);
 app.use("/notifications", Notifications);
