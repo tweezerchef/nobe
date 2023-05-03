@@ -93,6 +93,14 @@ const Profile = () => {
       setBooks(booksArray);
     }
   };
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    axios.get(`/bookdata/title/searchOne?title=${title}`).then(response => { setBooks([response.data]), console.log(response.data) })
+    //.then(() => console.log(books))
+  }
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
 
 
   const handleChatButtonClick = () => {
@@ -113,10 +121,6 @@ const Profile = () => {
     }
   }
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
-
   const ownedClicked = () => {
     getUserBooks('Owned');
     setInventory('Owned');
@@ -128,18 +132,6 @@ const Profile = () => {
   }
 
 
-
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-
-  //   axios.post(`/user-books/${id}`, { title, inventory })
-  //     .then(response => {
-  //       setTitle("");
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //     });
-  // };
 
 
 
@@ -189,8 +181,18 @@ const Profile = () => {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', background: 'rgb(32, 32, 35)' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', background: 'rgb(74, 74, 228)' }}>
           <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%' }}>
+            <Button variant="contained" style={{ margin: '10px' }} color="primary" type="submit">Book Search</Button>
+            <form onSubmit={handleSubmit} >
+              <TextField
+                label="Book Title"
+                value={title}
+                onChange={handleTitleChange}
+                fullWidth
+              />
+
+            </form>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>
