@@ -7,7 +7,7 @@ import IconButton from '@mui/joy/IconButton';
 import Link from '@mui/joy/Link';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
-import DeleteButton from '../DeleteButton/DeleteButton';
+// import DeleteButton from '../DeleteButton/DeleteButton';
 import { Link as RouterLink } from 'react-router-dom';
 
 
@@ -71,7 +71,7 @@ const BookDisplay = (props: any) => {
                             <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
                             </Typography>
                             <UserStarRating book={userBook} id={id} />
-                            <DeleteButton userBook={userBook} id={id} getUserBooks={getUserBooks} setUserBooks={setUserBooks} inventory={inventory} />
+                            {/* <DeleteButton userBook={userBook} id={id} getUserBooks={getUserBooks} setUserBooks={setUserBooks} inventory={inventory} /> */}
                         </CardOverflow>
                     </Card>
                 ))

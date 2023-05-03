@@ -62,7 +62,7 @@ function Trending() {
     const inventory = "Wishlist"
 
     try {
-      const response = await axios.post(`/books/${id}`, {
+      const response = await axios.post(`/api/wishlist/${id}`, {
         title, inventory
       });
       console.log(response.data);
