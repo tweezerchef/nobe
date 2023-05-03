@@ -15,8 +15,6 @@ export interface Club {
 
 function Clubs() {
   const [clubs, setClubs] = useState<Club[]>([]);
-  const [showForm, setShowForm] = useState(false);
-  const [newClubName, setNewClubName] = useState('');
 
   useEffect(() => {
     async function fetchClubs() {
@@ -38,43 +36,6 @@ function Clubs() {
 `;
 
   return (
-    // <div style={{ display: 'flex', justifyContent: 'center' }}>
-    //   <React.Fragment>
-    //     {/* <Container maxWidth="md"> */}
-    //     <Grid container spacing={2}>
-    //       <Grid item xs={12} md={4} >
-    //         <CreateClubs setClubs={setClubs} />
-    //       </Grid>
-    //       <Grid item xs={12} md={8}>
-    //         <ClubHeader style={{ maxWidth: "800px", margin: "20px 0" }}>Book Clubs</ClubHeader>
-    //         <div style={{ maxWidth: "800px", margin: "20px 0" }}>
-    //           {clubs.map((club) => (
-    //             <Card key={club.id} style={{ marginBottom: '20px' }}>
-    //               <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-    //                 <Typography variant="h5" component="h2" style={{ textAlign: 'center' }}>
-    // <Link
-    //   to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
-    //   style={{ color: 'black', textDecoration: 'none' }}
-    // >
-    //                     {club.name}
-    //                   </Link>
-    //                 </Typography>
-    //                 <iframe src={club.image}
-    //                   style={{ pointerEvents: 'none' }} />
-    //                 <Typography variant="body1" component="p">
-    //                   {club.description}
-    //                 </Typography>
-    //               </CardContent>
-    //             </Card>
-    //           ))}
-    //         </div>
-    //       </Grid>
-    //     </Grid>
-    //   </React.Fragment>
-    // </div>
-
-
-    //SECOND REFACTOR - TOMS
     <div>
       <React.Fragment>
         <Grid container spacing={2}>

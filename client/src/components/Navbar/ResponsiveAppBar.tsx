@@ -272,9 +272,9 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
             >
               <StyledLink to="/booksearch">Book Search</StyledLink>
             </Button>
-            <Button sx={{ my: "2 !important", color: "white !important", display: "block !important", borderRadius: '50%' }}>
+            {/* <Button sx={{ my: "2 !important", color: "white !important", display: "block !important", borderRadius: '50%' }}>
             <OpenIconSpeedDial/>
-          </Button>
+          </Button> */}
           </Box>
           <Box sx={{ flexGrow: "0 !important", display: "block !important" }}>
             <Tooltip title="Open settings">
