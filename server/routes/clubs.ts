@@ -92,7 +92,7 @@ ClubsRoute.post('/:id/posts', async (req: Request, res: Response) => {
         }
       }
     });
-    res.json(post);
+    res.send(201).json({ post });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong" });
@@ -130,7 +130,7 @@ ClubsRoute.post('/:id/discussion', async (req: Request, res: Response) => {
       },
     });
 
-    res.json(discussion);
+    res.send(201).json({ discussion });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Unable to create discussion' });
@@ -151,6 +151,7 @@ ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
         }
       });
       //console.log(`Added user ${user.firstName} to club ${clubMember.clubId}`);
+      res.json(clubMember);
     } else {
       console.error(`User with email ${email} not found`);
     }
