@@ -43,24 +43,24 @@ SpotsMapRoute.get('/places', async (req: Request, res: Response) => {
   res.json(places);
 });
 
-SpotsMapRoute.post('/places/:id/description', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  // console.log(id);
-  const { Description } = req.body;
-  // console.log(Description)
+// SpotsMapRoute.post('/places/:id/description', async (req: Request, res: Response) => {
+//   const { id } = req.params;
+//   // console.log(id);
+//   const { Description } = req.body;
+//   // console.log(Description)
 
-  try {
-    const updatedPlace = await prisma.placesToRead.update({
-      where: { id: id },
-      data: { Description: Description },
-    });
+//   try {
+//     const updatedPlace = await prisma.placesToRead.update({
+//       where: { id: id },
+//       data: { Description: Description },
+//     });
 
-    res.status(200).json({ updatedPlace });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Something went wrong');
-  }
-})
+//     res.status(200).json({ updatedPlace });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send('Something went wrong');
+//   }
+// })
 
 // SpotsMapRoute.post('/places/:id/description', async (req: Request, res: Response) => {
 //   const { id } = req.params;
