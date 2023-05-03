@@ -125,7 +125,7 @@ import Friendship from './routes/friendship';
 import Activity from './routes/activity';
 import DirectMessages from './routes/directMessages';
 import Conversations from './routes/conversations';
-
+import Notifications from './routes/notifications';
 
 
 dotenv.config();
@@ -155,6 +155,7 @@ app.use("/recommendations", Recommendations);
 app.use("/books", UserBooks);
 app.use('/review', Review);
 // app.use("/clubs", Clubs);
+app.use("/notifications", Notifications);
 app.use("/api/clubs", Clubs);
 app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
