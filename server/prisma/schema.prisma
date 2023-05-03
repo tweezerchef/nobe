@@ -135,6 +135,8 @@ model UserBooks {
   owned        Boolean        @default(false)
   booksId      String
   userId       String
+  reading      Boolean        @default(false)
+  read         Boolean        @default(false)
   rating       Float?
   review       String?
   LendingTable LendingTable[]
@@ -142,6 +144,16 @@ model UserBooks {
   User         User           @relation(fields: [userId], references: [id])
 
   @@unique([userId, booksId], name: "userId_bookId")
+}
+
+model UserBookNotes {
+  id        String   @id @default(uuid())
+  userId    String
+  bookId    String
+  note      String
+  created   DateTime @default(now())
+  page      Int?
+  mentionId String?
 }
 
 model bookdata {

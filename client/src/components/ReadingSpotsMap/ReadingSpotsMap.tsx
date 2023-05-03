@@ -16,16 +16,15 @@ interface Place {
   Description: string;
 }
 
-interface DescriptionPlace {
-  id: number;
-  body: string;
-  userId: string;
-  user: {
-    id: string;
-    name: string;
-  };
-  placeId: string;
-}
+// interface Description {
+//   id: string;
+//   body: string;
+//   userId: string;
+//   user: {
+//     name: string;
+//   };
+//   placeId: string;
+// }
 
 function ReadingSpotsMap() {
   const [latlng, setLatLng] = useState<LatLngLiteral>();
