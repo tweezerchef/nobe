@@ -43,6 +43,23 @@ SpotsMapRoute.get('/places', async (req: Request, res: Response) => {
   res.json(places);
 });
 
+SpotsMapRoute.post('/description', async (req: Request, res: Response) => {
+  const { body, placeId, userId } = req.body;
+
+  try {
+    const updatedPlace = await prisma.description_Places.upsert({
+      where: { id: placeId },
+      update: { body },
+      create: { body, placeId, userId },
+    });
+
+    res.status(200).json({ updatedPlace });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Something went wrong');
+  }
+})
+
 // SpotsMapRoute.post('/places/:id/description', async (req: Request, res: Response) => {
 //   const { id } = req.params;
 //   // console.log(id);
