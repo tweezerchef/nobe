@@ -12,6 +12,9 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserReview from '../UserStarRating/UserReview'
 import Reviews from './Reviews'
+import WishListButton from '../Button/WishListButton';
+import LendingLibraryButton from '../Button/LendingLibraryButton';
+
 
 
 
@@ -56,22 +59,8 @@ const BigBook = (props: any) => {
                     }}
                     onClick={handleOnClick}
                 />
-                <IconButton
-                    aria-label="Like minimal photography"
-                    size="md"
-                    variant="solid"
-                    color="danger"
-                    sx={{
-                        position: 'absolute',
-                        zIndex: 2,
-                        borderRadius: '50%',
-                        right: '1rem',
-                        bottom: 0,
-                        transform: 'translateY(50%)',
-                    }}
-                >
-                    <BookmarkAddIcon />
-                </IconButton>
+                <LendingLibraryButton book={book} />
+                <WishListButton book={book} />
 
             </CardOverflow>
             <UserStarRating book={book} id={id} value={userRating} />
@@ -88,10 +77,10 @@ const BigBook = (props: any) => {
                 <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
                     <Link href="#multiple-actions">{book.author}</Link>
                 </Typography>
-                {/* <Typography level="body1">
+                <Typography level="body1">
                     {book.description}
                 </Typography>
-                <Typography level="body2">
+                {/* <Typography level="body2">
                     Placeholder Data 2: {book.placeholderData2}
                 </Typography>
                 <Typography level="body2">
