@@ -3,7 +3,16 @@ import React, {
 } from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import {
-  Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, List, ListItemText, ListItemButton, Typography, Stack, Box,
+  Card,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField, List,
+  ListItemText,
+  ListItemButton,
+  Typography,
 } from '@mui/material';
 import axios from 'axios';
 import Places from './places';
