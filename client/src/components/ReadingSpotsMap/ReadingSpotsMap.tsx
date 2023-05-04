@@ -46,12 +46,10 @@ function ReadingSpotsMap() {
     clickableIcons: false,
   }), []);
 
-  const onLoad = useCallback((map: any) => (mapRef.current = map), []);
-
-  const handleMarkerClick = useCallback(() => {
-    setShowInfoWindow((prev) => !prev);
-    fetchSavedPlaces();
+  const onLoad = useCallback((map: any) => {
+    mapRef.current = map;
   }, []);
+
   // const handlePlaceClick = (place: any) => {
   //   console.log(place)
 
@@ -78,6 +76,20 @@ function ReadingSpotsMap() {
     setShowInfoWindow(false);
   };
 
+  const fetchSavedPlaces = useCallback(async () => {
+    try {
+      const response = await axios.get('/api/places-to-read');
+      setSavedPlaces(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  const handleMarkerClick = useCallback(() => {
+    setShowInfoWindow((prev) => !prev);
+    fetchSavedPlaces();
+  }, []);
+
   const handleFormSubmit = async () => {
     try {
       if (!description) {
@@ -94,15 +106,6 @@ function ReadingSpotsMap() {
     }
   };
 
-  const fetchSavedPlaces = useCallback(async () => {
-    try {
-      const response = await axios.get('/api/places-to-read');
-      setSavedPlaces(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
   useEffect(() => {
     setDescription('');
     fetchSavedPlaces();
@@ -111,7 +114,7 @@ function ReadingSpotsMap() {
   return (
     <div className="spots-container">
       <div className="controls">
-        <h2 className="favorite-header">What's your favorite reading spot?</h2>
+        <h2 className="favorite-header">What&apos;s your favorite reading spot?</h2>
         <Places
           setLatLng={(position: any) => {
             setLatLng(position);
