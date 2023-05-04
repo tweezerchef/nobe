@@ -1,5 +1,4 @@
 import express from 'express';
-import axios from 'axios';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 
@@ -10,7 +9,6 @@ dotenv.config();
 const Activity = express.Router();
 
 Activity.get('/', async (req, res) => {
-
   const userId = Array.isArray(req.query.userId) ? req.query.userId[0] : req.query.userId;
   const userIdStr = typeof userId === 'string' ? userId : '';
 
@@ -20,23 +18,21 @@ Activity.get('/', async (req, res) => {
     where: { id: userIdStr },
   }).friendships() ?? [];
 
+  const followingIds = following.map((item) => item.friendId);
 
-  const followingIds = following.map(item => item.friendId);
-
-  console.log('followingIds', followingIds)  
+  console.log('followingIds', followingIds);
 
   const users = await prisma.activity.findMany({
     where: {
-      userId: { in: followingIds }
+      userId: { in: followingIds },
     },
     include: {
       user: true,
-      book: true
-    }
+      book: true,
+    },
   });
 
-res.send(users)  
+  res.send(users);
 });
-
 
 export default Activity;

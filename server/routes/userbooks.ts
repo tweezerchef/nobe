@@ -1,7 +1,9 @@
-const express = require('express');
-const axios = require('axios')
-const { PrismaClient } = require('@prisma/client');
 import { Request, Response } from 'express';
+
+const express = require('express');
+const axios = require('axios');
+const { PrismaClient } = require('@prisma/client');
+
 interface AuthenticatedRequest extends Request {
   user: {
     id: string;
@@ -12,49 +14,48 @@ interface AuthenticatedRequest extends Request {
 const prisma = new PrismaClient();
 const UserBooks = express.Router();
 
-
-
-
 UserBooks.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { id } = req.params;
     const userBooks = await prisma.userBooks.findMany({
       where: {
-        userId: id
+        userId: id,
       },
       include: {
-        books: true
-      }
+        books: true,
+      },
     });
     // const books = userBooks.map((userBook: UserBooks) => userBook.books);
     res.json(userBooks);
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: 'Something went wrong' })
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong' });
   }
 });
 
 UserBooks.post('/wishlist', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { id, book, color } = req.body;
-    const { title, ISBN10, author, image, description } = book
-    let wishlist = false
+    const {
+      title, ISBN10, author, image, description,
+    } = book;
+    let wishlist = false;
     if (color === 'danger') wishlist = true;
 
-    const newBook = await axios.post(`http://localhost:8080/bookdata/title/wishlist`, {
-      title: title,
-      ISBN10: ISBN10,
-      author: author,
-      image: image,
-      description: description,
+    const newBook = await axios.post('http://localhost:8080/bookdata/title/wishlist', {
+      title,
+      ISBN10,
+      author,
+      image,
+      description,
 
-    })
-    const bookID = newBook.data.id
+    });
+    const bookID = newBook.data.id;
     const userBook = await prisma.userBooks.upsert({
       where: {
         userId_bookId: { userId: id, booksId: bookID },
       },
-      update: { wishlist: wishlist },
+      update: { wishlist },
       create: {
         wishlist: true,
         rating: null,
@@ -64,9 +65,8 @@ UserBooks.post('/wishlist', async (req: AuthenticatedRequest, res: Response) => 
 
       },
     });
-    res.send(userBook).status(200)
-  }
-  catch (error) {
+    res.send(userBook).status(200);
+  } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Something went wrong' });
   }
@@ -75,24 +75,26 @@ UserBooks.post('/wishlist', async (req: AuthenticatedRequest, res: Response) => 
 UserBooks.post('/lendinglibrary', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { id, book, color } = req.body;
-    const { title, ISBN10, author, image, description } = book
-    let owned = false
+    const {
+      title, ISBN10, author, image, description,
+    } = book;
+    let owned = false;
     if (color === 'danger') owned = true;
 
-    const newBook = await axios.post(`http://localhost:8080/bookdata/title/wishlist`, {
-      title: title,
-      ISBN10: ISBN10,
-      author: author,
-      image: image,
-      description: description,
+    const newBook = await axios.post('http://localhost:8080/bookdata/title/wishlist', {
+      title,
+      ISBN10,
+      author,
+      image,
+      description,
 
-    })
-    const bookID = newBook.data.id
+    });
+    const bookID = newBook.data.id;
     const userBook = await prisma.userBooks.upsert({
       where: {
         userId_bookId: { userId: id, booksId: bookID },
       },
-      update: { owned: owned },
+      update: { owned },
       create: {
         owned: true,
         rating: null,
@@ -102,9 +104,8 @@ UserBooks.post('/lendinglibrary', async (req: AuthenticatedRequest, res: Respons
 
       },
     });
-    res.send(userBook).status(200)
-  }
-  catch (error) {
+    res.send(userBook).status(200);
+  } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Something went wrong' });
   }

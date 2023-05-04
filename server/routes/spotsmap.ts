@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { SidebarBody } from '../../client/src/Styled';
 import axios from 'axios';
 
 dotenv.config();
@@ -9,9 +8,10 @@ dotenv.config();
 const prisma = new PrismaClient();
 const SpotsMapRoute = express.Router();
 
-
-SpotsMapRoute.post("/place", async (req: Request, res: Response) => {
-  const { address, lat, lng, altLoc } = req.body;
+SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
+  const {
+    address, lat, lng, altLoc,
+  } = req.body;
   try {
     const existingPlace = await prisma.placesToRead.findFirst({
       where: {
@@ -22,39 +22,39 @@ SpotsMapRoute.post("/place", async (req: Request, res: Response) => {
     });
     if (existingPlace) {
       return res.status(200).json({
-        message: "Place already exists",
+        message: 'Place already exists',
       });
-    } else {
-      const createdPlace = await prisma.placesToRead.create({
-        data: {
-          Location: address,
-          Lat: lat,
-          Long: lng,
-          altLoc: altLoc,
-        },
-      });
-      res.status(201).json({ createdPlace });
     }
+    const createdPlace = await prisma.placesToRead.create({
+      data: {
+        Location: address,
+        Lat: lat,
+        Long: lng,
+        altLoc,
+      },
+    });
+    res.status(201).json({ createdPlace });
+
     //   const createdPlace = await prisma.placesToRead.upsert({
     //     where: { Lat: lat, Long: lng },
     // })
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong");
+    res.status(500).send('Something went wrong');
   }
+  return undefined;
 });
-SpotsMapRoute.get('/getplace', async (req: Request, res: Response) => {
-  const { placeId } = req.query
-  console.log('poop')
-  try {
-    const place = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}=${process.env.GOOGLE_MAPS_API_KEY}`)
 
-    res.send(place.data)
-  }
-  catch (error) {
+SpotsMapRoute.get('/getplace', async (req: Request, res: Response) => {
+  const { placeId } = req.query;
+  try {
+    const place = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}=${process.env.GOOGLE_MAPS_API_KEY}`);
+
+    res.send(place.data);
+  } catch (error) {
     console.error(error);
   }
-})
+});
 
 SpotsMapRoute.get('/', async (req: Request, res: Response) => {
   try {
@@ -79,7 +79,7 @@ SpotsMapRoute.get('/', async (req: Request, res: Response) => {
             CheckIns: true,
             place: true,
             user: true,
-          }
+          },
         },
         Activity: true,
         Description_Places: {
@@ -87,38 +87,36 @@ SpotsMapRoute.get('/', async (req: Request, res: Response) => {
             id: true,
             body: true,
             user: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
 
-    //console.log(places)
+    // console.log(places)
     res.send(places);
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong");
+    res.status(500).send('Something went wrong');
   }
 });
 
 SpotsMapRoute.post('/description', async (req: Request, res: Response) => {
   const { body, placeId, userId } = req.body;
 
-
   try {
     const updatedPlace = await prisma.description_Places.upsert({
-      where: { userId_placeId: { placeId: placeId, userId: userId } },
+      where: { userId_placeId: { placeId, userId } },
       update: { body },
-      create: { body, placeId, userId, },
+      create: { body, placeId, userId },
     });
-    //console.log(updatedPlace)
+    // console.log(updatedPlace)
 
     res.status(200).json({ updatedPlace });
   } catch (error) {
     console.error(error);
     res.status(500).send('Something went wrong');
   }
-})
+});
 
 // SpotsMapRoute.post('/places/:id/description', async (req: Request, res: Response) => {
 //   const { id } = req.params;

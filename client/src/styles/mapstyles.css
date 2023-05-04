@@ -19,7 +19,7 @@ a {
 .spots-container {
   display: flex;
   height: calc(100vh - 60px);
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .favorite-header {
@@ -44,11 +44,12 @@ a {
 }
 
 .controls {
-  width: 300px;
+  width: 22%;
   padding: 1rem;
   background: #14161a;
   color: #fff
 }
+
 
 .controls input {
   border: none;
@@ -58,18 +59,22 @@ a {
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: calc(100% - 300px);
+  flex: 1;
 }
 
 .place-viewer {
-  height: 33%;
+  height: 30%;
   width: 100%;
-  overflow: auto;
+  display: flex;
 }
+
+/* .place-viewer::-webkit-scrollbar {
+  display: none;
+} */
 
 .spots-map {
   width: 100%;
-  height: 67%;
+  height: 70%;
   overflow: hidden;
 }
 
@@ -123,3 +128,7 @@ a {
   background-color: #f2f2f2;
   border-radius: 5px;
 }
+
+/* ::-webkit-scrollbar {
+  display: none;
+} */
