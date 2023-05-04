@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
-import { Button, Card, CardContent, Typography, TextField, FormControl } from "@material-ui/core";
-import { ClubHeader } from './style'
-import axios from "axios";
+import {
+  Button, Card, CardContent, Typography, TextField, FormControl,
+} from '@material-ui/core';
+import axios from 'axios';
+import { ClubHeader } from './style';
 
 interface DiscussionPost {
   id: string;
   body: string;
   userId: string;
   discussionId: string;
-};
+}
 
 interface Discussion {
   id: string;
   Posts: DiscussionPost[];
   title: string;
-};
+}
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
@@ -43,12 +45,12 @@ function ClubDiscussion() {
 
   const handleJoinClub = async () => {
     try {
-      const user = localStorage.getItem("user");
+      const user = localStorage.getItem('user');
       if (!user) {
-        throw new Error("No user found");
+        throw new Error('No user found');
       }
-      const parsed = JSON.parse(user)
-      const email = parsed.email
+      const parsed = JSON.parse(user);
+      const { email } = parsed;
 
       const { data: club } = await axios.get(`/api/clubs/${id}`);
       const memberEmails = club.members?.map((member: { email: string; }) => member.email);
@@ -68,12 +70,12 @@ function ClubDiscussion() {
     event.preventDefault();
 
     try {
-      const user = localStorage.getItem("user");
+      const user = localStorage.getItem('user');
 
       if (!user) {
-        throw new Error("No user found");
+        throw new Error('No user found');
       }
-      const parsed = JSON.parse(user)
+      const parsed = JSON.parse(user);
       const response = await axios.post(`/api/clubs/${id}/discussion`, {
         title: newDiscussionTitle,
         userId: parsed.id,
@@ -97,7 +99,7 @@ function ClubDiscussion() {
             disabled={hasJoined}
             onClick={handleJoinClub}
           >
-            {hasJoined ? "Leave" : "Join"}
+            {hasJoined ? 'Leave' : 'Join'}
           </Button>
           <Button
             variant="contained"
@@ -123,12 +125,13 @@ function ClubDiscussion() {
         </form>
       )}
       {discussions?.map((discussion) => (
-        <Card key={discussion.id} >
+        <Card key={discussion.id}>
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }} >
+            <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }}>
               <Link
                 to={`/clubs/${id}/discussion/${discussion.id}`}
-                style={{ color: 'black', textDecoration: 'none' }}>
+                style={{ color: 'black', textDecoration: 'none' }}
+              >
                 {discussion.title}
               </Link>
             </Typography>
@@ -136,7 +139,7 @@ function ClubDiscussion() {
         </Card>
       ))}
     </div>
-  )
+  );
 }
 
 export default ClubDiscussion;

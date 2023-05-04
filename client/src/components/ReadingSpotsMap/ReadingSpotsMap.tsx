@@ -1,11 +1,15 @@
-import React, { useEffect, useState, useMemo, useCallback, useRef, useContext } from "react";
-import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
-import Places from "./places";
-import { Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, List, ListItemText, ListItemButton, Typography, Stack, Box } from '@mui/material';
-import axios from "axios";
-import "../../styles/mapstyles.css";
-import UserContext from "../../hooks/Context";
-import PlaceViewer from "./PlaceViewer";
+import React, {
+  useEffect, useState, useMemo, useCallback, useRef, useContext,
+} from 'react';
+import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+import {
+  Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, List, ListItemText, ListItemButton, Typography, Stack, Box,
+} from '@mui/material';
+import axios from 'axios';
+import Places from './places';
+import '../../styles/mapstyles.css';
+import UserContext from '../../hooks/Context';
+import PlaceViewer from './PlaceViewer';
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
@@ -21,23 +25,23 @@ interface Place {
 
 function ReadingSpotsMap() {
   const [latlng, setLatLng] = useState<LatLngLiteral>();
-  const [location, setLocation] = useState<string>("");
+  const [location, setLocation] = useState<string>('');
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [savedPlaces, setSavedPlaces] = useState<Place[]>([]);
   const [selectedPlace, setSelectedPlace] = useState<number | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [description, setDescription] = useState<string>("");
+  const [description, setDescription] = useState<string>('');
   const [isAddingDescription, setIsAddingDescription] = useState(false);
   const [open, setOpen] = React.useState(false);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const id = user?.id
+  const id = user?.id;
 
-  const mapRef = useRef<GoogleMap>()
+  const mapRef = useRef<GoogleMap>();
   const center = useMemo<LatLngLiteral>(() => ({ lat: 29.9511, lng: -90.0715 }), []);
   const options = useMemo<MapOptions>(() => ({
-    mapId: "89f1db752bd023d1",
+    mapId: '89f1db752bd023d1',
     disableDefaultUI: true,
     clickableIcons: false,
   }), []);
@@ -77,11 +81,11 @@ function ReadingSpotsMap() {
   const handleFormSubmit = async () => {
     try {
       if (!description) {
-        alert("Please enter a description.");
+        alert('Please enter a description.');
         return;
       }
-      await axios.post(`/api/places-to-read/description`, { body: description, userId: id, placeId: selectedPlace });
-      setDescription("");
+      await axios.post('/api/places-to-read/description', { body: description, userId: id, placeId: selectedPlace });
+      setDescription('');
       setIsAddingDescription(false);
       setIsFormOpen(false);
       fetchSavedPlaces();
@@ -100,7 +104,7 @@ function ReadingSpotsMap() {
   }, []);
 
   useEffect(() => {
-    setDescription("");
+    setDescription('');
     fetchSavedPlaces();
   }, [selectedPlace, fetchSavedPlaces]);
 
@@ -127,11 +131,11 @@ function ReadingSpotsMap() {
                 bgcolor: '#f0f0f0',
                 borderRadius: '4px',
                 '&:hover': {
-                  bgcolor: '#ddd'
-                }
+                  bgcolor: '#ddd',
+                },
               }}
             >
-              <ListItemText primary={<Typography color={"gray"}>{place.Location}</Typography>} />
+              <ListItemText primary={<Typography color="gray">{place.Location}</Typography>} />
             </ListItemButton>
           ))}
         </List>
@@ -164,7 +168,7 @@ function ReadingSpotsMap() {
                 position={latlng}
                 onClick={handleMarkerClick}
                 icon={{
-                  url: "http://maps.google.com/mapfiles/kml/shapes/library_maps.png",
+                  url: 'http://maps.google.com/mapfiles/kml/shapes/library_maps.png',
                 }}
               >
                 {showInfoWindow && (
@@ -181,8 +185,11 @@ function ReadingSpotsMap() {
                         )}
                         {isFormOpen && (
                           <Card>
-                            <Dialog open={open} fullWidth
-                              maxWidth="md">
+                            <Dialog
+                              open={open}
+                              fullWidth
+                              maxWidth="md"
+                            >
                               <DialogTitle>Leave This Spot a Review</DialogTitle>
                               <DialogContent>
                                 <TextField
@@ -214,7 +221,7 @@ function ReadingSpotsMap() {
                 // position={new google.maps.LatLng(place.Lat, place.Long)}
                 position={{ lat: place.Lat, lng: place.Long }}
                 icon={{
-                  url: "http://maps.google.com/mapfiles/kml/shapes/library_maps.png",
+                  url: 'http://maps.google.com/mapfiles/kml/shapes/library_maps.png',
                 }}
                 onClick={() => handlePlaceClick(place.id)}
               >
@@ -233,8 +240,11 @@ function ReadingSpotsMap() {
                         )}
                         {isFormOpen && (
                           <Card>
-                            <Dialog open={open} fullWidth
-                              maxWidth="md">
+                            <Dialog
+                              open={open}
+                              fullWidth
+                              maxWidth="md"
+                            >
                               <DialogTitle>Leave This Spot a Review</DialogTitle>
                               <DialogContent>
                                 <TextField
@@ -265,7 +275,7 @@ function ReadingSpotsMap() {
       </div>
 
     </div>
-  )
+  );
 }
 
 export default ReadingSpotsMap;
