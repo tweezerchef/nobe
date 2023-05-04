@@ -16,7 +16,7 @@ import { Container } from '@material-ui/core';
 
 
 const BookDisplay = (props: any) => {
-    const { userBooks: array, id, getUserBooks, setUserBooks, inventory } = props;
+    const { userBooks: array, id } = props;
     return (
         <Container component="div" maxWidth={false} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
 
