@@ -4,5 +4,3 @@ module.exports = {
        project: './tsconfig.json'
      }
 };
-
-//does this even work????
