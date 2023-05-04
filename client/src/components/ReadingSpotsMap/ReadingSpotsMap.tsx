@@ -164,10 +164,10 @@ function ReadingSpotsMap() {
         > */}
       {/* <div className="main-content" style={{ display: 'flex', flexDirection: 'row' }}> */}
       <div className="main-content">
+        <div className="place-viewer">
+          <PlaceViewer />
+        </div>
         <div className="spots-map">
-          <div className="place-viewer">
-            <PlaceViewer />
-          </div>
           <GoogleMap
             zoom={11.5}
             center={center}
