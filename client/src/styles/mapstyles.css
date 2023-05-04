@@ -64,7 +64,7 @@ a {
 .place-viewer {
   height: 33%;
   width: 100%;
-  overflow: auto;
+  display: flex;
 }
 
 /* .place-viewer::-webkit-scrollbar {
