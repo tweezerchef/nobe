@@ -50,6 +50,11 @@ a {
   color: #fff
 }
 
+@media (max-width: 768px) {
+  .controls {
+    width: 35%;
+  }
+}
 
 .controls input {
   border: none;
@@ -66,6 +71,7 @@ a {
   height: 30%;
   width: 100%;
   display: flex;
+  overflow: auto;
 }
 
 /* .place-viewer::-webkit-scrollbar {
