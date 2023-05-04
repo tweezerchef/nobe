@@ -67,6 +67,10 @@ a {
   overflow: auto;
 }
 
+.place-viewer::-webkit-scrollbar {
+  display: none;
+}
+
 .spots-map {
   width: 100%;
   height: 67%;
