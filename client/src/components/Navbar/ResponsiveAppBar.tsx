@@ -1,6 +1,9 @@
 import React, {
-  useState, useEffect, useRef, useContext,
+  useState,
+  // useEffect, useRef,
+  useContext,
 } from 'react';
+import axios from 'axios';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,14 +17,14 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Paper } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import UserContext from '../../hooks/Context';
 import ModeToggle from '../ColorMode/ColorModeToggle';
-import OpenIconSpeedDial from '../ActionButton/ActionButton';
-import NotificationMobile from '../NotificationMessages/Notificationsmobile';
+import NotificationIcon from '../ActionButton/ActionButton';
+// import NotificationMobile from '../NotificationMessages/Notificationsmobile';
 import Chat from '../Chat/Chat';
 
 const StyledLink = styled(Link)`
@@ -35,6 +38,14 @@ interface ResponsiveAppBarProps {
   setJoyMode: () => void;
 }
 
+const StyledButton = styled(Button)`
+color: white !important;
+  font-family: sans-serif !important;
+  text-transform: capitalize !important;
+  display: block !important;
+
+
+`;
 const ChatOverlay = styled(Paper)`
   position: absolute;
   top: 100%;
@@ -84,6 +95,18 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
   const logout = () => {
     localStorage.removeItem('user');
     window.location.href = '/';
+  };
+
+  const navigate = useNavigate();
+
+  const handleLookForBooksClick = async () => {
+    try {
+      const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      const data = await response.data;
+      navigate('/locations', { state: data });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleChatButtonClick = () => {
@@ -294,7 +317,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               onClick={handleCloseNavMenu}
               sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
             >
-              <StyledLink to="/locations">Books Near Me</StyledLink>
+              <StyledButton onClick={handleLookForBooksClick}>Books Near Me</StyledButton>
             </Button>
             <Button
               onClick={handleCloseNavMenu}
@@ -326,6 +349,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
             >
               <StyledLink to="/booksearch">Book Search</StyledLink>
             </Button>
+            <NotificationIcon />
             <div style={{ position: 'relative' }}>
               <IconButton style={{ width: '32px', margin: '10px' }} onClick={handleChatButtonClick}>
                 <ChatIcon />
@@ -336,12 +360,6 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
                 </ChatOverlay>
               )}
             </div>
-            {/* <Button sx={{
-              my: '2 !important', color: 'white !important', display: 'block !important', borderRadius: '50%',
-            }}
-            >
-              <OpenIconSpeedDial />
-            </Button> */}
           </Box>
           <Box sx={{ flexGrow: '0 !important', display: 'block !important' }}>
             <Tooltip title="Open settings">
