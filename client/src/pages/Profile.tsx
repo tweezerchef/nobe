@@ -1,15 +1,17 @@
 import { useParams } from 'react-router-dom';
-import React, { useState, useEffect, useRef, useContext, } from 'react';
+import React, {
+  useState, useEffect, useRef, useContext,
+} from 'react';
 import axios from 'axios';
-import { Typography, Grid, TextField, Button, Box } from '@material-ui/core';
-import BookDisplay from '../components/BookDisplay/BookDisplay';
-import UserContext from '../hooks/Context'
-import Chat from '../components/Chat/Chat'
+import {
+  Typography, Grid, TextField, Button, Box,
+} from '@material-ui/core';
 import io from 'socket.io-client';
-import Modal from '@mui/material/Modal'
+import Modal from '@mui/material/Modal';
+import BookDisplay from '../components/BookDisplay/BookDisplay';
+import UserContext from '../hooks/Context';
 import NearBy from '../components/NearBy/NearBy';
-import styled from 'styled-components';
-import { Paper } from '@mui/material';
+
 interface UserBook {
   wishlist: any;
   owned: any;
@@ -34,24 +36,10 @@ interface UserProfile {
   UserBooks: UserBook[];
 }
 
-const ChatOverlay = styled(Paper)`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  width: 800px;
-  height: 600px;
-  overflow-y: auto;
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
-`;
-
-
-const Profile = () => {
+function Profile() {
   const [books, setBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
-  const [showChat, setShowChat] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [socket, setSocket] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
@@ -59,23 +47,16 @@ const Profile = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-
-
-  // const chatContext = useContext(ChatContext);
-
   const userContext = useContext(UserContext);
-  let user = userContext?.user;
+  const user = userContext?.user;
 
-  const id = user.id
-  const friendId: string = useParams().id || "";
+  const { id } = user;
+  const friendId: string = useParams().id || '';
 
   const newSocket = io('http://localhost:3000');
 
-
-
-
   const getProfile = async () => {
-    if (friendId !== "") {
+    if (friendId !== '') {
       try {
         const response = await axios.get(`/user/id?id=${friendId}`);
         await setProfile(response.data);
@@ -83,18 +64,18 @@ const Profile = () => {
         console.error(error);
       }
     }
-  }
+  };
 
   const getUserBooks = (query: string) => {
     const booksArray: Book[] = [];
 
-    if (query == "Owned") {
+    if (query == 'Owned') {
       profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.owned) booksArray.push(book.Books);
       });
       setBooks(booksArray);
     }
-    if (query == "Wishlist") {
+    if (query == 'Wishlist') {
       profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.wishlist) booksArray.push(book.Books);
       });
@@ -103,16 +84,11 @@ const Profile = () => {
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    axios.get(`/bookdata/title/searchOne?title=${title}`).then(response => { setBooks([response.data]), console.log(response.data) })
-    //.then(() => console.log(books))
-  }
+    axios.get(`/bookdata/title/searchOne?title=${title}`).then((response) => { setBooks([response.data]), console.log(response.data); });
+    // .then(() => console.log(books))
+  };
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
-  };
-
-
-  const handleChatButtonClick = () => {
-    setShowChat(!showChat);
   };
 
   const follow = async () => {
@@ -121,36 +97,31 @@ const Profile = () => {
 
     try {
       newSocket.emit('new-follow', {
-        message: `${userFirstName} has followed you`
-      })
+        message: `${userFirstName} has followed you`,
+      });
       await axios.post('/api/friendship', { userId, friendId });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   const ownedClicked = () => {
     getUserBooks('Owned');
     setInventory('Owned');
-  }
+  };
 
   const wishClicked = () => {
-    getUserBooks('Wishlist')
+    getUserBooks('Wishlist');
     setInventory('Wishlist');
-  }
-
-
-
-
+  };
 
   useEffect(() => {
-    if (friendId !== "") {
+    if (friendId !== '') {
       getProfile();
     } else {
-      setProfile(user)
+      setProfile(user);
     }
   }, []);
-
 
   useEffect(() => {
     if (profile) {
@@ -170,26 +141,19 @@ const Profile = () => {
     p: 4,
   };
 
-
   return (
 
-    <div >
+    <div>
 
-      <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
+      <div style={{ display: 'flex', justifyContent: 'center', margin: '20px' }}>
         <Grid container>
-          <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
-            <div style={{ position: "relative" }}> {/* Add this container div */}
-              <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleChatButtonClick}>
-                Chat
-              </Button>
-              {showChat && (
-                <ChatOverlay>
-                  <Chat />
-                </ChatOverlay>
-              )}
-            </div> {/* Close the container div */}
-            <Typography variant="h4">{friendId === "" ? `${user.firstName}'s` : `${profile?.firstName}'s`} Books</Typography>
-            {friendId === "" ? null : (
+          <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
+            <Typography variant="h4">
+              {friendId === '' ? `${user.firstName}'s` : `${profile?.firstName}'s`}
+              {' '}
+              Books
+            </Typography>
+            {friendId === '' ? null : (
               <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={follow}>Follow</Button>)}
           </Grid>
         </Grid>
@@ -197,10 +161,16 @@ const Profile = () => {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', background: 'rgb(74, 74, 228)' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%' }}>
+        <div style={{
+          display: 'flex', justifyContent: 'center', width: '100%', background: '#002884',
+        }}
+        >
+          <div style={{
+            display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%',
+          }}
+          >
             <Button variant="contained" style={{ margin: '10px' }} color="primary" type="submit">Book Search</Button>
-            <form onSubmit={handleSubmit} >
+            <form onSubmit={handleSubmit}>
               <TextField
                 label="Book Title"
                 value={title}
@@ -220,15 +190,18 @@ const Profile = () => {
           </div>
         </div>
 
-        {friendId === "" ? (
+        {friendId === '' ? (
 
-          <div style={{ display: "flex", justifyContent: "center" }}>
-          </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }} />
 
         ) : null}
 
         <div style={{ margin: '15px' }}>
-          <Typography variant="h5">{inventory} Books</Typography>
+          <Typography variant="h5">
+            {inventory}
+            {' '}
+            Books
+          </Typography>
         </div>
         <BookDisplay books={books} id={id} />
       </div>
@@ -236,6 +209,5 @@ const Profile = () => {
     </div>
   );
 }
-
 
 export default Profile;
