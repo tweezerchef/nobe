@@ -274,7 +274,7 @@ function Chat() {
                         <Grid container>
                           <Grid item xs={12}>
                             <ListItemText primary={(
-                              <Typography align="right" component="span" variant="body2">
+                              <Typography component="span" variant="body2">
                                 <span style={{ fontWeight: 'bolder' }}>
                                   {senderFirstName}
                                   {' '}
