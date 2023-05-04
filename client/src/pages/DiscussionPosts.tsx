@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { format } from "date-fns";
+import React, { useEffect, useState } from 'react';
+import { format } from 'date-fns';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ClubHeader } from './style'
-import axios from "axios";
-import { useParams } from "react-router";
+import axios from 'axios';
+import { useParams } from 'react-router';
+import { ClubHeader } from './style';
 
 interface Post {
   id: string;
@@ -21,8 +21,8 @@ interface Post {
 function DiscussionPosts() {
   const { id } = useParams<{ id: string }>();
   const [posts, setPosts] = useState<Post[]>([]);
-  const [newPost, setNewPost] = useState("");
-  const [discussionTitle, setDiscussionTitle] = useState("");
+  const [newPost, setNewPost] = useState('');
+  const [discussionTitle, setDiscussionTitle] = useState('');
 
   useEffect(() => {
     async function getPosts() {
@@ -51,19 +51,19 @@ function DiscussionPosts() {
     event.preventDefault();
 
     try {
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
       const currentDate = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
       const { data } = await axios.post(`/api/clubs/${id}/posts`, {
         userId: user.id,
         body: newPost,
-        createdAt: currentDate
+        createdAt: currentDate,
       });
       setPosts([...posts, data]);
-      setNewPost("");
+      setNewPost('');
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
   async function handleDelete(postId: string) {
     try {
@@ -81,8 +81,12 @@ function DiscussionPosts() {
         <div key={post.id}>
           <h3>{post.body}</h3>
           {/* <p>userId: {post.userId}</p> */}
-          <p>{post.user.firstName} {format(new Date(post.createdAt), "h:mm a MMMM d, yyyy")}</p>
-          {post.userId === JSON.parse(localStorage.getItem("user") || "{}").id && (
+          <p>
+            {post.user.firstName}
+            {' '}
+            {format(new Date(post.createdAt), 'h:mm a MMMM d, yyyy')}
+          </p>
+          {post.userId === JSON.parse(localStorage.getItem('user') || '{}').id && (
             <Stack direction="row" spacing={1}>
               <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
                 <DeleteIcon />

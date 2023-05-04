@@ -10,46 +10,59 @@ datasource db {
 }
 
 model User {
-  id                 String             @id @default(uuid())
+  id                 String               @id @default(uuid())
   firstName          String
-  username           String?            @unique
-  email              String             @unique
-  googleId           String             @unique
+  username           String?              @unique
+  email              String               @unique
+  googleId           String               @unique
   lastName           String?
   picture            String?
   token              String?
   latitude           Float?
   longitude          Float?
   radius             Int?
-  NotificationsCount Int                @default(0)
+  NotificationsCount Int                  @default(0)
   Activity           Activity[]
   clubMembers        ClubMembers[]
   DirectMessages     DirectMessages[]
   Discussions        Discussions[]
   DiscussionsUsers   DiscussionsUsers[]
-  friends            Friendship[]       @relation("friend")
-  friendships        Friendship[]       @relation("user")
+  friends            Friendship[]         @relation("friend")
+  friendships        Friendship[]         @relation("user")
   LendingTable       LendingTable[]
   Notifications      Notifications[]
   Posts              Posts[]
   PostsUsers         PostsUsers[]
   UserBooks          UserBooks[]
   User_Places        User_Places[]
-  Conversations      Conversations[]    @relation("conversationMembers")
+  Conversations      Conversations[]      @relation("conversationMembers")
+  Description_Places Description_Places[]
 }
 
 model PlacesToRead {
-  id              String         @id @default(uuid())
-  nickName        String?
-  Location        String
-  Private         Boolean        @default(false)
-  Lat             Float?
-  Long            Float?
-  altLoc          String?
-  Description     String?
-  LendingTableIn  LendingTable[] @relation("inPlace")
-  LendingTableOut LendingTable[] @relation("outPlace")
-  userPlaces      User_Places[]
+  id                 String               @id @default(uuid())
+  nickName           String?
+  Location           String
+  Private            Boolean              @default(false)
+  Lat                Float?
+  Long               Float?
+  altLoc             String?
+  LendingTableIn     LendingTable[]       @relation("inPlace")
+  LendingTableOut    LendingTable[]       @relation("outPlace")
+  userPlaces         User_Places[]
+  Activity           Activity[]
+  Description_Places Description_Places[]
+}
+
+model Description_Places {
+  id      String       @id @default(uuid())
+  body    String
+  place   PlacesToRead @relation(fields: [placeId], references: [id])
+  userId  String
+  user    User         @relation(fields: [userId], references: [id])
+  placeId String
+
+  @@unique([userId, placeId], name: "userId_placeId")
 }
 
 model User_Places {
@@ -67,9 +80,11 @@ model User_Places {
 
 model Notifications {
   id         String   @id @default(uuid())
-  socketIOid String
+  socketIOid String?
   createdAt  DateTime @default(now())
   userId     String
+  recipient  String?
+  type       String?
   body       String
   User       User     @relation(fields: [userId], references: [id])
 }
@@ -115,18 +130,31 @@ model Genre {
 }
 
 model UserBooks {
-  id           String         @id @default(uuid())
-  wishlist     Boolean        @default(false)
-  owned        Boolean        @default(false)
-  booksId      String
-  userId       String
-  rating       Float?
-  review       String?
-  LendingTable LendingTable[]
-  Books        Books          @relation(fields: [booksId], references: [id])
-  User         User           @relation(fields: [userId], references: [id])
+  id            String          @id @default(uuid())
+  wishlist      Boolean         @default(false)
+  owned         Boolean         @default(false)
+  booksId       String
+  userId        String
+  reading       Boolean         @default(false)
+  read          Boolean         @default(false)
+  rating        Float?
+  review        String?
+  UserBookNotes UserBookNotes[]
+  LendingTable  LendingTable[]
+  Books         Books           @relation(fields: [booksId], references: [id])
+  User          User            @relation(fields: [userId], references: [id])
 
   @@unique([userId, booksId], name: "userId_bookId")
+}
+
+model UserBookNotes {
+  id         String    @id @default(uuid())
+  userBookId String
+  note       String
+  created    DateTime  @default(now())
+  page       Int?
+  mentionId  String?
+  UserBooks  UserBooks @relation(fields: [userBookId], references: [id])
 }
 
 model bookdata {
@@ -221,13 +249,16 @@ model PostsUsers {
 }
 
 model Activity {
-  id        String   @id @default(uuid())
-  userId    String
-  type      String
-  bookId    String
-  createdAt DateTime @default(now())
-  book      Books    @relation(fields: [bookId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  id          String        @id @default(uuid())
+  userId      String
+  type        String
+  description String?
+  bookId      String?
+  placeId     String?
+  createdAt   DateTime      @default(now())
+  book        Books?        @relation(fields: [bookId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
+  place       PlacesToRead? @relation(fields: [placeId], references: [id])
 }
 
 model Friendship {

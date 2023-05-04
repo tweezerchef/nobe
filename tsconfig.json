@@ -105,6 +105,6 @@
   "include": [
     "./client/src/**/*",
     "./client/src/typings/**/*",
-    "./server/src/**/*"
+    "./server/**/*"
   ]
 }
