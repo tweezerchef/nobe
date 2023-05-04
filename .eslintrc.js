@@ -4,4 +4,7 @@ module.exports = {
        project: './tsconfig.json'
      },
      ignorePatterns: ["*.js", "*.jsx"],
+     rules: {
+      'no-console': ['error', { allow: ['error'] }],
+    },
 };
