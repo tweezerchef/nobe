@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 interface AuthenticatedRequest extends Request {
   user: {
     id: string;
-
+    color: string;
   };
 }
 
@@ -79,29 +79,23 @@ const Wishlist = express.Router();
 // });
 
 Wishlist.post('/:id', async (req, res) => {
-  console.log('poop')
 
   try {
     const { inventory } = req.body;
     const googleTitle = req.body.title
     const { id } = req.params;
+    const { color } = req.body;
     let wishlist;
     let owned;
-    if (inventory === 'Wishlist') {
-      wishlist = true;
-    } else {
-      owned = true;
-    }
+    
+    console.log('title', googleTitle)
+    console.log('id', id)
+    console.log('color', color)
 
-    console.log('inventory', inventory)
+    if (color === 'danger') wishlist = true;
 
-    //console.log()
     const response = await axios.get(`http://localhost:8080/google-books?title=${googleTitle}`);
     const { title, ISBN10, author, image, description } = response.data
-    //console.log(title, ISBN10, author, image, description )
-
-
-
 
     const newBook = await axios.post(`http://localhost:8080/bookdata/title/wishlist`, {
       title: title,
