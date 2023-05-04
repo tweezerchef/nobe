@@ -1,5 +1,5 @@
 import  React, { useState, useContext, useEffect } from 'react';
-import { Counter } from './style'
+import  Counter from './style'
 import { io, Socket } from "socket.io-client";
 import { SvgIcon, Button } from '@material-ui/core';
 import Modal from '@mui/joy/Modal';
