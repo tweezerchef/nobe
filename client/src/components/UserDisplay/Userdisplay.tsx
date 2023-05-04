@@ -52,7 +52,7 @@ function UserDisplay({ user }: { user: any }) {
     setBooks(booksArray);
   }, [userBooks]);
 
-  console.log(books, 24)
+  //console.log(books, 24)
 
   return (
     <div>

@@ -1,5 +1,6 @@
 
 import React from "react";
+import axios from "axios";
 import { useState, useEffect, useRef, useContext } from 'react';
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,7 +15,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import UserContext from '../../hooks/Context'
 import ModeToggle from "../ColorMode/ColorModeToggle";
@@ -32,6 +33,17 @@ interface ResponsiveAppBarProps {
   setMode: () => void;
   setJoyMode: () => void;
 }
+
+const StyledButton = styled(Button)`
+color: white !important;
+  font-family: sans-serif !important;
+  text-transform: capitalize !important;
+  display: block !important;
+
+
+`
+
+
 
 
 function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
@@ -73,6 +85,21 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
     localStorage.removeItem("user");
     window.location.href = '/';
   };
+
+  const navigate = useNavigate();
+
+
+  const handleLookForBooksClick = async () => {
+    try {
+      const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      const data = await response.data
+      navigate('/locations', { state: data });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
 
   return (
     <AppBar position="static" sx={{ bgcolor: "#1976d2 !important" }}>
@@ -240,7 +267,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               onClick={handleCloseNavMenu}
               sx={{ my: "2 !important", color: "white !important", display: "block !important" }}
             >
-              <StyledLink to="/locations">Books Near Me</StyledLink>
+              <StyledButton onClick={handleLookForBooksClick} >Books Near Me</StyledButton>
             </Button>
             <Button
               onClick={handleCloseNavMenu}

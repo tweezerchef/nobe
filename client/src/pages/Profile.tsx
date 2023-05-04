@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useRef, useContext, } from 'react';
 import axios from 'axios';
 import { Typography, Grid, TextField, Button, Box } from '@material-ui/core';
@@ -57,7 +57,7 @@ const Profile = () => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const navigate = useNavigate();
 
 
   // const chatContext = useContext(ChatContext);
@@ -76,6 +76,17 @@ const Profile = () => {
       console.error(error);
     }
   }
+
+
+  const handleNearMeClick = async () => {
+  try {
+    const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+    const data = await response.data
+    navigate('/locations', { state: data });
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 
   const getUserBooks = (query: string) => {
@@ -154,7 +165,7 @@ const Profile = () => {
     p: 4,
   };
 
-
+console.log(user, 168);
   return (
 
     <div >
@@ -195,7 +206,8 @@ const Profile = () => {
             </form>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
-            <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>
+            { user.latitude > 0 && user.radius > 0 ? (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleNearMeClick}>Near Me</Button> )
+            : (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button> ) }
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
               <Box sx={style}>
                 <NearBy />
