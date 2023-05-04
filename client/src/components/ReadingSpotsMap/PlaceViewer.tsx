@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button, Card, CardMedia, CardContent, CardActions, Chip } from '@material-ui/core';
+import {
+    Box, Typography, Button, Card, CardMedia, CardContent, CardActions, Chip,
+} from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import PhoneIcon from '@material-ui/icons/Phone';
-import { Theme } from '@mui/material/styles';
 import Rating from '@mui/material/Rating';
-import useStyles from './styles';
 import axios from 'axios';
+import useStyles from './styles';
 
 interface Award {
     images: {
@@ -45,10 +46,10 @@ interface PlaceDetailsProps {
     refProp: React.MutableRefObject<HTMLElement | null>;
 }
 
-//const PlaceDetails: React.FC<PlaceDetailsProps> = () => {
+// const PlaceDetails: React.FC<PlaceDetailsProps> = () => {
 // if (selected) refProp?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-//{ place, selected, refProp }
-const PlaceDetails = () => {
+// { place, selected, refProp }
+function PlaceDetails() {
     const [place, setPlace] = useState<Place | null>(null);
     const classes = useStyles();
 
@@ -58,9 +59,8 @@ const PlaceDetails = () => {
         // &fields=address_components
         // &key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`).then((response) => { console.log(response) })
         // console.log(response);
-        const response = axios.get(`/api/places-to-read/getplace`).then((response) => { console.log(response), setPlace(response.data.result) })
-
-    }, [])
+        const response = axios.get('/api/places-to-read/getplace').then((response) => { console.log(response), setPlace(response.data.result); });
+    }, []);
     return (
 
         <Card elevation={6}>
@@ -73,7 +73,12 @@ const PlaceDetails = () => {
                 <Typography gutterBottom variant="h5">{place?.name}</Typography>
                 <Box display="flex" justifyContent="space-between" my={2}>
                     <Rating name="read-only" value={Number(place?.rating)} readOnly />
-                    <Typography component="legend">{place?.num_reviews} review{place?.num_reviews !== 1 && 's'}</Typography>
+                    <Typography component="legend">
+                        {place?.num_reviews}
+                        {' '}
+                        review
+                        {place?.num_reviews !== 1 && 's'}
+                    </Typography>
                 </Box>
                 <Box display="flex" justifyContent="space-between">
                     <Typography component="legend">Price</Typography>
@@ -98,12 +103,15 @@ const PlaceDetails = () => {
                 ))}
                 {place?.address && (
                     <Typography gutterBottom variant="body2" color="textSecondary" className={classes.subtitle}>
-                        <LocationOnIcon />{place.address}
+                        <LocationOnIcon />
+                        {place.address}
                     </Typography>
                 )}
                 {place?.phone && (
                     <Typography variant="body2" color="textSecondary" className={classes.spacing}>
-                        <PhoneIcon /> {place.phone}
+                        <PhoneIcon />
+                        {' '}
+                        {place.phone}
                     </Typography>
                 )}
             </CardContent>
@@ -117,6 +125,6 @@ const PlaceDetails = () => {
             </CardActions>
         </Card>
     );
-};
+}
 
 export default PlaceDetails;
