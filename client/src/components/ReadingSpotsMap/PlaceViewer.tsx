@@ -102,7 +102,7 @@ function PlaceDetails() {
           <Grid container>
             <Grid item xs={12} sm={6}>
               <CardMedia
-                sx={{ paddingTop: '75%', width: '75%' }} // Make the image a square
+                sx={{ paddingTop: '25%', width: '35%' }}
                 image={
                                     place?.photo
                                       ? place.photo.images.large.url
