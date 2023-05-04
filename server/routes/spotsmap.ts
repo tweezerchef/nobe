@@ -45,7 +45,6 @@ SpotsMapRoute.post("/place", async (req: Request, res: Response) => {
 });
 SpotsMapRoute.get('/getplace', async (req: Request, res: Response) => {
   const { placeId } = req.query
-  console.log('poop')
   try {
     const place = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}=${process.env.GOOGLE_MAPS_API_KEY}`)
 
