@@ -14,6 +14,7 @@ import {
   ListItemButton,
   Typography,
 } from '@mui/material';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import Places from './places';
 import '../../styles/mapstyles.css';
@@ -102,7 +103,7 @@ function ReadingSpotsMap() {
   const handleFormSubmit = async () => {
     try {
       if (!description) {
-        alert('Please enter a description.');
+        toast.error('Please enter a description.');
         return;
       }
       await axios.post('/api/places-to-read/description', { body: description, userId: id, placeId: selectedPlace });
