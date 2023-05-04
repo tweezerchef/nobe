@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import TrendingWishlistButton from '../components/Button/TrendingWishlistButton'
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -24,11 +25,15 @@ import UserContext from '../hooks/Context';
 
 function Trending() {
 
+
   const [trending, setTrending] = useState<any[]>([]);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user.id
+
+  console.log('user', user)
+
 
   async function fetchTrending(category: string) {
     const response = await fetch(`/api/trending?category=${category}`);
@@ -57,19 +62,19 @@ function Trending() {
   //   }
   // };
 
-  const addToWishlist = async (title: string) => {
+  // const addToWishlist = async (title: string) => {
 
-    const inventory = "Wishlist"
+  //   const inventory = "Wishlist"
 
-    try {
-      const response = await axios.post(`/api/wishlist/${id}`, {
-        title, inventory
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //   try {
+  //     const response = await axios.post(`/api/wishlist/${id}`, {
+  //       title, inventory
+  //     });
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -114,23 +119,7 @@ function Trending() {
                     alt=""
                   />
                 </AspectRatio>
-                <IconButton
-                  aria-label="Like minimal photography"
-                  size="md"
-                  variant="solid"
-                  color="danger"
-                  sx={{
-                    position: 'absolute',
-                    zIndex: 2,
-                    borderRadius: '50%',
-                    right: '1rem',
-                    bottom: 0,
-                    transform: 'translateY(50%)',
-                  }}
-                  onClick={() => addToWishlist(book.title)}
-                >
-                  <BookmarkAddIcon />
-                </IconButton>
+                <TrendingWishlistButton book={book} />
               </CardOverflow>
               <Typography level="h2" sx={{ fontSize: 'md', mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical' }}>
                 <Link href="#multiple-actions" overlay underline="none">
