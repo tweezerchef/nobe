@@ -1,24 +1,21 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { ChatContainer, ChatHeader, ChatBody, ChatFooter, ChatInput, ChatButton, ChatSidebar, SidebarHeader, SidebarBody, ConversationLink, ChatWrapper } from '../../Styled';
-import UserContext from '../../hooks/Context';
+import React, {
+  useState, useEffect, useContext,
+} from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
 import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
 import moment from 'moment';
-
+import UserContext from '../../hooks/Context';
 
 const useStyles = makeStyles({
   table: {
@@ -26,13 +23,13 @@ const useStyles = makeStyles({
   },
   chatSection: {
     width: '800px',
-    height: '60vh'
+    height: '60vh',
   },
   // headBG: {
   //   backgroundColor: '#e0e0e0'
   // },
   borderRight500: {
-    borderRight: '1px solid #e0e0e0'
+    borderRight: '1px solid #e0e0e0',
   },
   messageArea: {
     height: 'calc(100% - 100px)', // Deduct space for the input and the header
@@ -68,33 +65,22 @@ interface Conversation {
 }
 
 function Chat() {
-
   const classes = useStyles();
 
   const [message, setMessage] = useState<string>('');
-  const [chatMessages, setChatMessages] = useState<Message[]>([])
+  const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [conversations, setConversations] = useState<Conversation[]>([])
+  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentConvo, setCurrentConvo] = useState<Conversation | null>(null);
   const [socket, setSocket] = useState<any>(null);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
 
-
-  const handleSend = (event: React.FormEvent) => {
-    // event.preventDefault();
-    if (message.trim() !== '') {
-      sendMessage(message);
-      setMessage('');
-      console.log(chatMessages)
-    }
-  };
-
-  const sendMessage = async (message: string) => {
+  const sendMessage = async (sentMessage: string) => {
     if (currentConvo && user) {
       const newMessage = {
-        text: message,
+        text: sentMessage,
         senderId: user.id,
         createdAt: new Date(),
       };
@@ -102,10 +88,10 @@ function Chat() {
         const response = await axios.post(`/direct-messages/${currentConvo.id}/messages`, newMessage);
         socket.emit('new-message', {
           conversationId: currentConvo.id,
-          message: response.data,
+          newMessage: response.data,
         });
       } catch (error) {
-        console.log('Error sending message:', error);
+        console.error('Error sending message:', error);
       }
     }
   };
@@ -119,13 +105,21 @@ function Chat() {
     }
   };
 
+  const handleSend = () => {
+    // event.preventDefault();
+    if (message.trim() !== '') {
+      sendMessage(message);
+      setMessage('');
+    }
+  };
+
   const handleSearch = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       try {
         const response = await axios.post('/conversations', {
           currentUser: user.id,
-          otherUser: searchQuery
+          otherUser: searchQuery,
         });
 
         const newConversation: any = response.data;
@@ -134,15 +128,15 @@ function Chat() {
           setConversations((prevConversations) => {
             const updatedConversations = [...prevConversations, newConversation];
             user.Conversations = updatedConversations;
-            return updatedConversations
+            return updatedConversations;
           });
           setCurrentConvo(newConversation);
-          setChatMessages(newConversation.messages)
+          setChatMessages(newConversation.messages);
         }
       } catch (error) {
         console.error(error);
       }
-      setSearchQuery('')
+      setSearchQuery('');
     }
   };
 
@@ -156,21 +150,21 @@ function Chat() {
     setSocket(newSocket);
 
     newSocket.on('new-message', (data: any) => {
-      const { conversationId, message } = data;
+      const { conversationId, newMessage } = data;
 
       const conversationIndex = conversations.findIndex(
-        (conversation: Conversation) => conversation.id === conversationId
+        (conversation: Conversation) => conversation.id === conversationId,
       );
 
       if (conversationIndex !== -1) {
         if (currentConvo?.id === conversationId) {
-          setChatMessages(prevMessages => [...prevMessages, message]);
+          setChatMessages((prevMessages) => [...prevMessages, newMessage]);
         }
         const updatedConvo = {
           ...conversations[conversationIndex],
-          messages: [...conversations[conversationIndex].messages, message],
+          messages: [...conversations[conversationIndex].messages, newMessage],
         };
-        setConversations(prevConversations => {
+        setConversations((prevConversations) => {
           const updatedConversations = [...prevConversations];
           updatedConversations[conversationIndex] = updatedConvo;
           user.Conversations[conversationIndex] = updatedConvo;
@@ -188,33 +182,50 @@ function Chat() {
     <div>
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h5" className="header-message">Direct Messages</Typography>
+          <Typography
+            variant="h4"
+            className="header-message"
+            style={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', background: '#002884', color: '#fff',
+            }}
+          >
+            Direct Messages
+          </Typography>
         </Grid>
       </Grid>
-      <Grid container component={Paper} className={classes.chatSection}>
-        <Grid item xs={3} className={classes.borderRight500}>
+      <Grid container component={Paper} className={classes.chatSection} style={{ background: '#fff' }}>
+        <Grid item xs={3} className={classes.borderRight500} style={{ background: '#f8f9fa' }}>
           <Grid item xs={12} style={{ padding: '10px' }}>
             <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
           </Grid>
           <Divider />
           <List>
-            {conversations.map((conversation: any, index: number) => {
-              const otherUser = conversation.members.find((member: any) => member.firstName !== user.firstName);
+            {conversations.map((conversation: any) => {
+              const otherUser = conversation.members.find((member: any) => (
+                member.firstName !== user.firstName
+              ));
               const otherUserName = otherUser ? otherUser.firstName : '';
               return (
-                <ListItem button key={index} onClick={() => {
-                  setCurrentConvo(conversation);
-                  setChatMessages(conversation.messages);
-                }}>
+                <ListItem
+                  button
+                  key={conversation.id}
+                  onClick={() => {
+                    setCurrentConvo(conversation);
+                    setChatMessages(conversation.messages);
+                  }}
+                >
                   <ListItemText>{otherUserName}</ListItemText>
                 </ListItem>
               );
             })}
           </List>
         </Grid>
-        <Grid item xs={9} direction="column" style={{ height: "100%" }}>
+        <Grid item xs={9} direction="column" style={{ height: '100%' }}>
           {!currentConvo && (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%',
+            }}
+            >
               <Typography variant="h6" className="header-message">
                 Select a conversation or start a new one.
               </Typography>
@@ -223,45 +234,75 @@ function Chat() {
           {currentConvo && (
             <>
               {(() => {
-                const otherUser = currentConvo.members.find((member: any) => member.firstName !== user.firstName);
+                const otherUser = currentConvo.members.find((member: any) => (
+                  member.firstName !== user.firstName
+                ));
                 const otherUserFirstName = otherUser ? otherUser.firstName : '';
                 return (
-                  <Typography variant="h6" className="header-message">
-                    Chat with {otherUserFirstName}
+                  <Typography
+                    variant="h6"
+                    className="header-message"
+                    style={{
+                      display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#238636',
+                    }}
+                  >
+                    Chat with
+                    {' '}
+                    {otherUserFirstName}
                   </Typography>
                 );
               })()}
-              <List className={classes.messageArea} style={{ flexGrow: 1, overflowY: 'auto' }}>
-                {chatMessages.map((message: any, index: number) => {
-                  const sender = currentConvo.members.find((member: any) => member.id === message.senderId);
-                  const senderFirstName = sender ? sender.firstName : '';
-                  return (
-                    <ListItem key={index}>
-                      <Grid container>
-                        <Grid item xs={12}>
-                          <ListItemText primary={
-                            <Typography align="right" component="span" variant="body2">
-                              {senderFirstName} {moment(message.createdAt).isValid()
-                                ? moment(message.createdAt).fromNow()
-                                : 'just now'}
-                            </Typography>
-                          }></ListItemText>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <ListItemText secondary={
-                            <Typography align="right" component="span" variant="body2">
-                              {message.text}
-                            </Typography>
-                          }></ListItemText>
-                        </Grid>
-                      </Grid>
-                    </ListItem>
-                  )
-                })}
-              </List>
-
               <Divider />
-              <Grid container style={{ padding: '20px' }} alignItems="center">
+              <List
+                className={classes.messageArea}
+                style={{
+                  flexGrow: 1,
+                  overflowY: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column-reverse',
+                }}
+              >
+                {chatMessages
+                  .slice()
+                  .reverse().map((chatMessage: any) => {
+                    const sender = currentConvo.members.find((member: any) => (
+                      member.id === chatMessage.senderId
+                    ));
+                    const senderFirstName = sender ? sender.firstName : '';
+                    return (
+                      <ListItem key={chatMessage.id}>
+                        <Grid container>
+                          <Grid item xs={12}>
+                            <ListItemText primary={(
+                              <Typography align="right" component="span" variant="body2">
+                                <span style={{ fontWeight: 'bolder' }}>
+                                  {senderFirstName}
+                                  {' '}
+                                </span>
+                                <span style={{ color: 'rgb(29, 155, 240)' }}>@ </span>
+                                <span style={{ color: 'rgb(29, 155, 240)' }}>
+                                  {moment(chatMessage.createdAt).isValid()
+                                    ? moment(chatMessage.createdAt).fromNow()
+                                    : 'just now'}
+                                </span>
+                              </Typography>
+                            )}
+                            />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <ListItemText secondary={(
+                              <Typography align="right" component="span" variant="body2">
+                                {chatMessage.text}
+                              </Typography>
+                            )}
+                            />
+                          </Grid>
+                        </Grid>
+                      </ListItem>
+                    );
+                  })}
+              </List>
+              <Grid container style={{ paddingTop: '10px' }} alignItems="center">
                 <Grid item xs={11}>
                   <TextField
                     value={message}
@@ -285,8 +326,6 @@ function Chat() {
       </Grid>
     </div>
   );
-
-
 }
 
 export default Chat;
