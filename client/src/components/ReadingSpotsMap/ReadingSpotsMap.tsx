@@ -166,7 +166,8 @@ function ReadingSpotsMap() {
       {/* <div className="main-content" style={{ display: 'flex', flexDirection: 'row' }}> */}
       <div className="main-content">
         <div className="place-viewer">
-          <PlaceViewer />
+          { selectedPlace
+          && <PlaceViewer placeId={selectedPlace} />}
         </div>
         <div className="spots-map">
           <GoogleMap

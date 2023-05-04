@@ -69,13 +69,13 @@ function Profile() {
   const getUserBooks = (query: string) => {
     const booksArray: Book[] = [];
 
-    if (query == 'Owned') {
+    if (query === 'Owned') {
       profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.owned) booksArray.push(book.Books);
       });
       setBooks(booksArray);
     }
-    if (query == 'Wishlist') {
+    if (query === 'Wishlist') {
       profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.wishlist) booksArray.push(book.Books);
       });
