@@ -153,7 +153,7 @@ function ReadingSpotsMap() {
         </div>
         <div className="spots-map">
           <GoogleMap
-            zoom={10}
+            zoom={11.5}
             center={center}
             mapContainerClassName="map-container"
             options={options}
