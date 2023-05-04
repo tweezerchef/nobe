@@ -68,7 +68,7 @@ const Profile = () => {
 
   const id = user.id
   const friendId: string = useParams().id || "";
-  
+
   const newSocket = io('http://localhost:3000');
 
 
@@ -118,7 +118,7 @@ const Profile = () => {
   const follow = async () => {
     const userId = user.id;
     const userFirstName = user.firstName;
-    //console.log(user, 82)
+
     try {
       newSocket.emit('new-follow', {
         message: `${userFirstName} has followed you`
@@ -223,25 +223,6 @@ const Profile = () => {
         {friendId === "" ? (
 
           <div style={{ display: "flex", justifyContent: "center" }}>
-            {/* <form onSubmit={handleSubmit} >
-              <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12}>
-                  <TextField
-                    label="Book Title"
-                    value={title}
-                    onChange={handleTitleChange}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button variant="contained" color="primary" type="submit">
-                    Add Book
-                  </Button>
-                </Grid>
-                <Grid item xs={12}>
-                </Grid>
-              </Grid>
-            </form> */}
           </div>
 
         ) : null}
