@@ -13,7 +13,7 @@ import CloseBy from '../CloseBy/CloseBy';
 import { io, Socket } from "socket.io-client";
 import MessageIcon from '../MessagesIcon/messagesicon';
 import FriendIcon from '../NewFriendIcon/Newfriendicon';
-import NotificationIcon from '../NotificationMessages/Notificationmessages';
+import NotificationMessageIcon from '../NotificationMessages/Notificationmessages';
 import Draggable from "react-draggable";
 import ForumIcon from '../DiscussionForum/Discussionforum';
 import React, { useState, useContext, useEffect } from 'react';
@@ -26,7 +26,7 @@ import UserContext from '../../hooks/Context'
 
 
 
-const OpenIconSpeedDial: React.FC = () => {
+const NotificationIcon: React.FC = () => {
 
   const [userFirstName, setUserFistName] = useState("");
   const [onlineUser, setOnlineUser] = useState("");
@@ -104,34 +104,38 @@ const OpenIconSpeedDial: React.FC = () => {
   //    }
   //  }, [socket, user]);
 
-  const actions = [
-    { icon: <NotificationIcon notifications={notifications} notificationCount={notificationCount} markAsRead={markAsRead} />, name: 'Notifications Feed' },
-    { icon: <FriendIcon notificationCount={notificationCount} />, name: 'Friends' },
-    { icon: <MessageIcon />, name: 'Messages' },
-    { icon: <CloseBy />, name: 'Near By' },
-    { icon: <ForumIcon />, name: 'Discussions' },
-  ];
+  // const actions = [
+  //   { icon: <NotificationIcon notifications={notifications} notificationCount={notificationCount} markAsRead={markAsRead} />, name: 'Notifications Feed' },
+  //   { icon: <FriendIcon notificationCount={notificationCount} />, name: 'Friends' },
+  //   { icon: <MessageIcon />, name: 'Messages' },
+  //   { icon: <CloseBy />, name: 'Near By' },
+  //   { icon: <ForumIcon />, name: 'Discussions' },
+  // ];
 
   return (
-      <SpeedDial
-        ariaLabel="SpeedDial openIcon example"
-        sx={{ top: 1, position: 'absolute' }}
-        icon={<BookIcon notificationCount={notificationCount} openIcon={<EditIcon />} />}
-        direction={'down'}
-      >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-          />
-        ))}
-      </SpeedDial>
+<BookIcon notificationCount={notificationCount} notifications={notifications} markAsRead={markAsRead}/>
+
+
   );
 }
-export default OpenIconSpeedDial;
+export default NotificationIcon;
 
 // <Draggable>
 {/* // <Box sx={{ width: 100, height: 80, transform: 'translateZ(0px)', flexGrow: 1 }}> */ }
 {/* // </Box> */ }
       // </Draggable>
+
+      // <SpeedDial
+      //   ariaLabel="SpeedDial openIcon example"
+      //   sx={{ top: 1, position: 'absolute' }}
+      //   icon={<BookIcon notificationCount={notificationCount} openIcon={<EditIcon />} />}
+      //   direction={'down'}
+      // >
+      //   {actions.map((action) => (
+      //     <SpeedDialAction
+      //       key={action.name}
+      //       icon={action.icon}
+      //       tooltipTitle={action.name}
+      //     />
+      //   ))}
+      // </SpeedDial>

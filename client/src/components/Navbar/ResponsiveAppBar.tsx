@@ -21,6 +21,7 @@ import UserContext from '../../hooks/Context'
 import ModeToggle from "../ColorMode/ColorModeToggle";
 import OpenIconSpeedDial from "../ActionButton/ActionButton";
 import NotificationMobile from "../NotificationMessages/Notificationsmobile";
+import NotificationIcon from "../ActionButton/ActionButton";
 
 
 const StyledLink = styled(Link)`
@@ -299,9 +300,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
             >
               <StyledLink to="/booksearch">Book Search</StyledLink>
             </Button>
-            <Box sx={{ my: "2 !important", color: "white !important", display: "block !important", borderRadius: '50%' }}>
-            <OpenIconSpeedDial/>
-          </Box>
+            <NotificationIcon />
           </Box>
           <Box sx={{ flexGrow: "0 !important", display: "block !important" }}>
             <Tooltip title="Open settings">
