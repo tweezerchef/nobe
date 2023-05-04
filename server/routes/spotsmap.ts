@@ -79,34 +79,34 @@ SpotsMapRoute.post('/description', async (req: Request, res: Response) => {
 //   }
 // })
 
-// SpotsMapRoute.post('/places/:id/description', async (req: Request, res: Response) => {
-//   const { id } = req.params;
-//   const { body, userId } = req.body;
+SpotsMapRoute.post('/places/:id/description', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { body, userId } = req.body;
 
-//   try {
-//     const place = await prisma.placesToRead.findUnique({
-//       where: { id },
-//       include: { Description_Places: true },
-//     });
+  try {
+    const place = await prisma.placesToRead.findUnique({
+      where: { id },
+      include: { Description_Places: true },
+    });
 
-//     if (!place) {
-//       return res.status(404).json({ error: 'Place not found' });
-//     }
+    if (!place) {
+      return res.status(404).json({ error: 'Place not found' });
+    }
 
-//     const description = await prisma.description_Places.create({
-//       data: {
-//         body,
-//         userId,
-//         placeId: id,
-//       },
-//       // include: { user: true },
-//     });
+    const description = await prisma.description_Places.create({
+      data: {
+        body,
+        userId,
+        placeId: id,
+      },
+      // include: { user: true },
+    });
 
-//     res.status(201).json({ description });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Something went wrong');
-//   }
-// });
+    res.status(201).json({ description });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Something went wrong');
+  }
+});
 
 export default SpotsMapRoute;
