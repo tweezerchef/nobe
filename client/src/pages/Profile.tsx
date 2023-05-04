@@ -31,6 +31,7 @@ interface UserProfile {
   id: string;
   firstName: string;
   picture: string;
+  UserBooks: UserBook[];
 }
 
 const ChatOverlay = styled(Paper)`
@@ -63,14 +64,20 @@ const Profile = () => {
   // const chatContext = useContext(ChatContext);
 
   const userContext = useContext(UserContext);
-  const user = userContext?.user;
+  let user = userContext?.user;
+
   const id = user.id
   const friendId: string = useParams().id || "";
+
   const newSocket = io('http://localhost:3000');
+
+
+
+
   const getProfile = async () => {
     try {
       const response = await axios.get(`/user/id?id=${friendId}`);
-      console.log(response.data)
+      //console.log(response.data)
       setProfile(response.data);
     } catch (error) {
       console.error(error);
@@ -91,14 +98,15 @@ const Profile = () => {
 
   const getUserBooks = (query: string) => {
     const booksArray: Book[] = [];
+
     if (query == "Owned") {
-      user?.UserBooks?.forEach((book: UserBook) => {
+      profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.owned) booksArray.push(book.Books);
       });
       setBooks(booksArray);
     }
     if (query == "Wishlist") {
-      user?.UserBooks?.forEach((book: UserBook) => {
+      profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.wishlist) booksArray.push(book.Books);
       });
       setBooks(booksArray);
@@ -121,7 +129,7 @@ const Profile = () => {
   const follow = async () => {
     const userId = user.id;
     const userFirstName = user.firstName;
-    //console.log(user, 82)
+
     try {
       newSocket.emit('new-follow', {
         message: `${userFirstName} has followed you`
@@ -147,11 +155,19 @@ const Profile = () => {
 
 
   useEffect(() => {
-    if (user && user.UserBooks) {
-      getUserBooks("Owned");
+    if (friendId !== "") {
       getProfile();
+    } else {
+      setProfile(user)
     }
   }, []);
+
+
+  useEffect(() => {
+    if (profile) {
+      getUserBooks(inventory);
+    }
+  }, [profile, inventory]);
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -219,25 +235,6 @@ console.log(user, 168);
         {friendId === "" ? (
 
           <div style={{ display: "flex", justifyContent: "center" }}>
-            {/* <form onSubmit={handleSubmit} >
-              <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12}>
-                  <TextField
-                    label="Book Title"
-                    value={title}
-                    onChange={handleTitleChange}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button variant="contained" color="primary" type="submit">
-                    Add Book
-                  </Button>
-                </Grid>
-                <Grid item xs={12}>
-                </Grid>
-              </Grid>
-            </form> */}
           </div>
 
         ) : null}

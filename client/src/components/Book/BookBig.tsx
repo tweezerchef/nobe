@@ -41,27 +41,32 @@ const BigBook = (props: any) => {
 
 
     return (
-        <Card key={book.ISBN10} variant="outlined" sx={{ width: 700, height: 1000, margin: '10px', display: 'flex', flexDirection: 'column' }}>
-            <CardOverflow sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'your_desired_color', position: 'relative' }}>
+        <Card
+            key={book.ISBN10}
+            variant="outlined"
+            sx={{ width: 700, height: 1000, margin: '10px', display: 'flex', flexDirection: 'column' }}
+        >
+            <CardOverflow
+                sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}
+            >
                 <img
                     src={book.image}
                     loading="lazy"
                     alt=""
                     style={{
-                        objectFit: 'contain',
-                        width: '100%',
+                        objectFit: 'cover',
+                        width: '80%',
                         height: '100%',
                         imageRendering: 'crisp-edges',
                         position: 'absolute',
-                        top: '60%',
-                        left: '60%',
+                        top: '50%',
+                        left: '50%',
                         transform: 'translate(-50%, -50%)'
                     }}
                     onClick={handleOnClick}
                 />
                 <LendingLibraryButton book={book} />
                 <WishListButton book={book} />
-
             </CardOverflow>
             <UserStarRating book={book} id={id} value={userRating} />
             <Button variant="outlined" onClick={handleClickOpen}>
@@ -80,12 +85,12 @@ const BigBook = (props: any) => {
                 <Typography level="body1">
                     {book.description}
                 </Typography>
-                {/* <Typography level="body2">
+                <Typography level="body2">
                     Placeholder Data 2: {book.placeholderData2}
                 </Typography>
                 <Typography level="body2">
                     Placeholder Data 3: {book.placeholderData3}
-                </Typography> */}
+                </Typography>
                 <Divider inset="context" />
                 <Box
                     sx={{

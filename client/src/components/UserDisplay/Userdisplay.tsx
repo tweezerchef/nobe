@@ -38,7 +38,7 @@ function UserDisplay({ user }: { user: any }) {
   const getProfile = async () => {
     try {
       const response = await axios.get(`/user/id?id=${user.id}`);
-      console.log(response.data)
+     // console.log(response.data)
       setProfile(response.data);
     } catch (error) {
       console.error(error);

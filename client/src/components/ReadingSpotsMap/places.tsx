@@ -26,6 +26,9 @@ function Places({ setLatLng, setLocation }: PlacesProps) {
     clearSuggestions();
 
     const results = await getGeocode({ address: val });
+    console.log(results);
+    const placeId = results[0].place_id;
+
     const { lat, lng } = await getLatLng(results[0]);
     // console.log("lat and lng", typeof lat, typeof lng);
 
@@ -33,7 +36,7 @@ function Places({ setLatLng, setLocation }: PlacesProps) {
     setLocation(val);
 
     try {
-      await axios.post('/api/places-to-read/place', { address: val, lat: lat, lng: lng });
+      await axios.post('/api/places-to-read/place', { address: val, lat: lat, lng: lng, altLoc: placeId });
     } catch (err) {
       console.error(err);
     }

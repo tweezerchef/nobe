@@ -14,30 +14,6 @@ const io = new Server({
   }
 });
 
-
-// interface ServerToClientEvents {
-//   noArg: () => void;
-//   basicEmit: (a: number, b: string, c: Buffer) => void;
-//   withAck: (d: string, callback: (e: number) => void) => void;
-// }
-
-// interface ClientToServerEvents {
-//   hello: () => void;
-//   addNewUser: () => void;
-// }
-
-// interface InterServerEvents {
-//   ping: () => void;
-// }
-
-// interface SocketData {
-//   name: string;
-//   age: number;
-// }
-
-
-
-
 interface User {
   firstName: string;
   socketId: string;
@@ -45,36 +21,6 @@ interface User {
 }
 
 let onlineUsers: User[] = [];
-
-// const addNewUser = (user: any, socketId:string ) => {
-//   !onlineUsers.some((user) => user.id === id) &&
-//   onlineUsers.push({user.firstName, socketId, user.id})
-// }
-
-// const removeUser = (socketId: string) =>{
-//   onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId)
-// }
-
-// const getUser = (id: string) => {
-//   return onlineUsers.find((user) => user.id === id)
-// }
-
-// [
-//   {
-//     firstName:'tom',
-//     socketId: "gplplh",
-//     id:'honon'
-//   },
-//   {
-//     firstName:'neil',
-//     socketId: "ghghhffdh",
-//     id:'oinion'
-//   },{
-//     firstName:'matt',
-//     socketId: "hfaoh",
-//     id: 'ahfono'
-//   },
-// ]
 
 
 io.on("connection", (socket) => {
@@ -134,7 +80,7 @@ const prisma = new PrismaClient();
 //Middleware
 app.use(express.static(CLIENT_PATH));
 
-const allowedOrigins = ['http://ec2-3-19-30-206.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
+const allowedOrigins = ['http://ec2-18-221-114-235.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
 
 app.use(cors({
   origin: allowedOrigins,
