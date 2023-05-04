@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useContext } from 'react';
 import UserContext from '../hooks/Context';
 import { TextField, Button } from '@material-ui/core';
+import PlaceDetails from '../components/ReadingSpotsMap/PlaceViewer';
 
 
 const BookPage = () => {
@@ -24,20 +25,23 @@ const BookPage = () => {
 
     return (
         <div>
-            <h1> Search For A Book </h1>
-            <form onSubmit={handleSubmit} >
-                <TextField
-                    label="Book Title"
-                    value={title}
-                    onChange={handleTitleChange}
-                    fullWidth
-                />
-                <Button type="submit">Submit</Button>
-            </form>
-            {book && <BigBook book={book} id={id} />}
-            {/* {books.length > 0 && <BigBook book={books[0]} id={id} />} */}
-
+            <PlaceDetails />
         </div>
+        // <div>
+        //     <h1> Search For A Book </h1>
+        //     <form onSubmit={handleSubmit} >
+        //         <TextField
+        //             label="Book Title"
+        //             value={title}
+        //             onChange={handleTitleChange}
+        //             fullWidth
+        //         />
+        //         <Button type="submit">Submit</Button>
+        //     </form>
+        //     {book && <BigBook book={book} id={id} />}
+        //     {/* {books.length > 0 && <BigBook book={books[0]} id={id} />} */}
+
+        // </div>
     )
 
 
