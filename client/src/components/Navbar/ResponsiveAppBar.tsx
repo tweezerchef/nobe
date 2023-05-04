@@ -20,6 +20,9 @@ import UserContext from '../../hooks/Context'
 import ModeToggle from "../ColorMode/ColorModeToggle";
 import OpenIconSpeedDial from "../ActionButton/ActionButton";
 import NotificationMobile from "../NotificationMessages/Notificationsmobile";
+import Chat from '../Chat/Chat';
+import { Paper } from '@mui/material';
+import ChatIcon from '@mui/icons-material/Chat';
 
 
 const StyledLink = styled(Link)`
@@ -33,6 +36,16 @@ interface ResponsiveAppBarProps {
   setJoyMode: () => void;
 }
 
+const ChatOverlay = styled(Paper)`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  width: 800px;
+  height: 600px;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+`;
 
 function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
 
@@ -42,6 +55,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+  const [showChat, setShowChat] = useState(false);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -72,6 +86,10 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
   const logout = () => {
     localStorage.removeItem("user");
     window.location.href = '/';
+  };
+
+  const handleChatButtonClick = () => {
+    setShowChat(!showChat);
   };
 
   return (
@@ -272,9 +290,19 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
             >
               <StyledLink to="/booksearch">Book Search</StyledLink>
             </Button>
+            <div style={{ position: "relative" }}>
+              <IconButton style={{ width: '32px', margin: '10px' }} onClick={handleChatButtonClick}>
+                <ChatIcon />
+              </IconButton>
+              {showChat && (
+                <ChatOverlay>
+                  <Chat />
+                </ChatOverlay>
+              )}
+            </div>
             <Button sx={{ my: "2 !important", color: "white !important", display: "block !important", borderRadius: '50%' }}>
-            <OpenIconSpeedDial/>
-          </Button>
+              <OpenIconSpeedDial />
+            </Button>
           </Box>
           <Box sx={{ flexGrow: "0 !important", display: "block !important" }}>
             <Tooltip title="Open settings">

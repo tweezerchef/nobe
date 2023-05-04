@@ -19,6 +19,7 @@ import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
 import moment from 'moment';
 
+
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -193,10 +194,9 @@ function Chat() {
       <Grid container component={Paper} className={classes.chatSection}>
         <Grid item xs={3} className={classes.borderRight500}>
           <Grid item xs={12} style={{ padding: '10px' }}>
-            <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search" variant="outlined" fullWidth />
+            <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
           </Grid>
           <Divider />
-
           <List>
             {conversations.map((conversation: any, index: number) => {
               const otherUser = conversation.members.find((member: any) => member.firstName !== user.firstName);
@@ -212,26 +212,14 @@ function Chat() {
             })}
           </List>
         </Grid>
-        <Grid item xs={9}>
-          <Grid container style={{ padding: '20px' }} alignItems="center">
-            <Grid item xs={11}>
-              <TextField
-                value={message}
-                onChange={(event) => setMessage(event.target.value)}
-                onKeyDown={handleKeyDown}
-                id="outlined-basic-email"
-                label="Type Something"
-                variant="outlined"
-                className={classes.textField} // Apply the 100% width style
-              />
-            </Grid>
-            <Grid container justifyContent="flex-end" item xs={1}>
-              <Fab color="primary" aria-label="add">
-                <SendIcon onClick={handleSend} />
-              </Fab>
-            </Grid>
-          </Grid>
-          <Divider />
+        <Grid item xs={9} direction="column" style={{ height: "100%" }}>
+          {!currentConvo && (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+              <Typography variant="h6" className="header-message">
+                Select a conversation or start a new one.
+              </Typography>
+            </div>
+          )}
           {currentConvo && (
             <>
               {(() => {
@@ -243,7 +231,7 @@ function Chat() {
                   </Typography>
                 );
               })()}
-              <List className={classes.messageArea}>
+              <List className={classes.messageArea} style={{ flexGrow: 1, overflowY: 'auto' }}>
                 {chatMessages.map((message: any, index: number) => {
                   const sender = currentConvo.members.find((member: any) => member.id === message.senderId);
                   const senderFirstName = sender ? sender.firstName : '';
@@ -271,6 +259,26 @@ function Chat() {
                   )
                 })}
               </List>
+
+              <Divider />
+              <Grid container style={{ padding: '20px' }} alignItems="center">
+                <Grid item xs={11}>
+                  <TextField
+                    value={message}
+                    onChange={(event) => setMessage(event.target.value)}
+                    onKeyDown={handleKeyDown}
+                    id="outlined-basic-email"
+                    label="Send message..."
+                    variant="outlined"
+                    className={classes.textField}
+                  />
+                </Grid>
+                <Grid container justifyContent="flex-end" item xs={1}>
+                  <Fab color="primary" aria-label="add">
+                    <SendIcon onClick={handleSend} />
+                  </Fab>
+                </Grid>
+              </Grid>
             </>
           )}
         </Grid>

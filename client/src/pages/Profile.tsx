@@ -4,12 +4,10 @@ import axios from 'axios';
 import { Typography, Grid, TextField, Button, Box } from '@material-ui/core';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context'
-import Chat from '../components/Chat/Chat'
 import io from 'socket.io-client';
 import Modal from '@mui/material/Modal'
 import NearBy from '../components/NearBy/NearBy';
-import styled from 'styled-components';
-import { Paper } from '@mui/material';
+
 interface UserBook {
   wishlist: any;
   owned: any;
@@ -34,24 +32,10 @@ interface UserProfile {
   UserBooks: UserBook[];
 }
 
-const ChatOverlay = styled(Paper)`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  width: 800px;
-  height: 600px;
-  overflow-y: auto;
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
-`;
-
-
 const Profile = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
-  const [showChat, setShowChat] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [socket, setSocket] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
@@ -59,16 +43,12 @@ const Profile = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-
-
-  // const chatContext = useContext(ChatContext);
-
   const userContext = useContext(UserContext);
   let user = userContext?.user;
 
   const id = user.id
   const friendId: string = useParams().id || "";
-  
+
   const newSocket = io('http://localhost:3000');
 
 
@@ -108,11 +88,6 @@ const Profile = () => {
   }
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
-  };
-
-
-  const handleChatButtonClick = () => {
-    setShowChat(!showChat);
   };
 
   const follow = async () => {
@@ -178,16 +153,6 @@ const Profile = () => {
       <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
         <Grid container>
           <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
-            <div style={{ position: "relative" }}> {/* Add this container div */}
-              <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleChatButtonClick}>
-                Chat
-              </Button>
-              {showChat && (
-                <ChatOverlay>
-                  <Chat />
-                </ChatOverlay>
-              )}
-            </div> {/* Close the container div */}
             <Typography variant="h4">{friendId === "" ? `${user.firstName}'s` : `${profile?.firstName}'s`} Books</Typography>
             {friendId === "" ? null : (
               <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={follow}>Follow</Button>)}
