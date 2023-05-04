@@ -14,6 +14,7 @@ import {
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import axios from 'axios';
+import useStyles from './styles';
 
 interface Award {
   images: {
@@ -101,12 +102,12 @@ function PlaceDetails() {
           <Grid container>
             <Grid item xs={12} sm={6}>
               <CardMedia
-                sx={{ paddingTop: '100%', width: '100%' }} // Make the image a square
+                sx={{ paddingTop: '75%', width: '75%' }} // Make the image a square
                 image={
-                place?.photo
-                  ? place.photo.images.large.url
-                  : 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/restaurant-placeholder-001.jpg'
-              }
+                                    place?.photo
+                                      ? place.photo.images.large.url
+                                      : 'https://images.unsplash.com/photo-1583477716463-9c485c89f6e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
+                                }
                 title={place?.name}
               />
             </Grid>

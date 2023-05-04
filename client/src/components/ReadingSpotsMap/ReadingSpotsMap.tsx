@@ -3,8 +3,18 @@ import React, {
 } from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import {
-  Card, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, List, ListItemText, ListItemButton, Typography, Stack, Box,
+  Card,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField, List,
+  ListItemText,
+  ListItemButton,
+  Typography,
 } from '@mui/material';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import Places from './places';
 import '../../styles/mapstyles.css';
@@ -46,12 +56,10 @@ function ReadingSpotsMap() {
     clickableIcons: false,
   }), []);
 
-  const onLoad = useCallback((map: any) => (mapRef.current = map), []);
-
-  const handleMarkerClick = useCallback(() => {
-    setShowInfoWindow((prev) => !prev);
-    fetchSavedPlaces();
+  const onLoad = useCallback((map: any) => {
+    mapRef.current = map;
   }, []);
+
   // const handlePlaceClick = (place: any) => {
   //   console.log(place)
 
@@ -78,10 +86,24 @@ function ReadingSpotsMap() {
     setShowInfoWindow(false);
   };
 
+  const fetchSavedPlaces = useCallback(async () => {
+    try {
+      const response = await axios.get('/api/places-to-read');
+      setSavedPlaces(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  const handleMarkerClick = useCallback(() => {
+    setShowInfoWindow((prev) => !prev);
+    fetchSavedPlaces();
+  }, []);
+
   const handleFormSubmit = async () => {
     try {
       if (!description) {
-        alert('Please enter a description.');
+        toast.error('Please enter a description.');
         return;
       }
       await axios.post('/api/places-to-read/description', { body: description, userId: id, placeId: selectedPlace });
@@ -94,15 +116,6 @@ function ReadingSpotsMap() {
     }
   };
 
-  const fetchSavedPlaces = useCallback(async () => {
-    try {
-      const response = await axios.get('/api/places-to-read');
-      setSavedPlaces(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
   useEffect(() => {
     setDescription('');
     fetchSavedPlaces();
@@ -111,7 +124,7 @@ function ReadingSpotsMap() {
   return (
     <div className="spots-container">
       <div className="controls">
-        <h2 className="favorite-header">What's your favorite reading spot?</h2>
+        <h2 className="favorite-header">What&apos;s your favorite reading spot?</h2>
         <Places
           setLatLng={(position: any) => {
             setLatLng(position);
@@ -157,7 +170,7 @@ function ReadingSpotsMap() {
         </div>
         <div className="spots-map">
           <GoogleMap
-            zoom={10}
+            zoom={11.5}
             center={center}
             mapContainerClassName="map-container"
             options={options}
