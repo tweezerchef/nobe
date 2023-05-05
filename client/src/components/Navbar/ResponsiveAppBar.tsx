@@ -37,13 +37,10 @@ interface ResponsiveAppBarProps {
 
 const ChatOverlay = styled(Paper)`
   position: absolute;
-  top: 100%;
   right: 0;
   z-index: 1000;
-  width: 800px;
-  height: 600px;
-
-
+  width: 600px;
+  height: '50vh';
 `;
 
 function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
