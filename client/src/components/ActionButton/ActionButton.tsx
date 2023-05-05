@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-console */
 /* eslint-disable react/function-component-definition */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -31,8 +32,8 @@ const NotificationIcon: React.FC = () => {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const { id } = user;
-  console.log(user);
+  // const { id } = user;
+  // console.log(user);
 
   const markAsRead = () => {
     setNotifications([]);
@@ -41,27 +42,32 @@ const NotificationIcon: React.FC = () => {
   // const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
   // creating the notfication for adding a new friend
   // console.log(notifications, 64)
-  useEffect(() => {
-    const newSocket = io('http://localhost:3000');
-    setSocket(newSocket);
-    newSocket.on('new-follower', (data: any) => {
-      console.log(data, 65);
-      const { sender, receiver, message } = data;
-      setNotifications((prevMessage: any) => [...prevMessage, message]);
-      let count = 0;
-      // eslint-disable-next-line no-plusplus
-      count++;
-      setNotificationCount(count);
-    });
 
-    return () => {
-      newSocket.disconnect();
-    };
+  const socketUrl = process.env.SOCKET_URL;
+
+  useEffect(() => {
+    if (socketUrl) {
+      const newSocket = io(socketUrl);
+      setSocket(newSocket);
+      newSocket.on('new-follower', (data: any) => {
+        console.log(data, 65);
+        const { sender, receiver, message } = data;
+        setNotifications((prevMessage: any) => [...prevMessage, message]);
+        let count = 0;
+        // eslint-disable-next-line no-plusplus
+        count++;
+        setNotificationCount(count);
+      });
+
+      return () => {
+        newSocket.disconnect();
+      };
+    }
   }, []);
 
-  useEffect(() => {
-    socket?.emit('newUser', id);
-  }, [socket, id]);
+  // useEffect(() => {
+  //   socket?.emit('newUser', id);
+  // }, [socket, id]);
 
   //   React.useEffect(() => {
   //     setSocket(io("http://localhost:3000"));
