@@ -136,6 +136,23 @@ ClubsRoute.post('/:id/discussion', async (req: Request, res: Response) => {
   }
 });
 
+ClubsRoute.get('/:id/join', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { userId } = req.params;
+  try {
+    const clubMembers = await prisma.clubMembers.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
+    res.json(clubMembers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
 ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { email } = req.body;

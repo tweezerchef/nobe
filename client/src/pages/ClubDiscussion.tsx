@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import {
   Button, Card, CardContent, Typography, TextField, FormControl,
 } from '@material-ui/core';
 import axios from 'axios';
+import UserContext from '../hooks/Context';
 import { ClubHeader } from './style';
 
 interface DiscussionPost {
@@ -29,6 +30,10 @@ function ClubDiscussion() {
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
   const [showForm, setShowForm] = useState(false);
 
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  // console.log(user);
+
   useEffect(() => {
     async function fetchDiscussion() {
       try {
@@ -41,11 +46,11 @@ function ClubDiscussion() {
     if (id) {
       fetchDiscussion();
     }
-  }, [id, discussions]);
+  }, []);
 
   const handleJoinClub = async () => {
     try {
-      const user = localStorage.getItem('user');
+      // const user = localStorage.getItem('user');
       if (!user) {
         throw new Error('No user found');
       }
@@ -96,10 +101,10 @@ function ClubDiscussion() {
           <Button
             variant="contained"
             color="primary"
-            disabled={hasJoined}
+            // disabled={hasJoined}
             onClick={handleJoinClub}
           >
-            {hasJoined ? 'Leave' : 'Join'}
+            Join
           </Button>
           <Button
             variant="contained"
