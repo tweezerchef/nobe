@@ -1,7 +1,10 @@
-const express = require('express');
-const axios = require('axios')
-const { PrismaClient } = require('@prisma/client');
 import { Request, Response } from 'express';
+// eslint-disable-next-line import/extensions, import/no-cycle
+import { io } from '../socket';
+
+const express = require('express');
+// const axios = require('axios');
+const { PrismaClient } = require('@prisma/client');
 
 interface AuthenticatedRequest extends Request {
   user: {
@@ -62,27 +65,43 @@ const DirectMessages = express.Router();
 // });
 
 DirectMessages.post('/:conversationId/messages', async (req: AuthenticatedRequest, res: Response) => {
-  const conversationId = req.params.conversationId;
+  const { conversationId } = req.params;
   const { text, senderId } = req.body;
 
   try {
     const message = await prisma.directMessages.create({
       data: {
-        text: text,
-        senderId: senderId,
-        conversationId: conversationId,
+        text,
+        senderId,
+        conversationId,
         createdAt: new Date(),
       },
     });
+
+    const conversation = await prisma.conversation.findUnique({
+      where: { id: conversationId },
+      include: { members: true },
+    });
+
+    const recipient = conversation.members.find((member: { id: any; }) => member.id !== senderId);
+    if (recipient) {
+      await prisma.notification.create({
+        data: {
+          userId: recipient.id,
+          type: 'new_direct_message',
+          body: `You have a new message from ${senderId}`,
+          recipient: senderId,
+          createdAt: new Date(),
+        },
+      });
+      io.to(recipient.id).emit('new-notification', Notification);
+    }
+
     res.json(message);
   } catch (error) {
     console.error(error);
     res.status(500).send('Error creating message');
   }
 });
-
-
-
-
 
 export default DirectMessages;

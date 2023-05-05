@@ -89,8 +89,8 @@ function UserDisplay({ user }: { user: any }) {
             </ul>
 
             <div className="action">
-              <button className="btn btn-pink">Follow</button>
-              <button className="btn btn-gray-outline">Message</button>
+              {/* <button className="btn btn-pink">Follow</button>
+              <button className="btn btn-gray-outline">Message</button> */}
             </div>
           </div>
         </div>

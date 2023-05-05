@@ -32,7 +32,7 @@ const NotificationIcon: React.FC = () => {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  // const { id } = user;
+  const id = user?.id;
   // console.log(user);
 
   const markAsRead = () => {
@@ -46,11 +46,15 @@ const NotificationIcon: React.FC = () => {
   const socketUrl = process.env.SOCKET_URL;
 
   useEffect(() => {
-    if (socketUrl) {
-      const newSocket = io(socketUrl);
+    if (socketUrl && id) {
+      const newSocket = io(socketUrl, {
+        query: {
+          userId: id,
+        },
+      });
       setSocket(newSocket);
       newSocket.on('new-follower', (data: any) => {
-        console.log(data, 65);
+        console.log(data, 53);
         const { sender, receiver, message } = data;
         setNotifications((prevMessage: any) => [...prevMessage, message]);
         let count = 0;
@@ -58,12 +62,21 @@ const NotificationIcon: React.FC = () => {
         count++;
         setNotificationCount(count);
       });
+      // newSocket.on('new-notification', (data: any) => {
+      //   console.log(data, 62);
+      //   // const { sender, receiver, message } = data;
+      //   // setNotifications((prevMessage: any) => [...prevMessage, message]);
+      //   // let count = 0;
+      //   // // eslint-disable-next-line no-plusplus
+      //   // count++;
+      //   // setNotificationCount(count);
+      // });
 
       return () => {
         newSocket.disconnect();
       };
     }
-  }, []);
+  }, [id, socketUrl]);
 
   // useEffect(() => {
   //   socket?.emit('newUser', id);
