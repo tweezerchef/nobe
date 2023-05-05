@@ -25,11 +25,12 @@ interface Discussion {
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
-  const searchParams = new URLSearchParams(location.search);
-  const clubName = searchParams.get('name') || 'Book Club Discussion';
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
   const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  const searchParams = new URLSearchParams(location.search);
+  const clubName = searchParams.get('name');
   const clubId = id;
   // const userContext = useContext(UserContext);
   // const user = userContext?.user;
@@ -51,7 +52,6 @@ function ClubDiscussion() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     try {
       const user = localStorage.getItem('user');
 
@@ -63,6 +63,7 @@ function ClubDiscussion() {
         return;
       }
       const parsed = JSON.parse(user);
+      setLoading(true);
       const response = await axios.post(`/api/clubs/${id}/discussion`, {
         title: newDiscussionTitle,
         userId: parsed.id,
@@ -70,8 +71,10 @@ function ClubDiscussion() {
       setDiscussions([...discussions, response.data]);
       setNewDiscussionTitle('');
       setShowForm(false);
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
