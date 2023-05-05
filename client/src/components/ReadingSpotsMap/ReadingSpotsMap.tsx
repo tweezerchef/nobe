@@ -61,14 +61,9 @@ function ReadingSpotsMap() {
     mapRef.current = map;
   }, []);
 
-  // const handlePlaceClick = (place: any) => {
-  //   console.log(place)
-
-  // }
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const handlePlaceClick = useCallback((placeId: number) => {
-    // console.log(placeId);
-    // setPlaceId(placeId);
+  const handlePlaceClick = useCallback((placeId: number, place: any) => {
+    const { altLoc } = place;
+    setPlaceId(altLoc);
     setSelectedPlace((prev) => (prev === placeId ? null : placeId));
     setIsFormOpen(false);
     setIsAddingDescription(false);
@@ -158,17 +153,6 @@ function ReadingSpotsMap() {
           ))}
         </List>
       </div>
-      {/* <Stack
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        spacing={0}
-      > */}
-      {/* <Box
-          className="spots-map"
-
-        > */}
-      {/* <div className="main-content" style={{ display: 'flex', flexDirection: 'row' }}> */}
       <div className="main-content">
         <div className="place-viewer">
           { placeId
@@ -242,7 +226,7 @@ function ReadingSpotsMap() {
                 icon={{
                   url: 'http://maps.google.com/mapfiles/kml/shapes/library_maps.png',
                 }}
-                onClick={() => handlePlaceClick(place.id)}
+                onClick={() => handlePlaceClick(place.id, place)}
               >
                 {selectedPlace === place.id && (
                   <InfoWindow
