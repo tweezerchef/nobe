@@ -74,7 +74,7 @@ interface CustomServerOptions extends ServerOptions {
 
 const io = new Server({
   cors: {
-    origin: "http://ec2-18-221-114-235.us-east-2.compute.amazonaws.com:8080",
+    origin: process.env.SERVER_URL,
   },
   // eslint-disable-next-line no-underscore-dangle
   generateId: (req) => req._query.userId,
