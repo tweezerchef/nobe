@@ -5,8 +5,9 @@ import {
   Button, Card, CardContent, Typography, TextField, FormControl,
 } from '@material-ui/core';
 import axios from 'axios';
-import UserContext from '../hooks/Context';
+// import UserContext from '../hooks/Context';
 import { ClubHeader } from './style';
+import JoinClubButton from '../components/Button/JoinClubButton';
 
 interface DiscussionPost {
   id: string;
@@ -30,8 +31,9 @@ function ClubDiscussion() {
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
   const [showForm, setShowForm] = useState(false);
 
-  const userContext = useContext(UserContext);
-  const user = userContext?.user;
+  const clubId = id;
+  // const userContext = useContext(UserContext);
+  // const user = userContext?.user;
   // console.log(user);
 
   useEffect(() => {
@@ -48,28 +50,23 @@ function ClubDiscussion() {
     }
   }, []);
 
-  const handleJoinClub = async () => {
-    try {
-      // const user = localStorage.getItem('user');
-      if (!user) {
-        throw new Error('No user found');
-      }
-      const parsed = JSON.parse(user);
-      const { email } = parsed;
+  // const handleJoinClub = async () => {
+  //   try {
+  //     // const user = localStorage.getItem('user');
 
-      const { data: club } = await axios.get(`/api/clubs/${id}`);
-      const memberEmails = club.members?.map((member: { email: string; }) => member.email);
+  //     // const { data: club } = await axios.get(`/api/clubs/${id}`);
+  //     // const memberEmails = club.members?.map((member: { email: string; }) => member.email);
 
-      if (memberEmails && memberEmails.includes(email)) {
-        setHasJoined(true);
-        return;
-      }
-      await axios.post(`/api/clubs/${id}/join`, { email });
-      setHasJoined(true);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     // if (memberEmails && memberEmails.includes(email)) {
+  //     //   setHasJoined(true);
+  //     //   return;
+  //     // }
+  //     await axios.post('/api/clubs/join', { id, clubId });
+  //     setHasJoined(true);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -96,16 +93,10 @@ function ClubDiscussion() {
   return (
     <div>
       <ClubHeader style={{ textAlign: 'center' }}>{clubName}</ClubHeader>
+
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Stack spacing={2} direction="row">
-          <Button
-            variant="contained"
-            color="primary"
-            // disabled={hasJoined}
-            onClick={handleJoinClub}
-          >
-            Join
-          </Button>
+          <JoinClubButton clubId={clubId} />
           <Button
             variant="contained"
             color="primary"

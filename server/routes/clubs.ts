@@ -153,26 +153,47 @@ ClubsRoute.get('/:id/join', async (req: Request, res: Response) => {
   }
 });
 
-ClubsRoute.post('/:id/join', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { email } = req.body;
-
-  async function addUserToClub(email: string, clubId: string) {
-    const user = await prisma.user.findFirst({ where: { email } });
-    if (user) {
-      const clubMember = await prisma.clubMembers.create({
-        data: {
-          user: { connect: { id: user.id } },
-          club: { connect: { id: clubId } },
-        },
-      });
-      // console.log(`Added user ${user.firstName} to club ${clubMember.clubId}`);
-      res.json(clubMember);
-    } else {
-      console.error(`User with email ${email} not found`);
-    }
+ClubsRoute.post('/join', async (req: Request, res: Response) => {
+  const { id, clubId } = req.body;
+  const clubMember = await prisma.clubMembers.findUnique({
+    where: {
+      userId_clubId: {
+        userId: id,
+        clubId,
+      },
+    },
+  });
+  if (clubMember !== null) {
+    await prisma.clubMembers.delete({
+      where: {
+        id: clubMember.id,
+      },
+    });
+  } else {
+    await prisma.clubMembers.create({
+      data: {
+        userId: id,
+        clubId,
+      },
+    });
   }
-  addUserToClub(email, id);
+
+  // async function addUserToClub(email: string, clubId: string) {
+  //   const user = await prisma.user.findFirst({ where: { email } });
+  //   if (user) {
+  //     const clubMember = await prisma.clubMembers.create({
+  //       data: {
+  //         user: { connect: { id: user.id } },
+  //         club: { connect: { id: clubId } },
+  //       },
+  //     });
+  //     // console.log(`Added user ${user.firstName} to club ${clubMember.clubId}`);
+  //     res.json(clubMember);
+  //   } else {
+  //     console.error(`User with email ${email} not found`);
+  //   }
+  // }
+  // addUserToClub(email, id);
 });
 
 ClubsRoute.delete('/:id/leave', async (req: Request, res: Response) => {
