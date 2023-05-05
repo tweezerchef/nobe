@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { format } from 'date-fns';
+import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -45,14 +45,17 @@ function DiscussionPosts() {
       getPosts();
       getDiscussionTitle();
     }
-  }, [id, discussionTitle]);
+  }, [id, discussionTitle, newPost]);
+
+  // // eslint-disable-next-line no-console
+  // console.log(format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"));
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     try {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
-      const currentDate = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
+      const currentDate = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ');
       const { data } = await axios.post(`/api/clubs/${id}/posts`, {
         userId: user.id,
         body: newPost,
@@ -82,9 +85,9 @@ function DiscussionPosts() {
           <h3>{post.body}</h3>
           {/* <p>userId: {post.userId}</p> */}
           <p>
-            {post.user.firstName}
+            {post.user?.firstName}
             {' '}
-            {format(new Date(post.createdAt), 'h:mm a MMMM d, yyyy')}
+            {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
           </p>
           {post.userId === JSON.parse(localStorage.getItem('user') || '{}').id && (
             <Stack direction="row" spacing={1}>
