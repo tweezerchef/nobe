@@ -38,6 +38,8 @@ interface UserProfile {
   UserBooks: UserBook[];
 }
 
+const socketUrl = process.env.SOCKET_URL;
+
 function Profile() {
   const [books, setBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
@@ -57,8 +59,6 @@ function Profile() {
 
   const { id } = user;
   const friendId: string = useParams().id || '';
-
-  const newSocket = io('http://localhost:3000');
 
   const getProfile = async () => {
     if (friendId !== '') {
@@ -114,9 +114,12 @@ function Profile() {
     const userFirstName = user.firstName;
 
     try {
-      newSocket.emit('new-follow', {
-        message: `${userFirstName} has followed you`,
-      });
+      if (socketUrl) {
+        const newSocket = io(socketUrl);
+        newSocket.emit('new-follow', {
+          message: `${userFirstName} has followed you`,
+        });
+      }
       await axios.post('/api/friendship', { userId, friendId });
     } catch (error) {
       console.error(error);
@@ -200,8 +203,8 @@ function Profile() {
             </form>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
-            { user.latitude > 0 && user.radius > 0 ? (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleNearMeClick}>Near Me</Button>)
-              : (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>) }
+            {user.latitude > 0 && user.radius > 0 ? (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleNearMeClick}>Near Me</Button>)
+              : (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>)}
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
               <Box sx={style}>
                 <NearBy />
