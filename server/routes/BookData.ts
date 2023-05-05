@@ -2,7 +2,6 @@ const { PrismaClient } = require('@prisma/client');
 import express, { Request, Response } from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
-import Wishlist from './wishlist';
 
 dotenv.config();
 
