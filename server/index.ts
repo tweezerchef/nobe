@@ -30,6 +30,42 @@ import DirectMessages from './routes/directMessages';
 import Conversations from './routes/conversations';
 import Notifications from './routes/notifications';
 
+// Routes
+dotenv.config();
+const app = express();
+const CLIENT_PATH = path.resolve(__dirname, '../client/build');
+const PORT = 8080;
+const prisma = new PrismaClient();
+
+// Middleware
+app.use(express.static(CLIENT_PATH));
+
+// app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// routes
+app.use("/location", LocationRoute);
+app.use("/recommendations", Recommendations);
+app.use("/user-books", UserBooks);
+app.use('/review', Review);
+// app.use("/clubs", Clubs);
+app.use("/notifications", Notifications);
+app.use("/api/clubs", Clubs);
+app.use('/api/create-club', CreateClub);
+app.use("/api/trending", Trending);
+// app.use("/api/wishlist", Wishlist);
+app.use("/openai", OpenAI);
+app.use("/bookdata", BookData);
+app.use("/user", User);
+app.use("/google-books", GoogleBooks);
+app.use("/api/places-to-read", SpotsMapRoute);
+app.use("/api/friendship", Friendship);
+app.use("/api/activity", Activity);
+app.use("/direct-messages", DirectMessages);
+app.use("/conversations", Conversations);
+app.use("/auth", Auth);
+
 // Socket.Io
 
 interface CustomServerOptions extends ServerOptions {
@@ -38,11 +74,17 @@ interface CustomServerOptions extends ServerOptions {
 
 const io = new Server({
   cors: {
-    origin: "http://localhost:8080",
+    origin: process.env.SERVER_URL,
   },
   // eslint-disable-next-line no-underscore-dangle
   generateId: (req) => req._query.userId,
 } as CustomServerOptions);
+
+const allowedOrigins = ['http://ec2-18-221-114-235.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
+
+app.use(cors({
+  origin: allowedOrigins,
+}));
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 interface User {
@@ -91,48 +133,6 @@ io.on("connection", (socket) => {
 });
 
 io.listen(3000);
-
-// Routes
-
-dotenv.config();
-const app = express();
-const CLIENT_PATH = path.resolve(__dirname, '../client/build');
-const PORT = 8080;
-const prisma = new PrismaClient();
-
-// Middleware
-app.use(express.static(CLIENT_PATH));
-
-const allowedOrigins = ['http://ec2-18-221-114-235.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
-
-app.use(cors({
-  origin: allowedOrigins,
-}));
-// app.use(morgan('dev'));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-// routes
-app.use("/location", LocationRoute);
-app.use("/recommendations", Recommendations);
-app.use("/user-books", UserBooks);
-app.use('/review', Review);
-// app.use("/clubs", Clubs);
-app.use("/notifications", Notifications);
-app.use("/api/clubs", Clubs);
-app.use('/api/create-club', CreateClub);
-app.use("/api/trending", Trending);
-// app.use("/api/wishlist", Wishlist);
-app.use("/openai", OpenAI);
-app.use("/bookdata", BookData);
-app.use("/user", User);
-app.use("/google-books", GoogleBooks);
-app.use("/api/places-to-read", SpotsMapRoute);
-app.use("/api/friendship", Friendship);
-app.use("/api/activity", Activity);
-app.use("/direct-messages", DirectMessages);
-app.use("/conversations", Conversations);
-app.use("/auth", Auth);
 
 // make sure this is the last route in our server
 app.get('*', (req, res) => {
