@@ -68,7 +68,7 @@ import Friendship from './routes/friendship';
 import Activity from './routes/activity';
 import DirectMessages from './routes/directMessages';
 import Conversations from './routes/conversations';
-
+import Notifications from './routes/notifications';
 
 
 dotenv.config();
@@ -80,7 +80,7 @@ const prisma = new PrismaClient();
 //Middleware
 app.use(express.static(CLIENT_PATH));
 
-const allowedOrigins = ['http://ec2-3-19-30-206.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
+const allowedOrigins = ['http://ec2-18-221-114-235.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];
 
 app.use(cors({
   origin: allowedOrigins,
@@ -98,6 +98,7 @@ app.use("/recommendations", Recommendations);
 app.use("/user-books", UserBooks);
 app.use('/review', Review);
 // app.use("/clubs", Clubs);
+app.use("/notifications", Notifications);
 app.use("/api/clubs", Clubs);
 app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);

@@ -7,13 +7,13 @@ import Sheet from '@mui/joy/Sheet';
 import { io, Socket } from "socket.io-client";
 import Button from '../Button/Button';
 
-interface NotificationIconProps {
+interface NotificationMessageIconProps {
   notifications: any;
   notificationCount: number;
   markAsRead: any;
 }
 
-const NotificationIcon: React.FC<NotificationIconProps> = ({notifications, notificationCount, markAsRead}) => {
+const NotificationMessageIcon: React.FC<NotificationMessageIconProps> = ({notifications, notificationCount, markAsRead}) => {
   const [open, setOpen] = React.useState<boolean>(false);
 
 
@@ -111,4 +111,4 @@ viewBox="0 0 50 50" onClick={() => setOpen(true)}>
   );
 }
 
-export default NotificationIcon;
+export default NotificationMessageIcon;
