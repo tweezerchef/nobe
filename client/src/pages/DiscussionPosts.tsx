@@ -47,9 +47,6 @@ function DiscussionPosts() {
     }
   }, [id, discussionTitle, newPost]);
 
-  // // eslint-disable-next-line no-console
-  // console.log(format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"));
-
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -83,7 +80,6 @@ function DiscussionPosts() {
       {posts?.map((post) => (
         <div key={post.id}>
           <h3>{post.body}</h3>
-          {/* <p>userId: {post.userId}</p> */}
           <p>
             {post.user?.firstName}
             {' '}

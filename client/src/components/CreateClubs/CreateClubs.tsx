@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import GifSearch from './GifSearch';
 import axios from 'axios';
 import { Button } from '@mui/material';
+import GifSearch from './GifSearch';
 
 // interface CreateClubsProps {
 //   setClubs: React.Dispatch<React.SetStateAction<typeof Clubs[]>>;
@@ -29,24 +28,31 @@ const createClubs = (props: any) => {
       alert('Club name already exists!');
       return;
     }
+    const user = localStorage.getItem('user');
+    if (!user) {
+      throw new Error('No user found');
+    }
+    const parsed = JSON.parse(user);
+    const { id } = parsed;
 
-    let body = {
+    const body = {
       name: clubName,
       description: clubDescription,
-      image: clubImage
-    }
+      image: clubImage,
+      userId: id,
+    };
     try {
       axios.post('/api/create-club', body)
-        .then(data => {
+        .then((data) => {
           setClubs(data.data);
           setClubName('');
           setClubDescription('');
           setClubImage('');
-        })
+        });
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <Box
@@ -85,7 +91,6 @@ const createClubs = (props: any) => {
       </Button>
     </Box>
   );
-}
-
+};
 
 export default createClubs;

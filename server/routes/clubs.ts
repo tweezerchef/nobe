@@ -164,7 +164,7 @@ ClubsRoute.delete('/:id/leave', async (req: Request, res: Response) => {
     const club = await prisma.clubs.update({
       where: { id: req.params.id },
       data: {
-        members: {
+        clubMembers: {
           delete: { email },
         },
       },
