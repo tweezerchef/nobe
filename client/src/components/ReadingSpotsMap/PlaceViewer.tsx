@@ -79,13 +79,7 @@ function PlaceDetails({ placeId }: { placeId: number }) {
   console.log(placeId);
 
   useEffect(() => {
-    // const response = axios.get(`https://maps.googleapis.com/maps/api/place/details/json
-    // ?place_id=ChIJrTLr-GyuEmsRBfy61i59si0
-    // &fields=address_components
-    // &key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`).then((response) => { console.log(response) })
-    // console.log(response);
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    axios.get(`/api/places-to-read/getplace?placeId${placeId}`).then((response) => { console.log(response), setPlace(response.data.result); });
+    axios.get(`/api/places-to-read/getplace?placeId=${placeId}`).then((response) => { console.log(response), setPlace(response.data.result); });
   }, []);
   return (
 

@@ -43,6 +43,7 @@ function ReadingSpotsMap() {
   const [description, setDescription] = useState<string>('');
   const [isAddingDescription, setIsAddingDescription] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [placeId, setPlaceId] = useState<number | null>(null);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -64,13 +65,17 @@ function ReadingSpotsMap() {
   //   console.log(place)
 
   // }
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const handlePlaceClick = useCallback((placeId: number) => {
+    // console.log(placeId);
+    // setPlaceId(placeId);
     setSelectedPlace((prev) => (prev === placeId ? null : placeId));
     setIsFormOpen(false);
     setIsAddingDescription(false);
   }, []);
 
-  const handleCardClick = useCallback((lat: number, lng: number) => {
+  const handleCardClick = useCallback((lat: number, lng: number, place: any) => {
+    setPlaceId(place.altLoc);
     mapRef.current?.panTo({ lat, lng });
   }, []);
 
@@ -138,7 +143,7 @@ function ReadingSpotsMap() {
 
             <ListItemButton
               key={place.id}
-              onClick={() => handleCardClick(place.Lat, place.Long)}
+              onClick={() => handleCardClick(place.Lat, place.Long, place)}
               sx={{
                 border: '1px solid #ccc',
                 bgcolor: '#f0f0f0',
@@ -166,8 +171,8 @@ function ReadingSpotsMap() {
       {/* <div className="main-content" style={{ display: 'flex', flexDirection: 'row' }}> */}
       <div className="main-content">
         <div className="place-viewer">
-          { selectedPlace
-          && <PlaceViewer placeId={selectedPlace} />}
+          { placeId
+          && <PlaceViewer placeId={placeId} />}
         </div>
         <div className="spots-map">
           <GoogleMap

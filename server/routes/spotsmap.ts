@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import { Client } from '@googlemaps/google-maps-services-js';
 
 dotenv.config();
 
@@ -48,12 +49,14 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
 SpotsMapRoute.get('/getplace', async (req: Request, res: Response) => {
   const { placeId } = req.query;
   try {
-    const place = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}=${process.env.GOOGLE_MAPS_API_KEY}`);
-
+    const place = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=address_components,adr_address,business_status,reviews,formatted_address,geometry,icon,icon_mask_base_uri,website,rating,icon_background_color,name,photo,place_id,plus_code,type,url,utc_offset,vicinity,wheelchair_accessible_entrance&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+    console.log(place.data);
     res.send(place.data);
   } catch (error) {
     console.error(error);
   }
+//  const service = new google.maps.places.PlacesService(map);
+// service.getDetails(request, callback);
 });
 
 SpotsMapRoute.get('/', async (req: Request, res: Response) => {
