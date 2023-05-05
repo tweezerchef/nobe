@@ -17,7 +17,6 @@ function JoinClubButton(props: any) {
   const { id } = user;
   const [color, setColor] = useState<CustomColor>('danger');
   const [toolTip, setToolTip] = useState<NonNullable<React.ReactNode>>(<h1>Join Club</h1>);
-  // const [joined, setJoined] = useState<boolean>(false);
 
   const addToClub = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();

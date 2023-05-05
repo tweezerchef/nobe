@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import {
@@ -25,7 +25,6 @@ interface Discussion {
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
-  const [hasJoined, setHasJoined] = useState(false);
   const searchParams = new URLSearchParams(location.search);
   const clubName = searchParams.get('name') || 'Book Club Discussion';
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
@@ -50,24 +49,6 @@ function ClubDiscussion() {
     }
   }, []);
 
-  // const handleJoinClub = async () => {
-  //   try {
-  //     // const user = localStorage.getItem('user');
-
-  //     // const { data: club } = await axios.get(`/api/clubs/${id}`);
-  //     // const memberEmails = club.members?.map((member: { email: string; }) => member.email);
-
-  //     // if (memberEmails && memberEmails.includes(email)) {
-  //     //   setHasJoined(true);
-  //     //   return;
-  //     // }
-  //     await axios.post('/api/clubs/join', { id, clubId });
-  //     setHasJoined(true);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -76,6 +57,10 @@ function ClubDiscussion() {
 
       if (!user) {
         throw new Error('No user found');
+      }
+      if (!newDiscussionTitle) {
+        alert('Please enter a title');
+        return;
       }
       const parsed = JSON.parse(user);
       const response = await axios.post(`/api/clubs/${id}/discussion`, {

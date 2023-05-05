@@ -153,6 +153,7 @@ ClubsRoute.get('/:id/join', async (req: Request, res: Response) => {
   }
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 ClubsRoute.post('/join', async (req: Request, res: Response) => {
   const { id, clubId } = req.body;
   const clubMember = await prisma.clubMembers.findUnique({
