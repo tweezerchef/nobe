@@ -47,7 +47,7 @@ function ClubDiscussion() {
     if (id) {
       fetchDiscussion();
     }
-  }, []);
+  }, [discussions]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -59,7 +59,7 @@ function ClubDiscussion() {
         throw new Error('No user found');
       }
       if (!newDiscussionTitle) {
-        alert('Please enter a title');
+        alert('Please enter a discussion title');
         return;
       }
       const parsed = JSON.parse(user);
