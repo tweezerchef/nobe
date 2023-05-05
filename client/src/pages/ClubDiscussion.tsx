@@ -41,7 +41,7 @@ function ClubDiscussion() {
     if (id) {
       fetchDiscussion();
     }
-  }, [id]);
+  }, [id, discussions]);
 
   const handleJoinClub = async () => {
     try {
