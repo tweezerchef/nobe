@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import {
   Button, TextField, FormControl,
@@ -9,19 +9,6 @@ import { ClubHeader } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
 import '../styles/clubDiscussionStyle.css';
 import DiscussionList from '../components/DiscussionForum/Discussions';
-
-// interface DiscussionPost {
-//   id: string;
-//   body: string;
-//   userId: string;
-//   discussionId: string;
-// }
-
-// interface Discussion {
-//   id: string;
-//   Posts: DiscussionPost[];
-//   title: string;
-// }
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
@@ -106,27 +93,6 @@ function ClubDiscussion() {
         </form>
       )}
       {id && <DiscussionList discussions={discussions} clubId={id} key={discussions.length} />}
-      {/* {discussions?.map((discussion) => (
-        <Box sx={{ my: 1 }}>
-          <Card key={discussion.id} className="forum-card">
-            <Link
-              to={`/clubs/${id}/discussion/${discussion.id}`}
-              style={{ color: 'black', textDecoration: 'none' }}
-            >
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }} className="forum-card-title">
-                  {discussion.title}
-                </Typography>
-                <Typography variant="body2" className="forum-card-body" style={{ textAlign: 'center' }}>
-                  Posts:
-                  {' '}
-                  {discussion.Posts && discussion.Posts.length}
-                </Typography>
-              </CardContent>
-            </Link>
-          </Card>
-        </Box>
-      ))} */}
     </div>
   );
 }

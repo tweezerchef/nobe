@@ -52,7 +52,7 @@ const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => (
               <Typography variant="body2" className="forum-card-body" style={{ textAlign: 'center' }}>
                 Posts:
                 {' '}
-                {discussion.Posts && discussion.Posts.length}
+                {discussion.Posts ? discussion.Posts.length : 0}
               </Typography>
             </CardContent>
           </Link>
