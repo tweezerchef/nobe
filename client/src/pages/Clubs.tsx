@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Box, Container, Grid, Button, Card, CardContent, CardMedia, Typography, TextField, FormControl, FormLabel,
+  Grid, Card, CardContent, Typography,
 } from '@material-ui/core';
 import axios from 'axios';
 import styled from 'styled-components';
