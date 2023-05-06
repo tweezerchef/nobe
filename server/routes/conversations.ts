@@ -1,7 +1,8 @@
-const express = require('express');
-const axios = require('axios')
-const { PrismaClient } = require('@prisma/client');
 import { Request, Response } from 'express';
+
+const express = require('express');
+// const axios = require('axios');
+const { PrismaClient } = require('@prisma/client');
 
 interface AuthenticatedRequest extends Request {
   user: {
@@ -25,14 +26,14 @@ Conversations.post('/', async (req: AuthenticatedRequest, res: Response) => {
         AND: [
           { members: { some: { id: currentUser } } },
           { members: { some: { id: receiver.id } } },
-        ]
+        ],
       },
       select: {
         id: true,
         members: true,
         messages: true,
       },
-    })
+    });
 
     if (existingConversation) {
       // Return existing conversation instead of creating a new one
@@ -63,7 +64,5 @@ Conversations.post('/', async (req: AuthenticatedRequest, res: Response) => {
     res.status(500).json({ error: 'Could not create conversation' });
   }
 });
-
-
 
 export default Conversations;

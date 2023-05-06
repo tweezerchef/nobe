@@ -17,6 +17,7 @@ import SendIcon from '@material-ui/icons/Send';
 import moment from 'moment';
 import UserContext from '../../hooks/Context';
 import Counter from './style';
+import Emojis from '../Emojis/Emojis';
 
 const useStyles = makeStyles({
   table: {
@@ -65,6 +66,8 @@ interface Conversation {
   }[];
 }
 
+type EmojiSelectHandler = (emoji: string) => void;
+
 const socketUrl = process.env.SOCKET_URL;
 
 function Chat() {
@@ -97,6 +100,10 @@ function Chat() {
         console.error('Error sending message:', error);
       }
     }
+  };
+
+  const handleEmojiSelect: EmojiSelectHandler = (emoji) => {
+    setMessage((prevMessage) => prevMessage + emoji);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -186,7 +193,7 @@ function Chat() {
 
   return (
     <div>
-      { conversations.length === 0 ? null : (<Counter> </Counter>)}
+      {conversations.length === 0 ? null : (<Counter> </Counter>)}
       <Grid container>
         <Grid item xs={12}>
           <Typography
@@ -326,6 +333,11 @@ function Chat() {
                     variant="outlined"
                     className={classes.textField}
                     style={{ padding: '0px 5px 0px 0px' }}
+                    InputProps={{
+                      endAdornment: (
+                        <Emojis onSelect={handleEmojiSelect} />
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid container justifyContent="flex-end" item xs={1}>
