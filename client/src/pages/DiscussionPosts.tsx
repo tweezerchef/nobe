@@ -86,12 +86,12 @@ function DiscussionPosts() {
       <ClubHeader style={{ textAlign: 'center' }}>{discussionTitle}</ClubHeader>
       {posts?.map((post) => (
         <div key={post.id}>
-          <h3>{post.body}</h3>
           <p>
             {post.user?.firstName}
             {' '}
             {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
           </p>
+          <h3>{post.body}</h3>
           {post.userId === JSON.parse(localStorage.getItem('user') || '{}').id && (
             <Stack direction="row" spacing={1}>
               <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
@@ -104,6 +104,7 @@ function DiscussionPosts() {
       ))}
       <form onSubmit={handleSubmit}>
         <textarea
+          style={{ height: '100px', width: '300px' }}
           value={newPost}
           onChange={(event) => setNewPost(event.target.value)}
           placeholder="Write a new post"
