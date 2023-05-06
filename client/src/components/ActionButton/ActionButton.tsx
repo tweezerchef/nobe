@@ -1,3 +1,7 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-console */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import Box from '@mui/material/Box';
 import SpeedDial from '@mui/material/SpeedDial';
@@ -8,60 +12,62 @@ import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
+import { io, Socket } from 'socket.io-client';
+import React, { useState, useContext, useEffect } from 'react';
 import BookIcon from '../NotificationBook/Notificationbook';
 import CloseBy from '../CloseBy/CloseBy';
-import { io, Socket } from "socket.io-client";
 import MessageIcon from '../MessagesIcon/messagesicon';
 import FriendIcon from '../NewFriendIcon/Newfriendicon';
-import NotificationIcon from '../NotificationMessages/Notificationmessages';
-import Draggable from "react-draggable";
+import NotificationMessageIcon from '../NotificationMessages/Notificationmessages';
 import ForumIcon from '../DiscussionForum/Discussionforum';
-import React, { useState, useContext, useEffect } from 'react';
-import UserContext from '../../hooks/Context'
 
+import UserContext from '../../hooks/Context';
 
-
-
-
-
-
-
-const OpenIconSpeedDial: React.FC = () => {
-
-  const [userFirstName, setUserFistName] = useState("");
-  const [onlineUser, setOnlineUser] = useState("");
+const NotificationIcon: React.FC = () => {
+  const [userFirstName, setUserFistName] = useState('');
+  const [onlineUser, setOnlineUser] = useState('');
   const [socket, setSocket] = useState<any>(null);
   const [notifications, setNotifications] = useState<any>([]);
   const [notificationCount, setNotificationCount] = useState(0);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  //const id = user.id;
-  //console.log(user);
+  // const { id } = user;
+  // console.log(user);
 
   const markAsRead = () => {
-    setNotifications([])
+    setNotifications([]);
     setNotificationCount(0);
-  }
-  //const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
+  };
+  // const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
   // creating the notfication for adding a new friend
-  //console.log(notifications, 64)
-  useEffect(() => {
-    const newSocket = io('http://localhost:3000');
-    setSocket(newSocket);
-    newSocket.on('new-follower', (data: any) => {
-      console.log(data, 65)
-      const { sender, receiver, message } = data;
-      setNotifications((prevMessage: any) => [...prevMessage, message]);
-      let count = 0;
-      count++
-      setNotificationCount(count);
-    });
+  // console.log(notifications, 64)
 
-    return () => {
-      newSocket.disconnect();
-    };
+  const socketUrl = process.env.SOCKET_URL;
+
+  useEffect(() => {
+    if (socketUrl) {
+      const newSocket = io(socketUrl);
+      setSocket(newSocket);
+      newSocket.on('new-follower', (data: any) => {
+        console.log(data, 65);
+        const { sender, receiver, message } = data;
+        setNotifications((prevMessage: any) => [...prevMessage, message]);
+        let count = 0;
+        // eslint-disable-next-line no-plusplus
+        count++;
+        setNotificationCount(count);
+      });
+
+      return () => {
+        newSocket.disconnect();
+      };
+    }
   }, []);
+
+  // useEffect(() => {
+  //   socket?.emit('newUser', id);
+  // }, [socket, id]);
 
   //   React.useEffect(() => {
   //     setSocket(io("http://localhost:3000"));
@@ -98,40 +104,39 @@ const OpenIconSpeedDial: React.FC = () => {
   //   };
   // }, []);
 
-  //  React.useEffect(() => {
-  //    if (socket) {
-  //      socket?.emit("newUser", user);
-  //    }
-  //  }, [socket, user]);
-
-  const actions = [
-    { icon: <NotificationIcon notifications={notifications} notificationCount={notificationCount} markAsRead={markAsRead} />, name: 'Notifications Feed' },
-    { icon: <FriendIcon notificationCount={notificationCount} />, name: 'Friends' },
-    { icon: <MessageIcon />, name: 'Messages' },
-    { icon: <CloseBy />, name: 'Near By' },
-    { icon: <ForumIcon />, name: 'Discussions' },
-  ];
+  // const actions = [
+  // eslint-disable-next-line max-len
+  //   { icon: <NotificationIcon notifications={notifications} notificationCount={notificationCount} markAsRead={markAsRead} />, name: 'Notifications Feed' },
+  //   { icon: <FriendIcon notificationCount={notificationCount} />, name: 'Friends' },
+  //   { icon: <MessageIcon />, name: 'Messages' },
+  //   { icon: <CloseBy />, name: 'Near By' },
+  //   { icon: <ForumIcon />, name: 'Discussions' },
+  // ];
 
   return (
-    <SpeedDial
-      ariaLabel="SpeedDial openIcon example"
-      sx={{ top: 1, position: 'fixed' }}
-      icon={<BookIcon notificationCount={notificationCount} openIcon={<EditIcon />} />}
-      direction={'down'}
-    >
-      {actions.map((action) => (
-        <SpeedDialAction
-          key={action.name}
-          icon={action.icon}
-          tooltipTitle={action.name}
-        />
-      ))}
-    </SpeedDial>
+    // eslint-disable-next-line max-len
+    <BookIcon notificationCount={notificationCount} notifications={notifications} markAsRead={markAsRead} />
+
   );
-}
-export default OpenIconSpeedDial;
+};
+export default NotificationIcon;
 
 // <Draggable>
-{/* // <Box sx={{ width: 100, height: 80, transform: 'translateZ(0px)', flexGrow: 1 }}> */ }
-{/* // </Box> */ }
-      // </Draggable>
+// <Box sx={{ width: 100, height: 80, transform: 'translateZ(0px)', flexGrow: 1 }}> */ }
+/* // </Box> */
+// </Draggable>
+
+// <SpeedDial
+//   ariaLabel="SpeedDial openIcon example"
+//   sx={{ top: 1, position: 'absolute' }}
+//   icon={<BookIcon notificationCount={notificationCount} openIcon={<EditIcon />} />}
+//   direction={'down'}
+// >
+//   {actions.map((action) => (
+//     <SpeedDialAction
+//       key={action.name}
+//       icon={action.icon}
+//       tooltipTitle={action.name}
+//     />
+//   ))}
+// </SpeedDial>

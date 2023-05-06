@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { NavProps } from './Navbar'
+import { Button } from '@material-ui/core';
 
 export const StyledNavbar = styled.nav<NavProps>`
 position: sticky;
@@ -26,3 +27,14 @@ background-color: #2f8bfd;
 transition: background-color 0.2s; &:hover { background-color: #0072ff; }
 `};
 `;
+
+export const locationRoute = styled(Button)<NavProps>`
+color: inherit;
+margin-left: 16px;
+${props => props.fill && css`
+padding: 8px 16px;
+border-radius: 4px;
+background-color: #2f8bfd;
+transition: background-color 0.2s; &:hover { background-color: #0072ff; }
+`};
+`

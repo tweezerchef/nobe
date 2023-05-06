@@ -16,14 +16,15 @@ import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
 import moment from 'moment';
 import UserContext from '../../hooks/Context';
+import Counter from './style';
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
   chatSection: {
-    width: '800px',
-    height: '60vh',
+    width: '600px',
+    height: '50vh',
   },
   // headBG: {
   //   backgroundColor: '#e0e0e0'
@@ -63,6 +64,8 @@ interface Conversation {
     senderId: string;
   }[];
 }
+
+const socketUrl = process.env.SOCKET_URL;
 
 function Chat() {
   const classes = useStyles();
@@ -144,49 +147,53 @@ function Chat() {
     setConversations(user.Conversations);
   }, []);
 
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    const newSocket = io('http://localhost:3000');
+    if (socketUrl) {
+      const newSocket = io(socketUrl);
 
-    setSocket(newSocket);
+      setSocket(newSocket);
 
-    newSocket.on('new-message', (data: any) => {
-      const { conversationId, newMessage } = data;
+      newSocket.on('new-message', (data: any) => {
+        const { conversationId, newMessage } = data;
 
-      const conversationIndex = conversations.findIndex(
-        (conversation: Conversation) => conversation.id === conversationId,
-      );
+        const conversationIndex = conversations.findIndex(
+          (conversation: Conversation) => conversation.id === conversationId,
+        );
 
-      if (conversationIndex !== -1) {
-        if (currentConvo?.id === conversationId) {
-          setChatMessages((prevMessages) => [...prevMessages, newMessage]);
+        if (conversationIndex !== -1) {
+          if (currentConvo?.id === conversationId) {
+            setChatMessages((prevMessages) => [...prevMessages, newMessage]);
+          }
+          const updatedConvo = {
+            ...conversations[conversationIndex],
+            messages: [...conversations[conversationIndex].messages, newMessage],
+          };
+          setConversations((prevConversations) => {
+            const updatedConversations = [...prevConversations];
+            updatedConversations[conversationIndex] = updatedConvo;
+            user.Conversations[conversationIndex] = updatedConvo;
+            return updatedConversations;
+          });
         }
-        const updatedConvo = {
-          ...conversations[conversationIndex],
-          messages: [...conversations[conversationIndex].messages, newMessage],
-        };
-        setConversations((prevConversations) => {
-          const updatedConversations = [...prevConversations];
-          updatedConversations[conversationIndex] = updatedConvo;
-          user.Conversations[conversationIndex] = updatedConvo;
-          return updatedConversations;
-        });
-      }
-    });
+      });
 
-    return () => {
-      newSocket.disconnect();
-    };
+      return () => {
+        newSocket.disconnect();
+      };
+    }
   }, [currentConvo, conversations]);
 
   return (
     <div>
+      { conversations.length === 0 ? null : (<Counter> </Counter>)}
       <Grid container>
         <Grid item xs={12}>
           <Typography
             variant="h4"
             className="header-message"
             style={{
-              display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', background: '#002884', color: '#fff',
+              display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', background: '#002884', color: '#fff', borderRadius: '4px 4px 0px 0px',
             }}
           >
             Direct Messages
@@ -194,7 +201,7 @@ function Chat() {
         </Grid>
       </Grid>
       <Grid container component={Paper} className={classes.chatSection} style={{ background: '#fff' }}>
-        <Grid item xs={3} className={classes.borderRight500} style={{ background: '#f8f9fa' }}>
+        <Grid item xs={3} className={classes.borderRight500} style={{ borderRadius: '0px 0px 0px 4px' }}>
           <Grid item xs={12} style={{ padding: '10px' }}>
             <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
           </Grid>
@@ -243,11 +250,9 @@ function Chat() {
                     variant="h6"
                     className="header-message"
                     style={{
-                      display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#238636',
+                      display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#1976d2', color: '#FFF',
                     }}
                   >
-                    Chat with
-                    {' '}
                     {otherUserFirstName}
                   </Typography>
                 );
@@ -269,17 +274,16 @@ function Chat() {
                       member.id === chatMessage.senderId
                     ));
                     const senderFirstName = sender ? sender.firstName : '';
+                    const isCurrentUser = sender && sender.id === user.id;
                     return (
                       <ListItem key={chatMessage.id}>
                         <Grid container>
                           <Grid item xs={12}>
                             <ListItemText primary={(
-                              <Typography align="right" component="span" variant="body2">
-                                <span style={{ fontWeight: 'bolder' }}>
+                              <Typography component="span" variant="body2" style={{ display: 'flex', justifyContent: isCurrentUser ? 'flex-end' : 'flex-start' }}>
+                                <span style={{ margin: '0px 5px 0px 5px', fontWeight: 'bolder', color: isCurrentUser ? 'limegreen' : 'red' }}>
                                   {senderFirstName}
-                                  {' '}
                                 </span>
-                                <span style={{ color: 'rgb(29, 155, 240)' }}>@ </span>
                                 <span style={{ color: 'rgb(29, 155, 240)' }}>
                                   {moment(chatMessage.createdAt).isValid()
                                     ? moment(chatMessage.createdAt).fromNow()
@@ -289,14 +293,23 @@ function Chat() {
                             )}
                             />
                           </Grid>
-                          <Grid item xs={12}>
-                            <ListItemText secondary={(
-                              <Typography align="right" component="span" variant="body2">
-                                {chatMessage.text}
-                              </Typography>
-                            )}
-                            />
+                          <Grid item xs={12} style={{ textAlign: isCurrentUser ? 'right' : 'left' }}>
+                            <Typography
+                              component="span"
+                              variant="body2"
+                              style={{
+                                margin: '0px 5px 0px 5px',
+                                display: 'inline-block',
+                                background: isCurrentUser ? '#1976d2' : 'lightgray',
+                                padding: '2px 10px 2px 10px',
+                                borderRadius: '16px',
+                                color: isCurrentUser ? '#FFF' : 'black',
+                              }}
+                            >
+                              {chatMessage.text}
+                            </Typography>
                           </Grid>
+
                         </Grid>
                       </ListItem>
                     );
@@ -312,10 +325,11 @@ function Chat() {
                     label="Send message..."
                     variant="outlined"
                     className={classes.textField}
+                    style={{ padding: '0px 5px 0px 0px' }}
                   />
                 </Grid>
                 <Grid container justifyContent="flex-end" item xs={1}>
-                  <Fab color="primary" aria-label="add">
+                  <Fab color="primary" aria-label="add" style={{ height: 'auto', margin: '0px 5px 0px 0px' }}>
                     <SendIcon onClick={handleSend} />
                   </Fab>
                 </Grid>

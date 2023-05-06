@@ -1,6 +1,8 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import React, {
-  useState, useEffect, useRef, useContext,
+  useState, useEffect,
+  // useRef,
+  useContext,
 } from 'react';
 import axios from 'axios';
 import {
@@ -36,24 +38,27 @@ interface UserProfile {
   UserBooks: UserBook[];
 }
 
+const socketUrl = process.env.SOCKET_URL;
+
 function Profile() {
   const [books, setBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [socket, setSocket] = useState<any>(null);
+  // const [socket, setSocket] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const navigate = useNavigate();
+
+  // const chatContext = useContext(ChatContext);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
 
   const { id } = user;
   const friendId: string = useParams().id || '';
-
-  const newSocket = io('http://localhost:3000');
 
   const getProfile = async () => {
     if (friendId !== '') {
@@ -66,16 +71,36 @@ function Profile() {
     }
   };
 
+  const handleNearMeClick = async () => {
+    try {
+      const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      const data = await response.data;
+      navigate('/locations', { state: data });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const getUserBooks = (query: string) => {
     const booksArray: Book[] = [];
 
+<<<<<<< HEAD
     if (query === 'Owned') {
+=======
+    // eslint-disable-next-line eqeqeq
+    if (query == 'Owned') {
+>>>>>>> 4b0f51d44f74653ac7b7b289172798fa68b44139
       profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.owned) booksArray.push(book.Books);
       });
       setBooks(booksArray);
     }
+<<<<<<< HEAD
     if (query === 'Wishlist') {
+=======
+    // eslint-disable-next-line eqeqeq
+    if (query == 'Wishlist') {
+>>>>>>> 4b0f51d44f74653ac7b7b289172798fa68b44139
       profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.wishlist) booksArray.push(book.Books);
       });
@@ -84,6 +109,7 @@ function Profile() {
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-console, no-sequences
     axios.get(`/bookdata/title/searchOne?title=${title}`).then((response) => { setBooks([response.data]), console.log(response.data); });
     // .then(() => console.log(books))
   };
@@ -96,9 +122,12 @@ function Profile() {
     const userFirstName = user.firstName;
 
     try {
-      newSocket.emit('new-follow', {
-        message: `${userFirstName} has followed you`,
-      });
+      if (socketUrl) {
+        const newSocket = io(socketUrl);
+        newSocket.emit('new-follow', {
+          message: `${userFirstName} has followed you`,
+        });
+      }
       await axios.post('/api/friendship', { userId, friendId });
     } catch (error) {
       console.error(error);
@@ -141,6 +170,7 @@ function Profile() {
     p: 4,
   };
 
+  // console.log(user, 168);
   return (
 
     <div>
@@ -181,7 +211,8 @@ function Profile() {
             </form>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
-            <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>
+            {user.latitude > 0 && user.radius > 0 ? (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleNearMeClick}>Near Me</Button>)
+              : (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>)}
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
               <Box sx={style}>
                 <NearBy />
