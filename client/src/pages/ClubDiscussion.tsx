@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import {
-  Button, Card, CardContent, Typography, TextField, FormControl,
+  Button, TextField, FormControl,
 } from '@material-ui/core';
 import axios from 'axios';
 import { ClubHeader } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
+import DiscussionList from '../components/DiscussionForum/Discussions';
 
-interface DiscussionPost {
-  id: string;
-  body: string;
-  userId: string;
-  discussionId: string;
-}
+// interface DiscussionPost {
+//   id: string;
+//   body: string;
+//   userId: string;
+//   discussionId: string;
+// }
 
-interface Discussion {
-  id: string;
-  Posts: DiscussionPost[];
-  title: string;
-}
+// interface Discussion {
+//   id: string;
+//   Posts: DiscussionPost[];
+//   title: string;
+// }
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
@@ -65,12 +66,12 @@ function ClubDiscussion() {
         title: newDiscussionTitle,
         userId: parsed.id,
       });
-      setDiscussions([...discussions, response.data]);
+      setDiscussions((discussions) => [...discussions, response.data]);
       setNewDiscussionTitle('');
       setShowForm(false);
     } catch (error) {
       console.error(error);
-    }
+    } finally { console.log(discussions); }
   };
 
   return (
@@ -103,7 +104,8 @@ function ClubDiscussion() {
           </FormControl>
         </form>
       )}
-      {discussions?.map((discussion) => (
+      {id && <DiscussionList discussions={discussions} clubId={id} key={discussions.length} />}
+      {/* {discussions?.map((discussion) => (
         <Card key={discussion.id}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }}>
@@ -116,7 +118,7 @@ function ClubDiscussion() {
             </Typography>
           </CardContent>
         </Card>
-      ))}
+      ))} */}
     </div>
   );
 }
