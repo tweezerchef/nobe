@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import { Button } from '@material-ui/core';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { ClubHeader } from './style';
@@ -109,7 +110,9 @@ function DiscussionPosts() {
           onChange={(event) => setNewPost(event.target.value)}
           placeholder="Write a new post"
         />
-        <button type="submit">Post</button>
+        <div style={{ marginTop: '2px' }}>
+          <Button type="submit" variant="contained" size="small">Post</Button>
+        </div>
       </form>
     </div>
   );
