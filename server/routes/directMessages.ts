@@ -68,15 +68,11 @@ const DirectMessages = express.Router();
 
 DirectMessages.post('/:conversationId/messages', async (req: AuthenticatedRequest, res: Response) => {
   const { conversationId } = req.params;
-  const { conversationId } = req.params;
   const { text, senderId } = req.body;
   // console.log(req);
   try {
     const message = await prisma.directMessages.create({
       data: {
-        text,
-        senderId,
-        conversationId,
         text,
         senderId,
         conversationId,
