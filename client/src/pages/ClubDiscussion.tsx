@@ -118,7 +118,7 @@ function ClubDiscussion() {
                 <Typography variant="body2" className="forum-card-body" style={{ textAlign: 'center' }}>
                   Posts:
                   {' '}
-                  {discussion.Posts.length}
+                  {discussion.Posts && discussion.Posts.length}
                 </Typography>
               </CardContent>
             </Link>
