@@ -32,7 +32,7 @@ const NotificationIcon: React.FC = () => {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  // const { id } = user;
+  const id = user?.id;
   // console.log(user);
 
   const markAsRead = () => {
@@ -46,16 +46,29 @@ const NotificationIcon: React.FC = () => {
   const socketUrl = process.env.SOCKET_URL;
 
   useEffect(() => {
-    if (socketUrl) {
-      const newSocket = io(socketUrl);
+    let count = 0;
+    const fetchNotifications = async () => {
+      const response = await fetch(`/api/notifications/${id}`);
+      setNotifications(response);
+    };
+    if (socketUrl && id) {
+      const newSocket = io(socketUrl, {
+        query: {
+          userId: id,
+        },
+      });
       setSocket(newSocket);
+      newSocket.on('new-notification', (data: any) => {
+        console.log(data);
+        setNotifications((prevNotifications: any) => [data, ...prevNotifications]);
+        count += 1;
+      });
       newSocket.on('new-follower', (data: any) => {
-        console.log(data, 65);
+        console.log(data, 53);
         const { sender, receiver, message } = data;
         setNotifications((prevMessage: any) => [...prevMessage, message]);
-        let count = 0;
         // eslint-disable-next-line no-plusplus
-        count++;
+        count += 1;
         setNotificationCount(count);
       });
 
@@ -63,55 +76,7 @@ const NotificationIcon: React.FC = () => {
         newSocket.disconnect();
       };
     }
-  }, []);
-
-  // useEffect(() => {
-  //   socket?.emit('newUser', id);
-  // }, [socket, id]);
-
-  //   React.useEffect(() => {
-  //     setSocket(io("http://localhost:3000"));
-  //  }, []);
-
-  // React.useEffect(() => {
-  //   console.log(socket.on('test', (msg: any)=> {
-  //     console.log(msg);
-  //   }));
-  // }, []);
-
-  // React.useEffect(() => {
-  //   console.log(socket.on('test', (msg: any)=> {
-  //     console.log(msg);
-  //   }));
-  // }, []);
-  // console.log(notifications, 64)
-
-  // useEffect(() => {
-  //   const newSocket = io('http://localhost:3000');
-  //   setSocket(newSocket);
-  //   newSocket.onAny(() => {
-  //     let count = 0;
-  //     count++;
-  //     setNotificationCount(count);
-  //   })
-
-  //   newSocket.on('connect_error', (error: any) => {
-  //     console.log('Socket connection error:', error);
-  //   });
-
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, []);
-
-  // const actions = [
-  // eslint-disable-next-line max-len
-  //   { icon: <NotificationIcon notifications={notifications} notificationCount={notificationCount} markAsRead={markAsRead} />, name: 'Notifications Feed' },
-  //   { icon: <FriendIcon notificationCount={notificationCount} />, name: 'Friends' },
-  //   { icon: <MessageIcon />, name: 'Messages' },
-  //   { icon: <CloseBy />, name: 'Near By' },
-  //   { icon: <ForumIcon />, name: 'Discussions' },
-  // ];
+  }, [id, socketUrl]);
 
   return (
     // eslint-disable-next-line max-len
