@@ -84,33 +84,15 @@ function Profile() {
   const getUserBooks = (query: string) => {
     const booksArray: Book[] = [];
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    if (query === 'Owned') {
-=======
     // eslint-disable-next-line eqeqeq
     if (query == 'Owned') {
->>>>>>> 4b0f51d44f74653ac7b7b289172798fa68b44139
-=======
-    // eslint-disable-next-line eqeqeq
-    if (query == 'Owned') {
->>>>>>> 1fd18d9450fda372516f2f1c805e50c701780079
       profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.owned) booksArray.push(book.Books);
       });
       setBooks(booksArray);
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-    if (query === 'Wishlist') {
-=======
     // eslint-disable-next-line eqeqeq
     if (query == 'Wishlist') {
->>>>>>> 4b0f51d44f74653ac7b7b289172798fa68b44139
-=======
-    // eslint-disable-next-line eqeqeq
-    if (query == 'Wishlist') {
->>>>>>> 1fd18d9450fda372516f2f1c805e50c701780079
       profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.wishlist) booksArray.push(book.Books);
       });
