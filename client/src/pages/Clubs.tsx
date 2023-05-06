@@ -49,7 +49,7 @@ function Clubs() {
   margin: 20px auto;
   border-radius: 20px;
   text-align: center;
-  max-width: 400px;
+  max-width: 300px;
 `;
 
   return (
