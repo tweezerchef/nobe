@@ -2,7 +2,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+// import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
 
 type EmojiSelectHandler = (emoji: string) => void;
 
@@ -13,8 +15,9 @@ interface Props {
 function Emojis({ onSelect }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleEmojiSelect = (emojiObject: EmojiClickData) => {
-    onSelect(emojiObject.emoji);
+  const handleEmojiSelect = (emojiObject: any) => {
+    const emoji = emojiObject.native || emojiObject.colons;
+    onSelect(emoji);
     setIsOpen(false);
   };
 
@@ -39,8 +42,9 @@ function Emojis({ onSelect }: Props) {
           zIndex: 9999,
         }}
         >
-          <EmojiPicker
-            onEmojiClick={handleEmojiSelect}
+          <Picker
+            onEmojiSelect={handleEmojiSelect}
+            data={data}
           />
         </div>
       )}
