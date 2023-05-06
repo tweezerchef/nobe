@@ -129,7 +129,7 @@ ClubsRoute.post('/:id/discussion', async (req: Request, res: Response) => {
       },
     });
 
-    res.status(201).json({ discussion });
+    res.status(201).send(discussion);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Unable to create discussion' });

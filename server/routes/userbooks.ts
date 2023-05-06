@@ -110,15 +110,5 @@ UserBooks.post('/lendinglibrary', async (req: AuthenticatedRequest, res: Respons
     res.status(500).json({ error: 'Something went wrong' });
   }
 });
-// interface UserBooksQuery {
-//   where: {
-//     userId: string;
-//     owned?: boolean;
-//     wishlist?: boolean;
-//   };
-//   include: {
-//     books: true;
-//   };
-// }
 
 export default UserBooks;

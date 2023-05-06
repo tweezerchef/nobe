@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import usePlacesAutoComplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import {
   Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption,
@@ -6,6 +6,7 @@ import {
 import '@reach/combobox/styles.css';
 import axios from 'axios';
 import '../../styles/mapstyles.css';
+import UserContext from '../../hooks/Context';
 
 type PlacesProps = {
   setLatLng: (position: google.maps.LatLngLiteral) => void;
@@ -13,6 +14,11 @@ type PlacesProps = {
 };
 
 function Places({ setLatLng, setLocation }: PlacesProps) {
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const { id } = user;
+
   const {
     value,
     setValue,
@@ -38,7 +44,7 @@ function Places({ setLatLng, setLocation }: PlacesProps) {
 
     try {
       await axios.post('/api/places-to-read/place', {
-        address: val, lat, lng, altLoc: placeId,
+        address: val, lat, lng, altLoc: placeId, id,
       });
     } catch (err) {
       console.error(err);
