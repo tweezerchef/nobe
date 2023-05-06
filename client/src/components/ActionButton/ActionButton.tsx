@@ -62,15 +62,17 @@ const NotificationIcon: React.FC = () => {
         count++;
         setNotificationCount(count);
       });
-      // newSocket.on('new-notification', (data: any) => {
-      //   console.log(data, 62);
-      //   // const { sender, receiver, message } = data;
-      //   // setNotifications((prevMessage: any) => [...prevMessage, message]);
-      //   // let count = 0;
-      //   // // eslint-disable-next-line no-plusplus
-      //   // count++;
-      //   // setNotificationCount(count);
-      // });
+      newSocket.on('new-notification', (data: any) => {
+        console.log(data, 62);
+        const {
+          sender, receiver, message, type, createdAt,
+        } = data;
+        setNotifications((prevMessage: any) => [...prevMessage, message]);
+        let count = 0;
+        // eslint-disable-next-line no-plusplus
+        count++;
+        setNotificationCount(count);
+      });
 
       return () => {
         newSocket.disconnect();

@@ -149,8 +149,12 @@ function Chat() {
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (socketUrl) {
-      const newSocket = io(socketUrl);
+    if (socketUrl && user) {
+      const newSocket = io(socketUrl, {
+        query: {
+          userId: user.id,
+        },
+      });
 
       setSocket(newSocket);
 
@@ -182,7 +186,7 @@ function Chat() {
         newSocket.disconnect();
       };
     }
-  }, [currentConvo, conversations]);
+  }, [currentConvo, conversations, user]);
 
   return (
     <div>

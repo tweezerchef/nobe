@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Request, Response } from 'express';
 // eslint-disable-next-line import/extensions, import/no-cycle
 import { io } from '../socket';
@@ -67,7 +68,7 @@ const DirectMessages = express.Router();
 DirectMessages.post('/:conversationId/messages', async (req: AuthenticatedRequest, res: Response) => {
   const { conversationId } = req.params;
   const { text, senderId } = req.body;
-
+  // console.log(req);
   try {
     const message = await prisma.directMessages.create({
       data: {
@@ -78,14 +79,14 @@ DirectMessages.post('/:conversationId/messages', async (req: AuthenticatedReques
       },
     });
 
-    const conversation = await prisma.conversation.findUnique({
+    const conversation = await prisma.conversations.findUnique({
       where: { id: conversationId },
       include: { members: true },
     });
 
     const recipient = conversation.members.find((member: { id: any; }) => member.id !== senderId);
     if (recipient) {
-      await prisma.notification.create({
+      const data = await prisma.notifications.create({
         data: {
           userId: recipient.id,
           type: 'new_direct_message',
@@ -94,9 +95,9 @@ DirectMessages.post('/:conversationId/messages', async (req: AuthenticatedReques
           createdAt: new Date(),
         },
       });
-      io.to(recipient.id).emit('new-notification', Notification);
+      console.log(data);
+      io.to(recipient.id).emit('new-notification', data);
     }
-
     res.json(message);
   } catch (error) {
     console.error(error);
