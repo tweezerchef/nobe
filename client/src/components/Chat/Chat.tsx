@@ -16,7 +16,6 @@ import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
 import moment from 'moment';
 import UserContext from '../../hooks/Context';
-import Counter from './style';
 import Emojis from '../Emojis/Emojis';
 
 const useStyles = makeStyles({
@@ -193,7 +192,6 @@ function Chat() {
 
   return (
     <div>
-      {conversations.length === 0 ? null : (<Counter> </Counter>)}
       <Grid container>
         <Grid item xs={12}>
           <Typography
