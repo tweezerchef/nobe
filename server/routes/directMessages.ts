@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { Request, Response } from 'express';
 // eslint-disable-next-line import/extensions, import/no-cycle
-import { io } from '../socket';
+import { io, connectedUsers } from '../socket';
 
 const express = require('express');
 // const axios = require('axios');
@@ -84,19 +84,37 @@ DirectMessages.post('/:conversationId/messages', async (req: AuthenticatedReques
       include: { members: true },
     });
 
+    const sender = await prisma.user.findUnique({
+      where: { id: senderId },
+    });
+
     const recipient = conversation.members.find((member: { id: any; }) => member.id !== senderId);
     if (recipient) {
       const data = await prisma.notifications.create({
         data: {
-          userId: recipient.id,
+          body: `You have a new message from ${sender.firstName}`,
           type: 'new_direct_message',
-          body: `You have a new message from ${senderId}`,
-          recipient: senderId,
-          createdAt: new Date(),
+          recipient: recipient.id,
+          createdAt: new Date(), // Update this line to set the userId field
+          User: {
+            connect: {
+              id: senderId,
+            },
+          },
+        },
+        include: {
+          User: {
+            select: {
+              id: true,
+              firstName: true,
+              picture: true,
+            },
+          },
         },
       });
-      console.log(data);
-      io.to(recipient.id).emit('new-notification', data);
+      if (connectedUsers.includes(recipient.id)) {
+        io.to(recipient.id).emit('new-notification', data);
+      }
     }
     res.json(message);
   } catch (error) {

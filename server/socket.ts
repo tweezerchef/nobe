@@ -20,7 +20,6 @@ interface User {
   id: string
 }
 
-// let onlineUsers: User[] = [];
 // const addNewUser = (id: string, socketId: any) => {
 //   !onlineUsers.some((user) => user.id === id)
 //   && onlineUsers.push({
@@ -41,12 +40,16 @@ interface User {
 //   onlineUsers.find((user) => user.id === id);
 // };
 
+const connectedUsers: (string | string[] | undefined)[] = [];
+
 io.on('connection', (socket) => {
   const { userId } = socket.handshake.query;
   console.log('someone has connected!:', userId);
 
   socket.join(userId ?? '');
 
+  connectedUsers.push(userId);
+  console.log(connectedUsers);
   socket.on('new-message', (data) => {
     console.log('New message:', data);
     io.emit('new-message', data);
@@ -57,6 +60,10 @@ io.on('connection', (socket) => {
     io.to(userId ?? '').emit('new-follower', data);
   });
 
+  const index = connectedUsers.indexOf(userId);
+  if (index !== -1) {
+    connectedUsers.splice(index, 1);
+  }
   socket.on('disconnect', () => {
     console.log('someone has disconnected');
   });
@@ -66,4 +73,4 @@ const startSocketServer = () => {
   io.listen(3000);
 };
 
-export { io, startSocketServer };
+export { io, startSocketServer, connectedUsers };
