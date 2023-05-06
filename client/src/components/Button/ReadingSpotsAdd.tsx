@@ -17,7 +17,6 @@ function ReadingSpotsAdd(props: any) {
   const addToWishlist = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     axios.post('/user-books/wishlist', {
-      book,
       id,
       color,
     });
@@ -40,7 +39,7 @@ function ReadingSpotsAdd(props: any) {
         }
       });
     }
-  }, [book, id]);
+  }, [id]);
 
   return (
 
