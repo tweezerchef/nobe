@@ -7,6 +7,7 @@ import {
 import axios from 'axios';
 import { ClubHeader } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
+import '../styles/clubDiscussionStyle.css';
 import DiscussionList from '../components/DiscussionForum/Discussions';
 
 // interface DiscussionPost {
@@ -86,7 +87,7 @@ function ClubDiscussion() {
             color="primary"
             onClick={() => setShowForm(!showForm)}
           >
-            Start new discussion
+            Create a Thread
           </Button>
         </Stack>
       </div>
@@ -94,30 +95,37 @@ function ClubDiscussion() {
         <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
           <FormControl>
             <TextField
-              label="Discussion Title"
+              label="Thread Title"
               variant="outlined"
               name="title"
               value={newDiscussionTitle}
               onChange={(event) => setNewDiscussionTitle(event.target.value)}
             />
-            <Button type="submit" variant="contained">Start Discussion</Button>
+            <Button type="submit" variant="contained">Create</Button>
           </FormControl>
         </form>
       )}
       {id && <DiscussionList discussions={discussions} clubId={id} key={discussions.length} />}
       {/* {discussions?.map((discussion) => (
-        <Card key={discussion.id}>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }}>
-              <Link
-                to={`/clubs/${id}/discussion/${discussion.id}`}
-                style={{ color: 'black', textDecoration: 'none' }}
-              >
-                {discussion.title}
-              </Link>
-            </Typography>
-          </CardContent>
-        </Card>
+        <Box sx={{ my: 1 }}>
+          <Card key={discussion.id} className="forum-card">
+            <Link
+              to={`/clubs/${id}/discussion/${discussion.id}`}
+              style={{ color: 'black', textDecoration: 'none' }}
+            >
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }} className="forum-card-title">
+                  {discussion.title}
+                </Typography>
+                <Typography variant="body2" className="forum-card-body" style={{ textAlign: 'center' }}>
+                  Posts:
+                  {' '}
+                  {discussion.Posts && discussion.Posts.length}
+                </Typography>
+              </CardContent>
+            </Link>
+          </Card>
+        </Box>
       ))} */}
     </div>
   );
