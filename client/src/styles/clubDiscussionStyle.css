@@ -4,10 +4,11 @@
     padding: 1rem;
     max-width: 500px;
     margin: 0 auto;
+    transition: transform 0.2s ease-in-out;
 }
 
 .forum-card:hover {
-    box-shadow: 0 4px 12px rgba(59, 74, 141, 0.1);
+    transform: scale(1.05);
 }
 
 .forum-card-title {

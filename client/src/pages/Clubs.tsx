@@ -30,23 +30,42 @@ function Clubs() {
   const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 `;
 
   const StyledCard = styled(Card) <{ flexBasis?: string }>`
   flex-basis: ${(props) => props.flexBasis || '33%'};
   margin: 10px;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+  const HeaderBox = styled.div`
+  background-color: lightblue;
+  padding: 20px 0;
+  margin: 20px auto;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 400px;
 `;
 
   return (
     <div>
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
-          <ClubHeader>Create a Club</ClubHeader>
+          <HeaderBox>
+            <ClubHeader>Create a Club</ClubHeader>
+          </HeaderBox>
           <CreateClubs setClubs={setClubs} />
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <ClubHeader>Book Clubs</ClubHeader>
+          <HeaderBox>
+            <ClubHeader>Book Clubs</ClubHeader>
+          </HeaderBox>
           <CardContainer>
             {clubs.map((club) => (
               <StyledCard key={club.id} flexBasis="25%">
