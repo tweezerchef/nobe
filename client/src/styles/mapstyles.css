@@ -19,7 +19,7 @@ a {
 .spots-container {
   display: flex;
   height: calc(100vh - 60px);
-  /* overflow: hidden; */
+  overflow: clip;
 }
 
 .favorite-header {
