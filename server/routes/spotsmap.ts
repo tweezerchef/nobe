@@ -34,6 +34,10 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
       },
     });
     res.status(201).json({ createdPlace });
+
+    //   const createdPlace = await prisma.placesToRead.upsert({
+    //     where: { Lat: lat, Long: lng },
+    // })
   } catch (error) {
     console.error(error);
     res.status(500).send('Something went wrong');
@@ -44,13 +48,12 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
 SpotsMapRoute.get('/getplace', async (req: Request, res: Response) => {
   const { placeId } = req.query;
   try {
-    const place = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=address_components,adr_address,business_status,reviews,formatted_address,geometry,icon,icon_mask_base_uri,website,rating,icon_background_color,name,photo,place_id,plus_code,type,url,utc_offset,vicinity,wheelchair_accessible_entrance&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+    const place = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}=${process.env.GOOGLE_MAPS_API_KEY}`);
+
     res.send(place.data);
   } catch (error) {
     console.error(error);
   }
-//  const service = new google.maps.places.PlacesService(map);
-// service.getDetails(request, callback);
 });
 
 SpotsMapRoute.get('/', async (req: Request, res: Response) => {
@@ -88,6 +91,8 @@ SpotsMapRoute.get('/', async (req: Request, res: Response) => {
         },
       },
     });
+
+    // console.log(places)
     res.send(places);
   } catch (error) {
     console.error(error);
@@ -104,6 +109,7 @@ SpotsMapRoute.post('/description', async (req: Request, res: Response) => {
       update: { body },
       create: { body, placeId, userId },
     });
+    // console.log(updatedPlace)
 
     res.status(200).json({ updatedPlace });
   } catch (error) {
