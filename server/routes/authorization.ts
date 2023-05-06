@@ -1,15 +1,16 @@
-//Authentication
-const { PrismaClient } = require('@prisma/client');
+// Authentication
 import express, { Request, Response } from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { OAuth2Client } from "google-auth-library";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import { OAuth2Client } from 'google-auth-library';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+
+const { PrismaClient } = require('@prisma/client');
 
 dotenv.config();
 const prisma = new PrismaClient();
-const Auth = express.Router(); const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const Auth = express.Router(); const { GOOGLE_CLIENT_ID } = process.env;
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 async function verifyGoogleToken(token: string) {
@@ -20,7 +21,7 @@ async function verifyGoogleToken(token: string) {
     });
     return { payload: ticket.getPayload() };
   } catch (error) {
-    return { error: "Invalid user detected. Please try again" };
+    return { error: 'Invalid user detected. Please try again' };
   }
 }
 // Helper function to validate email
@@ -33,10 +34,9 @@ function isEmailValid(email: string) {
 function isPasswordValid(password: string) {
   return password.length >= 8;
 }
-//for form signup
-Auth.post("/signup-email", async (req: Request, res: Response) => {
+// for form signup
+Auth.post('/signup-email', async (req: Request, res: Response) => {
   const { email, password, nickname } = req.body;
-
 
   if (!isEmailValid(email)) {
     return res.status(400).json({ error: 'invalid_request', error_description: 'Invalid email address' });
@@ -60,13 +60,13 @@ Auth.post("/signup-email", async (req: Request, res: Response) => {
     });
 
     res.status(201).json({
-      message: "Signup was successful",
+      message: 'Signup was successful',
       user: {
         nickname: user.nickname,
         email: user.email,
         id: user.id,
         token: jwt.sign({ email: user.email }, process.env.JWT_SECRET as jwt.Secret, {
-          expiresIn: "1d",
+          expiresIn: '1d',
         }),
       },
     });
@@ -81,8 +81,8 @@ Auth.post("/signup-email", async (req: Request, res: Response) => {
   }
 });
 
-//for form login
-Auth.post("/login-email", async (req: Request, res: Response) => {
+// for form login
+Auth.post('/login-email', async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   if (!isEmailValid(email)) {
@@ -120,7 +120,7 @@ Auth.post("/login-email", async (req: Request, res: Response) => {
           id: true,
           members: true,
           messages: true,
-        }
+        },
       },
       UserBooks: {
         select: {
@@ -150,8 +150,8 @@ Auth.post("/login-email", async (req: Request, res: Response) => {
                   rating: true,
                   review: true,
                   LendingTable: true,
-                  User: true
-                }
+                  User: true,
+                },
               },
               Discussions: true,
               Activity: true,
@@ -160,7 +160,7 @@ Auth.post("/login-email", async (req: Request, res: Response) => {
         },
 
       },
-    }
+    },
   });
 
   if (!user) {
@@ -174,12 +174,12 @@ Auth.post("/login-email", async (req: Request, res: Response) => {
   }
 
   res.status(200).json({
-    message: "Login was successful",
-    user: user
+    message: 'Login was successful',
+    user,
   });
 });
 
-Auth.post("/signup", async (req, res) => {
+Auth.post('/signup', async (req, res) => {
   try {
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
@@ -194,48 +194,45 @@ Auth.post("/signup", async (req, res) => {
 
       if (!profile) {
         return res.status(400).json({
-          message: "Unable to retrieve user profile",
+          message: 'Unable to retrieve user profile',
         });
       }
 
       const createdUser = await prisma.user.create({
         data: {
-          firstName: profile.given_name ?? "",
-          lastName: profile.family_name ?? "",
-          email: profile.email ?? "",
+          firstName: profile.given_name ?? '',
+          lastName: profile.family_name ?? '',
+          email: profile.email ?? '',
           googleId: profile.sub,
-          picture: profile.picture ?? "",
+          picture: profile.picture ?? '',
         },
       });
 
-
-      let unique_id = createdUser.id;
+      const unique_id = createdUser.id;
 
       res.status(201).json({
-        message: "Signup was successful",
+        message: 'Signup was successful',
         user: {
           firstName: profile?.given_name,
           lastName: profile?.family_name,
           picture: profile?.picture,
           id: unique_id,
           email: profile?.email,
-          token: jwt.sign({ email: profile?.email }, "mySecret", {
-            expiresIn: "1d",
+          token: jwt.sign({ email: profile?.email }, 'mySecret', {
+            expiresIn: '1d',
           }),
         },
       });
     }
   } catch (error) {
     console.error(error),
-      res.status(500).json({
-        message: "An error occurred. Registration failed.",
-      });
+    res.status(500).json({
+      message: 'An error occurred. Registration failed.',
+    });
   }
 });
 
-
-
-Auth.post("/login", async (req, res) => {
+Auth.post('/login', async (req, res) => {
   try {
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
@@ -250,30 +247,28 @@ Auth.post("/login", async (req, res) => {
 
       if (!profile) {
         return res.status(400).json({
-          message: "Unable to retrieve user profile",
+          message: 'Unable to retrieve user profile',
         });
       }
-      const email = profile.email
-      const getUser = await axios.get(`http://localhost:8080/user?email=${email}`)
-      const userData = getUser.data
+      const { email } = profile;
+      const getUser = await axios.get(`http://localhost:8080/user?email=${email}`);
+      const userData = getUser.data;
       // const existsInDB = DB.find((person) => person?.email === profile?.email);
-      //console.log(userData)
+      // console.log(userData)
       if (!userData) {
         return res.status(400).json({
-          message: "You are not registered. Please sign up",
+          message: 'You are not registered. Please sign up',
         });
       }
       userData.token = jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
-        expiresIn: "1d",
+        expiresIn: '1d',
       }),
-
-        res.status(201).json({
-          message: "Login was successful",
-          user: {
-
-            userData
-          },
-        });
+      res.status(201).json({
+        message: 'Login was successful',
+        user: {
+          userData,
+        },
+      });
     }
   } catch (error: any) {
     res.status(500).json({
@@ -282,4 +277,4 @@ Auth.post("/login", async (req, res) => {
   }
 });
 
-export default Auth
+export default Auth;

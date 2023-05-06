@@ -68,11 +68,11 @@ const NotificationsItemTitle = styled(Typography)`
     font-size: 17px;
   }
 
-  ${({ variant }) => variant === 'archive' && `
-    color: white;
-  `}
-`;
 
+`;
+// ${({ variant }) => variant === 'archive' && `
+//     color: white;
+//   `}
 const NotificationsItemMessage = styled(Typography)`
   && {
     font-family: Roboto, sans-serif;
@@ -80,11 +80,11 @@ const NotificationsItemMessage = styled(Typography)`
     color: #929292;
   }
 
-  ${({ variant }) => variant === 'archive' && `
-    color: #f3f3f3;
-  `}
-`;
 
+`;
+// ${({ variant }) => variant === 'archive' && `
+//     color: #f3f3f3;
+//   `}
 const NotificationsItemOption = styled('div')`
   width: 20px;
   height: 20px;
@@ -101,19 +101,19 @@ const NotificationsItemOption = styled('div')`
   cursor: pointer;
   transition: all .2s;
 
-  ${({ variant }) => variant === 'archive' && `
-    background-color: #3dc98c;
-  `}
 
-  ${({ variant }) => variant === 'delete' && `
-    background-color: #c93d4d;
-  `}
 
   ${NotificationsItem}:hover & {
     opacity: 1;
   }
 `;
+// ${({ variant }) => variant === 'archive' && `
+//     background-color: #3dc98c;
+//   `}
 
+//   ${({ variant }) => variant === 'delete' && `
+//     background-color: #c93d4d;
+//   `}
 export {
   NotificationsItemOption, NotificationsItemMessage, NotificationsItemTitle,
   NotificationsItemContent, NotificationsItem, Wrapper, Counter, NotificationsItemAvatar,

@@ -9,7 +9,7 @@ import {
 } from './style';
 
 interface NotificationsCardProps {
-  notifications: [],
+  notification: [],
   avatarSrc: string;
   title: string;
   message: string;
@@ -19,16 +19,16 @@ interface NotificationsCardProps {
 }
 
 const NotificationsCard: FC<NotificationsCardProps> = ({
-  notifications, avatarSrc, title, message, variant = 'normal', onArchive,
+  notification, avatarSrc, title, message, variant = 'normal', onArchive,
   onDelete,
 }) => (
   <Wrapper>
     <NotificationsItem>
-      <NotificationsItemAvatar>{}</NotificationsItemAvatar>
+      <NotificationsItemAvatar />
       <NotificationsItemContent>
         <div>
-          <NotificationsItemTitle>{}</NotificationsItemTitle>
-          <NotificationsItemMessage>{}</NotificationsItemMessage>
+          <NotificationsItemTitle />
+          <NotificationsItemMessage />
         </div>
       </NotificationsItemContent>
     </NotificationsItem>

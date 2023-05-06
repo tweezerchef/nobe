@@ -85,6 +85,8 @@ model Notifications {
   userId     String
   recipient  String?
   type       String?
+  read       Boolean?
+  offline    Boolean?
   body       String
   User       User     @relation(fields: [userId], references: [id])
 }
