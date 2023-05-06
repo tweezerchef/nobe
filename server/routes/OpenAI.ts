@@ -1,9 +1,6 @@
-import express, { Request, Response } from 'express';
-import axios from 'axios';
+import express from 'express';
 
-const { PrismaClient } = require('@prisma/client');
-
-const dotenv = require('dotenv').config();
+// const dotenv = require('dotenv').config();
 const { Configuration, OpenAIApi } = require('openai');
 
 const configuration = new Configuration({
@@ -13,8 +10,6 @@ const configuration = new Configuration({
 
 const OpenAI = express.Router();
 const OpenApi = new OpenAIApi(configuration);
-
-const prisma = new PrismaClient();
 
 OpenAI.get('/', async (req, res) => {
   try {

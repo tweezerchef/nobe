@@ -105,20 +105,3 @@ const Book = React.memo((props: any) => {
 });
 
 export default Book;
-
-{ /* <IconButton
-                    aria-label="Like minimal photography"
-                    size="md"
-                    variant="solid"
-                    color="danger"
-                    sx={{
-                        position: 'absolute',
-                        zIndex: 2,
-                        borderRadius: '50%',
-                        right: '1rem',
-                        bottom: 0,
-                        transform: 'translateY(50%)',
-                    }}
-                >
-                    <BookmarkAddIcon />
-                </IconButton> */ }
