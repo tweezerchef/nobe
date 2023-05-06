@@ -46,7 +46,7 @@ model PlacesToRead {
   Private            Boolean              @default(false)
   Lat                Float?
   Long               Float?
-  altLoc             String?
+  placeID            String?
   LendingTableIn     LendingTable[]       @relation("inPlace")
   LendingTableOut    LendingTable[]       @relation("outPlace")
   userPlaces         User_Places[]
