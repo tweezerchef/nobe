@@ -6,5 +6,7 @@ module.exports = {
      ignorePatterns: ["*.js", "*.jsx"],
      rules: {
       'no-console': ['error', { allow: ['error'] }],
+      'no-restricted-globals': 'off',
+      'no-param-reassign': 'off',
     },
 };
