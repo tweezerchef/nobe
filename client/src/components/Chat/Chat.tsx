@@ -186,7 +186,7 @@ function Chat() {
 
   return (
     <div>
-      { conversations.length === 0 ? null : (<Counter> </Counter>)}
+      {conversations.length === 0 ? null : (<Counter> </Counter>)}
       <Grid container>
         <Grid item xs={12}>
           <Typography

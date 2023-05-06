@@ -1,7 +1,8 @@
-const express = require('express');
-const axios = require('axios')
-const { PrismaClient } = require('@prisma/client');
 import { Request, Response } from 'express';
+
+const express = require('express');
+// const axios = require('axios');
+const { PrismaClient } = require('@prisma/client');
 
 interface AuthenticatedRequest extends Request {
   user: {
@@ -62,15 +63,15 @@ const DirectMessages = express.Router();
 // });
 
 DirectMessages.post('/:conversationId/messages', async (req: AuthenticatedRequest, res: Response) => {
-  const conversationId = req.params.conversationId;
+  const { conversationId } = req.params;
   const { text, senderId } = req.body;
 
   try {
     const message = await prisma.directMessages.create({
       data: {
-        text: text,
-        senderId: senderId,
-        conversationId: conversationId,
+        text,
+        senderId,
+        conversationId,
         createdAt: new Date(),
       },
     });
@@ -80,9 +81,5 @@ DirectMessages.post('/:conversationId/messages', async (req: AuthenticatedReques
     res.status(500).send('Error creating message');
   }
 });
-
-
-
-
 
 export default DirectMessages;
