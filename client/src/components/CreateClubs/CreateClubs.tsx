@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
-import { Button } from '@mui/material';
+import { Button } from '@material-ui/core';
 import GifSearch from './GifSearch';
 
 const createClubs = (props: any) => {
