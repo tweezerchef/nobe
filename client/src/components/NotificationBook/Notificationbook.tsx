@@ -6,7 +6,7 @@ import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-import Counter from './style';
+import { Counter } from './style';
 
 interface BookIconProps {
   notifications: any;
@@ -28,7 +28,7 @@ const BookIcon: React.FC<BookIconProps> = ({ notifications, notificationCount, m
 
   return (
     <div className="BookIcon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      { notificationCount === 0 ? null : (<Counter>{notificationCount}</Counter>)}
+
       <SvgIcon
         xmlns="http://www.w3.org/2000/svg"
         style={svgStyle}
@@ -37,6 +37,7 @@ const BookIcon: React.FC<BookIconProps> = ({ notifications, notificationCount, m
         height="70"
         viewBox="0 0 50 50"
       >
+        { notificationCount === 0 ? null : (<Counter>{notificationCount}</Counter>)}
         <path fill="none" stroke="#000" strokeLinejoin="round" strokeWidth="2" d="M3,9v33c13,0,22,4,22,4s9-4,22-4V9" />
         <path fill="none" stroke="#000" strokeMiterlimit="10" strokeWidth="2" d="M25,42V9" />
         <path fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M25,9c0,0-8-4-18-4v33c10,0,18,4,18,4" />
