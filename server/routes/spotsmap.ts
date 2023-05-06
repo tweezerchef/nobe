@@ -10,7 +10,7 @@ const SpotsMapRoute = express.Router();
 
 SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   const {
-    address, lat, lng, altLoc,
+    address, lat, lng, altLoc, id,
   } = req.body;
   try {
     const existingPlace = await prisma.placesToRead.findFirst({
@@ -33,6 +33,15 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
         altLoc,
       },
     });
+
+    await prisma.activity.create({
+      data: {
+        userId: id,
+        type: 'location',
+        description: `${address}`,
+      },
+    });
+
     res.status(201).json({ createdPlace });
 
     //   const createdPlace = await prisma.placesToRead.upsert({
