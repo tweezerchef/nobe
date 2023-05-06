@@ -44,7 +44,7 @@ export default function ReviewPop(props: any) {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography sx={{ p: 1 }}>{review.text}</Typography>
+        <Typography sx={{ p: 1, width: '40vw' }}>{review.text}</Typography>
       </Popover>
     </div>
   );

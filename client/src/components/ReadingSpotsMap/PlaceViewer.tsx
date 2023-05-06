@@ -10,6 +10,7 @@ import {
   CardActions,
   Button,
   Grid,
+  Divider,
 } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -55,9 +56,9 @@ interface Place {
   reviews: Review[];
 }
 
-function PlaceDetails({ placeId }: { placeId: number }) {
+function PlaceDetails({ placeId }: { placeId: string }) {
   const [place, setPlace] = useState<Place | null>(null);
-  const [image, setImage] = useState<string>('https://images.unsplash.com/photo-1583477716463-9c485c89f6e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
+  const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
     axios.get(`/api/places-to-read/getplace?placeId=${placeId}`).then((response) => {
@@ -68,8 +69,7 @@ function PlaceDetails({ placeId }: { placeId: number }) {
     });
   }, [placeId]);
   return (
-
-    <Grid container sx={{ height: '100%' }}>
+    <Grid container sx={{ height: '100%', boxSizing: 'border-box', overflow: 'auto' }}>
       <Grid item xs={12}>
         <Card
           elevation={6}
@@ -81,49 +81,33 @@ function PlaceDetails({ placeId }: { placeId: number }) {
           }}
         >
           <Grid container>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12} sx={{ display: 'flex', alignItems: 'center' }}>
               <CardMedia
-                sx={{ paddingTop: '25%', width: '35%' }}
-                image={image}
+                sx={{ height: { xs: '200px', sm: '300px' }, width: '25%', objectFit: 'cover' }}
+                image={image ?? undefined}
                 title={place?.name}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
               <CardContent>
                 <Typography gutterBottom variant="h5">{place?.name}</Typography>
                 <Box display="flex" justifyContent="space-between" my={2}>
                   <Rating name="read-only" value={Number(place?.rating)} readOnly />
-                  <Typography component="legend">
-                    {/* {place?.reviews}
-                    {' '}
-                    review
-                    {place?.reviews !== 1 && 's'} */}
+                  <Typography component="legend" sx={{ cursor: 'pointer' }}>
                     {place?.reviews?.map((review) => (
-                      <ReviewPopOver review={review} />
+                      <>
+                        <ReviewPopOver review={review} />
+                        <Divider />
+                      </>
                     ))}
                   </Typography>
                 </Box>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography component="legend">Price</Typography>
-                  <Typography gutterBottom variant="subtitle1">
-                    {place?.price_level}
-                  </Typography>
-                </Box>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography component="legend">Ranking</Typography>
-                  <Typography gutterBottom variant="subtitle1">
-                    {place?.ranking}
-                  </Typography>
-                </Box>
-                {place?.awards?.map((award) => (
-                  <Box display="flex" justifyContent="space-between" my={1} alignItems="center">
-                    {/* <img src={award.images.small} /> */}
-                    <Typography variant="subtitle2" color="textSecondary">{award.display_name}</Typography>
-                  </Box>
-                ))}
                 {place?.types?.map((name) => (
                   <Chip key={name} size="small" label={name} sx={{ marginRight: 1 }} />
                 ))}
+                {place?.website && (
+                <Button size="small" color="primary" onClick={() => window.open(place?.website, '_blank')}>
+                  Website
+                </Button>
+                )}
                 {place?.address && (
                 <Typography gutterBottom variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center' }}>
                   <LocationOnIcon />
@@ -140,14 +124,12 @@ function PlaceDetails({ placeId }: { placeId: number }) {
               </CardContent>
             </Grid>
           </Grid>
-          <CardActions>
+          {/* <CardActions>
             <Button size="small" color="primary" onClick={() => window.open(place?.web_url, '_blank')}>
               Trip Advisor
             </Button>
-            <Button size="small" color="primary" onClick={() => window.open(place?.website, '_blank')}>
-              Website
-            </Button>
-          </CardActions>
+
+          </CardActions> */}
         </Card>
       </Grid>
     </Grid>
@@ -155,3 +137,22 @@ function PlaceDetails({ placeId }: { placeId: number }) {
 }
 
 export default PlaceDetails;
+{ /* <Box display="flex" justifyContent="space-between">
+<Typography component="legend">Price</Typography>
+<Typography gutterBottom variant="subtitle1">
+  {place?.price_level}
+</Typography>
+</Box>
+<Box display="flex" justifyContent="space-between">
+<Typography component="legend">Ranking</Typography>
+<Typography gutterBottom variant="subtitle1">
+  {place?.ranking}
+</Typography>
+</Box>
+{place?.awards?.map((award) => (
+<Box display="flex" justifyContent="space-between" my={1} alignItems="center">
+  {/* <img src={award.images.small} /> */ }
+//   <Typography variant="subtitle2" color="textSecondary">{award.display_name}</Typography>
+//   <Divider />
+// </Box>
+// ))} */}

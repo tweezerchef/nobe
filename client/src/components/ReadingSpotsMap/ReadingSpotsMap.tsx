@@ -43,7 +43,7 @@ function ReadingSpotsMap() {
   const [description, setDescription] = useState<string>('');
   const [isAddingDescription, setIsAddingDescription] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [placeId, setPlaceId] = useState<number | null>(null);
+  const [placeId, setPlaceId] = useState<string>('ChIJZYIRslSkIIYRtNMiXuhbBts');
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -122,51 +122,60 @@ function ReadingSpotsMap() {
   }, [selectedPlace, fetchSavedPlaces]);
 
   return (
-    <div className="spots-container">
-      <div className="controls">
-        <h2 className="favorite-header">What&apos;s your favorite reading spot?</h2>
-        <Places
-          setLatLng={(position: any) => {
-            setLatLng(position);
-            mapRef.current?.panTo(position);
-          }}
-          setLocation={setLocation}
-        />
-        <h3 className="top-spots-header">Top Spots</h3>
-        <List className="cards-container">
-          {savedPlaces?.map((place) => (
+    <>
+      <style>
+        {`
+          html,
+          body {
+            overflow: hidden;
+          }
+        `}
+      </style>
+      <div className="spots-container">
+        <div className="controls">
+          <h2 className="favorite-header">What&apos;s your favorite reading spot?</h2>
+          <Places
+            setLatLng={(position: any) => {
+              setLatLng(position);
+              mapRef.current?.panTo(position);
+            }}
+            setLocation={setLocation}
+          />
+          <h3 className="top-spots-header">Top Spots</h3>
+          <List className="cards-container">
+            {savedPlaces?.map((place) => (
 
-            <ListItemButton
-              key={place.id}
-              onClick={() => handleCardClick(place.Lat, place.Long, place)}
-              sx={{
-                border: '1px solid #ccc',
-                bgcolor: '#f0f0f0',
-                borderRadius: '4px',
-                '&:hover': {
-                  bgcolor: '#ddd',
-                },
-              }}
-            >
-              <ListItemText primary={<Typography color="gray">{place.Location}</Typography>} />
-            </ListItemButton>
-          ))}
-        </List>
-      </div>
-      <div className="main-content">
-        <div className="place-viewer">
-          { placeId
-          && <PlaceViewer placeId={placeId} />}
+              <ListItemButton
+                key={place.id}
+                onClick={() => handleCardClick(place.Lat, place.Long, place)}
+                sx={{
+                  border: '1px solid #ccc',
+                  bgcolor: '#f0f0f0',
+                  borderRadius: '4px',
+                  '&:hover': {
+                    bgcolor: '#ddd',
+                  },
+                }}
+              >
+                <ListItemText primary={<Typography color="gray">{place.Location}</Typography>} />
+              </ListItemButton>
+            ))}
+          </List>
         </div>
-        <div className="spots-map">
-          <GoogleMap
-            zoom={11.5}
-            center={center}
-            mapContainerClassName="map-container"
-            options={options}
-            onLoad={onLoad}
-          >
-            {latlng && (
+        <div className="main-content">
+          <div className="place-viewer">
+            { placeId
+          && <PlaceViewer placeId={placeId} />}
+          </div>
+          <div className="spots-map">
+            <GoogleMap
+              zoom={11.5}
+              center={center}
+              mapContainerClassName="map-container"
+              options={options}
+              onLoad={onLoad}
+            >
+              {latlng && (
               <Marker
                 position={latlng}
                 onClick={handleMarkerClick}
@@ -217,18 +226,18 @@ function ReadingSpotsMap() {
                   </InfoWindow>
                 )}
               </Marker>
-            )}
-            {savedPlaces?.map((place) => (
-              <Marker
-                key={place.id}
+              )}
+              {savedPlaces?.map((place) => (
+                <Marker
+                  key={place.id}
                 // position={new google.maps.LatLng(place.Lat, place.Long)}
-                position={{ lat: place.Lat, lng: place.Long }}
-                icon={{
-                  url: 'http://maps.google.com/mapfiles/kml/shapes/library_maps.png',
-                }}
-                onClick={() => handlePlaceClick(place.id, place)}
-              >
-                {selectedPlace === place.id && (
+                  position={{ lat: place.Lat, lng: place.Long }}
+                  icon={{
+                    url: 'http://maps.google.com/mapfiles/kml/shapes/library_maps.png',
+                  }}
+                  onClick={() => handlePlaceClick(place.id, place)}
+                >
+                  {selectedPlace === place.id && (
                   <InfoWindow
                     onCloseClick={() => setSelectedPlace(null)}
                     position={{ lat: place.Lat, lng: place.Long }}
@@ -270,14 +279,15 @@ function ReadingSpotsMap() {
                       </div>
                     </div>
                   </InfoWindow>
-                )}
-              </Marker>
-            ))}
-          </GoogleMap>
+                  )}
+                </Marker>
+              ))}
+            </GoogleMap>
+          </div>
         </div>
-      </div>
 
-    </div>
+      </div>
+    </>
   );
 }
 
