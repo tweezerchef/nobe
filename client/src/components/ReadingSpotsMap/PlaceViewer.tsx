@@ -11,54 +11,20 @@ import {
   Button,
   Grid,
   Divider,
+  Tooltip,
 } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import RecommendIcon from '@mui/icons-material/Recommend';
 import PhoneIcon from '@mui/icons-material/Phone';
 import axios from 'axios';
 import ReviewPopOver from './ReviewPopOver';
+import App from '../../App';
 
-interface Award {
-  images: {
-    small: string;
-  };
-  display_name: string;
-}
-
-interface Cuisine {
-  name: string;
-}
-interface Review {
-  author_name: string;
-  text: string;
-}
-interface Place {
-  formatted_address: string;
-  adr_address: string;
-  photo?: {
-    images: {
-      large: {
-        url: string;
-      };
-    };
-  };
-  name: string;
-  rating: string;
-  num_reviews: number;
-  price_level: string;
-  ranking: string;
-  awards?: Award[];
-  cuisine?: Cuisine[];
-  address?: string;
-  phone?: string;
-  web_url: string;
-  website: string;
-  types: string[];
-  reviews: Review[];
-}
-
-function PlaceDetails({ placeId }: { placeId: string }) {
+function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
   const [place, setPlace] = useState<Place | null>(null);
   const [image, setImage] = useState<string | null>(null);
+  const [favorite, setFavorite] = useState<boolean>(false);
+  const [appFavorite, setAppFavorite] = useState<boolean>(false);
 
   useEffect(() => {
     axios.get(`/api/places-to-read/getplace?placeId=${placeId}`).then((response) => {
@@ -67,6 +33,7 @@ function PlaceDetails({ placeId }: { placeId: string }) {
       setPlace(response.data.result);
       setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
     });
+    setAppFavorite(savedPlaces.some((place) => place.altLoc === placeId));
   }, [placeId]);
   return (
     <Grid container sx={{ height: '100%', boxSizing: 'border-box', overflow: 'auto' }}>
@@ -88,7 +55,15 @@ function PlaceDetails({ placeId }: { placeId: string }) {
                 title={place?.name}
               />
               <CardContent>
-                <Typography gutterBottom variant="h5">{place?.name}</Typography>
+                <Typography gutterBottom variant="h5">
+                  {place?.name}
+                  {appFavorite
+                  && (
+                  <Tooltip title="This is one of our favorite places to read!">
+                    <RecommendIcon sx={{ color: 'green' }} />
+                  </Tooltip>
+                  )}
+                </Typography>
                 <Box display="flex" justifyContent="space-between" my={2}>
                   <Rating name="read-only" value={Number(place?.rating)} readOnly />
                   <Typography component="legend" sx={{ cursor: 'pointer' }}>
@@ -124,12 +99,6 @@ function PlaceDetails({ placeId }: { placeId: string }) {
               </CardContent>
             </Grid>
           </Grid>
-          {/* <CardActions>
-            <Button size="small" color="primary" onClick={() => window.open(place?.web_url, '_blank')}>
-              Trip Advisor
-            </Button>
-
-          </CardActions> */}
         </Card>
       </Grid>
     </Grid>
@@ -137,22 +106,3 @@ function PlaceDetails({ placeId }: { placeId: string }) {
 }
 
 export default PlaceDetails;
-{ /* <Box display="flex" justifyContent="space-between">
-<Typography component="legend">Price</Typography>
-<Typography gutterBottom variant="subtitle1">
-  {place?.price_level}
-</Typography>
-</Box>
-<Box display="flex" justifyContent="space-between">
-<Typography component="legend">Ranking</Typography>
-<Typography gutterBottom variant="subtitle1">
-  {place?.ranking}
-</Typography>
-</Box>
-{place?.awards?.map((award) => (
-<Box display="flex" justifyContent="space-between" my={1} alignItems="center">
-  {/* <img src={award.images.small} /> */ }
-//   <Typography variant="subtitle2" color="textSecondary">{award.display_name}</Typography>
-//   <Divider />
-// </Box>
-// ))} */}
