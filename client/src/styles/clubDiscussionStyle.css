@@ -1,0 +1,23 @@
+.forum-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.forum-card:hover {
+    box-shadow: 0 4px 12px rgba(59, 74, 141, 0.1);
+}
+
+.forum-card-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.forum-card-body {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
