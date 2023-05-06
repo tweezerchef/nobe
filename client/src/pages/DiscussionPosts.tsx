@@ -17,6 +17,7 @@ interface Post {
   discussionId: string;
   createdAt: string;
   user: {
+    username: any;
     firstName: string;
   }
 }
@@ -87,11 +88,20 @@ function DiscussionPosts() {
       <ClubHeader style={{ textAlign: 'center' }}>{discussionTitle}</ClubHeader>
       {posts?.map((post) => (
         <div key={post.id}>
-          <p>
-            {post.user?.firstName}
-            {' '}
-            {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
-          </p>
+          {post.user?.username ? (
+            <p>
+              {post.user.username}
+              {' '}
+              {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
+            </p>
+          ) : (
+            <p>
+              {post.user.firstName}
+              {' '}
+              {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
+            </p>
+          )}
+
           <h3>{post.body}</h3>
           {post.userId === JSON.parse(localStorage.getItem('user') || '{}').id && (
             <Stack direction="row" spacing={1}>
