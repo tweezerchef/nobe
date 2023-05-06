@@ -3,6 +3,8 @@ import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { ClubHeader } from './style';
@@ -49,6 +51,11 @@ function DiscussionPosts() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (newPost.trim().length === 0) {
+      alert('Post cannot be empty!');
+      return;
+    }
 
     try {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
