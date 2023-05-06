@@ -5,7 +5,6 @@ import {
   Button, Card, CardContent, Typography, TextField, FormControl,
 } from '@material-ui/core';
 import axios from 'axios';
-// import UserContext from '../hooks/Context';
 import { ClubHeader } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
 
@@ -27,7 +26,6 @@ function ClubDiscussion() {
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
   const [showForm, setShowForm] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const searchParams = new URLSearchParams(location.search);
   const clubName = searchParams.get('name');
@@ -48,7 +46,7 @@ function ClubDiscussion() {
     if (id) {
       fetchDiscussion();
     }
-  }, [discussions]);
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -63,7 +61,6 @@ function ClubDiscussion() {
         return;
       }
       const parsed = JSON.parse(user);
-      setLoading(true);
       const response = await axios.post(`/api/clubs/${id}/discussion`, {
         title: newDiscussionTitle,
         userId: parsed.id,
@@ -71,10 +68,8 @@ function ClubDiscussion() {
       setDiscussions([...discussions, response.data]);
       setNewDiscussionTitle('');
       setShowForm(false);
-      setLoading(false);
     } catch (error) {
       console.error(error);
-      setLoading(false);
     }
   };
 
