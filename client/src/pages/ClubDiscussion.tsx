@@ -85,7 +85,7 @@ function ClubDiscussion() {
             color="primary"
             onClick={() => setShowForm(!showForm)}
           >
-            Start new discussion
+            Create a Thread
           </Button>
         </Stack>
       </div>
@@ -93,13 +93,13 @@ function ClubDiscussion() {
         <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
           <FormControl>
             <TextField
-              label="Discussion Title"
+              label="Thread Title"
               variant="outlined"
               name="title"
               value={newDiscussionTitle}
               onChange={(event) => setNewDiscussionTitle(event.target.value)}
             />
-            <Button type="submit" variant="contained">Start Discussion</Button>
+            <Button type="submit" variant="contained">Create</Button>
           </FormControl>
         </form>
       )}
