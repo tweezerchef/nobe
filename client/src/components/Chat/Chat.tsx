@@ -16,6 +16,7 @@ import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
 import moment from 'moment';
 import UserContext from '../../hooks/Context';
+import Counter from './style';
 
 const useStyles = makeStyles({
   table: {
@@ -63,6 +64,8 @@ interface Conversation {
     senderId: string;
   }[];
 }
+
+const socketUrl = process.env.SOCKET_URL;
 
 function Chat() {
   const classes = useStyles();
@@ -144,42 +147,46 @@ function Chat() {
     setConversations(user.Conversations);
   }, []);
 
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    const newSocket = io('http://localhost:3000');
+    if (socketUrl) {
+      const newSocket = io(socketUrl);
 
-    setSocket(newSocket);
+      setSocket(newSocket);
 
-    newSocket.on('new-message', (data: any) => {
-      const { conversationId, newMessage } = data;
+      newSocket.on('new-message', (data: any) => {
+        const { conversationId, newMessage } = data;
 
-      const conversationIndex = conversations.findIndex(
-        (conversation: Conversation) => conversation.id === conversationId,
-      );
+        const conversationIndex = conversations.findIndex(
+          (conversation: Conversation) => conversation.id === conversationId,
+        );
 
-      if (conversationIndex !== -1) {
-        if (currentConvo?.id === conversationId) {
-          setChatMessages((prevMessages) => [...prevMessages, newMessage]);
+        if (conversationIndex !== -1) {
+          if (currentConvo?.id === conversationId) {
+            setChatMessages((prevMessages) => [...prevMessages, newMessage]);
+          }
+          const updatedConvo = {
+            ...conversations[conversationIndex],
+            messages: [...conversations[conversationIndex].messages, newMessage],
+          };
+          setConversations((prevConversations) => {
+            const updatedConversations = [...prevConversations];
+            updatedConversations[conversationIndex] = updatedConvo;
+            user.Conversations[conversationIndex] = updatedConvo;
+            return updatedConversations;
+          });
         }
-        const updatedConvo = {
-          ...conversations[conversationIndex],
-          messages: [...conversations[conversationIndex].messages, newMessage],
-        };
-        setConversations((prevConversations) => {
-          const updatedConversations = [...prevConversations];
-          updatedConversations[conversationIndex] = updatedConvo;
-          user.Conversations[conversationIndex] = updatedConvo;
-          return updatedConversations;
-        });
-      }
-    });
+      });
 
-    return () => {
-      newSocket.disconnect();
-    };
+      return () => {
+        newSocket.disconnect();
+      };
+    }
   }, [currentConvo, conversations]);
 
   return (
     <div>
+      { conversations.length === 0 ? null : (<Counter> </Counter>)}
       <Grid container>
         <Grid item xs={12}>
           <Typography
@@ -246,8 +253,6 @@ function Chat() {
                       display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#1976d2', color: '#FFF',
                     }}
                   >
-                    Chat with
-                    {' '}
                     {otherUserFirstName}
                   </Typography>
                 );
@@ -295,10 +300,10 @@ function Chat() {
                               style={{
                                 margin: '0px 5px 0px 5px',
                                 display: 'inline-block',
-                                background: '#1976d2',
+                                background: isCurrentUser ? '#1976d2' : 'lightgray',
                                 padding: '2px 10px 2px 10px',
                                 borderRadius: '16px',
-                                color: '#FFF',
+                                color: isCurrentUser ? '#FFF' : 'black',
                               }}
                             >
                               {chatMessage.text}
