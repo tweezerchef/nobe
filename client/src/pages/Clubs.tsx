@@ -78,7 +78,7 @@ function Clubs() {
                   <iframe
                     src={club.image}
                     style={{
-                      pointerEvents: 'none', display: 'block', margin: '0 auto', border: 'none', paddingTop: '8px',
+                      pointerEvents: 'none', display: 'block', margin: '0 auto', border: 'none', paddingTop: '8px', width: '100%',
                     }}
                   />
                   <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
