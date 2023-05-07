@@ -15,7 +15,7 @@ const createClubs = (props: any) => {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const setUser = userContext?.setUser;
-  const id = user?.id;
+  // const id = user?.id;
   // console.log('userid', id);
 
   const handleSubmit = async () => {

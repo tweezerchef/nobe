@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import {
@@ -9,6 +9,7 @@ import { ClubHeader } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
 import '../styles/clubDiscussionStyle.css';
 import DiscussionList from '../components/DiscussionForum/Discussions';
+import UserContext from '../hooks/Context';
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
@@ -19,9 +20,10 @@ function ClubDiscussion() {
   const searchParams = new URLSearchParams(location.search);
   const clubName = searchParams.get('name');
   const clubId = id;
-  // const userContext = useContext(UserContext);
-  // const user = userContext?.user;
-  // console.log(user);
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const userId = user?.id;
 
   useEffect(() => {
     async function fetchDiscussion() {
@@ -40,7 +42,7 @@ function ClubDiscussion() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const user = localStorage.getItem('user');
+      // const user = localStorage.getItem('user');
 
       if (!user) {
         throw new Error('No user found');
@@ -49,10 +51,10 @@ function ClubDiscussion() {
         alert('Please enter a discussion title');
         return;
       }
-      const parsed = JSON.parse(user);
+      // const parsed = JSON.parse(user);
       const response = await axios.post(`/api/clubs/${id}/discussion`, {
         title: newDiscussionTitle,
-        userId: parsed.id,
+        userId,
       });
       setDiscussions((discussions) => [...discussions, response.data]);
       setNewDiscussionTitle('');
