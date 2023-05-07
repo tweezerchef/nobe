@@ -53,8 +53,10 @@ function WishListButton(props: any) {
       entry: UserBook,
     ) => entry.Books.title.toUpperCase() === book.title && entry.wishlist === true);
 
-    if (isBookInArray) setColor('success' as CustomColor);
-    setToolTip(<h1>Remove from Wishlist</h1>);
+    if (isBookInArray) {
+      setColor('success' as CustomColor);
+      setToolTip(<h1>Remove from Wishlist</h1>);
+    }
   }, [book, id]);
 
   return (

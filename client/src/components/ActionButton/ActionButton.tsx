@@ -14,6 +14,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
 import { io, Socket } from 'socket.io-client';
 import React, { useState, useContext, useEffect } from 'react';
+import axios from 'axios';
 import BookIcon from '../NotificationBook/Notificationbook';
 import CloseBy from '../CloseBy/CloseBy';
 import MessageIcon from '../MessagesIcon/messagesicon';
@@ -29,26 +30,37 @@ const NotificationIcon: React.FC = () => {
   const [socket, setSocket] = useState<any>(null);
   const [notifications, setNotifications] = useState<any>([]);
   const [notificationCount, setNotificationCount] = useState(0);
+  const [buttonState, setButtonState] = useState('idle');
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
   // console.log(user);
 
-  const markAsRead = () => {
+  const markAsRead = async () => {
     setNotifications([]);
     setNotificationCount(0);
+    setButtonState('loading');
+    // console.log(userLongitude, userLongitude, 63)
+    try {
+      const res = await axios.delete(`/notifications/${id}`, {
+      });
+      // console.log(res, 68)
+      setTimeout(() => {
+        setButtonState('success');
+      }, 2000);
+    } catch (err) {
+      // console.error(err);
+    }
   };
-  // const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
-  // creating the notfication for adding a new friend
-  // console.log(notifications, 64)
+  // console.log(notifications, 64);
 
   const socketUrl = process.env.SOCKET_URL;
 
   useEffect(() => {
     let count = 0;
-    const fetchNotifications = async () => {
-      const response = await fetch(`/api/notifications/${id}`);
+    const fetchOfflineNotifications = async () => {
+      const response = await fetch(`/notifications/${id}?offline=true`);
       setNotifications(response);
     };
     if (socketUrl && id) {
@@ -59,28 +71,31 @@ const NotificationIcon: React.FC = () => {
       });
       setSocket(newSocket);
       newSocket.on('new-notification', (data: any) => {
-        console.log(data);
+        // console.log(data, 62);
         setNotifications((prevNotifications: any) => [data, ...prevNotifications]);
         count += 1;
       });
-      newSocket.on('new-follower', (data: any) => {
-        console.log(data, 53);
-        const { sender, receiver, message } = data;
-        setNotifications((prevMessage: any) => [...prevMessage, message]);
-        // eslint-disable-next-line no-plusplus
-        count += 1;
-        setNotificationCount(count);
-      });
-
       return () => {
         newSocket.disconnect();
       };
     }
   }, [id, socketUrl]);
 
+  // useEffect(() => {
+  //   const getOnlineNotifications = async () => {
+  //     try {
+  //       const response = await fetch(`/notifications/${id}?offline=false`);
+  //       setNotifications(response);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   getOnlineNotifications();
+  // }, []);
+
   return (
     // eslint-disable-next-line max-len
-    <BookIcon notificationCount={notificationCount} notifications={notifications} markAsRead={markAsRead} />
+    <BookIcon notificationCount={notificationCount} notifications={notifications} markAsRead={markAsRead} buttonState={buttonState} />
 
   );
 };
