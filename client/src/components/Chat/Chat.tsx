@@ -81,6 +81,7 @@ function Chat() {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
+  // const setUser = userContext?.setUser;
 
   const sendMessage = async (sentMessage: string) => {
     if (currentConvo && user) {
