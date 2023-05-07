@@ -11,10 +11,10 @@ import UserContext from '../../hooks/Context';
 type PlacesProps = {
   setLatLng: (position: google.maps.LatLngLiteral) => void;
   setLocation: React.Dispatch<React.SetStateAction<string>>;
+  setPlaceId: React.Dispatch<React.SetStateAction<string>>;
 };
 
-function Places({ setLatLng, setLocation }: PlacesProps) {
-
+function Places({ setLatLng, setLocation, setPlaceId }: PlacesProps) {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const { id } = user;
@@ -33,8 +33,9 @@ function Places({ setLatLng, setLocation }: PlacesProps) {
     clearSuggestions();
 
     const results = await getGeocode({ address: val });
-    // console.log(results);
+    console.log(results);
     const placeId = results[0].place_id;
+    setPlaceId(placeId);
 
     const { lat, lng } = await getLatLng(results[0]);
     // console.log("lat and lng", typeof lat, typeof lng);
@@ -42,13 +43,13 @@ function Places({ setLatLng, setLocation }: PlacesProps) {
     setLatLng({ lat, lng });
     setLocation(val);
 
-    try {
-      await axios.post('/api/places-to-read/place', {
-        address: val, lat, lng, altLoc: placeId, id,
-      });
-    } catch (err) {
-      console.error(err);
-    }
+    // try {
+    //   await axios.post('/api/places-to-read/place', {
+    //     address: val, lat, lng, altLoc: placeId, id,
+    //   });
+    // } catch (err) {
+    //   console.error(err);
+    // }
     setValue('');
   };
 

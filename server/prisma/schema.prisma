@@ -46,7 +46,7 @@ model PlacesToRead {
   Private            Boolean              @default(false)
   Lat                Float?
   Long               Float?
-  altLoc             String?
+  googlePlaceId      String?
   LendingTableIn     LendingTable[]       @relation("inPlace")
   LendingTableOut    LendingTable[]       @relation("outPlace")
   userPlaces         User_Places[]
@@ -66,14 +66,16 @@ model Description_Places {
 }
 
 model User_Places {
-  id       String       @id @default(uuid())
-  userId   String
-  placeId  String
-  Rating   Int?
-  Review   String?
-  CheckIns Int?
-  place    PlacesToRead @relation(fields: [placeId], references: [id])
-  user     User         @relation(fields: [userId], references: [id])
+  id            String       @id @default(uuid())
+  userId        String
+  placeId       String
+  googlePlaceId String
+  favorite      Boolean      @default(false)
+  Rating        Int?
+  Review        String?
+  CheckIns      Int?
+  place         PlacesToRead @relation(fields: [placeId], references: [id])
+  user          User         @relation(fields: [userId], references: [id])
 
   @@unique([userId, placeId], name: "userId_placeId")
 }
@@ -85,6 +87,8 @@ model Notifications {
   userId     String
   recipient  String?
   type       String?
+  read       Boolean?
+  offline    Boolean?
   body       String
   User       User     @relation(fields: [userId], references: [id])
 }
@@ -120,6 +124,7 @@ model Books {
   Discussions Discussions[]
   genre       Genre[]
   UserBooks   UserBooks[]
+  Posts       Posts[]
 }
 
 model Genre {
@@ -206,6 +211,7 @@ model Discussions {
   title            String
   clubsId          String
   bookId           String?
+  createdAt        DateTime           @default(now())
   thumbsDown       Int                @default(0)
   thumbsUp         Int                @default(0)
   books            Books?             @relation(fields: [bookId], references: [id])
@@ -230,9 +236,11 @@ model Posts {
   userId        String
   body          String
   discussionsId String
+  BookId        String?
   createdAt     DateTime     @default(now())
   thumbsDown    Int          @default(0)
   thumbsUp      Int          @default(0)
+  Books         Books?       @relation(fields: [BookId], references: [id])
   discussion    Discussions  @relation(fields: [discussionsId], references: [id])
   user          User         @relation(fields: [userId], references: [id])
   PostsUsers    PostsUsers[]

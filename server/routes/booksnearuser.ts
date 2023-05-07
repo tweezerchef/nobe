@@ -23,11 +23,11 @@ interface AuthenticatedRequest extends Request {
 // }
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
-  console.log(req, 21);
+  // console.log(req, 21);
   // console.log(req, 26);
   try {
     const { lon, lat, radius } = req.query;
-    console.log(lon, lat, radius, 25);
+    // console.log(lon, lat, radius, 25);
     //  coordinates are sent in the request body
     if (!lat || !lon || !radius) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
@@ -129,7 +129,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
         },
       },
     });
-    console.log(users, 67);
+    // console.log(users, 67);
     res.status(200).send(users);
   } catch (error) {
     // console.error('Error getting users within radius:', error);
@@ -152,7 +152,7 @@ LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Res
         latitude,
       },
     });
-    console.log(userUpdateLocation, 145);
+    // console.log(userUpdateLocation, 145);
     res.status(200).json({ userUpdateLocation });
   } catch (e) {
     // console.error(e)
