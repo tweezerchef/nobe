@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { Button } from '@material-ui/core';
 import GifSearch from './GifSearch';
+import UserContext from '../../hooks/Context';
 
 const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
   const [clubImage, setClubImage] = useState('');
   const { setClubs } = props;
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const id = user?.id;
+  // console.log('userid', id);
 
   const handleSubmit = async () => {
     if (!clubName || !clubDescription || !clubImage) {
@@ -24,12 +30,12 @@ const createClubs = (props: any) => {
       alert('Club name already exists!');
       return;
     }
-    const user = localStorage.getItem('user');
-    if (!user) {
-      throw new Error('No user found');
-    }
-    const parsed = JSON.parse(user);
-    const { id } = parsed;
+    // const user = localStorage.getItem('user');
+    // if (!user) {
+    //   throw new Error('No user found');
+    // }
+    // const parsed = JSON.parse(user);
+    // const { id } = parsed;
 
     const body = {
       name: clubName,
