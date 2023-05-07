@@ -91,12 +91,14 @@ DirectMessages.post('/:conversationId/messages', async (req: AuthenticatedReques
 
     const recipient = conversation.members.find((member: { id: any; }) => member.id !== senderId);
     if (recipient) {
+      const offline = !connectedUsers.includes(recipient.id);
       const data = await prisma.notifications.create({
         data: {
           body: `You have a new message from ${sender.firstName}`,
-          type: 'new_direct_message',
+          type: 'Direct Message',
           recipient: recipient.id,
           createdAt: new Date(), // Update this line to set the userId field
+          offline,
           User: {
             connect: {
               id: senderId,
@@ -113,8 +115,9 @@ DirectMessages.post('/:conversationId/messages', async (req: AuthenticatedReques
           },
         },
       });
-      if (connectedUsers.includes(recipient.id)) {
+      if (!offline) {
         io.to(recipient.id).emit('new-notification', data);
+      // console.log(data, 120);
       }
     }
     res.json(message);

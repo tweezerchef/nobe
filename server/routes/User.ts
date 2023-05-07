@@ -1,4 +1,5 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
+import axios from 'axios';
 import dotenv from 'dotenv';
 
 const { PrismaClient } = require('@prisma/client');
@@ -12,7 +13,7 @@ const prisma = new PrismaClient();
 User.get('/', async (req, res) => {
   const { email } = req.query;
   try {
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },

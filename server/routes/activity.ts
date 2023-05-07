@@ -20,6 +20,7 @@ Activity.get('/', async (req, res) => {
 
   const followingIds = following.map((item) => item.friendId);
 
+  // eslint-disable-next-line no-console
   console.log('followingIds', followingIds);
 
   const users = await prisma.activity.findMany({

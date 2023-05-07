@@ -3,9 +3,13 @@ import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import { Button } from '@material-ui/core';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { ClubHeader } from './style';
+import '../styles/discussionPostsStyles.css';
 
 interface Post {
   id: string;
@@ -14,6 +18,8 @@ interface Post {
   discussionId: string;
   createdAt: string;
   user: {
+    lastName: string;
+    username: string;
     firstName: string;
   }
 }
@@ -50,6 +56,11 @@ function DiscussionPosts() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (newPost.trim().length === 0) {
+      alert('Post cannot be empty!');
+      return;
+    }
+
     try {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       const currentDate = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ');
@@ -75,34 +86,47 @@ function DiscussionPosts() {
   }
 
   return (
-    <div>
+    <div className="posts-page">
       <ClubHeader style={{ textAlign: 'center' }}>{discussionTitle}</ClubHeader>
       {posts?.map((post) => (
-        <div key={post.id}>
-          <h3>{post.body}</h3>
-          <p>
-            {post.user?.firstName}
+        <div className="posts-box" key={post.id}>
+          <div className="brown-box">
+
+            {'by '}
+            {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
             {' '}
-            {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
-          </p>
-          {post.userId === JSON.parse(localStorage.getItem('user') || '{}').id && (
-            <Stack direction="row" spacing={1}>
+
+            <div className="date-time">
+              {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
+
+            </div>
+          </div>
+          <div className="post-body">
+            {post.body}
+            {post.userId === JSON.parse(localStorage.getItem('user') || '{}').id && (
+            <Stack direction="row" spacing={1} className="delete-icon">
               <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
                 <DeleteIcon />
               </IconButton>
               {/* <button onClick={() => handleDelete(post.id)}>Delete</button> */}
             </Stack>
-          )}
+            )}
+          </div>
         </div>
       ))}
-      <form onSubmit={handleSubmit}>
-        <textarea
-          value={newPost}
-          onChange={(event) => setNewPost(event.target.value)}
-          placeholder="Write a new post"
-        />
-        <button type="submit">Post</button>
-      </form>
+      <div className="form-div">
+        <form onSubmit={handleSubmit}>
+          <textarea
+            className="text-area"
+            value={newPost}
+            onChange={(event) => setNewPost(event.target.value)}
+            placeholder="Write a new post"
+          />
+          <div>
+            <Button className="post-button" type="submit" variant="contained" size="small">Post</Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
