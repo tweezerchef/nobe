@@ -39,7 +39,7 @@ function Clubs() {
   transition: transform 0.2s ease-in-out;
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
   }
 `;
 
@@ -66,9 +66,9 @@ function Clubs() {
           {/* <HeaderBox> */}
           <ClubHeader>Book Clubs</ClubHeader>
           {/* </HeaderBox> */}
-          <CardContainer className="card-container">
+          <CardContainer>
             {clubs && clubs.length > 0 && clubs.map((club) => (
-              <StyledCard key={club.id} flexBasis="25%" className="styled-card">
+              <StyledCard key={club.id} flexBasis="25%">
                 <Link
                   to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
                   style={{
