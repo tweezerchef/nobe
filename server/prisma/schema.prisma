@@ -46,7 +46,7 @@ model PlacesToRead {
   Private            Boolean              @default(false)
   Lat                Float?
   Long               Float?
-  placeID            String?
+  googlePlaceId      String?
   LendingTableIn     LendingTable[]       @relation("inPlace")
   LendingTableOut    LendingTable[]       @relation("outPlace")
   userPlaces         User_Places[]
@@ -66,15 +66,16 @@ model Description_Places {
 }
 
 model User_Places {
-  id       String       @id @default(uuid())
-  userId   String
-  placeId  String
-  favorite Boolean      @default(false)
-  Rating   Int?
-  Review   String?
-  CheckIns Int?
-  place    PlacesToRead @relation(fields: [placeId], references: [id])
-  user     User         @relation(fields: [userId], references: [id])
+  id            String       @id @default(uuid())
+  userId        String
+  placeId       String
+  googlePlaceId String
+  favorite      Boolean      @default(false)
+  Rating        Int?
+  Review        String?
+  CheckIns      Int?
+  place         PlacesToRead @relation(fields: [placeId], references: [id])
+  user          User         @relation(fields: [userId], references: [id])
 
   @@unique([userId, placeId], name: "userId_placeId")
 }
