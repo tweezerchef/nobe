@@ -11,7 +11,13 @@ dotenv.config();
 const Recommendations = express.Router();
 
 const prisma = new PrismaClient();
-async function findOrCreateBook(ISBN10: string, title: string, author: string, image: string, description: string) {
+async function findOrCreateBook(
+  ISBN10: string,
+  title: string,
+  author: string,
+  image: string,
+  description: string,
+) {
   try {
     const newBook = await prisma.Books.upsert({
       where: { title },

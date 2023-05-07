@@ -17,8 +17,9 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import RecommendIcon from '@mui/icons-material/Recommend';
 import PhoneIcon from '@mui/icons-material/Phone';
 import axios from 'axios';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 import ReviewPopOver from './ReviewPopOver';
-import App from '../../App';
+import ReadingSpotsAdd from '../Button/ReadingSpotsAdd';
 
 function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
   const [place, setPlace] = useState<Place | null>(null);
@@ -29,11 +30,10 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
   useEffect(() => {
     axios.get(`/api/places-to-read/getplace?placeId=${placeId}`).then((response) => {
       const photo = response.data.result?.photos?.[0].photo_reference;
-      console.log(response.data.result);
       setPlace(response.data.result);
       setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
     });
-    setAppFavorite(savedPlaces.some((place) => place.altLoc === placeId));
+    setAppFavorite(savedPlaces.some((place) => place.googlePlaceId === placeId));
   }, [placeId]);
   return (
     <Grid container sx={{ height: '100%', boxSizing: 'border-box', overflow: 'auto' }}>
@@ -62,6 +62,9 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                   <Tooltip title="This is one of our favorite places to read!">
                     <RecommendIcon sx={{ color: 'green' }} />
                   </Tooltip>
+                  )}
+                  { place && (
+                  <ReadingSpotsAdd placeId={place.place_id} Location={place?.formatted_address} />
                   )}
                 </Typography>
                 <Box display="flex" justifyContent="space-between" my={2}>

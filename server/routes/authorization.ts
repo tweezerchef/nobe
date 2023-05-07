@@ -115,6 +115,7 @@ Auth.post('/login-email', async (req: Request, res: Response) => {
       DiscussionsUsers: true,
       Posts: true,
       PostsUsers: true,
+      User_Places: true,
       Conversations: {
         select: {
           id: true,

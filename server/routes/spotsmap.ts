@@ -9,8 +9,9 @@ const prisma = new PrismaClient();
 const SpotsMapRoute = express.Router();
 
 SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
+  console.log('places');
   const {
-    address, lat, lng, id, color, googlePlaceId,
+    Location, lat, lng, id, color, googlePlaceId,
   } = req.body;
   let myFav = false;
   if (color === 'danger') {
@@ -20,7 +21,7 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   try {
     createdPlace = await prisma.placesToRead.findFirst({
       where: {
-        Location: address,
+        Location,
         Lat: lat,
         Long: lng,
       },
@@ -28,7 +29,7 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
     if (!createdPlace) {
       createdPlace = await prisma.placesToRead.create({
         data: {
-          Location: address,
+          Location,
           Lat: lat,
           Long: lng,
           googlePlaceId,
@@ -36,19 +37,18 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
       });
     }
 
-    await prisma.activity.create({
-      data: {
-        userId: id,
-        type: 'location',
-        description: `${address}`,
-      },
-    });
+    // await prisma.activity.create({
+    //   data: {
+    //     userId: id,
+    //     type: 'location',
+    //     description: `${Location}`,
+    //   },
+    // });
     await prisma.user_Places.upsert({
       where: { userId_placeId: { userId: id, placeId: createdPlace.id } },
       update: { favorite: myFav },
       create: {
         favorite: myFav,
-        userId: id,
         place: { connect: { id: createdPlace.id } },
         user: { connect: { id } },
         googlePlaceId,
