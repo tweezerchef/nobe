@@ -9,6 +9,7 @@ import { Button } from '@material-ui/core';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { ClubHeader } from './style';
+import '../styles/discussionPostsStyles.css';
 
 interface Post {
   id: string;
@@ -85,38 +86,47 @@ function DiscussionPosts() {
   }
 
   return (
-    <div>
+    <div className="posts-page">
       <ClubHeader style={{ textAlign: 'center' }}>{discussionTitle}</ClubHeader>
       {posts?.map((post) => (
-        <div key={post.id}>
-          <p>
+        <div className="posts-box" key={post.id}>
+          <div className="brown-box">
+
             {'by '}
             {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
             {' '}
-            {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
-          </p>
-          <h3>{post.body}</h3>
-          {post.userId === JSON.parse(localStorage.getItem('user') || '{}').id && (
-            <Stack direction="row" spacing={1}>
+
+            <div className="date-time">
+              {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
+
+            </div>
+          </div>
+          <div className="post-body">
+            {post.body}
+            {post.userId === JSON.parse(localStorage.getItem('user') || '{}').id && (
+            <Stack direction="row" spacing={1} className="delete-icon">
               <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
                 <DeleteIcon />
               </IconButton>
               {/* <button onClick={() => handleDelete(post.id)}>Delete</button> */}
             </Stack>
-          )}
+            )}
+          </div>
         </div>
       ))}
-      <form onSubmit={handleSubmit}>
-        <textarea
-          style={{ height: '100px', width: '300px' }}
-          value={newPost}
-          onChange={(event) => setNewPost(event.target.value)}
-          placeholder="Write a new post"
-        />
-        <div style={{ marginTop: '2px' }}>
-          <Button type="submit" variant="contained" size="small">Post</Button>
-        </div>
-      </form>
+      <div className="form-div">
+        <form onSubmit={handleSubmit}>
+          <textarea
+            className="text-area"
+            value={newPost}
+            onChange={(event) => setNewPost(event.target.value)}
+            placeholder="Write a new post"
+          />
+          <div>
+            <Button className="post-button" type="submit" variant="contained" size="small">Post</Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
