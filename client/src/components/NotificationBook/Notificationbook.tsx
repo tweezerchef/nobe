@@ -1,24 +1,33 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
+/* eslint-disable max-len */
 /* eslint-disable react/function-component-definition */
-import React from 'react';
+import React, { useState } from 'react';
 // import { io, Socket } from 'socket.io-client';
+import ReactiveButton from 'reactive-button';
 import { SvgIcon, Button } from '@material-ui/core';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-import { Counter } from './style';
+import {
+  NotificationsItemOption, NotificationsItemMessage, NotificationsItemTitle,
+  NotificationsItemContent, NotificationsItem, Wrapper, Counter, NotificationsItemAvatar,
+} from './style';
 
 interface BookIconProps {
   notifications: any;
   notificationCount: number;
   markAsRead: any;
+  buttonState:any,
 
 }
 
-const BookIcon: React.FC<BookIconProps> = ({ notifications, notificationCount, markAsRead }) => {
+const BookIcon: React.FC<BookIconProps> = ({
+  notifications, notificationCount, markAsRead, buttonState,
+}) => {
   // const [socket, setSocket] = useState<any>(null);
   const [open, setOpen] = React.useState<boolean>(false);
-
   const svgStyle = {
     display: 'block',
     margin: 'auto',
@@ -26,6 +35,7 @@ const BookIcon: React.FC<BookIconProps> = ({ notifications, notificationCount, m
     // add any other styles you need here
   };
 
+  console.log(notifications, 31);
   return (
     <div className="BookIcon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 
@@ -53,7 +63,9 @@ const BookIcon: React.FC<BookIconProps> = ({ notifications, notificationCount, m
         <Sheet
           variant="outlined"
           sx={{
-            maxWidth: 500,
+            width: '75%',
+            height: '75%',
+            maxWidth: 'auto',
             borderRadius: 'md',
             p: 3,
             boxShadow: 'lg',
@@ -73,10 +85,32 @@ const BookIcon: React.FC<BookIconProps> = ({ notifications, notificationCount, m
             onClick={() => setOpen(false)}
           />
           <Typography id="modal-modal-title" component="h2">
-            <Button onClick={markAsRead}> Mark As Read </Button>
+            <ReactiveButton
+              rounded
+              size="medium"
+              buttonState={buttonState}
+              idleText="Mark As Read"
+              loadingText="Loading"
+              successText="Done"
+              onClick={markAsRead}
+              color="blue"
+              style={{ margin: '10px' }}
+            />
           </Typography>
           <Typography id="modal-desc" textColor="text.tertiary">
-            { notifications.map((message: any) => <div>{message}</div>)}
+            { notifications.map((notification: any) => (
+              <Wrapper>
+                <NotificationsItem>
+                  <NotificationsItemAvatar>{notification.User.picture}</NotificationsItemAvatar>
+                  <NotificationsItemContent>
+                    <div>
+                      <NotificationsItemTitle>{notification.type}</NotificationsItemTitle>
+                      <NotificationsItemMessage>{notification.body}</NotificationsItemMessage>
+                    </div>
+                  </NotificationsItemContent>
+                </NotificationsItem>
+              </Wrapper>
+            ))}
           </Typography>
         </Sheet>
       </Modal>
