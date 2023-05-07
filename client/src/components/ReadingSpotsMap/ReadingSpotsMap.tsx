@@ -24,14 +24,14 @@ import PlaceViewer from './PlaceViewer';
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
 
-interface Place {
-  Description_Places: any;
-  id: number;
-  Location: string;
-  Lat: number;
-  Long: number;
-  Description: string;
-}
+// interface Place {
+//   Description_Places: any;
+//   id: number;
+//   Location: string;
+//   Lat: number;
+//   Long: number;
+//   Description: string;
+// }
 
 function ReadingSpotsMap() {
   const [latlng, setLatLng] = useState<LatLngLiteral>();
@@ -44,6 +44,7 @@ function ReadingSpotsMap() {
   const [isAddingDescription, setIsAddingDescription] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [placeId, setPlaceId] = useState<string>('ChIJZYIRslSkIIYRtNMiXuhbBts');
+  const [userPlaces, setUserPlaces] = useState<Place[]>([]);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -140,6 +141,7 @@ function ReadingSpotsMap() {
               mapRef.current?.panTo(position);
             }}
             setLocation={setLocation}
+            setPlaceId={setPlaceId}
           />
           <h3 className="top-spots-header">Top Spots</h3>
           <List className="cards-container">
@@ -165,7 +167,7 @@ function ReadingSpotsMap() {
         <div className="main-content">
           <div className="place-viewer">
             { placeId
-          && <PlaceViewer placeId={placeId} />}
+          && <PlaceViewer placeId={placeId} savedPlaces={savedPlaces} />}
           </div>
           <div className="spots-map">
             <GoogleMap

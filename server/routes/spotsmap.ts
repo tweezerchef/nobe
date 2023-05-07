@@ -10,29 +10,31 @@ const SpotsMapRoute = express.Router();
 
 SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   const {
-    address, lat, lng, altLoc, id,
+    address, lat, lng, id, color, googlePlaceId,
   } = req.body;
+  let myFav = false;
+  if (color === 'danger') {
+    myFav = true;
+  }
+  let createdPlace;
   try {
-    const existingPlace = await prisma.placesToRead.findFirst({
+    createdPlace = await prisma.placesToRead.findFirst({
       where: {
         Location: address,
         Lat: lat,
         Long: lng,
       },
     });
-    if (existingPlace) {
-      return res.status(200).json({
-        message: 'Place already exists',
+    if (!createdPlace) {
+      createdPlace = await prisma.placesToRead.create({
+        data: {
+          Location: address,
+          Lat: lat,
+          Long: lng,
+          googlePlaceId,
+        },
       });
     }
-    const createdPlace = await prisma.placesToRead.create({
-      data: {
-        Location: address,
-        Lat: lat,
-        Long: lng,
-        altLoc,
-      },
-    });
 
     await prisma.activity.create({
       data: {
@@ -41,13 +43,22 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
         description: `${address}`,
       },
     });
-
-    res.status(201).json({ createdPlace });
+    await prisma.user_Places.upsert({
+      where: { userId_placeId: { userId: id, placeId: createdPlace.id } },
+      update: { favorite: myFav },
+      create: {
+        favorite: myFav,
+        userId: id,
+        place: { connect: { id: createdPlace.id } },
+        user: { connect: { id } },
+        googlePlaceId,
+      },
+    });
+    res.status(201);
   } catch (error) {
     console.error(error);
     res.status(500).send('Something went wrong');
   }
-  return undefined;
 });
 
 SpotsMapRoute.get('/getplace', async (req: Request, res: Response) => {
@@ -72,7 +83,7 @@ SpotsMapRoute.get('/', async (req: Request, res: Response) => {
         Private: true,
         Lat: true,
         Long: true,
-        altLoc: true,
+        googlePlaceId: true,
         LendingTableIn: true,
         LendingTableOut: true,
         userPlaces: {
@@ -88,13 +99,6 @@ SpotsMapRoute.get('/', async (req: Request, res: Response) => {
           },
         },
         Activity: true,
-        Description_Places: {
-          select: {
-            id: true,
-            body: true,
-            user: true,
-          },
-        },
       },
     });
     res.send(places);
@@ -121,6 +125,19 @@ SpotsMapRoute.post('/description', async (req: Request, res: Response) => {
   }
 });
 
+// SpotsMapRoute.post('/addPlace', async (req: Request, res: Response) => {
+//   const { place, userId } = req.body;
+//   try{
+//     const newPlace = await prisma.placesToRead.create({
+//       data: {
+//       create:{
+//     }
+//     }
+//     catch (error) {
+//     console.error(error);
+//     res.status(500).send('Something went wrong');
+//     }
+//   });
 SpotsMapRoute.post('/places/:id/description', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { body, userId } = req.body;
