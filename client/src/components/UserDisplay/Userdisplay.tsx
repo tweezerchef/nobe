@@ -60,40 +60,6 @@ function UserDisplay({ user }: { user: any }) {
       <Link to={`/profile/${user.id}`}>
         <div className="user-firstName">{user.firstName}</div>
         <Avatar alt="user-image" src={user.picture} />
-        <div className="profile-card">
-          <div className="profile-card-header">
-            <div className="profile-image" />
-
-            <div className="profile-info">
-              <h3 className="profile-name">Dev Ed</h3>
-              <p className="profile-desc">Developer/Conent Creator</p>
-            </div>
-          </div>
-
-          <div className="profile-card-body">
-            <ul className="status">
-              <li>
-                <span className="status-value">532</span>
-                <span className="status-text">Posts</span>
-              </li>
-
-              <li>
-                <span className="status-value">1.5m</span>
-                <span className="status-text">Followers</span>
-              </li>
-
-              <li>
-                <span className="status-value">423</span>
-                <span className="status-text">Following</span>
-              </li>
-            </ul>
-
-            <div className="action">
-              {/* <button className="btn btn-pink">Follow</button>
-              <button className="btn btn-gray-outline">Message</button> */}
-            </div>
-          </div>
-        </div>
       </Link>
       <BookDisplay books={books} />
     </div>
