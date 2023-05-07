@@ -13,7 +13,7 @@ const prisma = new PrismaClient();
 User.get('/', async (req, res) => {
   const { email } = req.query;
   try {
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -92,7 +92,7 @@ User.get('/', async (req, res) => {
 });
 User.get('/id', async (req, res) => {
   const { id } = req.query;
-  // console.log('id', id);
+  // console.log('id', id)
   try {
     const user = await prisma.user.findFirst({
       where: {
@@ -165,7 +165,7 @@ User.get('/id', async (req, res) => {
         },
       },
     });
-    console.log('user', user);
+    // console.log(user)
     res.send(user);
   } catch (error) {
     console.error(error);

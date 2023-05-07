@@ -67,7 +67,7 @@ function Clubs() {
             <ClubHeader>Book Clubs</ClubHeader>
           </HeaderBox>
           <CardContainer>
-            {clubs.map((club) => (
+            {clubs && clubs.length > 0 && clubs.map((club) => (
               <StyledCard key={club.id} flexBasis="25%">
                 <Link
                   to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
