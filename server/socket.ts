@@ -57,15 +57,15 @@ io.on('connection', (socket) => {
 
   socket.on('new-follow', (data) => {
     console.log('newFollower:', data);
-    io.to(userId ?? '').emit('new-follower', data);
+    io.to(userId ?? '').emit('new-notification', data);
   });
 
-  const index = connectedUsers.indexOf(userId);
-  if (index !== -1) {
-    connectedUsers.splice(index, 1);
-  }
   socket.on('disconnect', () => {
-    console.log('someone has disconnected');
+    const index = connectedUsers.indexOf(userId);
+    if (index !== -1) {
+      connectedUsers.splice(index, 1);
+    }
+    console.log('someone has disconnected:', userId);
   });
 });
 
