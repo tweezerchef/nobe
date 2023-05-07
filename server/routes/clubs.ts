@@ -64,6 +64,11 @@ ClubsRoute.get('/discussions/:id', async (req: Request, res: Response) => {
       where: {
         id,
       },
+      include: {
+        clubs: {
+          select: { name: true },
+        },
+      },
     });
     res.json(discussion);
   } catch (error) {
