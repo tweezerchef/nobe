@@ -117,7 +117,7 @@ DirectMessages.post('/:conversationId/messages', async (req: AuthenticatedReques
       });
       if (!offline) {
         io.to(recipient.id).emit('new-notification', data);
-        console.log(data, 120);
+      // console.log(data, 120);
       }
     }
     res.json(message);

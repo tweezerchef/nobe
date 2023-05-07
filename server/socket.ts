@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
     if (index !== -1) {
       connectedUsers.splice(index, 1);
     }
-    console.log('someone has disconnected');
+    console.log('someone has disconnected:', userId);
   });
 });
 

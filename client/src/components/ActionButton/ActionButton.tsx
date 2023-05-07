@@ -53,15 +53,13 @@ const NotificationIcon: React.FC = () => {
       // console.error(err);
     }
   };
-  // const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
-  // creating the notfication for adding a new friend
-  console.log(notifications, 64);
+  // console.log(notifications, 64);
 
   const socketUrl = process.env.SOCKET_URL;
 
   useEffect(() => {
     let count = 0;
-    const fetchNotifications = async () => {
+    const fetchOfflineNotifications = async () => {
       const response = await fetch(`/notifications/${id}?offline=true`);
       setNotifications(response);
     };
@@ -73,7 +71,7 @@ const NotificationIcon: React.FC = () => {
       });
       setSocket(newSocket);
       newSocket.on('new-notification', (data: any) => {
-        console.log(data, 62);
+        // console.log(data, 62);
         setNotifications((prevNotifications: any) => [data, ...prevNotifications]);
         count += 1;
       });
@@ -82,6 +80,18 @@ const NotificationIcon: React.FC = () => {
       };
     }
   }, [id, socketUrl]);
+
+  // useEffect(() => {
+  //   const getOnlineNotifications = async () => {
+  //     try {
+  //       const response = await fetch(`/notifications/${id}?offline=false`);
+  //       setNotifications(response);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   getOnlineNotifications();
+  // }, []);
 
   return (
     // eslint-disable-next-line max-len

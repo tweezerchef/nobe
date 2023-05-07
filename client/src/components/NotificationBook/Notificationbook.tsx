@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 // import { io, Socket } from 'socket.io-client';
 import ReactiveButton from 'reactive-button';
-import { SvgIcon, Button } from '@material-ui/core';
+import { SvgIcon, Button, Avatar } from '@material-ui/core';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
@@ -35,7 +35,7 @@ const BookIcon: React.FC<BookIconProps> = ({
     // add any other styles you need here
   };
 
-  console.log(notifications, 31);
+  // console.log(notifications, 31);
   return (
     <div className="BookIcon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 
@@ -97,11 +97,14 @@ const BookIcon: React.FC<BookIconProps> = ({
               style={{ margin: '10px' }}
             />
           </Typography>
+          {/* { Array.isArray(notifications) ? (: (<h1> Sorry you have no notfications at the moment, please check back later!</h1>) */}
           <Typography id="modal-desc" textColor="text.tertiary">
             { notifications.map((notification: any) => (
               <Wrapper>
                 <NotificationsItem>
-                  <NotificationsItemAvatar>{notification.User.picture}</NotificationsItemAvatar>
+                  <NotificationsItemAvatar>
+                    <Avatar src={notification.User.picture} />
+                  </NotificationsItemAvatar>
                   <NotificationsItemContent>
                     <div>
                       <NotificationsItemTitle>{notification.type}</NotificationsItemTitle>
