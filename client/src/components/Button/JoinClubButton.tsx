@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import IconButton from '@mui/joy/IconButton';
-import GroupsIcon from '@mui/icons-material/Groups';
-import { Tooltip } from '@material-ui/core';
+import {
+  Button,
+} from '@material-ui/core';
 import UserContext from '../../hooks/Context';
 
-type CustomColor = 'success' | 'danger';
+type CustomColor = 'primary' | 'secondary';
 interface Club {
   clubId: string
 }
@@ -15,8 +15,7 @@ function JoinClubButton(props: any) {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const { id } = user;
-  const [color, setColor] = useState<CustomColor>('danger');
-  const [toolTip, setToolTip] = useState<NonNullable<React.ReactNode>>(<h1>Join Club</h1>);
+  const [color, setColor] = useState<CustomColor>('secondary');
 
   const addToClub = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -24,12 +23,10 @@ function JoinClubButton(props: any) {
       id,
       clubId,
     });
-    if (color === 'success') {
-      setColor('danger' as CustomColor);
-      setToolTip(<h1>Join Club</h1>);
+    if (color === 'primary') {
+      setColor('secondary' as CustomColor);
     } else {
-      setColor('success' as CustomColor);
-      setToolTip(<h1>Leave Club</h1>);
+      setColor('primary' as CustomColor);
     }
   };
   const member = user.clubMembers?.reduce((acc: boolean, club: Club) => {
@@ -41,32 +38,23 @@ function JoinClubButton(props: any) {
   }, false);
   useEffect(() => {
     if (member) {
-      setColor('success' as CustomColor);
-      setToolTip(<h1>Leave Club</h1>);
+      setColor('primary' as CustomColor);
     }
   }, []);
 
   return (
 
-    <Tooltip title={toolTip} placement="top">
-      <IconButton
-        aria-label="Join Club"
-        size="md"
-        variant="solid"
-        color={color}
-        // sx={{
-        //   position: 'absolute',
-        //   zIndex: 2,
-        //   borderRadius: '50%',
-        //   right: '1rem',
-        //   bottom: 0,
-        //   // transform: 'translateY(50%)',
-        // }}
-        onClick={addToClub}
-      >
-        <GroupsIcon />
-      </IconButton>
-    </Tooltip>
+  // <Tooltip title={toolTip} placement="top">
+    <Button
+      aria-label="Join Club"
+      size="medium"
+      variant="contained"
+      color={color}
+      onClick={addToClub}
+    >
+      {color === 'primary' ? 'Leave Club' : 'Join Club'}
+    </Button>
+  // </Tooltip>
 
   );
 }

@@ -55,7 +55,7 @@ function ReadingSpotsMap() {
   const options = useMemo<MapOptions>(() => ({
     mapId: '89f1db752bd023d1',
     disableDefaultUI: true,
-    clickableIcons: false,
+    clickableIcons: true,
   }), []);
 
   const onLoad = useCallback((map: any) => {
@@ -287,7 +287,6 @@ function ReadingSpotsMap() {
             </GoogleMap>
           </div>
         </div>
-
       </div>
     </>
   );

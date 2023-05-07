@@ -1,0 +1,41 @@
+.posts-page {
+    margin: 0px auto;
+    text-align: left;
+    width: 970px;
+}
+
+.brown-box {
+    width: 100%;
+    background: #f4f1ea;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.date-time {
+    float: right;
+}
+
+.post-body {
+    line-height: 21px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.text-area {
+    height: 140px;
+    width: 400px;
+    padding-top: 4px;
+    margin: 0 auto;
+}
+
+.post-button {
+    margin-top: 2px;
+}
+
+.delete-icon {
+    float: right;
+}
+
+.form-div {
+    text-align: center;
+}

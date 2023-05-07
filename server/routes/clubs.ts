@@ -44,6 +44,8 @@ ClubsRoute.get('/:id/posts', async (req: Request, res: Response) => {
         user: {
           select: {
             firstName: true,
+            lastName: true,
+            username: true,
           },
         },
       },

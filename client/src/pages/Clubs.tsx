@@ -39,35 +39,35 @@ function Clubs() {
   transition: transform 0.2s ease-in-out;
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
   }
 `;
 
-  const HeaderBox = styled.div`
-  background-color: lightblue;
-  padding: 20px 0;
-  margin: 20px auto;
-  border-radius: 20px;
-  text-align: center;
-  max-width: 300px;
-`;
+  //   const HeaderBox = styled.div`
+  //   background-color: lightblue;
+  //   padding: 20px 0;
+  //   margin: 20px auto;
+  //   border-radius: 20px;
+  //   text-align: center;
+  //   max-width: 300px;
+  // `;
 
   return (
     <div>
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
-          <HeaderBox>
-            <ClubHeader>Create a Club</ClubHeader>
-          </HeaderBox>
+          {/* <HeaderBox> */}
+          <ClubHeader>Create a Club</ClubHeader>
+          {/* </HeaderBox> */}
           <CreateClubs setClubs={setClubs} />
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <HeaderBox>
-            <ClubHeader>Book Clubs</ClubHeader>
-          </HeaderBox>
+          {/* <HeaderBox> */}
+          <ClubHeader>Book Clubs</ClubHeader>
+          {/* </HeaderBox> */}
           <CardContainer>
-            {clubs.map((club) => (
+            {clubs && clubs.length > 0 && clubs.map((club) => (
               <StyledCard key={club.id} flexBasis="25%">
                 <Link
                   to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
@@ -77,7 +77,9 @@ function Clubs() {
                 >
                   <iframe
                     src={club.image}
-                    style={{ pointerEvents: 'none' }}
+                    style={{
+                      pointerEvents: 'none', display: 'block', margin: '0 auto', border: 'none', paddingTop: '8px', width: '100%',
+                    }}
                   />
                   <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <Typography variant="h5" component="h2" style={{ textAlign: 'center', marginBottom: '10px' }}>
