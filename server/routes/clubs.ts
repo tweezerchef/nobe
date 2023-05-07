@@ -8,7 +8,11 @@ const ClubsRoute = express.Router();
 
 ClubsRoute.get('/', async (req: Request, res: Response) => {
   try {
-    const clubs = await prisma.clubs.findMany();
+    const clubs = await prisma.clubs.findMany({
+      include: {
+        clubMembers: true,
+      },
+    });
     res.json(clubs);
   } catch (error) {
     console.error(error);
