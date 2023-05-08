@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
+/* eslint-disable no-lone-blocks */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {
-// useContext,
+  useContext,
   useEffect, useState,
 } from 'react';
 import Avatar from '@mui/material/Avatar';
@@ -8,7 +10,19 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 // import Book from '../Book/Book';
 // import UserContext from '../../hooks/Context';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import { Container } from '@material-ui/core';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import styled from 'styled-components';
 import BookDisplay from '../BookDisplay/BookDisplay';
+import {
+  ProfileCard, MessageButton, FollowButton, Action, StatusText, StatusValue, Status,
+  Name, Desc, ProfileInfo, ProfileImage, StatusItem,
+} from './style';
 
 interface UserProfile {
   id: string;
@@ -26,77 +40,50 @@ function UserDisplay({ user }: { user: any }) {
 
   const [books, setBooks] = useState<any>([]);
 
-  // const getUserBooks = () => {
-  // const booksArray = userBooks?.map((userbook: any) => userbook.Books);
-  // console.log(booksArray, 20);
-  // setBooks(booksArray);
-  // }
-
-  // useEffect(() => {
-  //   if (profile && user.UserBooks) {
-  //     getUserBooks();
-  //   }
-  // }, []);
-  // const getProfile = async () => {
-  //   try {
-  //     const response = await axios.get(`/user/id?id=${user.id}`);
-  //     // console.log(response.data)
-  //     setProfile(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   useEffect(() => {
     const booksArray = userBooks?.map((userbook: any) => userbook.Books);
     // console.log(booksArray, 20);
     setBooks(booksArray);
   }, [userBooks]);
 
-  // console.log(books, 24)
+  console.log(user, 48);
 
   return (
     <div>
-      <Link to={`/profile/${user.id}`}>
-        <div className="user-firstName">{user.firstName}</div>
-        <Avatar alt="user-image" src={user.picture} />
-        <div className="profile-card">
-          <div className="profile-card-header">
-            <div className="profile-image" />
-
-            <div className="profile-info">
-              <h3 className="profile-name">Dev Ed</h3>
-              <p className="profile-desc">Developer/Conent Creator</p>
-            </div>
-          </div>
-
-          <div className="profile-card-body">
-            <ul className="status">
-              <li>
-                <span className="status-value">532</span>
-                <span className="status-text">Posts</span>
-              </li>
-
-              <li>
-                <span className="status-value">1.5m</span>
-                <span className="status-text">Followers</span>
-              </li>
-
-              <li>
-                <span className="status-value">423</span>
-                <span className="status-text">Following</span>
-              </li>
-            </ul>
-
-            <div className="action">
-              {/* <button className="btn btn-pink">Follow</button>
-              <button className="btn btn-gray-outline">Message</button> */}
-            </div>
-          </div>
-        </div>
-      </Link>
+      <ProfileCard>
+        <Link to={`/profile/${user.id}`}>
+          <Avatar
+            src={user.picture}
+            alt={user.name}
+            style={{ width: '7rem', height: '7rem' }}
+          />
+        </Link>
+        <ProfileInfo>
+          <Name variant="h2">{user.firstName}</Name>
+          <Desc>{user.description}</Desc>
+          <Status>
+            <StatusItem>
+              <StatusValue>{user.Activity.length}</StatusValue>
+              <StatusText>Activity</StatusText>
+            </StatusItem>
+            <StatusItem>
+              <StatusValue>{user.Posts.length}</StatusValue>
+              <StatusText>Posts</StatusText>
+            </StatusItem>
+            <StatusItem>
+              <StatusValue>{user.clubMembers.length}</StatusValue>
+              <StatusText>Clubs</StatusText>
+            </StatusItem>
+          </Status>
+          <Action>
+            <FollowButton variant="contained">Follow</FollowButton>
+            <MessageButton variant="contained">Message</MessageButton>
+          </Action>
+        </ProfileInfo>
+      </ProfileCard>
       <BookDisplay books={books} />
     </div>
   );
 }
+
 export default UserDisplay;
