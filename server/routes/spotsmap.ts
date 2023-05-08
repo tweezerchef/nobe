@@ -14,7 +14,7 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   } = req.body;
   const {
     formatted_address, geometry, name, photos,
-    place_id, reviews, types, website, rating, email, color, formated_phone_number,
+    place_id, reviews, types, website, rating, email, color, formatted_phone_number,
   } = place;
   let myFav = false;
   if (color === 'danger') {
@@ -34,7 +34,7 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
         website,
         rating,
         types,
-        phone: formated_phone_number,
+        phone: formatted_phone_number,
       },
       include: { Places_Pictures: true },
     });
