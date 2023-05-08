@@ -13,15 +13,16 @@ export interface Club {
   name: string;
   description: string;
   image: string;
+  clubMembers: string[];
 }
 
 function Clubs() {
   const [clubs, setClubs] = useState<Club[]>([]);
+  console.log('CLUBS', clubs);
 
   useEffect(() => {
     async function fetchClubs() {
       const response = await axios.get('/api/clubs');
-
       setClubs(response.data);
     }
     fetchClubs();
@@ -81,12 +82,24 @@ function Clubs() {
                       pointerEvents: 'none', display: 'block', margin: '0 auto', border: 'none', paddingTop: '8px', width: '100%',
                     }}
                   />
-                  <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <CardContent style={{
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative',
+                  }}
+                  >
                     <Typography variant="h5" component="h2" style={{ textAlign: 'center', marginBottom: '10px' }}>
                       {club.name}
                     </Typography>
                     <Typography variant="body1" component="p" style={{ fontSize: '18px', color: 'gray' }}>
                       {club.description}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      style={{
+                        fontSize: '13px', color: 'gray', position: 'absolute', bottom: 5, right: 5,
+                      }}
+                    >
+                      {club.clubMembers.length === 1 ? '1 Member' : `${club.clubMembers.length} Members`}
                     </Typography>
                   </CardContent>
                 </Link>
