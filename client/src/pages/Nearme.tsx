@@ -68,8 +68,6 @@ function Locations() {
 
   const location = useLocation();
 
-  console.log(location.state, 76);
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 

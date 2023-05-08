@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-restricted-syntax */
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Card,
   CardMedia,
@@ -7,7 +8,6 @@ import {
   Box,
   Rating,
   Chip,
-  CardActions,
   Button,
   Grid,
   Divider,
@@ -17,23 +17,37 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import RecommendIcon from '@mui/icons-material/Recommend';
 import PhoneIcon from '@mui/icons-material/Phone';
 import axios from 'axios';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 import ReviewPopOver from './ReviewPopOver';
-import App from '../../App';
+import ReadingSpotsAdd from '../Button/ReadingSpotsAdd';
+import UserContext from '../../hooks/Context';
 
 function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
   const [place, setPlace] = useState<Place | null>(null);
   const [image, setImage] = useState<string | null>(null);
   const [favorite, setFavorite] = useState<boolean>(false);
   const [appFavorite, setAppFavorite] = useState<boolean>(false);
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const User_Places = user?.User_Places;
 
   useEffect(() => {
     axios.get(`/api/places-to-read/getplace?placeId=${placeId}`).then((response) => {
       const photo = response.data.result?.photos?.[0].photo_reference;
-      console.log(response.data.result);
       setPlace(response.data.result);
       setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
     });
-    setAppFavorite(savedPlaces.some((place) => place.altLoc === placeId));
+    setAppFavorite(savedPlaces.some((place) => place.googlePlaceId === placeId));
+    if (User_Places && User_Places.length > 0) {
+      let isFavorite = false;
+      for (const entry of User_Places) {
+        if (entry.googlePlaceId === placeId && entry.favorite === true) {
+          isFavorite = true;
+          break;
+        }
+      }
+      setFavorite(isFavorite);
+    }
   }, [placeId]);
   return (
     <Grid container sx={{ height: '100%', boxSizing: 'border-box', overflow: 'auto' }}>
@@ -62,6 +76,13 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                   <Tooltip title="This is one of our favorite places to read!">
                     <RecommendIcon sx={{ color: 'green' }} />
                   </Tooltip>
+                  )}
+                  { place && (
+                  <ReadingSpotsAdd
+                    placeId={place.place_id}
+                    Location={place?.formatted_address}
+                    favorite={favorite}
+                  />
                   )}
                 </Typography>
                 <Box display="flex" justifyContent="space-between" my={2}>

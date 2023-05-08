@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 // Authentication
 import express, { Request, Response } from 'express';
 import axios from 'axios';
@@ -115,6 +116,7 @@ Auth.post('/login-email', async (req: Request, res: Response) => {
       DiscussionsUsers: true,
       Posts: true,
       PostsUsers: true,
+      User_Places: true,
       Conversations: {
         select: {
           id: true,
@@ -262,8 +264,8 @@ Auth.post('/login', async (req, res) => {
       }
       userData.token = jwt.sign({ email: profile?.email }, process.env.JWT_SECRET as jwt.Secret, {
         expiresIn: '1d',
-      }),
-      res.status(201).json({
+      });
+      res.status(201).send({
         message: 'Login was successful',
         user: {
           userData,

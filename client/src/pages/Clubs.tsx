@@ -18,7 +18,6 @@ export interface Club {
 
 function Clubs() {
   const [clubs, setClubs] = useState<Club[]>([]);
-  console.log('CLUBS', clubs);
 
   useEffect(() => {
     async function fetchClubs() {
