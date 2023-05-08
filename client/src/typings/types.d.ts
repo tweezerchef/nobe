@@ -60,5 +60,6 @@ interface Cuisine {
 }
 interface Review {
   author_name: string;
+  review: string;
   text: string;
 }
