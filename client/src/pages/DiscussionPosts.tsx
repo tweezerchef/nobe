@@ -43,7 +43,6 @@ function DiscussionPosts() {
     async function getDiscussionTitle() {
       try {
         const { data } = await axios.get(`/api/clubs/discussions/${id}`);
-        // console.log(data);
         setDiscussionTitle(data.title);
         setClubName(data.clubs.name);
         setClubId(data.clubsId);
@@ -108,14 +107,11 @@ function DiscussionPosts() {
       {posts?.map((post) => (
         <div className="posts-box" key={post.id}>
           <div className="brown-box">
-
             {'by '}
             {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
             {' '}
-
             <div className="date-time">
               {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
-
             </div>
           </div>
           <div className="post-body">
@@ -125,7 +121,6 @@ function DiscussionPosts() {
               <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
                 <DeleteIcon />
               </IconButton>
-              {/* <button onClick={() => handleDelete(post.id)}>Delete</button> */}
             </Stack>
             )}
           </div>
@@ -133,12 +128,14 @@ function DiscussionPosts() {
       ))}
       <div className="form-div">
         <form onSubmit={handleSubmit}>
-          <textarea
-            className="text-area"
-            value={newPost}
-            onChange={(event) => setNewPost(event.target.value)}
-            placeholder="Write a new post"
-          />
+          <div className="input-container">
+            <label htmlFor="post">Comment:</label>
+            <textarea
+              className="text-area"
+              value={newPost}
+              onChange={(event) => setNewPost(event.target.value)}
+            />
+          </div>
           <div>
             <Button className="post-button" type="submit" variant="contained" size="small">Post</Button>
           </div>

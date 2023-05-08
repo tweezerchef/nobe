@@ -43,13 +43,13 @@ function Clubs() {
   }
 `;
 
-  //   const HeaderBox = styled.div`
-  //   background-color: lightblue;
-  //   padding: 20px 0;
-  //   margin: 20px auto;
+  // const HeaderBox = styled.div`
+  //   background-color: #e0d0c2;
+  //   padding: 7px 0;
+  //   margin: 10px auto;
   //   border-radius: 20px;
   //   text-align: center;
-  //   max-width: 300px;
+  //   max-width: 240px;
   // `;
 
   return (
