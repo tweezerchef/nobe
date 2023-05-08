@@ -1,9 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import Stack from '@mui/material/Stack';
 import {
   Button, TextField, FormControl,
 } from '@material-ui/core';
+import {
+  Stack, Dialog, DialogTitle, DialogContent, DialogActions,
+} from '@mui/material';
+
 import axios from 'axios';
 import { ClubHeader } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
