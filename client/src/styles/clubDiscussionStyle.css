@@ -5,6 +5,7 @@
     max-width: 500px;
     margin: 0 auto;
     transition: transform 0.2s ease-in-out;
+    background-color: #f4f1ea !important
 }
 
 .club-card:hover {
