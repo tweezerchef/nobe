@@ -1,5 +1,4 @@
-import express, { Request, Response } from 'express';
-import axios from 'axios';
+import express from 'express';
 import dotenv from 'dotenv';
 
 const { PrismaClient } = require('@prisma/client');

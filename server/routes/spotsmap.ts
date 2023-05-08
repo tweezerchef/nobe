@@ -11,7 +11,7 @@ const SpotsMapRoute = express.Router();
 SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   console.log('places');
   const {
-    Location, lat, lng, id, color, googlePlaceId,
+    Location, lat, lng, id, color, googlePlaceId, email,
   } = req.body;
   let myFav = false;
   if (color === 'danger') {
@@ -37,13 +37,13 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
       });
     }
 
-    // await prisma.activity.create({
-    //   data: {
-    //     userId: id,
-    //     type: 'location',
-    //     description: `${Location}`,
-    //   },
-    // });
+    await prisma.activity.create({
+      data: {
+        userId: id,
+        type: 'location',
+        description: `${Location}`,
+      },
+    });
     await prisma.user_Places.upsert({
       where: { userId_placeId: { userId: id, placeId: createdPlace.id } },
       update: { favorite: myFav },
@@ -54,7 +54,9 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
         googlePlaceId,
       },
     });
-    res.status(201);
+    const userData = await axios.get(`http://localhost:8080/user?email=${email}`);
+    const user = userData.data;
+    res.send(user).status(201);
   } catch (error) {
     console.error(error);
     res.status(500).send('Something went wrong');

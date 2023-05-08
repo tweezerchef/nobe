@@ -1,79 +1,78 @@
 // export { }
 import react, { useState, useEffect } from 'react';
+import axios from 'axios';
+import {
+  experimental_extendTheme as materialExtendTheme,
+  Experimental_CssVarsProvider as MaterialCssVarsProvider, useTheme as useMaterialTheme,
+  THEME_ID,
+} from '@mui/material/styles';
 import Router from './Router';
 import ResponsiveAppBar from './components/Navbar/ResponsiveAppBar';
 import OpenIconSpeedDial from './components/ActionButton/ActionButton';
 import UserContext, { UserContextType } from './hooks/Context';
 import ChatContext, { ChatContextType } from './hooks/ChatContext';
-import axios from 'axios';
-import {
-    experimental_extendTheme as materialExtendTheme,
-    Experimental_CssVarsProvider as MaterialCssVarsProvider, useTheme as useMaterialTheme,
-    THEME_ID
-} from '@mui/material/styles';
 
 interface AppProps {
-    setMaterialMode: () => void;
-    setJoyMode: () => void;
+  setMaterialMode: () => void;
+  setJoyMode: () => void;
 }
 
 const materialTheme = materialExtendTheme();
 function App({ setMaterialMode, setJoyMode }: AppProps) {
-    const [user, setUser] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [messages, setMessages] = useState<any[]>([]);
+  const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [messages, setMessages] = useState<any[]>([]);
 
-
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            const storedUser = localStorage.getItem('user');
-            if (storedUser) {
-                try {
-                    const user = JSON.parse(storedUser);
-                    const { id } = user;
-                    const response = await axios.get(`/user/id?id=${id}`);
-                    setUserAndSave(response.data);
-                } catch (error) {
-                    console.error('Error fetching user data:', error);
-                }
-            }
-            setIsLoading(false);
-        };
-
-        fetchData();
-    }, []);
-
-    const setUserAndSave = (userData: any) => {
-        setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
-        setIsLoaded(true);
-        setIsLoading(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const user = JSON.parse(storedUser);
+          const { email } = user;
+          const response = await axios.get(`/user?email=${email}`);
+          setUserAndSave(response.data);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      }
+      setIsLoading(false);
     };
 
-    const userContextValue: UserContextType = {
-        user,
-        setUser: setUserAndSave,
-    };
+    fetchData();
+  }, []);
 
-    const chatContextValue: ChatContextType = {
-        messages,
-        setMessages,
-    };
+  const setUserAndSave = (userData: any) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+    setIsLoaded(true);
+    setIsLoading(false);
+  };
 
-    return (
+  const userContextValue: UserContextType = {
+    user,
+    setUser: setUserAndSave,
+  };
 
-        <div className="App">
-            <UserContext.Provider value={userContextValue}>
-                <ChatContext.Provider value={chatContextValue}>
-                    <ResponsiveAppBar setMode={setMaterialMode} setJoyMode={setJoyMode} />
-                    {isLoading ? <div>Loading...</div> : <Router />}
-                </ChatContext.Provider>
-            </UserContext.Provider>
-        </div>
+  const chatContextValue: ChatContextType = {
+    messages,
+    setMessages,
+  };
 
-    );
+  return (
+
+    <div className="App">
+      <UserContext.Provider value={userContextValue}>
+        <ChatContext.Provider value={chatContextValue}>
+          <ResponsiveAppBar setMode={setMaterialMode} setJoyMode={setJoyMode} />
+          {isLoading ? <div>Loading...</div> : <Router />}
+        </ChatContext.Provider>
+      </UserContext.Provider>
+    </div>
+
+  );
 }
 
 export default App;
