@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-lone-blocks */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {
@@ -20,7 +21,7 @@ import styled from 'styled-components';
 import BookDisplay from '../BookDisplay/BookDisplay';
 import {
   ProfileCard, MessageButton, FollowButton, Action, StatusText, StatusValue, Status,
-  Name, Desc, ProfileInfo, ProfileImage,
+  Name, Desc, ProfileInfo, ProfileImage, StatusItem,
 } from './style';
 
 interface UserProfile {
@@ -45,32 +46,34 @@ function UserDisplay({ user }: { user: any }) {
     setBooks(booksArray);
   }, [userBooks]);
 
-  // console.log(books, 24)
+  console.log(user, 48);
 
   return (
     <div>
       <ProfileCard>
-        <Avatar
-          src={user.picture}
-          alt={user.name}
-          style={{ width: '7rem', height: '7rem' }}
-        />
+        <Link to={`/profile/${user.id}`}>
+          <Avatar
+            src={user.picture}
+            alt={user.name}
+            style={{ width: '7rem', height: '7rem' }}
+          />
+        </Link>
         <ProfileInfo>
           <Name variant="h2">{user.firstName}</Name>
           <Desc>{user.description}</Desc>
           <Status>
-            <li>
-              <StatusValue variant="h3" />
+            <StatusItem>
+              <StatusValue>{user.Activity.length}</StatusValue>
+              <StatusText>Activity</StatusText>
+            </StatusItem>
+            <StatusItem>
+              <StatusValue>{user.Posts.length}</StatusValue>
               <StatusText>Posts</StatusText>
-            </li>
-            <li>
-              <StatusValue variant="h3" />
-              <StatusText>Followers</StatusText>
-            </li>
-            <li>
-              <StatusValue variant="h3">{user.following}</StatusValue>
-              <StatusText>Following</StatusText>
-            </li>
+            </StatusItem>
+            <StatusItem>
+              <StatusValue>{user.clubMembers.length}</StatusValue>
+              <StatusText>Clubs</StatusText>
+            </StatusItem>
           </Status>
           <Action>
             <FollowButton variant="contained">Follow</FollowButton>
@@ -83,21 +86,4 @@ function UserDisplay({ user }: { user: any }) {
   );
 }
 
-{ /* <Link to={`/profile/${user.id}`}>
-        <div className="user-firstName" />
-        <StyledCard>
-          <ProfileImage>
-            <ProfilePicture src={user.picture} />
-          </ProfileImage>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {user.firstName}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <PinkButton> Share </PinkButton>
-            <GrayOutlineButton> Learn More </GrayOutlineButton>
-          </CardActions>
-        </StyledCard>
-      </Link> */ }
 export default UserDisplay;

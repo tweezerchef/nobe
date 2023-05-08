@@ -7,8 +7,8 @@ import styled from 'styled-components';
 
 const ProfileCard = styled(Card)({
   display: 'flex',
-  width: 450,
-  height: 150,
+  width: 400,
+  height: 175,
   margin: '0 auto',
   boxShadow: '0px 0px 25px rgba(0, 0, 0, 0.6)',
 });
@@ -45,6 +45,10 @@ const Status = styled('ul')({
   marginBottom: '1.3rem',
 });
 
+const StatusItem = styled.li`
+  margin-right: 1rem;
+`;
+
 const StatusValue = styled(Typography)({
   color: '#212121',
   fontWeight: 'bold',
@@ -61,7 +65,7 @@ const Action = styled('div')({
 });
 
 const FollowButton = styled(Button)({
-  backgroundColor: '#b82151',
+  backgroundColor: '#1976d2',
   color: 'white',
   borderRadius: '0.35rem',
   fontWeight: 'bold',
@@ -72,7 +76,7 @@ const FollowButton = styled(Button)({
 
 const MessageButton = styled(Button)({
   backgroundColor: 'transparent',
-  color: '#b82151',
+  color: '#1976d2',
   borderRadius: '0.35rem',
   fontWeight: 'bold',
   padding: '0.8em 1.9em',
@@ -81,5 +85,5 @@ const MessageButton = styled(Button)({
 
 export {
   ProfileCard, MessageButton, FollowButton, Action, StatusText, StatusValue, Status,
-  Name, Desc, ProfileInfo, ProfileImage,
+  Name, Desc, ProfileInfo, ProfileImage, StatusItem,
 };
