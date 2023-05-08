@@ -98,7 +98,7 @@ function ReadingSpotsMap() {
         toast.error('Please enter a description.');
         return;
       }
-      await axios.post('/api/places-to-read/description', { body: description, userId: id, placeId: selectedPlace });
+      await axios.post('/api/places-to-read/writtenReview', { body: description, userId: id, placeId: selectedPlace });
       setDescription('');
       setIsAddingDescription(false);
       setIsFormOpen(false);

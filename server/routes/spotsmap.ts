@@ -109,17 +109,33 @@ SpotsMapRoute.get('/', async (req: Request, res: Response) => {
   }
 });
 
-SpotsMapRoute.post('/description', async (req: Request, res: Response) => {
-  const { body, placeId, userId } = req.body;
+SpotsMapRoute.post('/writtenReview', async (req: Request, res: Response) => {
+  const {
+    Review, userId, googlePlaceId,
+  } = req.body;
+  const place = await prisma.placesToRead.findFirst({
+    where: { googlePlaceId },
+  });
+
+  if (!place) {
+    return res.status(404).send('Place not found');
+  }
+
+  const placeId = place.id;
 
   try {
-    const updatedPlace = await prisma.description_Places.upsert({
+    const updatedPlace = await prisma.user_Places.upsert({
       where: { userId_placeId: { placeId, userId } },
-      update: { body },
-      create: { body, placeId, userId },
+      update: { Review },
+      create: {
+        Review,
+        googlePlaceId,
+        place: { connect: { id: placeId } },
+        user: { connect: { id: userId } },
+      },
     });
 
-    res.status(200).json({ updatedPlace });
+    res.status(200).send(updatedPlace);
   } catch (error) {
     console.error(error);
     res.status(500).send('Something went wrong');
