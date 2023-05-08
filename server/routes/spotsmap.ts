@@ -10,37 +10,40 @@ const SpotsMapRoute = express.Router();
 
 SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   const {
-    Location, lat, lng, id, color, googlePlaceId, email,
+    place, id,
   } = req.body;
+  const {
+    formatted_address, geometry, name, photos,
+    place_id, reviews, types, website, rating, email, color, formated_phone_number,
+  } = place;
   let myFav = false;
   if (color === 'danger') {
     myFav = true;
   }
   let createdPlace;
   try {
-    createdPlace = await prisma.placesToRead.findFirst({
-      where: {
-        Location,
-        Lat: lat,
-        Long: lng,
+    createdPlace = await prisma.placesToRead.upsert({
+      where: { googlePlaceId: place_id },
+      update: {},
+      create: {
+        location: formatted_address, // Set the nickName field to the location v
+        Lat: geometry.location.lat,
+        Long: geometry.location.lng,
+        googlePlaceId: place_id,
+        name,
+        website,
+        rating,
+        types,
+        phone: formated_phone_number,
       },
+      include: { Places_Pictures: true },
     });
-    if (!createdPlace) {
-      createdPlace = await prisma.placesToRead.create({
-        data: {
-          Location,
-          Lat: lat,
-          Long: lng,
-          googlePlaceId,
-        },
-      });
-    }
 
     await prisma.activity.create({
       data: {
         userId: id,
         type: 'location',
-        description: `${Location}`,
+        description: `${location}`,
       },
     });
     await prisma.user_Places.upsert({
@@ -50,7 +53,7 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
         favorite: myFav,
         place: { connect: { id: createdPlace.id } },
         user: { connect: { id } },
-        googlePlaceId,
+        googlePlaceId: place_id,
       },
     });
     const userData = await axios.get(`http://localhost:8080/user?email=${email}`);
@@ -64,9 +67,26 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
 
 SpotsMapRoute.get('/getplace', async (req: Request, res: Response) => {
   const { placeId } = req.query;
+  let place;
   try {
-    const place = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=address_components,adr_address,business_status,reviews,formatted_address,geometry,icon,icon_mask_base_uri,website,rating,icon_background_color,name,photo,place_id,plus_code,type,url,utc_offset,vicinity,wheelchair_accessible_entrance&key=${process.env.GOOGLE_MAPS_API_KEY}`);
-    res.send(place.data);
+    if (typeof placeId === 'string') {
+      place = await prisma.placesToRead.findFirst({
+        where: { googlePlaceId: placeId },
+        include: {
+          LendingTableIn: true,
+          LendingTableOut: true,
+          userPlaces: true,
+          Activity: true,
+          Places_Pictures: true,
+        },
+      });
+      if (!place) {
+        place = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews,formatted_address,geometry,website,rating,name,photo,place_id,formated_phone_number,type,&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+        place = place.data;
+        console.log(place);
+      }
+      res.send(place);
+    }
   } catch (error) {
     console.error(error);
   }
@@ -80,7 +100,7 @@ SpotsMapRoute.get('/', async (req: Request, res: Response) => {
       select: {
         id: true,
         nickName: true,
-        Location: true,
+        location: true,
         Private: true,
         Lat: true,
         Long: true,
@@ -93,7 +113,7 @@ SpotsMapRoute.get('/', async (req: Request, res: Response) => {
             userId: true,
             placeId: true,
             Rating: true,
-            Review: true,
+            text: true,
             CheckIns: true,
             place: true,
             user: true,
@@ -126,9 +146,9 @@ SpotsMapRoute.post('/writtenReview', async (req: Request, res: Response) => {
   try {
     const updatedPlace = await prisma.user_Places.upsert({
       where: { userId_placeId: { placeId, userId } },
-      update: { Review },
+      update: { text: Review },
       create: {
-        Review,
+        text: Review,
         googlePlaceId,
         place: { connect: { id: placeId } },
         user: { connect: { id: userId } },
@@ -155,34 +175,34 @@ SpotsMapRoute.post('/writtenReview', async (req: Request, res: Response) => {
 //     res.status(500).send('Something went wrong');
 //     }
 //   });
-SpotsMapRoute.post('/places/:id/description', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { body, userId } = req.body;
+// SpotsMapRoute.post('/places/:id/description', async (req: Request, res: Response) => {
+//   const { id } = req.params;
+//   const { body, userId } = req.body;
 
-  try {
-    const place = await prisma.placesToRead.findUnique({
-      where: { id },
-      include: { Description_Places: true },
-    });
+//   try {
+//     const place = await prisma.placesToRead.findUnique({
+//       where: { id },
+//       // include: { Description_Places: true },
+//     });
 
-    if (!place) {
-      return res.status(404).json({ error: 'Place not found' });
-    }
+//     if (!place) {
+//       return res.status(404).json({ error: 'Place not found' });
+//     }
 
-    const description = await prisma.description_Places.create({
-      data: {
-        body,
-        userId,
-        placeId: id,
-      },
-      // include: { user: true },
-    });
+//     // const description = await prisma.description_Places.create({
+//     //   data: {
+//     //     body,
+//     //     userId,
+//     //     placeId: id,
+//     //   },
+//     //   // include: { user: true },
+//     // });
 
-    res.status(201).json({ description });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Something went wrong');
-  }
-});
+//     res.status(201).json({ description });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send('Something went wrong');
+//   }
+// });
 
 export default SpotsMapRoute;
