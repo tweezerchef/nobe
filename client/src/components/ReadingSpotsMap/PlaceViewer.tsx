@@ -38,18 +38,29 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
   const [appFavorite, setAppFavorite] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [userReview, setUserReview] = useState('');
-  const [mergedReviews, setMergedReviews] = useState<Review[] | null>(null);
+  const [reviews, setReviews] = useState<Review[] | null>(null);
   const reviewsPerPage = 5;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const User_Places = user?.User_Places;
 
   useEffect(() => {
-    axios.get(`/api/places-to-read/getplace?placeId=${placeId}`).then((response) => {
-      const photo = response.data.result?.photos?.[0].photo_reference;
-      setPlace(response.data.result);
-      setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
-    });
+    axios.get(`/api/places-to-read/getplace?placeId=${placeId}`)
+      .then((response) => {
+        const photo = response.data.result?.photos?.[0].photo_reference;
+        setPlace(response.data.result);
+        setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+        console.log(response.data.result);
+        if (response.data.result?.reviews) {
+          setReviews(response.data.result?.reviews);
+        } else {
+          setReviews(null);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
     setAppFavorite(savedPlaces.some((place) => place.googlePlaceId === placeId));
     if (User_Places && User_Places.length > 0) {
       let isFavorite = false;
@@ -61,41 +72,46 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
       }
       setFavorite(isFavorite);
     }
-  }, [placeId, savedPlaces, User_Places]);
-  useEffect(() => {
-    if (place) {
-      const foundPlace = savedPlaces.find((p) => p.googlePlaceId === placeId);
+  }, [placeId]);
+  // useEffect(() => {
+  //   if (place) {
+  //     const foundPlace = savedPlaces.find((p) => p.googlePlaceId === placeId);
 
-      if (foundPlace) {
-        // Search the userPlaces array within the found place to find the "Review"
-        const userPlaceWithReview = foundPlace.userPlaces.find(
-          (userPlace: { Review: any }) => userPlace.Review,
-        );
+  //     if (foundPlace) {
+  //       // Search the userPlaces array within the found place to find the "Review"
+  //       const userPlaceWithReview = foundPlace.userPlaces.find(
+  //         (userPlace: { Review: any }) => userPlace.Review,
+  //       );
 
-        if (userPlaceWithReview) {
-          // Create a new review object of type Review
-          const newReview: Review = {
-            author_name: 'User', // Replace with the actual user's name
-            text: userPlaceWithReview.Review,
-          };
-          if (place.reviews) {
-            setMergedReviews([...place.reviews, newReview]);
-          } else {
-            setMergedReviews([newReview]);
-          }
+  //       if (userPlaceWithReview) {
+  //         // Create a new review object of type Review
+  //         const newReview: Review = {
+  //           author_name: 'User', // Replace with the actual user's name
+  //           text: userPlaceWithReview.Review,
+  //         };
+  //         if (place.reviews) {
+  //           setMergedReviews([...place.reviews, newReview]);
+  //         } else {
+  //           setMergedReviews([newReview]);
+  //         }
 
-          console.log(
-            'Review found and added to the mergedReviews array:',
-            userPlaceWithReview.Review,
-          );
-        } else {
-          console.log('Review not found.');
-        }
-      } else {
-        console.log('Place not found.');
-      }
-    }
-  }, [placeId, savedPlaces, place]);
+  //         console.log(
+  //           'Review found and added to the mergedReviews array:',
+  //           userPlaceWithReview.Review,
+  //         );
+  //       } else {
+  //         console.log('Review not found.');
+  //       }
+  //     } else {
+  //       console.log('Place not found.');
+  //     }
+  //   }
+
+  //   // Cleanup function to reset the reviews
+  //   return () => {
+  //     setMergedReviews([]);
+  //   };
+  // }, [placeId, place]);
   const handleSubmitReview = async () => {
     const userId = user?.id;
     const googlePlaceId = placeId;
@@ -112,17 +128,15 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
     }
   };
   const handleNextPage = () => {
-    console.log('Next page button clicked');
     if (
       currentPage
-      < Math.ceil((mergedReviews?.length || 0) / reviewsPerPage) - 1
+      < Math.ceil((reviews?.length || 0) / reviewsPerPage) - 1
     ) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   const handlePrevPage = () => {
-    console.log('Previous page button clicked');
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
     }
@@ -154,7 +168,8 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                   {place && (
                     <ReadingSpotsAdd
                       placeId={place.place_id}
-                      Location={place.formatted_address}
+                      place={place}
+                      location={place.formatted_address}
                       favorite={favorite}
                     />
                   )}
@@ -168,12 +183,12 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                     </Box>
                     {/* Reviews */}
                     <Box>
-                      {place && mergedReviews && mergedReviews.length ? (
+                      {place && reviews && reviews.length ? (
                         <>
                           <IconButton onClick={handlePrevPage} disabled={currentPage === 0}>
                             <KeyboardArrowUpIcon />
                           </IconButton>
-                          {mergedReviews
+                          {reviews
                             .slice(
                               currentPage * reviewsPerPage,
                               currentPage * reviewsPerPage + reviewsPerPage,
@@ -188,7 +203,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                             onClick={handleNextPage}
                             disabled={
         currentPage
-        >= Math.ceil((mergedReviews.length || 0) / reviewsPerPage) - 1
+        >= Math.ceil((reviews.length || 0) / reviewsPerPage) - 1
       }
                           >
                             <KeyboardArrowDownIcon />
