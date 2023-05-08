@@ -31,25 +31,14 @@ function Places({ setLatLng, setLocation, setPlaceId }: PlacesProps) {
   const handleSelect = async (val: string) => {
     setValue(val, false);
     clearSuggestions();
-
     const results = await getGeocode({ address: val });
-    console.log(results);
     const placeId = results[0].place_id;
     setPlaceId(placeId);
-
     const { lat, lng } = await getLatLng(results[0]);
-    // console.log("lat and lng", typeof lat, typeof lng);
 
     setLatLng({ lat, lng });
     setLocation(val);
 
-    // try {
-    //   await axios.post('/api/places-to-read/place', {
-    //     address: val, lat, lng, altLoc: placeId, id,
-    //   });
-    // } catch (err) {
-    //   console.error(err);
-    // }
     setValue('');
   };
 

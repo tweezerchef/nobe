@@ -24,15 +24,6 @@ import PlaceViewer from './PlaceViewer';
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
 
-// interface Place {
-//   Description_Places: any;
-//   id: number;
-//   Location: string;
-//   Lat: number;
-//   Long: number;
-//   Description: string;
-// }
-
 function ReadingSpotsMap() {
   const [latlng, setLatLng] = useState<LatLngLiteral>();
   const [location, setLocation] = useState<string>('');
@@ -63,15 +54,15 @@ function ReadingSpotsMap() {
   }, []);
 
   const handlePlaceClick = useCallback((placeId: number, place: any) => {
-    const { altLoc } = place;
-    setPlaceId(altLoc);
+    const { googlePlaceId } = place;
+    setPlaceId(googlePlaceId);
     setSelectedPlace((prev) => (prev === placeId ? null : placeId));
     setIsFormOpen(false);
     setIsAddingDescription(false);
   }, []);
 
   const handleCardClick = useCallback((lat: number, lng: number, place: any) => {
-    setPlaceId(place.altLoc);
+    setPlaceId(place.googlePlaceId);
     mapRef.current?.panTo({ lat, lng });
   }, []);
 

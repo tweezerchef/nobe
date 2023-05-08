@@ -1,45 +1,66 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import React, {
+  useContext, useEffect, useState, useCallback,
+} from 'react';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 import IconButton from '@mui/joy/IconButton';
 import { Tooltip } from '@material-ui/core';
+import { getLatLng, getGeocode } from 'use-places-autocomplete';
 import UserContext from '../../hooks/Context';
 
 type CustomColor = 'success' | 'danger';
 function ReadingSpotsAdd(props: any) {
-  const { placeId, savedPlaces } = props;
+  const { placeId, Location, favorite } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const { id } = user;
+  const setUser = userContext?.setUser;
+  const id = user?.id;
+  const email = user?.email;
   const [color, setColor] = useState<CustomColor>('danger');
   const [toolTip, setToolTip] = useState<NonNullable<React.ReactNode>>('Add to My Reading Spots');
-
-  const addToWishlist = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    axios.post('/user-books/wishlist', {
-      id,
-      color,
-    });
-    if (color === 'success') {
-      setColor('danger' as CustomColor);
-      setToolTip('Add to My Reading Spots');
-    } else {
+  useEffect(() => {
+    if (favorite) {
       setColor('success' as CustomColor);
       setToolTip('Remove from My Reading Spots');
+    } else {
+      setColor('danger' as CustomColor);
+      setToolTip('Add to My Reading Spots');
     }
-  };
-  useEffect(() => {
-    if (savedPlaces && savedPlaces.length > 0) {
-      savedPlaces.forEach((entry: any) => {
-        // need to add some sort of if statement to check if the
-        // placeId is in the user savedPlaces array
-        if (entry.altLoc === placeId && entry.wishlist === true) {
-          setColor('success' as CustomColor);
-          setToolTip(<h1>Remove from Wishlist</h1>);
-        }
-      });
-    }
-  }, [id]);
+  }, [favorite]);
+
+  const addToMyPlaceList = useCallback(
+    async (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      const newColor = color === 'success' ? 'danger' : 'success';
+      setColor(newColor as CustomColor);
+      setToolTip(
+        newColor === 'success'
+          ? 'Remove from My Reading Spots'
+          : 'Add to My Reading Spots',
+      );
+      const results = await getGeocode({ placeId });
+      const { lat, lng } = await getLatLng(results[0]);
+      try {
+        await axios.post('/api/places-to-read/place', {
+          googlePlaceId: placeId,
+          id,
+          email,
+          color,
+          lat,
+          lng,
+          Location,
+        }).then((data) => {
+          // console.log('data', data);
+          if (setUser && data?.data) {
+            setUser(data?.data);
+          }
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [Location, color, id, placeId],
+  );
 
   return (
 
@@ -50,16 +71,16 @@ function ReadingSpotsAdd(props: any) {
         variant="solid"
         color={color}
         sx={{
-          position: 'absolute',
-          zIndex: 2,
-          borderRadius: '50%',
-          right: '1rem',
-          bottom: 0,
-          transform: 'translateY(50%)',
+          // position: 'absolute',
+          // zIndex: 2,
+          // borderRadius: '50%',
+          left: '1rem',
+          // bottom: 0,
+          // transform: 'translateY(50%)',
         }}
-        onClick={addToWishlist}
+        onClick={addToMyPlaceList}
       >
-        <BookmarkAddIcon />
+        <LocalMallIcon />
       </IconButton>
     </Tooltip>
 
