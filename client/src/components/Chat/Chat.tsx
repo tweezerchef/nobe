@@ -290,7 +290,7 @@ function Chat() {
                         <Grid container>
                           <Grid item xs={12}>
                             <ListItemText primary={(
-                              <Typography component="span" variant="body2" style={{ display: 'flex', justifyContent: isCurrentUser ? 'flex-end' : 'flex-start' }}>
+                              <Typography component="span" variant="body2" style={{ display: 'flex', justifyContent: isCurrentUser ? 'flex-end' : 'flex-start', fontSize: '16px' }}>
                                 <span style={{ margin: '0px 5px 0px 5px', fontWeight: 'bolder', color: isCurrentUser ? 'limegreen' : 'red' }}>
                                   {senderFirstName}
                                 </span>
@@ -314,6 +314,7 @@ function Chat() {
                                 padding: '2px 10px 2px 10px',
                                 borderRadius: '16px',
                                 color: isCurrentUser ? '#FFF' : 'black',
+                                fontSize: '16px',
                               }}
                             >
                               {chatMessage.text}
