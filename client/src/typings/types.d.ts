@@ -59,7 +59,5 @@ interface Cuisine {
   name: string;
 }
 interface Review {
-  author_name: string;
-  review: string;
   text: string;
 }

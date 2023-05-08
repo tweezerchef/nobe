@@ -5,12 +5,12 @@ import React, {
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import IconButton from '@mui/joy/IconButton';
 import { Tooltip } from '@material-ui/core';
-import { getLatLng, getGeocode } from 'use-places-autocomplete';
+// import { getLatLng, getGeocode } from 'use-places-autocomplete';
 import UserContext from '../../hooks/Context';
 
 type CustomColor = 'success' | 'danger';
 function ReadingSpotsAdd(props: any) {
-  const { placeId, Location, favorite } = props;
+  const { place, favorite } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const setUser = userContext?.setUser;
@@ -38,17 +38,15 @@ function ReadingSpotsAdd(props: any) {
           ? 'Remove from My Reading Spots'
           : 'Add to My Reading Spots',
       );
-      const results = await getGeocode({ placeId });
-      const { lat, lng } = await getLatLng(results[0]);
+      // const results = await getGeocode({ placeId });
+      // const { lat, lng } = await getLatLng(results[0]);
       try {
         await axios.post('/api/places-to-read/place', {
-          googlePlaceId: placeId,
           id,
           email,
           color,
-          lat,
-          lng,
-          Location,
+          place,
+          favorite,
         }).then((data) => {
           // console.log('data', data);
           if (setUser && data?.data) {
@@ -59,7 +57,7 @@ function ReadingSpotsAdd(props: any) {
         console.error(error);
       }
     },
-    [Location, color, id, placeId],
+    [id, email, place],
   );
 
   return (

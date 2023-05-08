@@ -27,7 +27,6 @@ import ReadingSpotsAdd from '../Button/ReadingSpotsAdd';
 import UserContext from '../../hooks/Context';
 
  type Review = {
-   author_name: string;
    text: string;
  };
 
@@ -38,7 +37,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
   const [appFavorite, setAppFavorite] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [userReview, setUserReview] = useState('');
-  const [reviews, setReviews] = useState<Review[] | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const reviewsPerPage = 5;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -47,14 +46,28 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
   useEffect(() => {
     axios.get(`/api/places-to-read/getplace?placeId=${placeId}`)
       .then((response) => {
-        const photo = response.data.result?.photos?.[0].photo_reference;
-        setPlace(response.data.result);
-        setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
-        console.log(response.data.result);
-        if (response.data.result?.reviews) {
-          setReviews(response.data.result?.reviews);
+        if (response.data.google === true) {
+          const photo = response.data.place.result?.photos?.[0].photo_reference;
+          setPlace(response.data.place.result);
+          setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+          console.log('google', response.data);
+          if (response.data.place.result?.reviews) {
+            setReviews(response.data.place.result?.reviews);
+          }
         } else {
-          setReviews(null);
+          setPlace(response.data.place);
+          const photo = response.data.place.Places_Pictures[0].url;
+          setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+          console.log('yelp', response.data);
+          if (response.data.place.userPlaces) {
+            const reviews: Review[] = [];
+            response?.data.place?.userPlaces?.forEach((userPlace: Review) => {
+              if (userPlace.text) {
+                reviews.push(userPlace);
+              }
+            });
+            setReviews(reviews);
+          }
         }
       })
       .catch((error) => {
@@ -73,45 +86,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
       setFavorite(isFavorite);
     }
   }, [placeId]);
-  // useEffect(() => {
-  //   if (place) {
-  //     const foundPlace = savedPlaces.find((p) => p.googlePlaceId === placeId);
 
-  //     if (foundPlace) {
-  //       // Search the userPlaces array within the found place to find the "Review"
-  //       const userPlaceWithReview = foundPlace.userPlaces.find(
-  //         (userPlace: { Review: any }) => userPlace.Review,
-  //       );
-
-  //       if (userPlaceWithReview) {
-  //         // Create a new review object of type Review
-  //         const newReview: Review = {
-  //           author_name: 'User', // Replace with the actual user's name
-  //           text: userPlaceWithReview.Review,
-  //         };
-  //         if (place.reviews) {
-  //           setMergedReviews([...place.reviews, newReview]);
-  //         } else {
-  //           setMergedReviews([newReview]);
-  //         }
-
-  //         console.log(
-  //           'Review found and added to the mergedReviews array:',
-  //           userPlaceWithReview.Review,
-  //         );
-  //       } else {
-  //         console.log('Review not found.');
-  //       }
-  //     } else {
-  //       console.log('Place not found.');
-  //     }
-  //   }
-
-  //   // Cleanup function to reset the reviews
-  //   return () => {
-  //     setMergedReviews([]);
-  //   };
-  // }, [placeId, place]);
   const handleSubmitReview = async () => {
     const userId = user?.id;
     const googlePlaceId = placeId;
@@ -167,10 +142,9 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                   )}
                   {place && (
                     <ReadingSpotsAdd
-                      placeId={place.place_id}
                       place={place}
-                      location={place.formatted_address}
                       favorite={favorite}
+                      appFavorite={appFavorite}
                     />
                   )}
                 </Typography>

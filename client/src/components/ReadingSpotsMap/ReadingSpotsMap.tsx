@@ -92,21 +92,21 @@ function ReadingSpotsMap() {
     fetchSavedPlaces();
   }, []);
 
-  const handleFormSubmit = async () => {
-    try {
-      if (!description) {
-        toast.error('Please enter a description.');
-        return;
-      }
-      await axios.post('/api/places-to-read/writtenReview', { body: description, userId: id, placeId: selectedPlace });
-      setDescription('');
-      setIsAddingDescription(false);
-      setIsFormOpen(false);
-      fetchSavedPlaces();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const handleFormSubmit = async () => {
+  //   try {
+  //     if (!description) {
+  //       toast.error('Please enter a description.');
+  //       return;
+  //     }
+  //     await axios.post('/api/places-to-read/writtenReview', { body: description, userId: id, placeId: selectedPlace });
+  //     setDescription('');
+  //     setIsAddingDescription(false);
+  //     setIsFormOpen(false);
+  //     fetchSavedPlaces();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
     setDescription('');
@@ -209,7 +209,7 @@ function ReadingSpotsMap() {
                               </DialogContent>
                               <DialogActions>
                                 <Button onClick={handleFormCancel}>Cancel</Button>
-                                <Button onClick={handleFormSubmit}>Save</Button>
+                                {/* <Button onClick={handleFormSubmit}>Save</Button> */}
                               </DialogActions>
                             </Dialog>
                           </Card>
@@ -264,7 +264,7 @@ function ReadingSpotsMap() {
                               </DialogContent>
                               <DialogActions>
                                 <Button onClick={handleFormCancel}>Cancel</Button>
-                                <Button onClick={handleFormSubmit}>Save</Button>
+                                {/* <Button onClick={handleFormSubmit}>Save</Button> */}
                               </DialogActions>
                             </Dialog>
                           </Card>
