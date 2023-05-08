@@ -104,7 +104,46 @@ UserBooks.post('/lendinglibrary', async (req: AuthenticatedRequest, res: Respons
 
       },
     });
-    res.send(userBook).status(200);
+    const newUserBook = await prisma.userBooks.findMany({
+      where: { userId: id },
+      select: {
+        id: true,
+        wishlist: true,
+        owned: true,
+        booksId: true,
+        userId: true,
+        rating: true,
+        review: true,
+        LendingTable: true,
+        Books: {
+          select: {
+            id: true,
+            title: true,
+            author: true,
+            ISBN10: true,
+            description: true,
+            image: true,
+            UserBooks: {
+              select: {
+                id: true,
+                wishlist: true,
+                owned: true,
+                booksId: true,
+                userId: true,
+                rating: true,
+                review: true,
+                LendingTable: true,
+                User: true,
+              },
+            },
+            Discussions: true,
+            Activity: true,
+          },
+        },
+        User: true,
+      },
+    });
+    res.send(newUserBook).status(200);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Something went wrong' });
