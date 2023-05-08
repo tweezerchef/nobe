@@ -19,8 +19,8 @@ import StarIcon from '@mui/icons-material/Star';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import IconButton from '@mui/joy/IconButton';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
-import UserContext from '../hooks/Context';
 import AddLocationIcon from '@mui/icons-material/AddLocation';
+import UserContext from '../hooks/Context';
 
 interface Activity {
   createdAt: string;
@@ -50,7 +50,6 @@ export default function CustomizedTimeline() {
           userId,
         },
       });
-      console.log(response.data);
       setActivity(response.data.reverse());
     } catch (error) {
       console.error(error);
@@ -100,8 +99,8 @@ export default function CustomizedTimeline() {
                   >
                     <StarIcon />
                   </IconButton>
-                ) : 
-                  data.type.toLowerCase() === 'location' ? (
+                )
+                  : data.type.toLowerCase() === 'location' ? (
                     <IconButton
                       aria-label="Like minimal photography"
                       size="md"
@@ -112,32 +111,32 @@ export default function CustomizedTimeline() {
                     >
                       <AddLocationIcon />
                     </IconButton>
-                ) : (
-                  <IconButton
-                    aria-label="Like minimal photography"
-                    size="md"
-                    variant="solid"
-                    color="success"
-                    sx={{
-                    }}
-                  >
-                    <LocalMallIcon />
-                  </IconButton>
-                )}
+                  ) : (
+                    <IconButton
+                      aria-label="Like minimal photography"
+                      size="md"
+                      variant="solid"
+                      color="success"
+                      sx={{
+                      }}
+                    >
+                      <LocalMallIcon />
+                    </IconButton>
+                  )}
                 <TimelineConnector />
               </TimelineSeparator>
               <TimelineContent sx={{ py: '12px', px: 2 }}>
                 <Typography variant="h6" component="span">
-                  {data.type.toLowerCase() === 'wishlist' ? (`${data.user.firstName} added ${data.book.title} to their wishlist`) : 
-                    data.type.toLowerCase() === 'review' ? (
+                  {data.type.toLowerCase() === 'wishlist' ? (`${data.user.firstName} added ${data.book.title} to their wishlist`)
+                    : data.type.toLowerCase() === 'review' ? (
                       (`${data.user.firstName} rated ${data.book.title} ${data.description} stars`)
-                    ) : 
-                    data.type.toLowerCase() === 'location' ? (
-                      (`${data.user.firstName} added ${data.description} as a reading spot`)
-                    ) :
-                   (
-                    `${data.user.firstName} added ${data.book.title} to their owned books`
-                  )}
+                    )
+                      : data.type.toLowerCase() === 'location' ? (
+                        (`${data.user.firstName} added ${data.description} as a reading spot`)
+                      )
+                        : (
+                          `${data.user.firstName} added ${data.book.title} to their owned books`
+                        )}
                 </Typography>
               </TimelineContent>
             </TimelineItem>

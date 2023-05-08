@@ -1,5 +1,4 @@
-import express, { Request, Response } from 'express';
-import axios from 'axios';
+import express from 'express';
 import dotenv from 'dotenv';
 
 const { PrismaClient } = require('@prisma/client');
@@ -44,6 +43,7 @@ User.get('/', async (req, res) => {
             messages: true,
           },
         },
+        User_Places: true,
         UserBooks: {
           select: {
             id: true,

@@ -58,11 +58,10 @@ const NotificationIcon: React.FC = () => {
   const socketUrl = process.env.SOCKET_URL;
 
   useEffect(() => {
-    let count = 0;
-    const fetchOfflineNotifications = async () => {
-      const response = await fetch(`/notifications/${id}?offline=true`);
-      setNotifications(response);
-    };
+    // const fetchOfflineNotifications = async () => {
+    //   const response = await fetch(`/notifications/${id}?offline=true`);
+    //   setNotifications(response);
+    // };
     if (socketUrl && id) {
       const newSocket = io(socketUrl, {
         query: {
@@ -73,7 +72,9 @@ const NotificationIcon: React.FC = () => {
       newSocket.on('new-notification', (data: any) => {
         // console.log(data, 62);
         setNotifications((prevNotifications: any) => [data, ...prevNotifications]);
+        let count = 0;
         count += 1;
+        setNotificationCount(count);
       });
       return () => {
         newSocket.disconnect();
