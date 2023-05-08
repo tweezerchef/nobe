@@ -49,10 +49,9 @@ const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => (
               <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }}>
                 {discussion.title}
               </Typography>
-              <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center' }}>
-                Posts:
-                {' '}
-                {discussion.Posts ? discussion.Posts.length : 0}
+              <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '15px', color: 'gray' }}>
+                {discussion.Posts.length === 1 ? '1 Post' : `${discussion.Posts.length} Posts`}
+
               </Typography>
             </CardContent>
           </Link>

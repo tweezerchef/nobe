@@ -3,11 +3,10 @@ import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import { Button } from '@material-ui/core';
 import axios from 'axios';
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 import { ClubHeader } from './style';
 import '../styles/discussionPostsStyles.css';
 
@@ -29,6 +28,8 @@ function DiscussionPosts() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [newPost, setNewPost] = useState('');
   const [discussionTitle, setDiscussionTitle] = useState('');
+  const [clubName, setClubName] = useState('');
+  const [clubId, setClubId] = useState('');
 
   useEffect(() => {
     async function getPosts() {
@@ -42,7 +43,10 @@ function DiscussionPosts() {
     async function getDiscussionTitle() {
       try {
         const { data } = await axios.get(`/api/clubs/discussions/${id}`);
+        // console.log(data);
         setDiscussionTitle(data.title);
+        setClubName(data.clubs.name);
+        setClubId(data.clubsId);
       } catch (error) {
         console.error(error);
       }
@@ -87,7 +91,20 @@ function DiscussionPosts() {
 
   return (
     <div className="posts-page">
-      <ClubHeader style={{ textAlign: 'center' }}>{discussionTitle}</ClubHeader>
+      {clubName && (
+        <ClubHeader>
+          <Link
+            to={`/clubs/${clubId}?name=${encodeURIComponent(clubName)}`}
+            style={{ color: 'black' }}
+            className="link"
+          >
+            {clubName}
+          </Link>
+          {' '}
+          Discussion
+        </ClubHeader>
+      )}
+      <ClubHeader>{discussionTitle}</ClubHeader>
       {posts?.map((post) => (
         <div className="posts-box" key={post.id}>
           <div className="brown-box">
