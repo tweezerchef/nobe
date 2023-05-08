@@ -37,6 +37,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
   const [appFavorite, setAppFavorite] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [userReview, setUserReview] = useState('');
+  const [google, setGoogle] = useState<boolean>(false);
   const [reviews, setReviews] = useState<Review[]>([]);
   const reviewsPerPage = 5;
   const userContext = useContext(UserContext);
@@ -47,6 +48,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
     axios.get(`/api/places-to-read/getplace?placeId=${placeId}`)
       .then((response) => {
         if (response.data.google === true) {
+          setGoogle(true);
           const photo = response.data.place.result?.photos?.[0].photo_reference;
           setPlace(response.data.place.result);
           setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
@@ -55,6 +57,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
             setReviews(response.data.place.result?.reviews);
           }
         } else {
+          setGoogle(false);
           setPlace(response.data.place);
           const photo = response.data.place.Places_Pictures[0].url;
           setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
@@ -144,7 +147,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                     <ReadingSpotsAdd
                       place={place}
                       favorite={favorite}
-                      appFavorite={appFavorite}
+                      google={google}
                     />
                   )}
                 </Typography>

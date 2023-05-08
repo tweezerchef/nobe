@@ -10,6 +10,7 @@ interface DiscussionPost {
   discussionId: string;
 }
 interface Place {
+  location: ReactNode;
   userPlaces: any;
   User_Places: any;
   place_id: any;

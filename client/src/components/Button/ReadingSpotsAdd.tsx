@@ -10,7 +10,7 @@ import UserContext from '../../hooks/Context';
 
 type CustomColor = 'success' | 'danger';
 function ReadingSpotsAdd(props: any) {
-  const { place, favorite } = props;
+  const { place, favorite, google } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const setUser = userContext?.setUser;
@@ -46,7 +46,7 @@ function ReadingSpotsAdd(props: any) {
           email,
           color,
           place,
-          favorite,
+          google,
         }).then((data) => {
           // console.log('data', data);
           if (setUser && data?.data) {

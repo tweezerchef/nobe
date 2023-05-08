@@ -11,9 +11,9 @@ const SpotsMapRoute = express.Router();
 
 SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   const {
-    place, id, color, email, favorite,
+    place, id, color, email, google,
   } = req.body;
-  console.log('geometry', place);
+  console.log('geometry', google);
   const {
     formatted_address, geometry, name, photos,
     place_id, reviews, types, website, rating, formatted_phone_number,
@@ -25,7 +25,8 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   }
   let createdPlace: any;
   try {
-    if (!favorite) {
+    if (google) {
+      console.log('name', name);
       createdPlace = await prisma.placesToRead.upsert({
         where: { googlePlaceId: place_id },
         update: {},
@@ -77,14 +78,14 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
         description: `${name}`,
       },
     });
-    const placeId = createdPlace.id ? createdPlace.id : place.id;
+    const placeId = createdPlace?.id ? createdPlace.id : place.id;
 
     prisma.user_Places.upsert({
       where: { userId_placeId: { userId: id, placeId } },
       update: { favorite: myFav },
       create: {
         favorite: myFav,
-        place: { connect: { id: createdPlace.id } },
+        place: { connect: { id: placeId } },
         user: { connect: { id } },
         googlePlaceId: place_id,
       },

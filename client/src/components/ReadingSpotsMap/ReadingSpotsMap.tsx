@@ -92,22 +92,6 @@ function ReadingSpotsMap() {
     fetchSavedPlaces();
   }, []);
 
-  // const handleFormSubmit = async () => {
-  //   try {
-  //     if (!description) {
-  //       toast.error('Please enter a description.');
-  //       return;
-  //     }
-  //     await axios.post('/api/places-to-read/writtenReview', { body: description, userId: id, placeId: selectedPlace });
-  //     setDescription('');
-  //     setIsAddingDescription(false);
-  //     setIsFormOpen(false);
-  //     fetchSavedPlaces();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   useEffect(() => {
     setDescription('');
     fetchSavedPlaces();
@@ -150,7 +134,13 @@ function ReadingSpotsMap() {
                   },
                 }}
               >
-                <ListItemText primary={<Typography color="gray">{place.Location}</Typography>} />
+                <ListItemText primary={(
+                  <Typography gutterBottom variant="body1" color="text.secondary">
+                    {place.name}
+                    {place.location}
+                  </Typography>
+)}
+                />
               </ListItemButton>
             ))}
           </List>
