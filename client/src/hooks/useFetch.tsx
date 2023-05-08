@@ -34,7 +34,6 @@ const useFetch = (url: string) => {
 
       if (data) {
         if (setUser) {
-          console.log(data.user.userData);
           setUser(data.user.userData);
           localStorage.setItem('user', JSON.stringify(data.user.userData));
         }

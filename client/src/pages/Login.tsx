@@ -24,7 +24,6 @@ function Login() {
       .then((response) => {
         if (response && setUser) {
           let { user } = response.data;
-          console.log(user);
           setUser(user);
           user = JSON.stringify(user);
           localStorage.setItem('user', user);

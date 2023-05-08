@@ -9,7 +9,6 @@ const prisma = new PrismaClient();
 const SpotsMapRoute = express.Router();
 
 SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
-  console.log('places');
   const {
     Location, lat, lng, id, color, googlePlaceId, email,
   } = req.body;
