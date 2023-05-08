@@ -4,15 +4,17 @@ import {
 } from '@mui/material';
 
 const Counter = styled.div`
-  width: 10px;
-  height: 10px;
-  background-color: red;
-  border-radius: 50%;
-  padding: 5px;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+position: absolute;
+top: -5px;
+left: 10px;
+width: 10px;
+height: 10px;
+background-color: red;
+border-radius: 50%;
+font-size: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
 `;
 
 const Wrapper = styled(Card)`
