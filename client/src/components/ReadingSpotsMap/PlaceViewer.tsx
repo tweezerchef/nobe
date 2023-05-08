@@ -26,10 +26,10 @@ import ReviewPopOver from './ReviewPopOver';
 import ReadingSpotsAdd from '../Button/ReadingSpotsAdd';
 import UserContext from '../../hooks/Context';
 
-// type Review = {
-//   review: string;
-//   author_name: string;
-// };
+ type Review = {
+   author_name: string;
+   text: string;
+ };
 
 function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
   const [place, setPlace] = useState<Place | null>(null);
@@ -38,7 +38,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
   const [appFavorite, setAppFavorite] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [userReview, setUserReview] = useState('');
-  const [reviews, setReviews] = useState<Review[] | null>(null);
+  const [mergedReviews, setMergedReviews] = useState<Review[] | null>(null);
   const reviewsPerPage = 5;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -46,7 +46,6 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
 
   useEffect(() => {
     axios.get(`/api/places-to-read/getplace?placeId=${placeId}`).then((response) => {
-      console.log(savedPlaces);
       const photo = response.data.result?.photos?.[0].photo_reference;
       setPlace(response.data.result);
       setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
@@ -62,43 +61,41 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
       }
       setFavorite(isFavorite);
     }
-    const foundPlace = savedPlaces.find((place) => place.googlePlaceId === placeId);
+  }, [placeId, savedPlaces, User_Places]);
+  useEffect(() => {
+    if (place) {
+      const foundPlace = savedPlaces.find((p) => p.googlePlaceId === placeId);
 
-    if (foundPlace) {
-      // Search the userPlaces array within the found place to find the "Review"
-      const userPlaceWithReview = foundPlace.userPlaces
-        .find((userPlace: { Review: any; }) => userPlace.Review);
+      if (foundPlace) {
+        // Search the userPlaces array within the found place to find the "Review"
+        const userPlaceWithReview = foundPlace.userPlaces.find(
+          (userPlace: { Review: any }) => userPlace.Review,
+        );
 
-      if (userPlaceWithReview) {
-        // Create a new review object of type Review
-        const newReview: Review = {
-          author_name: 'User', // Replace with the actual user's name
-          text: userPlaceWithReview.Review,
-        };
-
-        // Add the new review to the place.reviews array
-        setPlace((prevPlace) => {
-          if (prevPlace) {
-            const updatedReviews: Review[] = [
-              ...(prevPlace.reviews || []),
-              newReview,
-            ];
-            return {
-              ...prevPlace,
-              reviews: updatedReviews,
-            };
+        if (userPlaceWithReview) {
+          // Create a new review object of type Review
+          const newReview: Review = {
+            author_name: 'User', // Replace with the actual user's name
+            text: userPlaceWithReview.Review,
+          };
+          if (place.reviews) {
+            setMergedReviews([...place.reviews, newReview]);
+          } else {
+            setMergedReviews([newReview]);
           }
-          return null;
-        });
 
-        console.log('Review found and added to the place.reviews array:', userPlaceWithReview.Review);
+          console.log(
+            'Review found and added to the mergedReviews array:',
+            userPlaceWithReview.Review,
+          );
+        } else {
+          console.log('Review not found.');
+        }
       } else {
-        console.log('Review not found.');
+        console.log('Place not found.');
       }
-    } else {
-      console.log('Place not found.');
     }
-  }, [placeId]);
+  }, [placeId, savedPlaces, place]);
   const handleSubmitReview = async () => {
     const userId = user?.id;
     const googlePlaceId = placeId;
@@ -118,7 +115,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
     console.log('Next page button clicked');
     if (
       currentPage
-      < Math.ceil((place?.reviews?.length || 0) / reviewsPerPage) - 1
+      < Math.ceil((mergedReviews?.length || 0) / reviewsPerPage) - 1
     ) {
       setCurrentPage(currentPage + 1);
     }
@@ -171,32 +168,35 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                     </Box>
                     {/* Reviews */}
                     <Box>
-                      <IconButton
-                        onClick={handlePrevPage}
-                        disabled={currentPage === 0}
-                      >
-                        <KeyboardArrowUpIcon />
-                      </IconButton>
-                      {place?.reviews && place.reviews
-                        .slice(
-                          currentPage * reviewsPerPage,
-                          currentPage * reviewsPerPage + reviewsPerPage,
-                        )
-                        .map((review, index) => (
-                          <React.Fragment key={index}>
-                            <ReviewPopOver review={review} />
-                            <Divider />
-                          </React.Fragment>
-                        ))}
-                      <IconButton
-                        onClick={handleNextPage}
-                        disabled={
-                          currentPage
-                          >= Math.ceil((place?.reviews?.length || 0) / reviewsPerPage) - 1
-                        }
-                      >
-                        <KeyboardArrowDownIcon />
-                      </IconButton>
+                      {place && mergedReviews && mergedReviews.length ? (
+                        <>
+                          <IconButton onClick={handlePrevPage} disabled={currentPage === 0}>
+                            <KeyboardArrowUpIcon />
+                          </IconButton>
+                          {mergedReviews
+                            .slice(
+                              currentPage * reviewsPerPage,
+                              currentPage * reviewsPerPage + reviewsPerPage,
+                            )
+                            .map((review, index) => (
+                              <React.Fragment key={index}>
+                                <ReviewPopOver review={review} />
+                                <Divider />
+                              </React.Fragment>
+                            ))}
+                          <IconButton
+                            onClick={handleNextPage}
+                            disabled={
+        currentPage
+        >= Math.ceil((mergedReviews.length || 0) / reviewsPerPage) - 1
+      }
+                          >
+                            <KeyboardArrowDownIcon />
+                          </IconButton>
+                        </>
+                      ) : (
+                        <Typography>Loading reviews...</Typography>
+                      )}
                     </Box>
                   </Box>
 
