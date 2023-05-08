@@ -44,29 +44,29 @@ function Clubs() {
   }
 `;
 
-  const HeaderBox = styled.div`
-    background-color: #e0d0c2;
-    padding: 7px 0;
-    margin: 10px auto;
-    border-radius: 20px;
-    text-align: center;
-    max-width: 240px;
-  `;
+  // const HeaderBox = styled.div`
+  //   background-color: #e0d0c2;
+  //   padding: 7px 0;
+  //   margin: 10px auto;
+  //   border-radius: 20px;
+  //   text-align: center;
+  //   max-width: 240px;
+  // `;
 
   return (
     <div>
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
-          <HeaderBox>
-            <ClubHeader>Create a Club</ClubHeader>
-          </HeaderBox>
+          {/* <HeaderBox> */}
+          <ClubHeader>Create a Club</ClubHeader>
+          {/* </HeaderBox> */}
           <CreateClubs setClubs={setClubs} />
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <HeaderBox>
-            <ClubHeader>Book Clubs</ClubHeader>
-          </HeaderBox>
+          {/* <HeaderBox> */}
+          <ClubHeader>Book Clubs</ClubHeader>
+          {/* </HeaderBox> */}
           <CardContainer>
             {clubs && clubs.length > 0 && clubs.map((club) => (
               <StyledCard key={club.id} flexBasis="25%">
