@@ -10,7 +10,7 @@ const SpotsMapRoute = express.Router();
 
 SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   const {
-    address, lat, lng, id, color, googlePlaceId,
+    Location, lat, lng, id, color, googlePlaceId, email,
   } = req.body;
   let myFav = false;
   if (color === 'danger') {
@@ -20,7 +20,7 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   try {
     createdPlace = await prisma.placesToRead.findFirst({
       where: {
-        Location: address,
+        Location,
         Lat: lat,
         Long: lng,
       },
@@ -28,7 +28,7 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
     if (!createdPlace) {
       createdPlace = await prisma.placesToRead.create({
         data: {
-          Location: address,
+          Location,
           Lat: lat,
           Long: lng,
           googlePlaceId,
@@ -40,7 +40,7 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
       data: {
         userId: id,
         type: 'location',
-        description: `${address}`,
+        description: `${Location}`,
       },
     });
     await prisma.user_Places.upsert({
@@ -48,13 +48,14 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
       update: { favorite: myFav },
       create: {
         favorite: myFav,
-        userId: id,
         place: { connect: { id: createdPlace.id } },
         user: { connect: { id } },
         googlePlaceId,
       },
     });
-    res.status(201);
+    const userData = await axios.get(`http://localhost:8080/user?email=${email}`);
+    const user = userData.data;
+    res.send(user).status(201);
   } catch (error) {
     console.error(error);
     res.status(500).send('Something went wrong');
@@ -108,17 +109,33 @@ SpotsMapRoute.get('/', async (req: Request, res: Response) => {
   }
 });
 
-SpotsMapRoute.post('/description', async (req: Request, res: Response) => {
-  const { body, placeId, userId } = req.body;
+SpotsMapRoute.post('/writtenReview', async (req: Request, res: Response) => {
+  const {
+    Review, userId, googlePlaceId,
+  } = req.body;
+  const place = await prisma.placesToRead.findFirst({
+    where: { googlePlaceId },
+  });
+
+  if (!place) {
+    return res.status(404).send('Place not found');
+  }
+
+  const placeId = place.id;
 
   try {
-    const updatedPlace = await prisma.description_Places.upsert({
+    const updatedPlace = await prisma.user_Places.upsert({
       where: { userId_placeId: { placeId, userId } },
-      update: { body },
-      create: { body, placeId, userId },
+      update: { Review },
+      create: {
+        Review,
+        googlePlaceId,
+        place: { connect: { id: placeId } },
+        user: { connect: { id: userId } },
+      },
     });
 
-    res.status(200).json({ updatedPlace });
+    res.status(200).send(updatedPlace);
   } catch (error) {
     console.error(error);
     res.status(500).send('Something went wrong');

@@ -1,6 +1,13 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Server, ServerOptions } from 'socket.io';
+import { Request, Response } from 'express';
+
+const express = require('express');
+// const axios = require('axios');
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient();
 // Socket.Io
 interface CustomServerOptions extends ServerOptions {
   generateId: (req: any) => any;
@@ -39,10 +46,42 @@ interface User {
 // const getUser = (id: string) => {
 //   onlineUsers.find((user) => user.id === id);
 // };
+// function uuid(userId: string) {
+//   throw new Error('Function not implemented.');
+// }
+
+// async function getNotificationsForUser(userId: string): Promise<Notification[] | undefined> {
+//   try {
+//     const notifications = await prisma.notifications.findMany({
+//       where: {
+//         recipient: {
+//         // eslint-disable-next-line @typescript-eslint/no-use-before-define
+//           userId: uuid(userId),
+//         },
+//       },
+//       orderBy: {
+//         createdAt: 'desc',
+//       },
+//       include: {
+//         User: {
+//           select: {
+//             id: true,
+//             firstName: true,
+//             picture: true,
+//           },
+//         },
+//       },
+//     });
+//     return notifications;
+//   } catch (error) {
+//     console.error(error);
+//   }
+//   return [];
+// }
 
 const connectedUsers: (string | string[] | undefined)[] = [];
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   const { userId } = socket.handshake.query;
   console.log('someone has connected!:', userId);
 
@@ -50,6 +89,10 @@ io.on('connection', (socket) => {
 
   connectedUsers.push(userId);
   console.log(connectedUsers);
+  // as unknown as string;
+  // const notifications = await getNotificationsForUser(userId);
+  // socket.emit('notifications', notifications);
+
   socket.on('new-message', (data) => {
     console.log('New message:', data);
     io.emit('new-message', data);
@@ -57,15 +100,15 @@ io.on('connection', (socket) => {
 
   socket.on('new-follow', (data) => {
     console.log('newFollower:', data);
-    io.to(userId ?? '').emit('new-follower', data);
+    io.to(userId ?? '').emit('new-notification', data);
   });
 
-  const index = connectedUsers.indexOf(userId);
-  if (index !== -1) {
-    connectedUsers.splice(index, 1);
-  }
   socket.on('disconnect', () => {
-    console.log('someone has disconnected');
+    const index = connectedUsers.indexOf(userId);
+    if (index !== -1) {
+      connectedUsers.splice(index, 1);
+    }
+    console.log('someone has disconnected:', userId);
   });
 });
 

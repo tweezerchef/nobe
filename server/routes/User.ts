@@ -1,7 +1,7 @@
-const { PrismaClient } = require('@prisma/client');
-import express, { Request, Response } from 'express';
-import axios from 'axios';
+import express from 'express';
 import dotenv from 'dotenv';
+
+const { PrismaClient } = require('@prisma/client');
 
 dotenv.config();
 
@@ -10,11 +10,11 @@ const User = express.Router();
 const prisma = new PrismaClient();
 
 User.get('/', async (req, res) => {
-  const email = req.query.email;
+  const { email } = req.query;
   try {
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
       where: {
-        email: email,
+        email,
       },
       select: {
         // include all columns from the books table
@@ -41,8 +41,9 @@ User.get('/', async (req, res) => {
             id: true,
             members: true,
             messages: true,
-          }
+          },
         },
+        User_Places: true,
         UserBooks: {
           select: {
             id: true,
@@ -61,18 +62,18 @@ User.get('/', async (req, res) => {
                 ISBN10: true,
                 description: true,
                 image: true,
-                UserBooks:{
+                UserBooks: {
                   select: {
-                  id: true,
-                  wishlist: true,
-                  owned: true,
-                  booksId: true,
-                  userId: true,
-                  rating: true,
-                  review: true,
-                  LendingTable: true,
-                  User: true
-                  }
+                    id: true,
+                    wishlist: true,
+                    owned: true,
+                    booksId: true,
+                    userId: true,
+                    rating: true,
+                    review: true,
+                    LendingTable: true,
+                    User: true,
+                  },
                 },
                 Discussions: true,
                 Activity: true,
@@ -81,22 +82,21 @@ User.get('/', async (req, res) => {
           },
 
         },
-      }
+      },
     });
     res.send(user);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error retrieving book data");
+    res.status(500).send('Error retrieving book data');
   }
 });
 User.get('/id', async (req, res) => {
-
-  const id = req.query.id;
+  const { id } = req.query;
   // console.log('id', id)
   try {
     const user = await prisma.user.findFirst({
       where: {
-        id: id,
+        id,
       },
       select: {
         // include all columns from the books table
@@ -123,7 +123,7 @@ User.get('/id', async (req, res) => {
             id: true,
             members: true,
             messages: true,
-          }
+          },
         },
         UserBooks: {
           select: {
@@ -143,18 +143,18 @@ User.get('/id', async (req, res) => {
                 ISBN10: true,
                 description: true,
                 image: true,
-                UserBooks:{
+                UserBooks: {
                   select: {
-                  id: true,
-                  wishlist: true,
-                  owned: true,
-                  booksId: true,
-                  userId: true,
-                  rating: true,
-                  review: true,
-                  LendingTable: true,
-                  User: true
-                  }
+                    id: true,
+                    wishlist: true,
+                    owned: true,
+                    booksId: true,
+                    userId: true,
+                    rating: true,
+                    review: true,
+                    LendingTable: true,
+                    User: true,
+                  },
                 },
                 Discussions: true,
                 Activity: true,
@@ -163,14 +163,14 @@ User.get('/id', async (req, res) => {
           },
 
         },
-      }
+      },
     });
-    //console.log(user)
+    // console.log(user)
     res.send(user);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error retrieving book data");
+    res.status(500).send('Error retrieving book data');
   }
-})
+});
 
-export default User
+export default User;

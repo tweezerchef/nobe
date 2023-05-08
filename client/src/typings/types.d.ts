@@ -10,6 +10,10 @@ interface DiscussionPost {
   discussionId: string;
 }
 interface Place {
+  userPlaces: any;
+  User_Places: any;
+  place_id: any;
+  googlePlaceId: string;
   formatted_address: string;
   adr_address: string;
   photo?: {
@@ -19,7 +23,6 @@ interface Place {
       };
     };
   };
-  altLoc: string;
   name: string;
   rating: string;
   num_reviews: number;
@@ -57,5 +60,6 @@ interface Cuisine {
 }
 interface Review {
   author_name: string;
+  review: string;
   text: string;
 }

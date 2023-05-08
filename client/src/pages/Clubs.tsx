@@ -13,6 +13,7 @@ export interface Club {
   name: string;
   description: string;
   image: string;
+  clubMembers: string[];
 }
 
 function Clubs() {
@@ -21,7 +22,6 @@ function Clubs() {
   useEffect(() => {
     async function fetchClubs() {
       const response = await axios.get('/api/clubs');
-
       setClubs(response.data);
     }
     fetchClubs();
@@ -37,37 +37,38 @@ function Clubs() {
   flex-basis: ${(props) => props.flexBasis || '33%'};
   margin: 10px;
   transition: transform 0.2s ease-in-out;
+  background-color: #f4f1ea !important;
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
   }
 `;
 
-  const HeaderBox = styled.div`
-  background-color: lightblue;
-  padding: 20px 0;
-  margin: 20px auto;
-  border-radius: 20px;
-  text-align: center;
-  max-width: 300px;
-`;
+  // const HeaderBox = styled.div`
+  //   background-color: #e0d0c2;
+  //   padding: 7px 0;
+  //   margin: 10px auto;
+  //   border-radius: 20px;
+  //   text-align: center;
+  //   max-width: 240px;
+  // `;
 
   return (
     <div>
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
-          <HeaderBox>
-            <ClubHeader>Create a Club</ClubHeader>
-          </HeaderBox>
+          {/* <HeaderBox> */}
+          <ClubHeader>Create a Club</ClubHeader>
+          {/* </HeaderBox> */}
           <CreateClubs setClubs={setClubs} />
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <HeaderBox>
-            <ClubHeader>Book Clubs</ClubHeader>
-          </HeaderBox>
+          {/* <HeaderBox> */}
+          <ClubHeader>Book Clubs</ClubHeader>
+          {/* </HeaderBox> */}
           <CardContainer>
-            {clubs.map((club) => (
+            {clubs && clubs.length > 0 && clubs.map((club) => (
               <StyledCard key={club.id} flexBasis="25%">
                 <Link
                   to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
@@ -77,14 +78,28 @@ function Clubs() {
                 >
                   <iframe
                     src={club.image}
-                    style={{ pointerEvents: 'none' }}
+                    style={{
+                      pointerEvents: 'none', display: 'block', margin: '0 auto', border: 'none', paddingTop: '8px', width: '100%',
+                    }}
                   />
-                  <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <CardContent style={{
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative',
+                  }}
+                  >
                     <Typography variant="h5" component="h2" style={{ textAlign: 'center', marginBottom: '10px' }}>
                       {club.name}
                     </Typography>
                     <Typography variant="body1" component="p" style={{ fontSize: '18px', color: 'gray' }}>
                       {club.description}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      style={{
+                        fontSize: '13px', color: 'gray', position: 'absolute', bottom: 5, right: 5,
+                      }}
+                    >
+                      {club.clubMembers && club.clubMembers.length === 1 ? '1 Member' : `${club.clubMembers?.length || 0} Members`}
                     </Typography>
                   </CardContent>
                 </Link>

@@ -48,8 +48,10 @@ function LendingLibraryButton(props: any) {
       entry: UserBook,
     ) => entry.Books.title.toUpperCase() === book.title && entry.owned === true);
 
-    if (isBookInArray) setColor('success' as CustomColor);
-    setToolTip(<h1>Remove from Lending Library</h1>);
+    if (isBookInArray) {
+      setColor('success' as CustomColor);
+      setToolTip(<h1>Remove from Lending Library</h1>);
+    }
   }, [book, id]);
 
   return (

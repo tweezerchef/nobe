@@ -40,7 +40,7 @@ const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => (
   <>
     {discussions?.map((discussion) => (
       <Box sx={{ my: 1 }}>
-        <Card key={discussion.id} className="forum-card">
+        <Card key={discussion.id} className="club-card">
           <Link
             to={`/clubs/${clubId}/discussion/${discussion.id}`}
             style={{ color: 'black', textDecoration: 'none' }}
@@ -49,10 +49,9 @@ const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => (
               <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }}>
                 {discussion.title}
               </Typography>
-              <Typography variant="body2" className="forum-card-body" style={{ textAlign: 'center' }}>
-                Posts:
-                {' '}
-                {discussion.Posts && discussion.Posts.length}
+              <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '15px', color: 'gray' }}>
+                {discussion.Posts && discussion.Posts.length === 1 ? '1 Post' : `${discussion.Posts?.length || 0} Posts`}
+
               </Typography>
             </CardContent>
           </Link>

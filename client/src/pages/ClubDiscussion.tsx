@@ -1,27 +1,18 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import Stack from '@mui/material/Stack';
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Button, TextField, FormControl,
 } from '@material-ui/core';
+import {
+  Stack, Dialog, DialogTitle, DialogContent, DialogActions,
+} from '@mui/material';
+
 import axios from 'axios';
 import { ClubHeader } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
 import '../styles/clubDiscussionStyle.css';
 import DiscussionList from '../components/DiscussionForum/Discussions';
-
-// interface DiscussionPost {
-//   id: string;
-//   body: string;
-//   userId: string;
-//   discussionId: string;
-// }
-
-// interface Discussion {
-//   id: string;
-//   Posts: DiscussionPost[];
-//   title: string;
-// }
+import UserContext from '../hooks/Context';
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
@@ -32,9 +23,10 @@ function ClubDiscussion() {
   const searchParams = new URLSearchParams(location.search);
   const clubName = searchParams.get('name');
   const clubId = id;
-  // const userContext = useContext(UserContext);
-  // const user = userContext?.user;
-  // console.log(user);
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const userId = user?.id;
 
   useEffect(() => {
     async function fetchDiscussion() {
@@ -53,7 +45,7 @@ function ClubDiscussion() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const user = localStorage.getItem('user');
+      // const user = localStorage.getItem('user');
 
       if (!user) {
         throw new Error('No user found');
@@ -62,10 +54,10 @@ function ClubDiscussion() {
         alert('Please enter a discussion title');
         return;
       }
-      const parsed = JSON.parse(user);
+      // const parsed = JSON.parse(user);
       const response = await axios.post(`/api/clubs/${id}/discussion`, {
         title: newDiscussionTitle,
-        userId: parsed.id,
+        userId,
       });
       setDiscussions((discussions) => [...discussions, response.data]);
       setNewDiscussionTitle('');
@@ -106,27 +98,6 @@ function ClubDiscussion() {
         </form>
       )}
       {id && <DiscussionList discussions={discussions} clubId={id} key={discussions.length} />}
-      {/* {discussions?.map((discussion) => (
-        <Box sx={{ my: 1 }}>
-          <Card key={discussion.id} className="forum-card">
-            <Link
-              to={`/clubs/${id}/discussion/${discussion.id}`}
-              style={{ color: 'black', textDecoration: 'none' }}
-            >
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }} className="forum-card-title">
-                  {discussion.title}
-                </Typography>
-                <Typography variant="body2" className="forum-card-body" style={{ textAlign: 'center' }}>
-                  Posts:
-                  {' '}
-                  {discussion.Posts && discussion.Posts.length}
-                </Typography>
-              </CardContent>
-            </Link>
-          </Card>
-        </Box>
-      ))} */}
     </div>
   );
 }

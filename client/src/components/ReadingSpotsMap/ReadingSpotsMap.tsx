@@ -24,15 +24,6 @@ import PlaceViewer from './PlaceViewer';
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
 
-// interface Place {
-//   Description_Places: any;
-//   id: number;
-//   Location: string;
-//   Lat: number;
-//   Long: number;
-//   Description: string;
-// }
-
 function ReadingSpotsMap() {
   const [latlng, setLatLng] = useState<LatLngLiteral>();
   const [location, setLocation] = useState<string>('');
@@ -55,7 +46,7 @@ function ReadingSpotsMap() {
   const options = useMemo<MapOptions>(() => ({
     mapId: '89f1db752bd023d1',
     disableDefaultUI: true,
-    clickableIcons: false,
+    clickableIcons: true,
   }), []);
 
   const onLoad = useCallback((map: any) => {
@@ -63,15 +54,15 @@ function ReadingSpotsMap() {
   }, []);
 
   const handlePlaceClick = useCallback((placeId: number, place: any) => {
-    const { altLoc } = place;
-    setPlaceId(altLoc);
+    const { googlePlaceId } = place;
+    setPlaceId(googlePlaceId);
     setSelectedPlace((prev) => (prev === placeId ? null : placeId));
     setIsFormOpen(false);
     setIsAddingDescription(false);
   }, []);
 
   const handleCardClick = useCallback((lat: number, lng: number, place: any) => {
-    setPlaceId(place.altLoc);
+    setPlaceId(place.googlePlaceId);
     mapRef.current?.panTo({ lat, lng });
   }, []);
 
@@ -107,7 +98,7 @@ function ReadingSpotsMap() {
         toast.error('Please enter a description.');
         return;
       }
-      await axios.post('/api/places-to-read/description', { body: description, userId: id, placeId: selectedPlace });
+      await axios.post('/api/places-to-read/writtenReview', { body: description, userId: id, placeId: selectedPlace });
       setDescription('');
       setIsAddingDescription(false);
       setIsFormOpen(false);
@@ -287,7 +278,6 @@ function ReadingSpotsMap() {
             </GoogleMap>
           </div>
         </div>
-
       </div>
     </>
   );
