@@ -233,28 +233,24 @@ function Chat() {
           </Grid>
           <Divider />
           <List>
-            {conversations.length === 0 ? (
-              <ListItemText style={{ marginLeft: '5px' }} primary="Loading..." />
-            ) : (
-              conversations.map((conversation: any) => {
-                const otherUser = conversation.members.find((member: any) => (
-                  member.firstName !== user.firstName
-                ));
-                const otherUserName = otherUser ? otherUser.firstName : '';
-                return (
-                  <ListItem
-                    button
-                    key={conversation.id}
-                    onClick={() => {
-                      setCurrentConvo(conversation);
-                      setChatMessages(conversation.messages);
-                    }}
-                  >
-                    <ListItemText>{otherUserName}</ListItemText>
-                  </ListItem>
-                );
-              })
-            )}
+            {conversations.map((conversation: any) => {
+              const otherUser = conversation.members.find((member: any) => (
+                member.firstName !== user.firstName
+              ));
+              const otherUserName = otherUser ? otherUser.firstName : '';
+              return (
+                <ListItem
+                  button
+                  key={conversation.id}
+                  onClick={() => {
+                    setCurrentConvo(conversation);
+                    setChatMessages(conversation.messages);
+                  }}
+                >
+                  <ListItemText>{otherUserName}</ListItemText>
+                </ListItem>
+              );
+            })}
           </List>
         </Grid>
         <Grid item xs={9} direction="column" style={{ height: '100%' }}>
