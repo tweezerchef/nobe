@@ -42,7 +42,7 @@ UserBooks.post('/wishlist', async (req: AuthenticatedRequest, res: Response) => 
     let wishlist = false;
     if (color === 'danger') wishlist = true;
 
-    const newBook = await axios.post('http://localhost:8080/bookdata/title/wishlist', {
+    const newBook = await axios.post('http://localhost:8080/bookdata/title', {
       title,
       ISBN10,
       author,
@@ -65,6 +65,13 @@ UserBooks.post('/wishlist', async (req: AuthenticatedRequest, res: Response) => 
 
       },
     });
+    const activity = await prisma.activity.create({
+      data: {
+        userId: id,
+        type: 'Wishlist',
+        bookId: bookID,
+      },
+    });
     res.send(userBook).status(200);
   } catch (error) {
     console.error(error);
@@ -81,7 +88,7 @@ UserBooks.post('/lendinglibrary', async (req: AuthenticatedRequest, res: Respons
     let owned = false;
     if (color === 'danger') owned = true;
 
-    const newBook = await axios.post('http://localhost:8080/bookdata/title/wishlist', {
+    const newBook = await axios.post('http://localhost:8080/bookdata/title', {
       title,
       ISBN10,
       author,
@@ -101,7 +108,13 @@ UserBooks.post('/lendinglibrary', async (req: AuthenticatedRequest, res: Respons
         review: null,
         userId: id,
         booksId: bookID,
-
+      },
+    });
+    prisma.activity.create({
+      data: {
+        userId: id,
+        type: 'Owned',
+        bookId: bookID,
       },
     });
     const newUserBook = await prisma.userBooks.findMany({
@@ -141,6 +154,13 @@ UserBooks.post('/lendinglibrary', async (req: AuthenticatedRequest, res: Respons
           },
         },
         User: true,
+      },
+    });
+    const activity = await prisma.activity.create({
+      data: {
+        userId: id,
+        type: 'Owned',
+        bookId: bookID,
       },
     });
     res.send(newUserBook).status(200);
