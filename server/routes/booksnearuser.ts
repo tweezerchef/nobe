@@ -207,7 +207,7 @@ LocationRoute.put('/:id/location', async (req: AuthenticatedRequest, res: Respon
         radius: radNum,
       },
     });
-    console.log(userUpdateLocation, 145);
+    // console.log(userUpdateLocation, 145);
     res.status(200).json({ userUpdateLocation });
   } catch (e) {
   // console.error(e);
@@ -217,34 +217,28 @@ LocationRoute.put('/:id/location', async (req: AuthenticatedRequest, res: Respon
   }
 });
 
-LocationRoute.get('/id', async (req: AuthenticatedRequest, res: Response) => {
-  const { id } = req.query as any;
-  console.log('id', id);
+LocationRoute.get('/:id/location', async (req: AuthenticatedRequest, res: Response) => {
+  // console.log(req);
+  const { id } = req.params as any;
+  // console.log('id', id);
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: {
         id,
       },
       select: {
         // include all columns from the books table
         id: true,
-        firstName: true,
-        username: true,
-        email: true,
-        googleId: true,
-        lastName: true,
-        picture: true,
-        token: true,
         latitude: true,
         longitude: true,
         radius: true,
       },
     });
-    console.log(user);
-    res.send(user);
+      // console.log(user);
+    res.status(200).send(user);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error retrieving book data');
+    res.status(500).send({ message: 'Error retrieving user data', error });
   }
 });
 

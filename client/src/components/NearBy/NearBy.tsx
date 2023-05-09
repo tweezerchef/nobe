@@ -22,7 +22,7 @@ function NearBy() {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const { id } = user;
-  // console.log(user, 31);
+  console.log(user, 31);
 
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
@@ -35,29 +35,31 @@ function NearBy() {
   const [radiusState, setRadiusState] = useState('idle');
   const [userLongitude, setUserLongitude] = useState(0);
   const [userLatitude, setUserLatitude] = useState(0);
-  // const [isUserLoaded, setIsUserLoaded] = useState(false);
+  const [userLocation, setUserLocation] = useState<any>([]);
+
   const navigate = useNavigate();
 
+  const getUserLocation = async () => {
+    try {
+      const res = await axios.get(`/location/${id}/location`);
+      // console.log(res, 45);
+      setUserLocation(res.data);
+    } catch (error) {
+      // console.error(error);
+    }
+  };
+
+  console.log(userLocation, 52);
   const handleLookForBooksClick = async () => {
     try {
-      const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      getUserLocation();
+      const response = await axios.get('/location/locations', { params: { lon: userLocation.longitude, lat: userLocation.latitude, radius: userLocation.radius } });
       const data = await response.data;
       navigate('/locations', { state: data });
     } catch (error) {
       console.error(error);
     }
-  };// 👇️ navigate to /
-  //   const res = await axios.get
-  // eslint-disable-next-line max-len
-  // ('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
-  //   console.log(res.data, 99);
-  //   setBooksNearBy(res.data);
-  //   setTimeout(() => {
-  //     setButtonState('success');
-  //   }, 2000);
-  // } catch (err) {
-  //  console.error(err);
-  // }
+  };
   const saveLocation = async () => {
     setLocationState('loading');
     // console.log(userLongitude, userLongitude, 63)
@@ -67,7 +69,8 @@ function NearBy() {
         latitude: userLatitude,
         radius,
       });
-      console.log(res, 68);
+      getUserLocation();
+      // console.log(res, 68);
       setTimeout(() => {
         setLocationState('success');
       }, 2000);
@@ -162,7 +165,7 @@ function NearBy() {
       <ReactiveButton
         rounded
         size="medium"
-        buttonState={radiusState}
+        buttonState={locationState}
         idleText="Save Location Preference"
         loadingText="Saving"
         successText="Done"
