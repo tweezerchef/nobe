@@ -45,6 +45,7 @@ interface Message {
   text: string;
   name: string;
   sender: string;
+  createdAt: string;
 }
 
 interface Conversation {
@@ -232,24 +233,28 @@ function Chat() {
           </Grid>
           <Divider />
           <List>
-            {conversations.map((conversation: any) => {
-              const otherUser = conversation.members.find((member: any) => (
-                member.firstName !== user.firstName
-              ));
-              const otherUserName = otherUser ? otherUser.firstName : '';
-              return (
-                <ListItem
-                  button
-                  key={conversation.id}
-                  onClick={() => {
-                    setCurrentConvo(conversation);
-                    setChatMessages(conversation.messages);
-                  }}
-                >
-                  <ListItemText>{otherUserName}</ListItemText>
-                </ListItem>
-              );
-            })}
+            {conversations.length === 0 ? (
+              <ListItemText style={{ marginLeft: '5px' }} primary="Loading..." />
+            ) : (
+              conversations.map((conversation: any) => {
+                const otherUser = conversation.members.find((member: any) => (
+                  member.firstName !== user.firstName
+                ));
+                const otherUserName = otherUser ? otherUser.firstName : '';
+                return (
+                  <ListItem
+                    button
+                    key={conversation.id}
+                    onClick={() => {
+                      setCurrentConvo(conversation);
+                      setChatMessages(conversation.messages);
+                    }}
+                  >
+                    <ListItemText>{otherUserName}</ListItemText>
+                  </ListItem>
+                );
+              })
+            )}
           </List>
         </Grid>
         <Grid item xs={9} direction="column" style={{ height: '100%' }}>
@@ -294,7 +299,8 @@ function Chat() {
               >
                 {chatMessages
                   .slice()
-                  .reverse().map((chatMessage: any) => {
+                  .sort((a, b) => (new Date(b.createdAt) as any) - (new Date(a.createdAt) as any))
+                  .map((chatMessage: any) => {
                     const sender = currentConvo.members.find((member: any) => (
                       member.id === chatMessage.senderId
                     ));
