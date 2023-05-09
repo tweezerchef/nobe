@@ -1,7 +1,7 @@
 .posts-page {
     margin: 0px auto;
     text-align: left;
-    width: 970px;
+    width: 800px;
 }
 
 .brown-box {
@@ -42,4 +42,14 @@
 
 .link:hover {
     text-decoration: underline;
+}
+
+.input-container {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container label {
+    margin-bottom: 2px;
 }

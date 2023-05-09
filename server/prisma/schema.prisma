@@ -10,72 +10,76 @@ datasource db {
 }
 
 model User {
-  id                 String               @id @default(uuid())
+  id                 String             @id @default(uuid())
   firstName          String
-  username           String?              @unique
-  email              String               @unique
-  googleId           String               @unique
+  username           String?            @unique
+  email              String             @unique
+  googleId           String             @unique
   lastName           String?
   picture            String?
   token              String?
   latitude           Float?
   longitude          Float?
   radius             Int?
-  NotificationsCount Int                  @default(0)
+  NotificationsCount Int                @default(0)
   Activity           Activity[]
   clubMembers        ClubMembers[]
   DirectMessages     DirectMessages[]
   Discussions        Discussions[]
   DiscussionsUsers   DiscussionsUsers[]
-  friends            Friendship[]         @relation("friend")
-  friendships        Friendship[]         @relation("user")
+  friends            Friendship[]       @relation("friend")
+  friendships        Friendship[]       @relation("user")
   LendingTable       LendingTable[]
   Notifications      Notifications[]
   Posts              Posts[]
   PostsUsers         PostsUsers[]
   UserBooks          UserBooks[]
   User_Places        User_Places[]
-  Conversations      Conversations[]      @relation("conversationMembers")
-  Description_Places Description_Places[]
+  Conversations      Conversations[]    @relation("conversationMembers")
 }
 
 model PlacesToRead {
-  id                 String               @id @default(uuid())
-  nickName           String?
-  Location           String
-  Private            Boolean              @default(false)
-  Lat                Float?
-  Long               Float?
-  googlePlaceId      String?
-  LendingTableIn     LendingTable[]       @relation("inPlace")
-  LendingTableOut    LendingTable[]       @relation("outPlace")
-  userPlaces         User_Places[]
-  Activity           Activity[]
-  Description_Places Description_Places[]
+  id              String            @id @default(uuid())
+  nickName        String?
+  location        String
+  name            String?
+  Private         Boolean           @default(false)
+  Lat             Float?
+  Long            Float?
+  rating          Float?
+  website         String?
+  phone           String?
+  types           String[]
+  googlePlaceId   String            @unique
+  placeEditorial  String?
+  LendingTableIn  LendingTable[]    @relation("inPlace")
+  LendingTableOut LendingTable[]    @relation("outPlace")
+  userPlaces      User_Places[]
+  Activity        Activity[]
+  Places_Pictures Places_Pictures[]
 }
 
-model Description_Places {
-  id      String       @id @default(uuid())
-  body    String
-  place   PlacesToRead @relation(fields: [placeId], references: [id])
-  userId  String
-  user    User         @relation(fields: [userId], references: [id])
-  placeId String
-
-  @@unique([userId, placeId], name: "userId_placeId")
+model Places_Pictures {
+  id          String       @id @default(uuid())
+  url         String
+  googlePic   Boolean?
+  description String?
+  placeId     String
+  place       PlacesToRead @relation(fields: [placeId], references: [id])
 }
 
 model User_Places {
   id            String       @id @default(uuid())
-  userId        String
+  userId        String?
   placeId       String
   googlePlaceId String
+  private       Boolean      @default(false)
   favorite      Boolean      @default(false)
-  Rating        Int?
-  Review        String?
+  Rating        Float?
+  text          String?
   CheckIns      Int?
   place         PlacesToRead @relation(fields: [placeId], references: [id])
-  user          User         @relation(fields: [userId], references: [id])
+  user          User?        @relation(fields: [userId], references: [id])
 
   @@unique([userId, placeId], name: "userId_placeId")
 }

@@ -37,19 +37,20 @@ function Clubs() {
   flex-basis: ${(props) => props.flexBasis || '33%'};
   margin: 10px;
   transition: transform 0.2s ease-in-out;
+  background-color: #f4f1ea !important;
 
   &:hover {
     transform: scale(1.02);
   }
 `;
 
-  //   const HeaderBox = styled.div`
-  //   background-color: lightblue;
-  //   padding: 20px 0;
-  //   margin: 20px auto;
+  // const HeaderBox = styled.div`
+  //   background-color: #e0d0c2;
+  //   padding: 7px 0;
+  //   margin: 10px auto;
   //   border-radius: 20px;
   //   text-align: center;
-  //   max-width: 300px;
+  //   max-width: 240px;
   // `;
 
   return (
@@ -98,7 +99,7 @@ function Clubs() {
                         fontSize: '13px', color: 'gray', position: 'absolute', bottom: 5, right: 5,
                       }}
                     >
-                      {club.clubMembers.length === 1 ? '1 Member' : `${club.clubMembers.length} Members`}
+                      {club.clubMembers && club.clubMembers.length === 1 ? '1 Member' : `${club.clubMembers?.length || 0} Members`}
                     </Typography>
                   </CardContent>
                 </Link>

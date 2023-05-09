@@ -4,6 +4,7 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import IconButton from '@mui/joy/IconButton';
 import { Tooltip } from '@material-ui/core';
 import UserContext from '../../hooks/Context';
+import User from '../../../../server/routes/User';
 
 type CustomColor = 'success' | 'danger';
 function LendingLibraryButton(props: any) {
@@ -20,7 +21,7 @@ function LendingLibraryButton(props: any) {
       book,
       id,
       color,
-    }).then((data) => console.log(data.data));
+    }).then((data) => user.UserBooks = data.data);
     if (color === 'success') {
       setColor('danger' as CustomColor);
       setToolTip(<h1>Add to Lending Library</h1>);
