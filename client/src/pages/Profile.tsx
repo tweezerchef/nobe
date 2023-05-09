@@ -48,6 +48,7 @@ function Profile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   // const [socket, setSocket] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
+  const [userLocation, setUserLocation] = useState<any>([]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -72,10 +73,19 @@ function Profile() {
     }
   };
 
+  const getUserLocation = async () => {
+      try {
+        const response = await axios.get(`/location/${id}`);
+        console.log(response, 79);
+         setUserLocation(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   const handleNearMeClick = async () => {
     try {
-      const userRes = await await axios.get(`/User/${id}`);
-      console.log(userRes, 77);
       const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
       const data = await response.data;
       navigate('/locations', { state: data });

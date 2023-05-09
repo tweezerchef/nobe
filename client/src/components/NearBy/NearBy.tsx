@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -61,11 +62,12 @@ function NearBy() {
     setLocationState('loading');
     // console.log(userLongitude, userLongitude, 63)
     try {
-      const res = await axios.put(`/location/${id}/coordinates`, {
+      const res = await axios.put(`/location/${id}/location`, {
         longitude: userLongitude,
         latitude: userLatitude,
+        radius,
       });
-      // console.log(res, 68);
+      console.log(res, 68);
       setTimeout(() => {
         setLocationState('success');
       }, 2000);
@@ -139,16 +141,6 @@ function NearBy() {
           suggestionsChange={onSuggectionChange}
         />
       </GeoapifyContext>
-      <ReactiveButton
-        rounded
-        size="medium"
-        buttonState={locationState}
-        idleText="Save Location"
-        loadingText="Saving"
-        successText="Done"
-        onClick={saveLocation}
-        color="blue"
-      />
       <h1>Set Radius</h1>
       <FormControl sx={{ m: 1, width: '18ch' }} variant="outlined">
         <OutlinedInput
@@ -171,10 +163,10 @@ function NearBy() {
         rounded
         size="medium"
         buttonState={radiusState}
-        idleText="Save Radius"
+        idleText="Save Location Preference"
         loadingText="Saving"
         successText="Done"
-        onClick={saveRadius}
+        onClick={saveLocation}
         color="blue"
       />
       <Button onClick={handleLookForBooksClick}> Look For Books</Button>
