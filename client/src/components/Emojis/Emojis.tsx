@@ -31,8 +31,8 @@ function Emojis({ onSelect }: Props) {
       zIndex: 9999,
     }}
     >
-      <span style={{ cursor: 'pointer' }} onClick={() => setIsOpen(!isOpen)}>
-        😀
+      <span style={{ cursor: 'pointer', marginRight: '5px', fontSize: '24px' }} onClick={() => setIsOpen(!isOpen)}>
+        🍿
       </span>
       {isOpen && (
         <div style={{

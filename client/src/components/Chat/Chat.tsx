@@ -45,6 +45,7 @@ interface Message {
   text: string;
   name: string;
   sender: string;
+  createdAt: string;
 }
 
 interface Conversation {
@@ -78,9 +79,19 @@ function Chat() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentConvo, setCurrentConvo] = useState<Conversation | null>(null);
   const [socket, setSocket] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
 
   const userContext = useContext(UserContext);
-  const user = userContext?.user;
+  const userId = userContext?.user.id;
+
+  const updateUser = async () => {
+    const updatedUser = await axios.get('/user/id', {
+      params: {
+        id: userId,
+      },
+    });
+    setUser(updatedUser.data);
+  };
 
   const sendMessage = async (sentMessage: string) => {
     if (currentConvo && user) {
@@ -150,8 +161,14 @@ function Chat() {
   };
 
   useEffect(() => {
-    setConversations(user.Conversations);
+    updateUser();
   }, []);
+
+  useEffect(() => {
+    if (user !== null) {
+      setConversations(user.Conversations);
+    }
+  }, [user]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -216,24 +233,28 @@ function Chat() {
           </Grid>
           <Divider />
           <List>
-            {conversations.map((conversation: any) => {
-              const otherUser = conversation.members.find((member: any) => (
-                member.firstName !== user.firstName
-              ));
-              const otherUserName = otherUser ? otherUser.firstName : '';
-              return (
-                <ListItem
-                  button
-                  key={conversation.id}
-                  onClick={() => {
-                    setCurrentConvo(conversation);
-                    setChatMessages(conversation.messages);
-                  }}
-                >
-                  <ListItemText>{otherUserName}</ListItemText>
-                </ListItem>
-              );
-            })}
+            {conversations.length === 0 ? (
+              <ListItemText style={{ marginLeft: '5px' }} primary="Loading..." />
+            ) : (
+              conversations.map((conversation: any) => {
+                const otherUser = conversation.members.find((member: any) => (
+                  member.firstName !== user.firstName
+                ));
+                const otherUserName = otherUser ? otherUser.firstName : '';
+                return (
+                  <ListItem
+                    button
+                    key={conversation.id}
+                    onClick={() => {
+                      setCurrentConvo(conversation);
+                      setChatMessages(conversation.messages);
+                    }}
+                  >
+                    <ListItemText>{otherUserName}</ListItemText>
+                  </ListItem>
+                );
+              })
+            )}
           </List>
         </Grid>
         <Grid item xs={9} direction="column" style={{ height: '100%' }}>
@@ -278,7 +299,8 @@ function Chat() {
               >
                 {chatMessages
                   .slice()
-                  .reverse().map((chatMessage: any) => {
+                  .sort((a, b) => (new Date(b.createdAt) as any) - (new Date(a.createdAt) as any))
+                  .map((chatMessage: any) => {
                     const sender = currentConvo.members.find((member: any) => (
                       member.id === chatMessage.senderId
                     ));
@@ -289,7 +311,7 @@ function Chat() {
                         <Grid container>
                           <Grid item xs={12}>
                             <ListItemText primary={(
-                              <Typography component="span" variant="body2" style={{ display: 'flex', justifyContent: isCurrentUser ? 'flex-end' : 'flex-start' }}>
+                              <Typography component="span" variant="body2" style={{ display: 'flex', justifyContent: isCurrentUser ? 'flex-end' : 'flex-start', fontSize: '16px' }}>
                                 <span style={{ margin: '0px 5px 0px 5px', fontWeight: 'bolder', color: isCurrentUser ? 'limegreen' : 'red' }}>
                                   {senderFirstName}
                                 </span>
@@ -313,6 +335,7 @@ function Chat() {
                                 padding: '2px 10px 2px 10px',
                                 borderRadius: '16px',
                                 color: isCurrentUser ? '#FFF' : 'black',
+                                fontSize: '16px',
                               }}
                             >
                               {chatMessage.text}
