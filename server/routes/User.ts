@@ -173,4 +173,42 @@ User.get('/id', async (req, res) => {
   }
 });
 
+User.get('/id/conversations', async (req, res) => {
+  const { id } = req.query;
+  // console.log('id', id);
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        // include all columns from the books table
+        id: true,
+        firstName: true,
+        username: true,
+        NotificationsCount: true,
+        Conversations: {
+          select: {
+            id: true,
+            members: true,
+            messages: {
+              orderBy: {
+                createdAt: 'asc',
+              },
+            },
+            updatedAt: true,
+          },
+          orderBy: {
+            updatedAt: 'desc',
+          },
+        },
+      },
+    });
+    res.send(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving book data');
+  }
+});
+
 export default User;

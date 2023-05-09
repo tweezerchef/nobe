@@ -17,10 +17,8 @@ Conversations.post('/', async (req: AuthenticatedRequest, res: Response) => {
   const { currentUser, otherUser } = req.body;
 
   try {
-    // Find the receiver user
     const receiver = await prisma.user.findFirst({ where: { firstName: otherUser } });
 
-    // Check if a conversation with the same set of members already exists
     const existingConversation = await prisma.conversations.findFirst({
       where: {
         AND: [
@@ -36,12 +34,10 @@ Conversations.post('/', async (req: AuthenticatedRequest, res: Response) => {
     });
 
     if (existingConversation) {
-      // Return existing conversation instead of creating a new one
       res.json(null);
       return;
     }
 
-    // Create a new conversation with the specified members
     const newConversation = await prisma.conversations.create({
       data: {
         members: {
@@ -62,6 +58,27 @@ Conversations.post('/', async (req: AuthenticatedRequest, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Could not create conversation' });
+  }
+});
+
+Conversations.put('/:id', async (req: AuthenticatedRequest, res: Response) => {
+  const conversationId = req.params.id;
+
+  try {
+    const updatedConversation = await prisma.conversations.update({
+      where: { id: conversationId },
+      data: { updatedAt: new Date() },
+      select: {
+        id: true,
+        members: true,
+        messages: true,
+        updatedAt: true,
+      },
+    });
+    res.json(updatedConversation);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Could not update conversation' });
   }
 });
 
