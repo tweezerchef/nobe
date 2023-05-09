@@ -50,7 +50,7 @@ export default function CustomizedTimeline() {
           userId,
         },
       });
-      setActivity(response.data.reverse());
+      setActivity(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +65,14 @@ export default function CustomizedTimeline() {
       {activity.length === 0 && <div>loading</div>}
       {activity.length > 0 && (
         <Timeline position="alternate">
-          {activity.map((data: Activity) => (
+          {activity.sort((a, b) => {
+            if (a.createdAt < b.createdAt) {
+              return 1;
+            } if (a.createdAt > b.createdAt) {
+              return -1;
+            }
+            return 0;
+          }).map((data: Activity) => (
             <TimelineItem key={data.createdAt}>
               <TimelineOppositeContent
                 sx={{ m: 'auto 0' }}

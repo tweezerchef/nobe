@@ -98,9 +98,10 @@ model Notifications {
 }
 
 model Conversations {
-  id       String           @id @default(uuid())
-  messages DirectMessages[] @relation("conversation")
-  members  User[]           @relation("conversationMembers")
+  id        String           @id @default(uuid())
+  messages  DirectMessages[] @relation("conversation")
+  members   User[]           @relation("conversationMembers")
+  updatedAt DateTime         @default(now())
 }
 
 model DirectMessages {

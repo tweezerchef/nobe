@@ -38,7 +38,7 @@ Review.post('/', async (req: Request, res: Response) => {
     ISBN10, title, author, image, description,
   } = book;
   // findOrCreateBook(ISBN10, title, author, image, description )
-  axios.post('http://localhost:8080/bookdata/title/wishlist', {
+  axios.post('http://localhost:8080/bookdata/title', {
     title,
     ISBN10,
     author,
@@ -47,19 +47,20 @@ Review.post('/', async (req: Request, res: Response) => {
   })
     .then((newbook) => {
       const booksId = newbook.data.id;
-      findOrCreateUserBook(booksId, id, rating).then((NewUserBook) => {
-        res.sendStatus(201);
+      findOrCreateUserBook(booksId, id, rating);
+      prisma.activity.create({
+        data: {
+          userId: id,
+          type: 'review',
+          bookId: booksId,
+          description: `${rating}`,
+        },
+      })
+        .then(() => {
+          res.sendStatus(201);
         // .json(NewUserBook);
-      });
+        });
     });
-  await prisma.activity.create({
-    data: {
-      userId: id,
-      type: 'review',
-      bookId: book.id,
-      description: `${rating}`,
-    },
-  });
 });
 Review.post('/WrittenReview', async (req: Request, res: Response) => {
   const { book, review, id } = req.body;
@@ -68,7 +69,7 @@ Review.post('/WrittenReview', async (req: Request, res: Response) => {
     ISBN10, title, author, image, description,
   } = book;
 
-  axios.post('http://localhost:8080/bookdata/title/wishlist', {
+  axios.post('http://localhost:8080/bookdata/title', {
     title,
     ISBN10,
     author,
