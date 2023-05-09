@@ -78,10 +78,19 @@ function Chat() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentConvo, setCurrentConvo] = useState<Conversation | null>(null);
   const [socket, setSocket] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
 
   const userContext = useContext(UserContext);
-  const user = userContext?.user;
-  // const setUser = userContext?.setUser;
+  const userId = userContext?.user.id;
+
+  const updateUser = async () => {
+    const updatedUser = await axios.get('/user/id', {
+      params: {
+        id: userId,
+      },
+    });
+    setUser(updatedUser.data);
+  };
 
   const sendMessage = async (sentMessage: string) => {
     if (currentConvo && user) {
@@ -151,8 +160,14 @@ function Chat() {
   };
 
   useEffect(() => {
-    setConversations(user.Conversations);
+    updateUser();
   }, []);
+
+  useEffect(() => {
+    if (user !== null) {
+      setConversations(user.Conversations);
+    }
+  }, [user]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
