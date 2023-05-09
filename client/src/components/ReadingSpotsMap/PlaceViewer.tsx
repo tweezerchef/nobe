@@ -120,23 +120,23 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
     }
   };
   return (
-    <Grid container sx={{ height: '100%', boxSizing: 'border-box', overflow: 'auto' }}>
+    <Grid container sx={{ boxSizing: 'content-box', overflow: 'auto' }}>
       <Grid item xs={12}>
         <Card
           elevation={6}
           sx={{
-            height: '100%', width: '100%', display: 'flex', flexDirection: 'column',
+            height: '100%', width: '100%', display: 'flex', flexDirection: 'column', padding: 0, margin: 0,
           }}
         >
           <Grid container>
-            <Grid item xs={12} sm={12} sx={{ display: 'flex', alignItems: 'center' }}>
+            <Grid item xs={12} sm={12} sx={{ display: 'flex', alignItems: 'flex-start' }}>
               <CardMedia
-                sx={{ height: { xs: '200px', sm: '300px' }, width: '25%', objectFit: 'cover' }}
+                sx={{ height: { sm: '270px' }, width: '25%', objectFit: 'cover' }}
                 image={image || undefined}
                 title={place?.name}
               />
-              <CardContent>
-                <Typography gutterBottom variant="h5">
+              <CardContent sx={{ padding: 0, margin: 0 }}>
+                <Typography variant="h5">
                   {place?.name}
                   {appFavorite && (
                     <Tooltip title="One of your favorite places to read">
@@ -150,15 +150,19 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                       google={google}
                     />
                   )}
+                  {place?.types.map((name) => (
+                    <Chip key={name} size="small" label={name} sx={{ marginLeft: 1 }} />
+                  ))}
+                  {place?.website && (
+                  <Button size="small" color="primary" onClick={() => window.open(place?.website, '_blank')}>
+                    Website
+                  </Button>
+                  )}
                 </Typography>
-
-                {/* Reviews and TextField container */}
+                <Rating name="read-only" value={Number(place?.rating)} readOnly />
                 <Box display="flex" alignItems="flex-start">
-                  <Box display="flex" flexDirection="column" alignItems="center" my={2}>
-                    <Box display="flex" justifyContent="space-between" width="100%">
-                      <Rating name="read-only" value={Number(place?.rating)} readOnly />
-                    </Box>
-                    {/* Reviews */}
+                  <Box display="flex" flexDirection="column" alignItems="center">
+
                     <Box>
                       {place && reviews && reviews.length ? (
                         <>
@@ -201,7 +205,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                       variant="outlined"
                       value={userReview}
                       onChange={(event) => setUserReview(event.target.value)}
-                      sx={{ marginBottom: 1 }}
+                      sx={{ marginBottom: 0 }}
                     />
                     <Button
                       variant="contained"
@@ -212,21 +216,13 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                     </Button>
                   </Box>
                 </Box>
-
-                {place?.types.map((name) => (
-                  <Chip key={name} size="small" label={name} sx={{ marginRight: 1 }} />
-                ))}
-                {place?.website && (
-                  <Button size="small" color="primary" onClick={() => window.open(place?.website, '_blank')}>
-                    Website
-                  </Button>
-                )}
+                {/*
                 {place?.address && (
                   <Typography gutterBottom variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center' }}>
                     <LocationOnIcon />
                     {place?.formatted_address}
                   </Typography>
-                )}
+                )} */}
               </CardContent>
             </Grid>
           </Grid>

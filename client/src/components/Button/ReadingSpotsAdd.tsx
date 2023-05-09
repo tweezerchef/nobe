@@ -69,10 +69,10 @@ function ReadingSpotsAdd(props: any) {
         variant="solid"
         color={color}
         sx={{
-          // position: 'absolute',
-          // zIndex: 2,
-          // borderRadius: '50%',
-          left: '1rem',
+          position: 'relative',
+          borderRadius: '50%',
+          left: '.25rem',
+          top: '.35rem',
           // bottom: 0,
           // transform: 'translateY(50%)',
         }}
