@@ -10,6 +10,7 @@ interface DiscussionPost {
   discussionId: string;
 }
 interface Place {
+  location: ReactNode;
   userPlaces: any;
   User_Places: any;
   place_id: any;
@@ -59,7 +60,5 @@ interface Cuisine {
   name: string;
 }
 interface Review {
-  author_name: string;
-  review: string;
   text: string;
 }
