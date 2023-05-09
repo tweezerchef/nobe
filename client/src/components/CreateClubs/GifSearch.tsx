@@ -1,7 +1,6 @@
-import ReactGiphySearchbox from "react-giphy-searchbox";
+import ReactGiphySearchbox from 'react-giphy-searchbox';
 
-
-const GifSearch = (props: any) => {
+function GifSearch(props: any) {
   const { setClubImage } = props;
   return (
     <ReactGiphySearchbox
@@ -9,10 +8,12 @@ const GifSearch = (props: any) => {
       onSelect={(item: any) => setClubImage(item.embed_url)}
       masonryConfig={[
         { columns: 2, imageWidth: 110, gutter: 5 },
-        { mq: "700px", columns: 3, imageWidth: 120, gutter: 5 }
+        {
+          mq: '700px', columns: 3, imageWidth: 120, gutter: 5,
+        },
       ]}
     />
-  )
+  );
 }
 
 export default GifSearch;

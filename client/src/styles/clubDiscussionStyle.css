@@ -1,0 +1,25 @@
+.club-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+    transition: transform 0.2s ease-in-out;
+    background-color: #f4f1ea !important
+}
+
+.club-card:hover {
+    transform: scale(1.02);
+}
+
+.club-card-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.club-card-body {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+}

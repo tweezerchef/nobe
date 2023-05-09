@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { useState, useEffect, useRef, useContext } from 'react';
+import {
+  useState, useEffect, useRef, useContext,
+} from 'react';
 import axios from 'axios';
-import UserContext from '../hooks/Context'
 import moment from 'moment';
-
 
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
@@ -19,13 +19,14 @@ import StarIcon from '@mui/icons-material/Star';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import IconButton from '@mui/joy/IconButton';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
-
-
+import AddLocationIcon from '@mui/icons-material/AddLocation';
+import UserContext from '../hooks/Context';
 
 interface Activity {
   createdAt: string;
   userId: string;
   type: string;
+  description: string;
   user: {
     firstName: string;
     lastName: string;
@@ -36,7 +37,6 @@ interface Activity {
 }
 
 export default function CustomizedTimeline() {
-
   const [activity, setActivity] = useState<Activity[]>([]);
 
   const userContext = useContext(UserContext);
@@ -47,24 +47,20 @@ export default function CustomizedTimeline() {
     try {
       const response = await axios.get('/api/activity', {
         params: {
-          userId: userId,
-        }
+          userId,
+        },
       });
-      console.log(response.data);
       setActivity(response.data.reverse());
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     getFeed();
-  }, [])
-
-
+  }, []);
 
   return (
-
     <>
       {activity.length === 0 && <div>loading</div>}
       {activity.length > 0 && (
@@ -81,7 +77,7 @@ export default function CustomizedTimeline() {
               </TimelineOppositeContent>
               <TimelineSeparator>
                 <TimelineConnector />
-                {data.type.toLowerCase() === "wishlist" ? (
+                {data.type.toLowerCase() === 'wishlist' ? (
                   <IconButton
                     aria-label="Like minimal photography"
                     size="md"
@@ -92,25 +88,55 @@ export default function CustomizedTimeline() {
                   >
                     <BookmarkAddIcon />
                   </IconButton>
-                ) : (
+                ) : data.type.toLowerCase() === 'review' ? (
                   <IconButton
                     aria-label="Like minimal photography"
                     size="md"
                     variant="solid"
-                    color="success"
+                    color="primary"
                     sx={{
                     }}
                   >
-                    <LocalMallIcon />
+                    <StarIcon />
                   </IconButton>
-                )}
+                )
+                  : data.type.toLowerCase() === 'location' ? (
+                    <IconButton
+                      aria-label="Like minimal photography"
+                      size="md"
+                      variant="solid"
+                      color="info"
+                      sx={{
+                      }}
+                    >
+                      <AddLocationIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      aria-label="Like minimal photography"
+                      size="md"
+                      variant="solid"
+                      color="success"
+                      sx={{
+                      }}
+                    >
+                      <LocalMallIcon />
+                    </IconButton>
+                  )}
                 <TimelineConnector />
               </TimelineSeparator>
               <TimelineContent sx={{ py: '12px', px: 2 }}>
                 <Typography variant="h6" component="span">
-                  {data.type.toLowerCase() === "wishlist" ? (`${data.user.firstName} added ${data.book.title} to their wishlist`) : (
-                    `${data.user.firstName} added ${data.book.title} to their owned books`
-                  )}
+                  {data.type.toLowerCase() === 'wishlist' ? (`${data.user.firstName} added ${data.book.title} to their wishlist`)
+                    : data.type.toLowerCase() === 'review' ? (
+                      (`${data.user.firstName} rated ${data.book.title} ${data.description} stars`)
+                    )
+                      : data.type.toLowerCase() === 'location' ? (
+                        (`${data.user.firstName} added ${data.description} as a reading spot`)
+                      )
+                        : (
+                          `${data.user.firstName} added ${data.book.title} to their owned books`
+                        )}
                 </Typography>
               </TimelineContent>
             </TimelineItem>

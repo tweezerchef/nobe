@@ -1,20 +1,22 @@
-
-import { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import GifSearch from './GifSearch';
 import axios from 'axios';
-import { Button } from '@mui/material';
-
-// interface CreateClubsProps {
-//   setClubs: React.Dispatch<React.SetStateAction<typeof Clubs[]>>;
-// }
+import { Button } from '@material-ui/core';
+import GifSearch from './GifSearch';
+import UserContext from '../../hooks/Context';
 
 const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
   const [clubImage, setClubImage] = useState('');
   const { setClubs } = props;
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const setUser = userContext?.setUser;
+  // const id = user?.id;
+  // console.log('userid', id);
 
   const handleSubmit = async () => {
     if (!clubName || !clubDescription || !clubImage) {
@@ -30,23 +32,30 @@ const createClubs = (props: any) => {
       return;
     }
 
-    let body = {
+    const body = {
       name: clubName,
       description: clubDescription,
-      image: clubImage
-    }
+      image: clubImage,
+      userId: user.id,
+      email: user.email,
+    };
     try {
       axios.post('/api/create-club', body)
-        .then(data => {
-          setClubs(data.data);
+        .then((data) => {
+          setClubs(data.data.clubs);
           setClubName('');
           setClubDescription('');
           setClubImage('');
-        })
+          return data;
+        }).then((data) => {
+          if (setUser && data?.data?.user && data?.data?.user !== undefined) {
+            setUser(data?.data?.user);
+          }
+        });
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <Box
@@ -85,7 +94,6 @@ const createClubs = (props: any) => {
       </Button>
     </Box>
   );
-}
-
+};
 
 export default createClubs;

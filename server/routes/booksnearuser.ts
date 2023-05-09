@@ -1,10 +1,16 @@
+/* eslint-disable max-len */
+/* eslint-disable consistent-return */
+/* eslint-disable no-mixed-operators */
+/* eslint-disable no-console */
+import { PrismaClient } from '@prisma/client';
+import { Request, Response } from 'express';
+// import UserBooks from './userbooks';
+
 const express = require('express');
-const axios = require('axios');
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+// const axios = require('axios');
+
+const prisma = new PrismaClient();
 const LocationRoute = express.Router();
-import { Request, Response } from "express";
-import UserBooks from './userbooks';
 
 interface AuthenticatedRequest extends Request {
   user: {
@@ -12,17 +18,16 @@ interface AuthenticatedRequest extends Request {
     // add other properties as needed
   };
 }
-interface QueryResult {
-  id: number;
-}
-
+// interface QueryResult {
+//   id: number;
+// }
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
-  console.log(req, 21);
-  //console.log(req, 26);
+  // console.log(req, 21);
+  // console.log(req, 26);
   try {
-    const { lon, lat, radius } = req.query
-     console.log(lon, lat, radius, 25);
+    const { lon, lat, radius } = req.query;
+    // console.log(lon, lat, radius, 25);
     //  coordinates are sent in the request body
     if (!lat || !lon || !radius) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
@@ -46,7 +51,13 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
               lte: lonNum + radiusNum / (69.0 * Math.cos(latNum * Math.PI / 180.0)),
             },
           },
-
+          {
+            UserBooks: {
+              some: {
+                owned: true,
+              },
+            },
+          },
         ],
       },
       select: {
@@ -74,7 +85,7 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
             id: true,
             members: true,
             messages: true,
-          }
+          },
         },
         UserBooks: {
           select: {
@@ -94,18 +105,18 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
                 ISBN10: true,
                 description: true,
                 image: true,
-                UserBooks:{
+                UserBooks: {
                   select: {
-                  id: true,
-                  wishlist: true,
-                  owned: true,
-                  booksId: true,
-                  userId: true,
-                  rating: true,
-                  review: true,
-                  LendingTable: true,
-                  User: true
-                  }
+                    id: true,
+                    wishlist: true,
+                    owned: true,
+                    booksId: true,
+                    userId: true,
+                    rating: true,
+                    review: true,
+                    LendingTable: true,
+                    User: true,
+                  },
                 },
                 Discussions: true,
                 Activity: true,
@@ -117,69 +128,65 @@ LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response)
           },
         },
       },
-    })
-    console.log(users, 67);
+    });
+    // console.log(users, 67);
     res.status(200).send(users);
   } catch (error) {
-    //console.error('Error getting users within radius:', error);
+    // console.error('Error getting users within radius:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-
-
 LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Response) => {
-  //console.log(req);
+  // console.log(req);
   try {
-    const id = req.params.id;
-    const latitude = req.body.latitude;
-    const longitude = req.body.longitude;
+    const { id } = req.params;
+    const { latitude } = req.body;
+    const { longitude } = req.body;
     const userUpdateLocation = await prisma.user.update({
       where: {
-        id: id,
+        id,
       },
       data: {
-        longitude: longitude,
-        latitude: latitude
+        longitude,
+        latitude,
       },
-    })
-    console.log(userUpdateLocation, 145);
-    res.status(200).json({ userUpdateLocation })
+    });
+    // console.log(userUpdateLocation, 145);
+    res.status(200).json({ userUpdateLocation });
   } catch (e) {
     // console.error(e)
     res.status(500).json({
       error: 'Server error!',
-    })
+    });
   }
-})
+});
 
 LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response) => {
- // console.log(req);
-  //console.log(req.body);
+  // console.log(req);
+  // console.log(req.body);
   try {
-    const id = req.params.id;
-    const radius = req.body.radius
+    const { id } = req.params;
+    const { radius } = req.body;
     const radNum = Number(radius);
     const userUpdateRadius = await prisma.user.update({
       where: {
-        id: id,
+        id,
       },
       data: {
         radius: radNum,
 
       },
-    })
-    //console.log(userUpdateRadius);
-    res.status(200).json({ userUpdateRadius })
+    });
+    // console.log(userUpdateRadius);
+    res.status(200).json({ userUpdateRadius });
   } catch (e) {
-    console.error(e)
+    console.error(e);
     res.status(500).json({
       error: 'Server error!',
-    })
+    });
   }
-})
-
-
+});
 
 // const userBooks = await prisma.userBooks.findMany({
 //   where: {
@@ -192,8 +199,6 @@ LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response
 // // const books = userBooks.map((userBook: UserBooks) => userBook.books);
 // res.json(userBooks);
 
-
-
 //
 // [user, user]
 // reduce user to user.id
@@ -205,10 +210,6 @@ LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response
 //             }
 //         })
 // console ret
-
-
-
-
 
 // try {
 //   const query = await prisma.$queryRaw<{id: string}[]>
@@ -230,8 +231,6 @@ LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response
 //   console.error(error);
 //   res.status(500).json({ error: 'Internal server error' });
 //  }
-
-
 
 // app.post('/location', async (req, res) => {
 //   const { name, location } = req.body
@@ -271,8 +270,5 @@ LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response
 //     })
 //   }
 // })
-
-
-
 
 export default LocationRoute;

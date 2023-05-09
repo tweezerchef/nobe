@@ -1,34 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from 'react';
 
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
-import IconButton from '@mui/joy/IconButton';
 import Link from '@mui/joy/Link';
-import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
-import { FormControl, InputLabel } from "@mui/material";
-import Box from '@mui/material/Box';
+import { FormControl, InputLabel } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import UserStarRating from "../components/UserStarRating/UserStarRating";
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
-import axios from 'axios';
-import { useContext } from 'react';
-import UserContext from '../hooks/Context';
-
+import TrendingWishlistButton from '../components/Button/TrendingWishlistButton';
+import TrendingLendingLibraryButton from '../components/Button/TrendingLendingLibraryButton';
 
 function Trending() {
-
   const [trending, setTrending] = useState<any[]>([]);
-
-  const userContext = useContext(UserContext);
-  const user = userContext?.user;
-  const id = user.id
 
   async function fetchTrending(category: string) {
     const response = await fetch(`/api/trending?category=${category}`);
@@ -37,39 +26,8 @@ function Trending() {
   }
 
   function handleSelect(event: SelectChangeEvent<string>) {
-    fetchTrending(event.target.value)
+    fetchTrending(event.target.value);
   }
-
-  // const addToWishlist = async (isbn: string, title: string, author: string) => {
-
-  //   const user = localStorage.getItem("user");
-
-  //   if (!user) {
-  //     throw new Error("No user found");
-  //   }
-  //   const parsed = JSON.parse(user)
-  //   const email = parsed.email
-
-  //   try {
-  //     await axios.post('/api/wishlist', { isbn: isbn, title: title, author: author, email: email });
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  const addToWishlist = async (title: string) => {
-
-    const inventory = "Wishlist"
-
-    try {
-      const response = await axios.post(`/api/wishlist/${id}`, {
-        title, inventory
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -100,9 +58,12 @@ function Trending() {
           <MenuItem value="young-adult-paperback-monthly">Young Adult Paperback Monthly</MenuItem>
         </Select>
       </FormControl>
-      <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', overflowY: 'auto', maxWidth: '100%', maxHeight: 'calc(100vh - 200px' }}>
+      <div style={{
+        display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', overflowY: 'auto', maxWidth: '100%', maxHeight: 'calc(100vh - 200px',
+      }}
+      >
         {trending.length === 0 ? (
-          <div></div>
+          <div />
         ) : (
           trending.map((book) => (
             <Card variant="outlined" key={book.primary_isbn10} sx={{ width: 380, margin: '10px' }}>
@@ -114,30 +75,25 @@ function Trending() {
                     alt=""
                   />
                 </AspectRatio>
-                <IconButton
-                  aria-label="Like minimal photography"
-                  size="md"
-                  variant="solid"
-                  color="danger"
-                  sx={{
-                    position: 'absolute',
-                    zIndex: 2,
-                    borderRadius: '50%',
-                    right: '1rem',
-                    bottom: 0,
-                    transform: 'translateY(50%)',
-                  }}
-                  onClick={() => addToWishlist(book.title)}
-                >
-                  <BookmarkAddIcon />
-                </IconButton>
+                <TrendingLendingLibraryButton book={book} />
+                <TrendingWishlistButton book={book} />
               </CardOverflow>
-              <Typography level="h2" sx={{ fontSize: 'md', mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical' }}>
+              <Typography
+                level="h2"
+                sx={{
+                  fontSize: 'md', mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical',
+                }}
+              >
                 <Link href="#multiple-actions" overlay underline="none">
                   {book.title.charAt(0).toUpperCase() + book.title.slice(1).toLowerCase()}
                 </Link>
               </Typography>
-              <Typography level="body2" sx={{ mt: 0.5, mb: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <Typography
+                level="body2"
+                sx={{
+                  mt: 0.5, mb: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                }}
+              >
                 <Link href="#multiple-actions">{book.author}</Link>
               </Typography>
               <Divider inset="context" />
@@ -160,9 +116,9 @@ function Trending() {
                 </Typography>
                 <Divider orientation="vertical" />
                 <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
-                  {book.weeks_on_list} <WhatshotIcon sx={{ color: 'orange', fontSize: 'md' }} />
+                  {book.weeks_on_list}
+                  <WhatshotIcon sx={{ color: 'orange', fontSize: 'md' }} />
                 </Typography>
-                {/* <UserStarRating /> */}
               </CardOverflow>
             </Card>
           ))

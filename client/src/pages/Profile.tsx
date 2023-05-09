@@ -1,15 +1,19 @@
-import { useParams } from 'react-router-dom';
-import React, { useState, useEffect, useRef, useContext, } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import React, {
+  useState, useEffect,
+  // useRef,
+  useContext,
+} from 'react';
 import axios from 'axios';
-import { Typography, Grid, TextField, Button, Box } from '@material-ui/core';
-import BookDisplay from '../components/BookDisplay/BookDisplay';
-import UserContext from '../hooks/Context'
-import Chat from '../components/Chat/Chat'
+import {
+  Typography, Grid, TextField, Button, Box,
+} from '@material-ui/core';
 import io from 'socket.io-client';
-import Modal from '@mui/material/Modal'
+import Modal from '@mui/material/Modal';
+import BookDisplay from '../components/BookDisplay/BookDisplay';
+import UserContext from '../hooks/Context';
 import NearBy from '../components/NearBy/NearBy';
-import styled from 'styled-components';
-import { Paper } from '@mui/material';
+
 interface UserBook {
   wishlist: any;
   owned: any;
@@ -34,48 +38,30 @@ interface UserProfile {
   UserBooks: UserBook[];
 }
 
-const ChatOverlay = styled(Paper)`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  width: 800px;
-  height: 600px;
-  overflow-y: auto;
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
-`;
+const socketUrl = process.env.SOCKET_URL;
 
-
-const Profile = () => {
+function Profile() {
   const [books, setBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
-  const [showChat, setShowChat] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [socket, setSocket] = useState<any>(null);
+  // const [socket, setSocket] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-
+  const navigate = useNavigate();
 
   // const chatContext = useContext(ChatContext);
 
   const userContext = useContext(UserContext);
-  let user = userContext?.user;
+  const user = userContext?.user;
 
-  const id = user.id
-  const friendId: string = useParams().id || "";
-
-  const newSocket = io('http://localhost:3000');
-
-
-
+  const { id } = user;
+  const friendId: string = useParams().id || '';
 
   const getProfile = async () => {
-    if (friendId !== "") {
+    if (friendId !== '') {
       try {
         const response = await axios.get(`/user/id?id=${friendId}`);
         await setProfile(response.data);
@@ -83,18 +69,30 @@ const Profile = () => {
         console.error(error);
       }
     }
-  }
+  };
+
+  const handleNearMeClick = async () => {
+    try {
+      const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      const data = await response.data;
+      navigate('/locations', { state: data });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getUserBooks = (query: string) => {
     const booksArray: Book[] = [];
 
-    if (query == "Owned") {
+    // eslint-disable-next-line eqeqeq
+    if (query == 'Owned') {
       profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.owned) booksArray.push(book.Books);
       });
       setBooks(booksArray);
     }
-    if (query == "Wishlist") {
+    // eslint-disable-next-line eqeqeq
+    if (query == 'Wishlist') {
       profile?.UserBooks?.forEach((book: UserBook) => {
         if (book.wishlist) booksArray.push(book.Books);
       });
@@ -103,16 +101,12 @@ const Profile = () => {
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    axios.get(`/bookdata/title/searchOne?title=${title}`).then(response => { setBooks([response.data]), console.log(response.data) })
-    //.then(() => console.log(books))
-  }
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-console, no-sequences
+    axios.get(`/bookdata/title/searchOne?title=${title}`).then((response) => { setBooks([response.data]), console.log(response.data); });
+    // .then(() => console.log(books))
+  };
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
-  };
-
-
-  const handleChatButtonClick = () => {
-    setShowChat(!showChat);
   };
 
   const follow = async () => {
@@ -120,37 +114,35 @@ const Profile = () => {
     const userFirstName = user.firstName;
 
     try {
-      newSocket.emit('new-follow', {
-        message: `${userFirstName} has followed you`
-      })
+      if (socketUrl) {
+        const newSocket = io(socketUrl);
+        newSocket.emit('new-follow', {
+          message: `${userFirstName} has followed you`,
+        });
+      }
       await axios.post('/api/friendship', { userId, friendId });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   const ownedClicked = () => {
     getUserBooks('Owned');
     setInventory('Owned');
-  }
+  };
 
   const wishClicked = () => {
-    getUserBooks('Wishlist')
+    getUserBooks('Wishlist');
     setInventory('Wishlist');
-  }
-
-
-
-
+  };
 
   useEffect(() => {
-    if (friendId !== "") {
+    if (friendId !== '') {
       getProfile();
     } else {
-      setProfile(user)
+      setProfile(user);
     }
   }, []);
-
 
   useEffect(() => {
     if (profile) {
@@ -170,26 +162,20 @@ const Profile = () => {
     p: 4,
   };
 
-
+  // console.log(user, 168);
   return (
 
-    <div >
+    <div>
 
-      <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
+      <div style={{ display: 'flex', justifyContent: 'center', margin: '20px' }}>
         <Grid container>
-          <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
-            <div style={{ position: "relative" }}> {/* Add this container div */}
-              <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleChatButtonClick}>
-                Chat
-              </Button>
-              {showChat && (
-                <ChatOverlay>
-                  <Chat />
-                </ChatOverlay>
-              )}
-            </div> {/* Close the container div */}
-            <Typography variant="h4">{friendId === "" ? `${user.firstName}'s` : `${profile?.firstName}'s`} Books</Typography>
-            {friendId === "" ? null : (
+          <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
+            <Typography variant="h4">
+              {friendId === '' ? `${user.firstName}'s` : `${profile?.firstName}'s`}
+              {' '}
+              Books
+            </Typography>
+            {friendId === '' ? null : (
               <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={follow}>Follow</Button>)}
           </Grid>
         </Grid>
@@ -197,10 +183,16 @@ const Profile = () => {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', background: 'rgb(74, 74, 228)' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%' }}>
+        <div style={{
+          display: 'flex', justifyContent: 'center', width: '100%', background: '#002884',
+        }}
+        >
+          <div style={{
+            display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%',
+          }}
+          >
             <Button variant="contained" style={{ margin: '10px' }} color="primary" type="submit">Book Search</Button>
-            <form onSubmit={handleSubmit} >
+            <form onSubmit={handleSubmit}>
               <TextField
                 label="Book Title"
                 value={title}
@@ -211,7 +203,8 @@ const Profile = () => {
             </form>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
-            <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>
+            {user.latitude > 0 && user.radius > 0 ? (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleNearMeClick}>Near Me</Button>)
+              : (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>)}
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
               <Box sx={style}>
                 <NearBy />
@@ -220,15 +213,18 @@ const Profile = () => {
           </div>
         </div>
 
-        {friendId === "" ? (
+        {friendId === '' ? (
 
-          <div style={{ display: "flex", justifyContent: "center" }}>
-          </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }} />
 
         ) : null}
 
         <div style={{ margin: '15px' }}>
-          <Typography variant="h5">{inventory} Books</Typography>
+          <Typography variant="h5">
+            {inventory}
+            {' '}
+            Books
+          </Typography>
         </div>
         <BookDisplay books={books} id={id} />
       </div>
@@ -236,6 +232,5 @@ const Profile = () => {
     </div>
   );
 }
-
 
 export default Profile;
