@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useParams, useNavigate } from 'react-router-dom';
 import React, {
   useState, useEffect,
@@ -73,6 +74,8 @@ function Profile() {
 
   const handleNearMeClick = async () => {
     try {
+      const userRes = await await axios.get(`/User/${id}`);
+      console.log(userRes, 77);
       const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
       const data = await response.data;
       navigate('/locations', { state: data });
