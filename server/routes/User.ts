@@ -175,14 +175,12 @@ User.get('/id', async (req, res) => {
 
 User.get('/id/conversations', async (req, res) => {
   const { id } = req.query;
-  // console.log('id', id);
   try {
     const user = await prisma.user.findFirst({
       where: {
         id,
       },
       select: {
-        // include all columns from the books table
         id: true,
         firstName: true,
         username: true,
@@ -207,7 +205,7 @@ User.get('/id/conversations', async (req, res) => {
     res.send(user);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error retrieving book data');
+    res.status(500).send('Error retrieving conversation data');
   }
 });
 
