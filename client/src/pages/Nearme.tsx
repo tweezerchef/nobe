@@ -48,7 +48,7 @@ interface Props {
 function Locations() {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const { id } = user;
+  const id = user?.id;
 
   // console.log(user);
 
@@ -107,7 +107,7 @@ function Locations() {
   const getBooksNearMe = async () => {
     setButtonState('loading');
     try {
-      const res = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      const res = await axios.get('/location/locations', { params: { lon: user?.longitude, lat: user?.latitude, radius: user?.radius } });
       // console.log(res.data, 99);
       setBooksNearBy(res.data);
       setTimeout(() => {

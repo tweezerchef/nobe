@@ -42,7 +42,7 @@ export default function CustomizedTimeline() {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
 
-  const userId = user.id;
+  const userId = user?.id;
   const getFeed = async () => {
     try {
       const response = await axios.get('/api/activity', {

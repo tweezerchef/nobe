@@ -1,38 +1,25 @@
-/* eslint-disable no-console */
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React, {
   useState, useEffect,
-  // useRef,
   useContext,
 } from 'react';
 import axios from 'axios';
 import {
   Typography, Grid, TextField, Button, Box,
 } from '@material-ui/core';
-import io from 'socket.io-client';
+
 import Modal from '@mui/material/Modal';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context';
 import NearBy from '../components/NearBy/NearBy';
 import { Book, UserBook } from '../typings/types';
 
-interface UserProfile {
-  id: string;
-  firstName: string;
-  picture: string;
-  UserBooks: UserBook[];
-}
-
-const socketUrl = process.env.SOCKET_URL;
-
-function Profile() {
+function UsersProfile() {
   const [books, setBooks] = useState<Book[]>([]);
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  // const [socket, setSocket] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
-  // const [userLocation, setUserLocation] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -42,20 +29,7 @@ function Profile() {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-
   const id = user?.id;
-  const friendId: string = useParams().id || '';
-
-  const getProfile = async () => {
-    if (friendId !== '') {
-      try {
-        const response = await axios.get(`/user/id?id=${friendId}`);
-        await setProfile(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
 
   const handleNearMeClick = async () => {
     try {
@@ -69,49 +43,33 @@ function Profile() {
     }
   };
 
-  const getUserBooks = (query: string) => {
+  const getUserBooks = async (query: string) => {
+    setIsLoading(true);
     const booksArray: Book[] = [];
 
-    // eslint-disable-next-line eqeqeq
-    if (query == 'Owned') {
-      profile?.UserBooks?.forEach((book: UserBook) => {
-        if (book.owned) booksArray.push(book.Books);
+    if (query === 'Owned') {
+      const userBooks = await axios.get(`/user-books/owned/${id}`);
+      userBooks.data.forEach((book: UserBook) => {
+        booksArray.push(book.Books);
       });
       setBooks(booksArray);
     }
-    // eslint-disable-next-line eqeqeq
-    if (query == 'Wishlist') {
-      profile?.UserBooks?.forEach((book: UserBook) => {
-        if (book.wishlist) booksArray.push(book.Books);
+    if (query === 'Wishlist') {
+      const userBooks = await axios.get(`/user-books/wishlist/${id}`);
+      userBooks.data.forEach((book: UserBook) => {
+        booksArray.push(book.Books);
       });
       setBooks(booksArray);
     }
+    setIsLoading(false);
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-console, no-sequences
-    axios.get(`/bookdata/title/searchOne?title=${title}`).then((response) => { setBooks([response.data]), console.log(response.data); });
-    // .then(() => console.log(books))
+    axios.get(`/bookdata/title/searchOne?title=${title}`).then((response) => { setBooks([response.data]); });
   };
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
-  };
-
-  const follow = async () => {
-    const userId = user?.id;
-    const userFirstName = user?.firstName;
-
-    try {
-      if (socketUrl) {
-        const newSocket = io(socketUrl);
-        newSocket.emit('new-follow', {
-          message: `${userFirstName} has followed you`,
-        });
-      }
-      await axios.post('/api/friendship', { userId, friendId });
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const ownedClicked = () => {
@@ -124,20 +82,6 @@ function Profile() {
     setInventory('Wishlist');
   };
 
-  useEffect(() => {
-    if (friendId !== '') {
-      getProfile();
-    } else if (user) {
-      setProfile(user);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (profile) {
-      getUserBooks(inventory);
-    }
-  }, [profile, inventory]);
-
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -149,6 +93,9 @@ function Profile() {
     boxShadow: 24,
     p: 4,
   };
+  useEffect(() => {
+    getUserBooks(inventory);
+  }, []);
 
   // console.log(user, 168);
   return (
@@ -159,12 +106,9 @@ function Profile() {
         <Grid container>
           <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
             <Typography variant="h4">
-              {friendId === '' ? `${user?.firstName}'s` : `${profile?.firstName}'s`}
-              {' '}
+              {user?.firstName}
               Books
             </Typography>
-            {friendId === '' ? null : (
-              <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={follow}>Follow</Button>)}
           </Grid>
         </Grid>
 
@@ -200,13 +144,7 @@ function Profile() {
             </Modal>
           </div>
         </div>
-
-        {friendId === '' ? (
-
-          <div style={{ display: 'flex', justifyContent: 'center' }} />
-
-        ) : null}
-
+        <div style={{ display: 'flex', justifyContent: 'center' }} />
         <div style={{ margin: '15px' }}>
           <Typography variant="h5">
             {inventory}
@@ -214,11 +152,15 @@ function Profile() {
             Books
           </Typography>
         </div>
-        <BookDisplay books={books} id={id} />
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <BookDisplay books={books} id={id} />
+        )}
       </div>
-
     </div>
+
   );
 }
 
-export default Profile;
+export default UsersProfile;

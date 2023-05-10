@@ -28,7 +28,7 @@ const Book = React.memo((props: any) => {
   const { book } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const { id } = user;
+  const id = user?.id;
   if (!book) {
     return null;
   }
@@ -54,7 +54,7 @@ const Book = React.memo((props: any) => {
 
   return (
 
-    <Card key={book.ISBN10} variant="outlined" sx={{ width: 380, margin: '10px' }}>
+    <Card key={book.id} variant="outlined" sx={{ width: 380, margin: '10px' }}>
       <CardOverflow onClick={handleOnClick}>
         <AspectRatio ratio="2">
           <img src={book.image} loading="lazy" alt="No Image Found" />

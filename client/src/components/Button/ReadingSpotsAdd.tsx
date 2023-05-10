@@ -21,7 +21,6 @@ function ReadingSpotsAdd(props: any) {
     let fav = false;
     user?.User_Places?.forEach((userPlace: { id: any;
       favorite: boolean; googlePlaceId: string }) => {
-      console.log('userPlace', userPlace);
       if (userPlace.googlePlaceId === place.googlePlaceId && userPlace.favorite === true) {
         fav = true;
       }

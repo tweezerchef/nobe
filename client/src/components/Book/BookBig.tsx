@@ -38,7 +38,7 @@ function BigBook(props: any) {
 
   return (
     <Card
-      key={book.ISBN10}
+      key={book.id}
       variant="outlined"
       sx={{
         margin: '10px',

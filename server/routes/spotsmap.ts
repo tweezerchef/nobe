@@ -89,7 +89,7 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
         user: { connect: { id } },
         googlePlaceId,
       },
-    }).then((response) => console.log(response));
+    });
     const userData = await axios.get(`http://localhost:8080/user?email=${email}`);
     const user = userData.data;
     res.send(user).status(201);

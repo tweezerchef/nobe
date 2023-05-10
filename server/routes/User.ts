@@ -125,6 +125,7 @@ User.get('/id', async (req, res) => {
             messages: true,
           },
         },
+        User_Places: true,
         UserBooks: {
           select: {
             id: true,

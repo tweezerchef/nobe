@@ -17,14 +17,13 @@ import {
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import RecommendIcon from '@mui/icons-material/Recommend';
-import PhoneIcon from '@mui/icons-material/Phone';
 import axios from 'axios';
 
 import ReviewPopOver from './ReviewPopOver';
 import ReadingSpotsAdd from '../Button/ReadingSpotsAdd';
 import UserContext from '../../hooks/Context';
+import { Place, PlaceViewerProps } from '../../typings/types';
 
  type Review = {
    text: string;
@@ -52,7 +51,6 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
           const photo = response.data.place.result?.photos?.[0].photo_reference;
           setPlace(response.data.place.result);
           setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
-          console.log('google', response.data);
           if (response.data.place.result?.reviews) {
             setReviews(response.data.place.result?.reviews);
           }
@@ -77,7 +75,8 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
         console.error(error);
       });
 
-    setAppFavorite(savedPlaces.some((place) => place.googlePlaceId === placeId));
+    // eslint-disable-next-line max-len
+    setAppFavorite(savedPlaces.some((place: { googlePlaceId: any; }) => place.googlePlaceId === placeId));
     if (User_Places && User_Places.length > 0) {
       let isFavorite = false;
       for (const entry of User_Places) {
@@ -150,7 +149,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                       google={google}
                     />
                   )}
-                  {place?.types.map((name) => (
+                  {place?.types.map((name: any) => (
                     <Chip key={name} size="small" label={name} sx={{ marginLeft: 1 }} />
                   ))}
                   {place?.website && (

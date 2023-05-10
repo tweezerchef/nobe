@@ -10,7 +10,7 @@ function LendingLibraryButton(props: any) {
   const { book } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const { id } = user;
+  const id = user?.id;
   const [color, setColor] = useState<CustomColor>('danger');
   const [toolTip, setToolTip] = useState<NonNullable<React.ReactNode>>(
     <h1>Add to Lending Library</h1>,
@@ -44,7 +44,7 @@ function LendingLibraryButton(props: any) {
   };
 
   useEffect(() => {
-    const isBookInArray = user.UserBooks.some((
+    const isBookInArray = user?.UserBooks.some((
       entry: UserBook,
     ) => entry.Books.title.toUpperCase() === book.title && entry.owned === true);
 

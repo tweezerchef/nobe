@@ -13,6 +13,7 @@ import JoinClubButton from '../components/Button/JoinClubButton';
 import '../styles/clubDiscussionStyle.css';
 import DiscussionList from '../components/DiscussionForum/Discussions';
 import UserContext from '../hooks/Context';
+import { Discussion } from '../typings/types';
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();

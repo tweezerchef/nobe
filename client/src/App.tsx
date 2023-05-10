@@ -1,5 +1,5 @@
 // export { }
-import react, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   experimental_extendTheme as materialExtendTheme,
@@ -8,7 +8,6 @@ import {
 } from '@mui/material/styles';
 import Router from './Router';
 import ResponsiveAppBar from './components/Navbar/ResponsiveAppBar';
-import OpenIconSpeedDial from './components/ActionButton/ActionButton';
 import UserContext, { UserContextType } from './hooks/Context';
 import ChatContext, { ChatContextType } from './hooks/ChatContext';
 

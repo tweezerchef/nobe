@@ -5,7 +5,7 @@ import Book from '../Book/Book';
 import UserContext from '../../hooks/Context';
 
 const BookDisplay = React.memo((props: any) => {
-  const { books: array, id } = props;
+  const { books: array } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   if (!user) {
@@ -15,6 +15,7 @@ const BookDisplay = React.memo((props: any) => {
   if (!array) {
     return <div>Loading...</div>;
   }
+  const id = user?.id;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState(1);
@@ -64,8 +65,9 @@ const BookDisplay = React.memo((props: any) => {
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px',
           }}
         >
-          {column.map((book: any) => (
-            <Book book={book} id={id} key={book.ISBN10} />
+          {column.map((book: any, index: number) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Book book={book} id={id} key={index} />
           ))}
         </div>
       ))}
