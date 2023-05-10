@@ -64,6 +64,7 @@ interface Conversation {
     isRead: boolean;
     senderId: string;
   }[];
+  updatedAt: string;
 }
 
 type EmojiSelectHandler = (emoji: string) => void;
@@ -85,7 +86,7 @@ function Chat() {
   const userId = userContext?.user.id;
 
   const updateUser = async () => {
-    const updatedUser = await axios.get('/user/id', {
+    const updatedUser = await axios.get('/user/id/conversations', {
       params: {
         id: userId,
       },
@@ -106,6 +107,13 @@ function Chat() {
           conversationId: currentConvo.id,
           newMessage: response.data,
         });
+        axios.put(`/conversations/${currentConvo.id}`, { updatedAt: new Date() })
+          .then(() => {
+            updateUser();
+          })
+          .catch((error) => {
+            console.error('Error updating conversation:', error);
+          });
       } catch (error) {
         console.error('Error sending message:', error);
       }
@@ -233,25 +241,27 @@ function Chat() {
           </Grid>
           <Divider />
           <List>
-            {conversations.map((conversation: any) => {
-              const otherUser = conversation.members.find((member: any) => (
-                member.firstName !== user.firstName
-              ));
-              const otherUserName = otherUser ? otherUser.firstName : '';
-              return (
-                <ListItem
-                  button
-                  key={conversation.id}
-                  onClick={() => {
-                    setCurrentConvo(conversation);
-                    setChatMessages(conversation.messages);
-                  }}
-                >
-                  <ListItemText>{otherUserName}</ListItemText>
-                </ListItem>
-              );
-            })}
+            {conversations
+              .map((conversation: any) => {
+                const otherUser = conversation.members.find((member: any) => (
+                  member.firstName !== user.firstName
+                ));
+                const otherUserName = otherUser ? otherUser.firstName : '';
+                return (
+                  <ListItem
+                    button
+                    key={conversation.id}
+                    onClick={() => {
+                      setCurrentConvo(conversation);
+                      setChatMessages(conversation.messages);
+                    }}
+                  >
+                    <ListItemText>{otherUserName}</ListItemText>
+                  </ListItem>
+                );
+              })}
           </List>
+
         </Grid>
         <Grid item xs={9} direction="column" style={{ height: '100%' }}>
           {!currentConvo && (
@@ -295,7 +305,7 @@ function Chat() {
               >
                 {chatMessages
                   .slice()
-                  .sort((a, b) => (new Date(b.createdAt) as any) - (new Date(a.createdAt) as any))
+                  .reverse()
                   .map((chatMessage: any) => {
                     const sender = currentConvo.members.find((member: any) => (
                       member.id === chatMessage.senderId

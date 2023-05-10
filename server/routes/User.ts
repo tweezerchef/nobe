@@ -173,4 +173,40 @@ User.get('/id', async (req, res) => {
   }
 });
 
+User.get('/id/conversations', async (req, res) => {
+  const { id } = req.query;
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        firstName: true,
+        username: true,
+        NotificationsCount: true,
+        Conversations: {
+          select: {
+            id: true,
+            members: true,
+            messages: {
+              orderBy: {
+                createdAt: 'asc',
+              },
+            },
+            updatedAt: true,
+          },
+          orderBy: {
+            updatedAt: 'desc',
+          },
+        },
+      },
+    });
+    res.send(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving conversation data');
+  }
+});
+
 export default User;
