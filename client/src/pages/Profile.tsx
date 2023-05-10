@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useParams, useNavigate } from 'react-router-dom';
 import React, {
   useState, useEffect,
@@ -47,6 +48,7 @@ function Profile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   // const [socket, setSocket] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
+  // const [userLocation, setUserLocation] = useState<any>([]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -73,7 +75,9 @@ function Profile() {
 
   const handleNearMeClick = async () => {
     try {
+    // eslint-disable-next-line max-len
       const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      // console.log(response);
       const data = await response.data;
       navigate('/locations', { state: data });
     } catch (error) {

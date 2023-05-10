@@ -88,18 +88,18 @@ io.on('connection', async (socket) => {
   socket.join(userId ?? '');
 
   connectedUsers.push(userId);
-  console.log(connectedUsers);
+  // console.log(connectedUsers);
   // as unknown as string;
   // const notifications = await getNotificationsForUser(userId);
   // socket.emit('notifications', notifications);
 
   socket.on('new-message', (data) => {
-    console.log('New message:', data);
+    // console.log('New message:', data);
     io.emit('new-message', data);
   });
 
   socket.on('new-follow', (data) => {
-    console.log('newFollower:', data);
+    // console.log('newFollower:', data);
     io.to(userId ?? '').emit('new-notification', data);
   });
 
@@ -108,7 +108,7 @@ io.on('connection', async (socket) => {
     if (index !== -1) {
       connectedUsers.splice(index, 1);
     }
-    console.log('someone has disconnected:', userId);
+    // console.log('someone has disconnected:', userId);
   });
 });
 
