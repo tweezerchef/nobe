@@ -13,7 +13,6 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   const {
     place, id, color, email, google,
   } = req.body;
-  console.log('geometry', google);
   const {
     formatted_address, geometry, name, photos,
     place_id, reviews, types, website, rating, formatted_phone_number,
@@ -26,7 +25,6 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   let createdPlace: any;
   try {
     if (google) {
-      console.log('name', name);
       createdPlace = await prisma.placesToRead.upsert({
         where: { googlePlaceId: place_id },
         update: {},
@@ -79,6 +77,8 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
       },
     });
     const placeId = createdPlace?.id ? createdPlace.id : place.id;
+    const googlePlaceId = createdPlace?.googlePlaceId
+      ? createdPlace.googlePlaceId : place.googlePlaceId;
 
     prisma.user_Places.upsert({
       where: { userId_placeId: { userId: id, placeId } },
@@ -87,9 +87,9 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
         favorite: myFav,
         place: { connect: { id: placeId } },
         user: { connect: { id } },
-        googlePlaceId: place_id,
+        googlePlaceId,
       },
-    });
+    }).then((response) => console.log(response));
     const userData = await axios.get(`http://localhost:8080/user?email=${email}`);
     const user = userData.data;
     res.send(user).status(201);
