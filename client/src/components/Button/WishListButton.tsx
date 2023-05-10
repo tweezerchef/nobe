@@ -10,7 +10,7 @@ function WishListButton(props: any) {
   const { book } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const { id } = user;
+  const id = user?.id;
   const [color, setColor] = useState<CustomColor>('danger');
   const [toolTip, setToolTip] = useState<NonNullable<React.ReactNode>>(<h1>Add to Wishlist</h1>);
 

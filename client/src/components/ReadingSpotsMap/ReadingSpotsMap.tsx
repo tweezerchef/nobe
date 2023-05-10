@@ -20,6 +20,7 @@ import Places from './places';
 import '../../styles/mapstyles.css';
 import UserContext from '../../hooks/Context';
 import PlaceViewer from './PlaceViewer';
+import { Place } from '../../typings/types';
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;

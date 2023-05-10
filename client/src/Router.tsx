@@ -22,6 +22,7 @@ import Recommended from './pages/Recommended';
 import ReadingSpots from './pages/ReadingSpots';
 import Feed from './pages/Feed';
 import BookSearch from './pages/BookSearch';
+import UsersProfile from './pages/UserProfile';
 
 interface User {
   email: string;
@@ -63,6 +64,7 @@ function Router() {
       <Route path="/reading-spots" element={<ReadingSpots />} />
       <Route path="/feed" element={<Feed />} />
       <Route path="/booksearch" element={<BookSearch />} />
+      <Route path="/usersprofile" element={<UsersProfile />} />
     </Routes>
   );
 }

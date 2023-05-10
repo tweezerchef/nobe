@@ -33,8 +33,8 @@ const createClubs = (props: any) => {
       name: clubName,
       description: clubDescription,
       image: clubImage,
-      userId: user.id,
-      email: user.email,
+      userId: user?.id,
+      email: user?.email,
     };
     try {
       axios.post('/api/create-club', body)
