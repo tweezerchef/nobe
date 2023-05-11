@@ -77,6 +77,7 @@ function Clubs() {
                   }}
                 >
                   <iframe
+                    title={`Club image for ${club.name}`}
                     src={club.image}
                     style={{
                       pointerEvents: 'none', display: 'block', margin: '0 auto', border: 'none', paddingTop: '8px', width: '100%',

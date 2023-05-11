@@ -28,7 +28,11 @@ CreateClubRoute.post('/', async (req: Request, res: Response) => {
 
   findOrCreateClub(req.body.name, req.body.description, req.body.image, userId)
     .then(async () => {
-      const clubs = await prisma.clubs.findMany();
+      const clubs = await prisma.clubs.findMany({
+        include: {
+          clubMembers: true,
+        },
+      });
       const userData = await axios.get(`http://localhost:8080/user?email=${createdBy}`);
       const user = userData.data;
       const response = { clubs, user };
