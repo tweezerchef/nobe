@@ -19,11 +19,11 @@ const BookDisplay = React.memo((props: any) => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState(1);
+  const [shouldDisplay, setShouldDisplay] = useState(false);
 
   const updateColumns = () => {
     const containerWidth = containerRef.current?.clientWidth ?? 0;
     const numColumns = Math.floor(containerWidth / 400);
-    // adjust this value to the desired card width
     setColumns(numColumns > 0 ? numColumns : 1);
   };
 
@@ -34,6 +34,12 @@ const BookDisplay = React.memo((props: any) => {
       window.removeEventListener('resize', updateColumns);
     };
   }, []);
+
+  useEffect(() => {
+    if (array.length > 0) {
+      setShouldDisplay(true);
+    }
+  }, [array]);
 
   const createColumns = () => {
     const columnsArray: any[] = Array.from({ length: columns }, () => []);
@@ -58,19 +64,22 @@ const BookDisplay = React.memo((props: any) => {
         padding: '20px',
       }}
     >
-      {renderedColumns.map((column, columnIndex) => (
-        <div
-          key={columnIndex}
-          style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px',
-          }}
-        >
-          {column.map((book: any, index: number) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <Book book={book} id={id} key={index} />
-          ))}
-        </div>
-      ))}
+      {shouldDisplay
+        && renderedColumns.map((column, columnIndex) => (
+          <div
+            key={columnIndex}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '20px',
+            }}
+          >
+            {column.map((book: any, index: number) => (
+              <Book book={book} id={id} key={index} />
+            ))}
+          </div>
+        ))}
     </div>
   );
 });
