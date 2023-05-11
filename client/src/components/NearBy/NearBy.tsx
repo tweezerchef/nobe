@@ -49,8 +49,9 @@ function NearBy() {
     }
   };
 
-  console.log(userLocation, 52);
+  // console.log(userLocation, 52);
   const handleLookForBooksClick = async () => {
+    setButtonState('loading');
     try {
       getUserLocation();
       const response = await axios.get('/location/locations', { params: { lon: userLocation.longitude, lat: userLocation.latitude, radius: userLocation.radius } });
@@ -73,36 +74,6 @@ function NearBy() {
       // console.log(res, 68);
       setTimeout(() => {
         setLocationState('success');
-      }, 2000);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const saveRadius = async () => {
-    setRadiusState('loading');
-    // console.log(convertRadius, 82);
-    try {
-      const res = await axios.put(`/location/${id}/radius`, {
-        radius,
-      });
-      // console.log(res, 84)
-      setTimeout(() => {
-        setRadiusState('success');
-      }, 1500);
-    } catch (err) {
-    // console.error(err);
-    }
-  };
-
-  const getBooksNearMe = async () => {
-    setButtonState('loading');
-    try {
-      const res = await axios.get('/location/locations', { params: { lon: longitude, lat: latitude, radius } });
-      // console.log(res.data, 99);
-      setBooksNearBy(res.data);
-      setTimeout(() => {
-        setButtonState('success');
       }, 2000);
     } catch (err) {
       console.error(err);
@@ -145,7 +116,7 @@ function NearBy() {
         />
       </GeoapifyContext>
       <h1>Set Radius</h1>
-      <FormControl sx={{ m: 1, width: '18ch' }} variant="outlined">
+      <FormControl sx={{ m: 1, width: '24ch' }} variant="outlined">
         <OutlinedInput
           sx={{ height: '3ch' }}
           id="outlined-adornment-weight"
@@ -162,17 +133,28 @@ function NearBy() {
           valueLabelDisplay="auto"
         />
       </FormControl>
-      <ReactiveButton
-        rounded
-        size="medium"
-        buttonState={locationState}
-        idleText="Save Location Preference"
-        loadingText="Saving"
-        successText="Done"
-        onClick={saveLocation}
-        color="blue"
-      />
-      <Button onClick={handleLookForBooksClick}> Look For Books</Button>
+      <Box>
+        <ReactiveButton
+          rounded
+          size="medium"
+          buttonState={locationState}
+          idleText="Save Location Preference"
+          loadingText="Saving"
+          successText="Done"
+          onClick={saveLocation}
+          color="blue"
+        />
+        <ReactiveButton
+          rounded
+          size="medium"
+          buttonState={buttonState}
+          idleText="Look for Books"
+          loadingText="Loading"
+          successText="Done"
+          onClick={handleLookForBooksClick}
+          color="blue"
+        />
+      </Box>
     </div>
   );
 }
