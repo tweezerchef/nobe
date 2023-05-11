@@ -178,7 +178,6 @@ function Chat() {
       setConversations(user.Conversations);
     }
     setIsLoaded(true);
-    console.log('isLoaded:', isLoaded);
   }, [user]);
 
   // eslint-disable-next-line consistent-return
@@ -243,9 +242,9 @@ function Chat() {
             <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
           </Grid>
           <Divider />
-          <div style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease' }}>
+          <div style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease', paddingTop: '10px' }}>
             <List>
-              {conversations.map((conversation: any) => {
+              {conversations.map((conversation: any, index: number) => {
                 const otherUser = conversation.members.find((member: any) => (
                   member.firstName !== user.firstName
                 ));
@@ -257,6 +256,11 @@ function Chat() {
                     onClick={() => {
                       setCurrentConvo(conversation);
                       setChatMessages(conversation.messages);
+                    }}
+                    style={{
+                      marginBottom: index === 0 ? '-10px' : 0,
+                      transform: index === 0 && isLoaded ? 'translateY(-10px)' : 'translateY(0)',
+                      transition: 'transform 0.3s ease',
                     }}
                   >
                     <ListItemText>{otherUserName}</ListItemText>
