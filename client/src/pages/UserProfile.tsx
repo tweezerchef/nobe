@@ -137,7 +137,10 @@ function UsersProfile() {
                 variant="contained"
                 style={{ margin: '10px' }}
                 color="primary"
-                onClick={(event: React.MouseEvent<HTMLButtonElement>) => handleSubmit(event as unknown as React.FormEvent<HTMLFormElement>)}
+                onClick={
+                  (event: React.MouseEvent<HTMLButtonElement>) => handleSubmit(event as
+                    unknown as React.FormEvent<HTMLFormElement>)
+}
               >
                 Book Search
               </Button>
