@@ -107,6 +107,8 @@ function UsersProfile() {
           <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
             <Typography variant="h4">
               {user?.firstName}
+              's
+              {' '}
               Books
             </Typography>
           </Grid>
