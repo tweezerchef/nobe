@@ -53,6 +53,8 @@ function ReadingSpotsMap() {
   const onLoad = useCallback((map: any) => {
     mapRef.current = map;
   }, []);
+  // const handlePlaceClick = (place: any) => {
+  //   console.log(place)
 
   const handlePlaceClick = useCallback((placeId: number, place: any) => {
     const { googlePlaceId } = place;
