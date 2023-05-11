@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 
 import Modal from '@mui/material/Modal';
+import e from 'express';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context';
 import NearBy from '../components/NearBy/NearBy';
@@ -65,9 +66,15 @@ function UsersProfile() {
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-console, no-sequences
-    axios.get(`/bookdata/title/searchOne?title=${title}`).then((response) => { setBooks([response.data]); });
+    axios.get(`/bookdata/title/searchOne?title=${title}`)
+      .then((response) => {
+        setBooks([response.data]);
+      })
+      .catch((error) => {
+        console.error('Error occurred while fetching book data:', error);
+      });
   };
+
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
@@ -125,16 +132,23 @@ function UsersProfile() {
             display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%',
           }}
           >
-            <Button variant="contained" style={{ margin: '10px' }} color="primary" type="submit">Book Search</Button>
-            <form onSubmit={handleSubmit}>
-              <TextField
-                label="Book Title"
-                value={title}
-                onChange={handleTitleChange}
-                fullWidth
-              />
-
-            </form>
+            <Box display="flex" alignItems="center">
+              <Button
+                variant="contained"
+                style={{ margin: '10px' }}
+                color="primary"
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => handleSubmit(event as unknown as React.FormEvent<HTMLFormElement>)}
+              >
+                Book Search
+              </Button>
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  label="Book Title"
+                  onChange={handleTitleChange}
+                  fullWidth
+                />
+              </form>
+            </Box>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
             {user?.radius && user?.latitude && user?.latitude > 0 && user?.radius > 0
