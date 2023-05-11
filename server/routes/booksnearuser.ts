@@ -143,7 +143,7 @@ LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Res
     const { id } = req.params;
     const { latitude } = req.body;
     const { longitude } = req.body;
-    const userUpdateLocation = await prisma.user.update({
+    const userUpdateCoordinates = await prisma.user.update({
       where: {
         id,
       },
@@ -153,7 +153,7 @@ LocationRoute.put('/:id/coordinates', async (req: AuthenticatedRequest, res: Res
       },
     });
     // console.log(userUpdateLocation, 145);
-    res.status(200).json({ userUpdateLocation });
+    res.status(200).json({ userUpdateCoordinates });
   } catch (e) {
     // console.error(e)
     res.status(500).json({
@@ -188,87 +188,58 @@ LocationRoute.put('/:id/radius', async (req: AuthenticatedRequest, res: Response
   }
 });
 
-// const userBooks = await prisma.userBooks.findMany({
-//   where: {
-//     userId: id
-//   },
-//   include: {
-//     books: true
-//   }
-// });
-// // const books = userBooks.map((userBook: UserBooks) => userBook.books);
-// res.json(userBooks);
+LocationRoute.put('/:id/location', async (req: AuthenticatedRequest, res: Response) => {
+  // console.log(req);
+  try {
+    const { id } = req.params;
+    const lat = req.body.latitude;
+    const lon = req.body.longitude;
+    const { radius } = req.body;
+    const radNum = Number(radius);
 
-//
-// [user, user]
-// reduce user to user.id
-// userarray = [user.id, user.id]
+    const userUpdateLocation = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        longitude: lon,
+        latitude: lat,
+        radius: radNum,
+      },
+    });
+    // console.log(userUpdateLocation, 145);
+    res.status(200).json({ userUpdateLocation });
+  } catch (e) {
+  // console.error(e);
+    res.status(500).json({
+      error: 'Server error!',
+    });
+  }
+});
 
-//  const ret = await prisma.UserBooks.findMany({
-//             where: {
-//                 id: { in: userarray },
-//             }
-//         })
-// console ret
-
-// try {
-//   const query = await prisma.$queryRaw<{id: string}[]>
-//     `SELECT id FROM "User" WHERE ST_DWithin(ST_MakePoint(longitude::float8, latitude::float8), ST_MakePoint(${longitude}::float8, ${latitude}::float8)::geography, radius * 10000000)`
-// console.log(query, '1');
-//   const users = await prisma.user.findMany({
-//     where: {
-//       id: {
-//         in:  query.map(({ id }) => id)
-//       }
-//     }
-//   });
-//
-//
-//   console.log(users);
-//   res.status(200).json({ users });
-// } catch (error) {
-//   //Handle any errors that may occur
-//   console.error(error);
-//   res.status(500).json({ error: 'Internal server error' });
-//  }
-
-// app.post('/location', async (req, res) => {
-//   const { name, location } = req.body
-//   try {
-//     await prisma.$queryRaw`
-//     insert into "Location" ("name", "location") values
-//     (${name}, "public"."st_point"(${location.lng}, ${location.lat}))
-//     `
-
-//     res.json({
-//       success: true,
-//     })
-//   } catch (e) {
-//     console.error(e)
-//     res.status(500).json({
-//       error: 'Server error!',
-//     })
-//   }
-// })
-
-// app.get(`/:userId/nearby-places`, async (req, res) => {
-//   const { userId } = req.params
-//   const { d } = req.query
-//   const distance = parseInt(String(d)) || 5
-
-//   try {
-//     const locations = await prisma.$queryRaw`
-//       select * from "locations_near_user"(${parseInt(
-//         userId,
-//       )}::int, ${distance}::int)
-//     `
-//     res.json({ data: { locations } })
-//   } catch (e) {
-//     console.error(e)
-//     res.status(500).json({
-//       error: 'Server error!',
-//     })
-//   }
-// })
+LocationRoute.get('/:id/location', async (req: AuthenticatedRequest, res: Response) => {
+  // console.log(req);
+  const { id } = req.params as any;
+  // console.log('id', id);
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        // include all columns from the books table
+        id: true,
+        latitude: true,
+        longitude: true,
+        radius: true,
+      },
+    });
+      // console.log(user);
+    res.status(200).send(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Error retrieving user data', error });
+  }
+});
 
 export default LocationRoute;

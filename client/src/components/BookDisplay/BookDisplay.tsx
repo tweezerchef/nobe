@@ -5,7 +5,7 @@ import Book from '../Book/Book';
 import UserContext from '../../hooks/Context';
 
 const BookDisplay = React.memo((props: any) => {
-  const { books: array, id } = props;
+  const { books: array } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   if (!user) {
@@ -15,14 +15,15 @@ const BookDisplay = React.memo((props: any) => {
   if (!array) {
     return <div>Loading...</div>;
   }
+  const id = user?.id;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState(1);
+  const [shouldDisplay, setShouldDisplay] = useState(false);
 
   const updateColumns = () => {
     const containerWidth = containerRef.current?.clientWidth ?? 0;
     const numColumns = Math.floor(containerWidth / 400);
-    // adjust this value to the desired card width
     setColumns(numColumns > 0 ? numColumns : 1);
   };
 
@@ -33,6 +34,12 @@ const BookDisplay = React.memo((props: any) => {
       window.removeEventListener('resize', updateColumns);
     };
   }, []);
+
+  useEffect(() => {
+    if (array.length > 0) {
+      setShouldDisplay(true);
+    }
+  }, [array]);
 
   const createColumns = () => {
     const columnsArray: any[] = Array.from({ length: columns }, () => []);
@@ -57,18 +64,22 @@ const BookDisplay = React.memo((props: any) => {
         padding: '20px',
       }}
     >
-      {renderedColumns.map((column, columnIndex) => (
-        <div
-          key={columnIndex}
-          style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px',
-          }}
-        >
-          {column.map((book: any) => (
-            <Book book={book} id={id} key={book.ISBN10} />
-          ))}
-        </div>
-      ))}
+      {shouldDisplay
+        && renderedColumns.map((column, columnIndex) => (
+          <div
+            key={columnIndex}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '20px',
+            }}
+          >
+            {column.map((book: any, index: number) => (
+              <Book book={book} id={id} key={index} />
+            ))}
+          </div>
+        ))}
     </div>
   );
 });

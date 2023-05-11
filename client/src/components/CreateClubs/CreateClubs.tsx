@@ -15,9 +15,6 @@ const createClubs = (props: any) => {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const setUser = userContext?.setUser;
-  // const id = user?.id;
-  // console.log('userid', id);
-
   const handleSubmit = async () => {
     if (!clubName || !clubDescription || !clubImage) {
       alert('Please enter a value for all fields!');
@@ -36,8 +33,8 @@ const createClubs = (props: any) => {
       name: clubName,
       description: clubDescription,
       image: clubImage,
-      userId: user.id,
-      email: user.email,
+      userId: user?.id,
+      email: user?.email,
     };
     try {
       axios.post('/api/create-club', body)

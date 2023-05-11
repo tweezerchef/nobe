@@ -1,3 +1,6 @@
+import Activity from '../../../server/routes/activity';
+import DirectMessages from '../../../server/routes/directMessages';
+
 interface Discussion {
   id: string;
   Posts: DiscussionPost[];
@@ -10,6 +13,7 @@ interface DiscussionPost {
   discussionId: string;
 }
 interface Place {
+  location: ReactNode;
   userPlaces: any;
   User_Places: any;
   place_id: any;
@@ -59,7 +63,49 @@ interface Cuisine {
   name: string;
 }
 interface Review {
-  author_name: string;
-  review: string;
   text: string;
+}
+interface User {
+  id: string;
+  firstName: string;
+  userName: string;
+  email: string;
+  email: string;
+  googleId: string;
+  lastName: string;
+  picture: string;
+  token: string;
+  latitude: number;
+  longitude: number;
+  radius: number;
+  NotificationCount: number;
+  Activity: Activity[];
+  clubMembers: ClubMembers[];
+  DirectMessages: DirectMessages[];
+  Discussion: Discussions[];
+  DiscussionUsers: DiscussionUsers[];
+  friendships: Friendship[];
+  LendingTable: LendingTable[];
+  Notifications: Notifications[];
+  Posts: Posts[];
+  PostsUsers: PostsUsers[];
+  UserBooks: UserBooks[];
+  User_Places: UserPlaces[];
+  Conversations: Conversations[];
+}
+interface UserBook {
+  wishlist: any;
+  owned: any;
+  Books: Book;
+}
+interface Book {
+  books: {
+    id: string;
+    title: string;
+    author: string;
+    image: string;
+  }
+  id: string;
+  wishlist: boolean;
+  owned: boolean;
 }

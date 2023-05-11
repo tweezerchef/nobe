@@ -1,10 +1,14 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
+import UserContext from '../../hooks/Context';
 
 function UserStarRating(props: any) {
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const setUser = userContext?.setUser;
   const { book, id } = props;
 
   // eslint-disable-next-line react/destructuring-assignment

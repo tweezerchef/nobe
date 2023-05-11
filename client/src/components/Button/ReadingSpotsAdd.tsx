@@ -5,12 +5,11 @@ import React, {
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import IconButton from '@mui/joy/IconButton';
 import { Tooltip } from '@material-ui/core';
-import { getLatLng, getGeocode } from 'use-places-autocomplete';
 import UserContext from '../../hooks/Context';
 
 type CustomColor = 'success' | 'danger';
 function ReadingSpotsAdd(props: any) {
-  const { placeId, Location, favorite } = props;
+  const { place, google } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const setUser = userContext?.setUser;
@@ -19,18 +18,24 @@ function ReadingSpotsAdd(props: any) {
   const [color, setColor] = useState<CustomColor>('danger');
   const [toolTip, setToolTip] = useState<NonNullable<React.ReactNode>>('Add to My Reading Spots');
   useEffect(() => {
-    if (favorite) {
-      setColor('success' as CustomColor);
-      setToolTip('Remove from My Reading Spots');
+    let fav = false;
+    user?.User_Places?.forEach((userPlace: { id: any;
+      favorite: boolean; googlePlaceId: string }) => {
+      if (userPlace.googlePlaceId === place.googlePlaceId && userPlace.favorite === true) {
+        fav = true;
+      }
+    });
+    if (fav) {
+      setColor('success');
     } else {
-      setColor('danger' as CustomColor);
-      setToolTip('Add to My Reading Spots');
+      setColor('danger');
     }
-  }, [favorite]);
+  }, [place]);
 
   const addToMyPlaceList = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
+      const oldColor = color;
       const newColor = color === 'success' ? 'danger' : 'success';
       setColor(newColor as CustomColor);
       setToolTip(
@@ -38,19 +43,14 @@ function ReadingSpotsAdd(props: any) {
           ? 'Remove from My Reading Spots'
           : 'Add to My Reading Spots',
       );
-      const results = await getGeocode({ placeId });
-      const { lat, lng } = await getLatLng(results[0]);
       try {
         await axios.post('/api/places-to-read/place', {
-          googlePlaceId: placeId,
           id,
           email,
-          color,
-          lat,
-          lng,
-          Location,
+          color: oldColor,
+          place,
+          google,
         }).then((data) => {
-          // console.log('data', data);
           if (setUser && data?.data) {
             setUser(data?.data);
           }
@@ -59,7 +59,7 @@ function ReadingSpotsAdd(props: any) {
         console.error(error);
       }
     },
-    [Location, color, id, placeId],
+    [id, email, place, color],
   );
 
   return (
@@ -71,10 +71,10 @@ function ReadingSpotsAdd(props: any) {
         variant="solid"
         color={color}
         sx={{
-          // position: 'absolute',
-          // zIndex: 2,
-          // borderRadius: '50%',
-          left: '1rem',
+          position: 'relative',
+          borderRadius: '50%',
+          left: '.25rem',
+          top: '.35rem',
           // bottom: 0,
           // transform: 'translateY(50%)',
         }}

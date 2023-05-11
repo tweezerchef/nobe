@@ -98,7 +98,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
 
   const handleLookForBooksClick = async () => {
     try {
-      const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      const response = await axios.get('/location/locations', { params: { lon: user?.longitude, lat: user?.latitude, radius: user?.radius } });
       const data = await response.data;
       navigate('/locations', { state: data });
     } catch (error) {
@@ -361,7 +361,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
           <Box sx={{ flexGrow: '0 !important', display: 'block !important' }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: '0 !important' }}>
-                <Avatar alt="pfp" src={loggedIn ? user.picture : null} />
+                <Avatar alt="pfp" src={loggedIn ? user?.picture : ''} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -387,7 +387,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
                 }}
               >
                 <Typography textAlign="center">
-                  <Link to="/profile">Profile</Link>
+                  <Link to="/usersprofile">Profile</Link>
                 </Typography>
               </MenuItem>
               {loggedIn ? (

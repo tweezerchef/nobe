@@ -15,10 +15,6 @@ type PlacesProps = {
 };
 
 function Places({ setLatLng, setLocation, setPlaceId }: PlacesProps) {
-  const userContext = useContext(UserContext);
-  const user = userContext?.user;
-  const { id } = user;
-
   const {
     value,
     setValue,

@@ -11,7 +11,7 @@ function LendingLibraryButton(props: any) {
   const { book } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const { id } = user;
+  const id = user?.id;
   const [color, setColor] = useState<CustomColor>('danger');
   const [toolTip, setToolTip] = useState<NonNullable<React.ReactNode>>(<h1>Add to Lending Library</h1>);
 
@@ -21,7 +21,8 @@ function LendingLibraryButton(props: any) {
       book,
       id,
       color,
-    }).then((data) => user.UserBooks = data.data);
+    // eslint-disable-next-line no-return-assign
+    }).then((data) => (user?.UserBooks ? data.data : null));
     if (color === 'success') {
       setColor('danger' as CustomColor);
       setToolTip(<h1>Add to Lending Library</h1>);

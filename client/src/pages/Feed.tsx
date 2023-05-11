@@ -42,7 +42,7 @@ export default function CustomizedTimeline() {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
 
-  const userId = user.id;
+  const userId = user?.id;
   const getFeed = async () => {
     try {
       const response = await axios.get('/api/activity', {
@@ -50,7 +50,7 @@ export default function CustomizedTimeline() {
           userId,
         },
       });
-      setActivity(response.data.reverse());
+      setActivity(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +65,14 @@ export default function CustomizedTimeline() {
       {activity.length === 0 && <div>loading</div>}
       {activity.length > 0 && (
         <Timeline position="alternate">
-          {activity.map((data: Activity) => (
+          {activity.sort((a, b) => {
+            if (a.createdAt < b.createdAt) {
+              return 1;
+            } if (a.createdAt > b.createdAt) {
+              return -1;
+            }
+            return 0;
+          }).map((data: Activity) => (
             <TimelineItem key={data.createdAt}>
               <TimelineOppositeContent
                 sx={{ m: 'auto 0' }}

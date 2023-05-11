@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -19,7 +21,8 @@ import UserContext from '../../hooks/Context';
 function NearBy() {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const { id } = user;
+  const id = user?.id;
+  console.log(user, 31);
 
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
@@ -32,67 +35,45 @@ function NearBy() {
   const [radiusState, setRadiusState] = useState('idle');
   const [userLongitude, setUserLongitude] = useState(0);
   const [userLatitude, setUserLatitude] = useState(0);
-  // const [isUserLoaded, setIsUserLoaded] = useState(false);
+  const [userLocation, setUserLocation] = useState<any>([]);
+
   const navigate = useNavigate();
 
-  const handleLookForBooksClick = async () => {
+  const getUserLocation = async () => {
     try {
-      const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      const res = await axios.get(`/location/${id}/location`);
+      // console.log(res, 45);
+      setUserLocation(res.data);
+    } catch (error) {
+      // console.error(error);
+    }
+  };
+
+  // console.log(userLocation, 52);
+  const handleLookForBooksClick = async () => {
+    setButtonState('loading');
+    try {
+      getUserLocation();
+      const response = await axios.get('/location/locations', { params: { lon: userLocation.longitude, lat: userLocation.latitude, radius: userLocation.radius } });
       const data = await response.data;
       navigate('/locations', { state: data });
     } catch (error) {
       console.error(error);
     }
-  };// 👇️ navigate to /
-  //   const res = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
-  //   console.log(res.data, 99);
-  //   setBooksNearBy(res.data);
-  //   setTimeout(() => {
-  //     setButtonState('success');
-  //   }, 2000);
-  // } catch (err) {
-  //  console.error(err);
-  // }
+  };
   const saveLocation = async () => {
     setLocationState('loading');
     // console.log(userLongitude, userLongitude, 63)
     try {
-      const res = await axios.put(`/location/${id}/coordinates`, {
+      const res = await axios.put(`/location/${id}/location`, {
         longitude: userLongitude,
         latitude: userLatitude,
-      });
-      setTimeout(() => {
-        setLocationState('success');
-      }, 2000);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const saveRadius = async () => {
-    setRadiusState('loading');
-    // console.log(convertRadius, 82);
-    try {
-      const res = await axios.put(`/location/${id}/radius`, {
         radius,
       });
-      // console.log(res, 84)
+      getUserLocation();
+      // console.log(res, 68);
       setTimeout(() => {
-        setRadiusState('success');
-      }, 1500);
-    } catch (err) {
-    // console.error(err);
-    }
-  };
-
-  const getBooksNearMe = async () => {
-    setButtonState('loading');
-    try {
-      const res = await axios.get('/location/locations', { params: { lon: longitude, lat: latitude, radius } });
-      // console.log(res.data, 99);
-      setBooksNearBy(res.data);
-      setTimeout(() => {
-        setButtonState('success');
+        setLocationState('success');
       }, 2000);
     } catch (err) {
       console.error(err);
@@ -134,18 +115,8 @@ function NearBy() {
           suggestionsChange={onSuggectionChange}
         />
       </GeoapifyContext>
-      <ReactiveButton
-        rounded
-        size="medium"
-        buttonState={locationState}
-        idleText="Save Location"
-        loadingText="Saving"
-        successText="Done"
-        onClick={saveLocation}
-        color="blue"
-      />
       <h1>Set Radius</h1>
-      <FormControl sx={{ m: 1, width: '18ch' }} variant="outlined">
+      <FormControl sx={{ m: 1, width: '24ch' }} variant="outlined">
         <OutlinedInput
           sx={{ height: '3ch' }}
           id="outlined-adornment-weight"
@@ -162,62 +133,29 @@ function NearBy() {
           valueLabelDisplay="auto"
         />
       </FormControl>
-      <ReactiveButton
-        rounded
-        size="medium"
-        buttonState={radiusState}
-        idleText="Save Radius"
-        loadingText="Saving"
-        successText="Done"
-        onClick={saveRadius}
-        color="blue"
-      />
-      <Button onClick={handleLookForBooksClick}> Look For Books</Button>
+      <Box>
+        <ReactiveButton
+          rounded
+          size="medium"
+          buttonState={locationState}
+          idleText="Save Location Preference"
+          loadingText="Saving"
+          successText="Done"
+          onClick={saveLocation}
+          color="blue"
+        />
+        <ReactiveButton
+          rounded
+          size="medium"
+          buttonState={buttonState}
+          idleText="Look for Books"
+          loadingText="Loading"
+          successText="Done"
+          onClick={handleLookForBooksClick}
+          color="blue"
+        />
+      </Box>
     </div>
   );
 }
 export default NearBy;
-
-{ /* <div>
-            <h1>Enter Address</h1>
-            <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
-              <GeoapifyGeocoderAutocomplete
-                placeholder="Enter address here"
-                placeSelect={onPlaceSelect}
-                suggestionsChange={onSuggectionChange}
-              />
-            </GeoapifyContext>
-            <ReactiveButton
-              rounded
-              size="medium"
-              buttonState={locationState}
-              idleText="Save Location"
-              loadingText="Saving"
-              successText="Done"
-              onClick={saveLocation}
-              color="blue"
-            />
-         <h1>Set Radius</h1>
-         <FormControl sx={{ m: 1, width: '18ch' }} variant="outlined">
-           <OutlinedInput sx={{ height: '3ch' }}
-             id="outlined-adornment-weight"
-             endAdornment={<InputAdornment position="end">mi</InputAdornment>}
-             onChange={handleRadiusChange}
-             value={radius}
-           />
-           <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
-           <Slider defaultValue={0} value={radius}
-             onChange={handleRadiusChange} aria-label="Default" valueLabelDisplay="auto" />
-         </FormControl>
-         <ReactiveButton
-              rounded
-              size="medium"
-              buttonState={radiusState}
-              idleText="Save Radius"
-              loadingText="Saving"
-              successText="Done"
-              onClick={saveRadius}
-              color="blue"
-            />
-         <Button onClick={handleLookForBooksClick}> Look For Books</Button>
-       </div> */ }

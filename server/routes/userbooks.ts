@@ -21,12 +21,150 @@ UserBooks.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
       where: {
         userId: id,
       },
-      include: {
-        books: true,
+      select: {
+        id: true,
+        wishlist: true,
+        owned: true,
+        booksId: true,
+        userId: true,
+        rating: true,
+        review: true,
+        LendingTable: true,
+        Books: {
+          select: {
+            id: true,
+            title: true,
+            author: true,
+            ISBN10: true,
+            description: true,
+            image: true,
+            UserBooks: {
+              select: {
+                id: true,
+                wishlist: true,
+                owned: true,
+                booksId: true,
+                userId: true,
+                rating: true,
+                review: true,
+                LendingTable: true,
+                User: true,
+              },
+            },
+            Discussions: true,
+            Activity: true,
+          },
+        },
+        User: true,
       },
     });
     // const books = userBooks.map((userBook: UserBooks) => userBook.books);
-    res.json(userBooks);
+    res.send(userBooks);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+UserBooks.get('/owned/:id', async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userBooks = await prisma.userBooks.findMany({
+      where: {
+        userId: id,
+        owned: true,
+      },
+      select: {
+        id: true,
+        wishlist: true,
+        owned: true,
+        booksId: true,
+        userId: true,
+        rating: true,
+        review: true,
+        LendingTable: true,
+        Books: {
+          select: {
+            id: true,
+            title: true,
+            author: true,
+            ISBN10: true,
+            description: true,
+            image: true,
+            UserBooks: {
+              select: {
+                id: true,
+                wishlist: true,
+                owned: true,
+                booksId: true,
+                userId: true,
+                rating: true,
+                review: true,
+                LendingTable: true,
+                User: true,
+              },
+            },
+            Discussions: true,
+            Activity: true,
+          },
+        },
+        User: true,
+      },
+    });
+    // const books = userBooks.map((userBook: UserBooks) => userBook.books);
+    res.send(userBooks);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+UserBooks.get('/wishlist/:id', async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userBooks = await prisma.userBooks.findMany({
+      where: {
+        userId: id,
+        wishlist: true,
+      },
+      select: {
+        id: true,
+        wishlist: true,
+        owned: true,
+        booksId: true,
+        userId: true,
+        rating: true,
+        review: true,
+        LendingTable: true,
+        Books: {
+          select: {
+            id: true,
+            title: true,
+            author: true,
+            ISBN10: true,
+            description: true,
+            image: true,
+            UserBooks: {
+              select: {
+                id: true,
+                wishlist: true,
+                owned: true,
+                booksId: true,
+                userId: true,
+                rating: true,
+                review: true,
+                LendingTable: true,
+                User: true,
+              },
+            },
+            Discussions: true,
+            Activity: true,
+          },
+        },
+        User: true,
+      },
+    });
+    // const books = userBooks.map((userBook: UserBooks) => userBook.books);
+    res.send(userBooks);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Something went wrong' });
@@ -42,7 +180,7 @@ UserBooks.post('/wishlist', async (req: AuthenticatedRequest, res: Response) => 
     let wishlist = false;
     if (color === 'danger') wishlist = true;
 
-    const newBook = await axios.post('http://localhost:8080/bookdata/title/wishlist', {
+    const newBook = await axios.post('http://localhost:8080/bookdata/title', {
       title,
       ISBN10,
       author,
@@ -65,6 +203,13 @@ UserBooks.post('/wishlist', async (req: AuthenticatedRequest, res: Response) => 
 
       },
     });
+    const activity = await prisma.activity.create({
+      data: {
+        userId: id,
+        type: 'Wishlist',
+        bookId: bookID,
+      },
+    });
     res.send(userBook).status(200);
   } catch (error) {
     console.error(error);
@@ -81,7 +226,7 @@ UserBooks.post('/lendinglibrary', async (req: AuthenticatedRequest, res: Respons
     let owned = false;
     if (color === 'danger') owned = true;
 
-    const newBook = await axios.post('http://localhost:8080/bookdata/title/wishlist', {
+    const newBook = await axios.post('http://localhost:8080/bookdata/title', {
       title,
       ISBN10,
       author,
@@ -101,7 +246,13 @@ UserBooks.post('/lendinglibrary', async (req: AuthenticatedRequest, res: Respons
         review: null,
         userId: id,
         booksId: bookID,
-
+      },
+    });
+    prisma.activity.create({
+      data: {
+        userId: id,
+        type: 'Owned',
+        bookId: bookID,
       },
     });
     const newUserBook = await prisma.userBooks.findMany({
@@ -141,6 +292,13 @@ UserBooks.post('/lendinglibrary', async (req: AuthenticatedRequest, res: Respons
           },
         },
         User: true,
+      },
+    });
+    const activity = await prisma.activity.create({
+      data: {
+        userId: id,
+        type: 'Owned',
+        bookId: bookID,
       },
     });
     res.send(newUserBook).status(200);

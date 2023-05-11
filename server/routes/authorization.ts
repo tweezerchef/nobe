@@ -255,8 +255,6 @@ Auth.post('/login', async (req, res) => {
       const { email } = profile;
       const getUser = await axios.get(`http://localhost:8080/user?email=${email}`);
       const userData = getUser.data;
-      // const existsInDB = DB.find((person) => person?.email === profile?.email);
-      // console.log(userData)
       if (!userData) {
         return res.status(400).json({
           message: 'You are not registered. Please sign up',

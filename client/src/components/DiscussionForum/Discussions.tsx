@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import {
   Card, CardContent, Typography, Box,
 } from '@mui/material';
+import { Discussion } from '../../typings/types';
 
 type DiscussionListProps = {
   discussions: Discussion[];

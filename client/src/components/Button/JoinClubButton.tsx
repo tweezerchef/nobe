@@ -14,7 +14,7 @@ function JoinClubButton(props: any) {
   const { clubId } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const { id } = user;
+  const id = user?.id;
   const [color, setColor] = useState<CustomColor>('secondary');
 
   const addToClub = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -29,7 +29,7 @@ function JoinClubButton(props: any) {
       setColor('primary' as CustomColor);
     }
   };
-  const member = user.clubMembers?.reduce((acc: boolean, club: Club) => {
+  const member = user?.clubMembers?.reduce((acc: boolean, club: Club) => {
     if (club.clubId === clubId) {
       acc = true;
       return acc;
