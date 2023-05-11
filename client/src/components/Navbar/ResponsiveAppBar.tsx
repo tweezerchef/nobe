@@ -387,7 +387,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
                 }}
               >
                 <Typography textAlign="center">
-                  <Link to="/profile">Profile</Link>
+                  <Link to="/usersprofile">Profile</Link>
                 </Typography>
               </MenuItem>
               {loggedIn ? (
