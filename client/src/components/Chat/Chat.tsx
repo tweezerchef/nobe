@@ -81,6 +81,7 @@ function Chat() {
   const [currentConvo, setCurrentConvo] = useState<Conversation | null>(null);
   const [socket, setSocket] = useState<any>(null);
   const [user, setUser] = useState<any>(null);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const userContext = useContext(UserContext);
   const userId = userContext?.user.id;
@@ -176,6 +177,8 @@ function Chat() {
     if (user !== null) {
       setConversations(user.Conversations);
     }
+    setIsLoaded(true);
+    console.log('isLoaded:', isLoaded);
   }, [user]);
 
   // eslint-disable-next-line consistent-return
@@ -240,9 +243,9 @@ function Chat() {
             <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
           </Grid>
           <Divider />
-          <List>
-            {conversations
-              .map((conversation: any) => {
+          <div style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease' }}>
+            <List>
+              {conversations.map((conversation: any) => {
                 const otherUser = conversation.members.find((member: any) => (
                   member.firstName !== user.firstName
                 ));
@@ -260,8 +263,8 @@ function Chat() {
                   </ListItem>
                 );
               })}
-          </List>
-
+            </List>
+          </div>
         </Grid>
         <Grid item xs={9} direction="column" style={{ height: '100%' }}>
           {!currentConvo && (
