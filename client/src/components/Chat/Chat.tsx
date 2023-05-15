@@ -77,6 +77,10 @@ interface Conversation {
   updatedAt: string;
 }
 
+// interface ChatProps {
+//   otherUserId: string;
+// }
+
 type EmojiSelectHandler = (emoji: string) => void;
 
 const socketUrl = process.env.SOCKET_URL;
