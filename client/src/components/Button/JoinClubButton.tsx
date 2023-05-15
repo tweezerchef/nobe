@@ -15,7 +15,16 @@ function JoinClubButton(props: any) {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
-  const [color, setColor] = useState<CustomColor>('secondary');
+
+  const member = user?.clubMembers?.reduce((acc: boolean, club: Club) => {
+    if (club.clubId === clubId) {
+      acc = true;
+      return acc;
+    }
+    return acc;
+  }, false);
+
+  const [color, setColor] = useState<CustomColor>(member ? 'primary' : 'secondary');
 
   const addToClub = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -29,13 +38,7 @@ function JoinClubButton(props: any) {
       setColor('primary' as CustomColor);
     }
   };
-  const member = user?.clubMembers?.reduce((acc: boolean, club: Club) => {
-    if (club.clubId === clubId) {
-      acc = true;
-      return acc;
-    }
-    return acc;
-  }, false);
+
   useEffect(() => {
     if (member) {
       setColor('primary' as CustomColor);
@@ -43,8 +46,6 @@ function JoinClubButton(props: any) {
   }, []);
 
   return (
-
-  // <Tooltip title={toolTip} placement="top">
     <Button
       aria-label="Join Club"
       size="medium"
@@ -54,8 +55,6 @@ function JoinClubButton(props: any) {
     >
       {color === 'primary' ? 'Leave Club' : 'Join Club'}
     </Button>
-  // </Tooltip>
-
   );
 }
 

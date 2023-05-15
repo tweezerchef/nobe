@@ -1,7 +1,9 @@
 import React, {
   useState, useEffect, useContext,
 } from 'react';
+import styled from 'styled-components';
 import axios from 'axios';
+import Draggable from 'react-draggable';
 import io from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -40,6 +42,14 @@ const useStyles = makeStyles({
     width: '100%',
   },
 });
+
+const ChatOverlay = styled.div`
+  position: absolute;
+  right: 0;
+  z-index: 1000;
+  width: 600px;
+  height: '60vh';
+`;
 
 interface Message {
   text: string;
@@ -81,6 +91,7 @@ function Chat() {
   const [currentConvo, setCurrentConvo] = useState<Conversation | null>(null);
   const [socket, setSocket] = useState<any>(null);
   const [user, setUser] = useState<any>(null);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const userContext = useContext(UserContext);
   const userId = userContext?.user.id;
@@ -176,6 +187,7 @@ function Chat() {
     if (user !== null) {
       setConversations(user.Conversations);
     }
+    setIsLoaded(true);
   }, [user]);
 
   // eslint-disable-next-line consistent-return
@@ -210,6 +222,9 @@ function Chat() {
             user.Conversations[conversationIndex] = updatedConvo;
             return updatedConversations;
           });
+        } else {
+          updateUser();
+          setConversations(user.Conversations);
         }
       });
 
@@ -220,168 +235,177 @@ function Chat() {
   }, [currentConvo, conversations, user]);
 
   return (
-    <div>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography
-            variant="h4"
-            className="header-message"
-            style={{
-              display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', background: '#002884', color: '#fff', borderRadius: '4px 4px 0px 0px',
-            }}
-          >
-            Direct Messages
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid container component={Paper} className={classes.chatSection} style={{ background: '#fff' }}>
-        <Grid item xs={3} className={classes.borderRight500} style={{ borderRadius: '0px 0px 0px 4px' }}>
-          <Grid item xs={12} style={{ padding: '10px' }}>
-            <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
-          </Grid>
-          <Divider />
-          <List>
-            {conversations
-              .map((conversation: any) => {
-                const otherUser = conversation.members.find((member: any) => (
-                  member.firstName !== user.firstName
-                ));
-                const otherUserName = otherUser ? otherUser.firstName : '';
-                return (
-                  <ListItem
-                    button
-                    key={conversation.id}
-                    onClick={() => {
-                      setCurrentConvo(conversation);
-                      setChatMessages(conversation.messages);
-                    }}
-                  >
-                    <ListItemText>{otherUserName}</ListItemText>
-                  </ListItem>
-                );
-              })}
-          </List>
-
-        </Grid>
-        <Grid item xs={9} direction="column" style={{ height: '100%' }}>
-          {!currentConvo && (
-            <div style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%',
-            }}
-            >
-              <Typography variant="h6" className="header-message">
-                Select a conversation or start a new one.
-              </Typography>
-            </div>
-          )}
-          {currentConvo && (
-            <>
-              {(() => {
-                const otherUser = currentConvo.members.find((member: any) => (
-                  member.firstName !== user.firstName
-                ));
-                const otherUserFirstName = otherUser ? otherUser.firstName : '';
-                return (
-                  <Typography
-                    variant="h6"
-                    className="header-message"
-                    style={{
-                      display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#1976d2', color: '#FFF',
-                    }}
-                  >
-                    {otherUserFirstName}
-                  </Typography>
-                );
-              })()}
-              <Divider />
-              <List
-                className={classes.messageArea}
+    <Draggable handle=".header-message">
+      <ChatOverlay>
+        <Grid container>
+          <Draggable>
+            <Grid item xs={12}>
+              <Typography
+                variant="h4"
+                className="header-message"
                 style={{
-                  flexGrow: 1,
-                  overflowY: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column-reverse',
+                  display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', background: '#002884', color: '#fff', borderRadius: '12px 12px 0px 0px',
                 }}
               >
-                {chatMessages
-                  .slice()
-                  .reverse()
-                  .map((chatMessage: any) => {
-                    const sender = currentConvo.members.find((member: any) => (
-                      member.id === chatMessage.senderId
-                    ));
-                    const senderFirstName = sender ? sender.firstName : '';
-                    const isCurrentUser = sender && sender.id === user.id;
-                    return (
-                      <ListItem key={chatMessage.id}>
-                        <Grid container>
-                          <Grid item xs={12}>
-                            <ListItemText primary={(
-                              <Typography component="span" variant="body2" style={{ display: 'flex', justifyContent: isCurrentUser ? 'flex-end' : 'flex-start', fontSize: '16px' }}>
-                                <span style={{ margin: '0px 5px 0px 5px', fontWeight: 'bolder', color: isCurrentUser ? 'limegreen' : 'red' }}>
-                                  {senderFirstName}
-                                </span>
-                                <span style={{ color: 'rgb(29, 155, 240)' }}>
-                                  {moment(chatMessage.createdAt).isValid()
-                                    ? moment(chatMessage.createdAt).fromNow()
-                                    : 'just now'}
-                                </span>
-                              </Typography>
-                            )}
-                            />
-                          </Grid>
-                          <Grid item xs={12} style={{ textAlign: isCurrentUser ? 'right' : 'left' }}>
-                            <Typography
-                              component="span"
-                              variant="body2"
-                              style={{
-                                margin: '0px 5px 0px 5px',
-                                display: 'inline-block',
-                                background: isCurrentUser ? '#1976d2' : 'lightgray',
-                                padding: '2px 10px 2px 10px',
-                                borderRadius: '16px',
-                                color: isCurrentUser ? '#FFF' : 'black',
-                                fontSize: '16px',
-                              }}
-                            >
-                              {chatMessage.text}
-                            </Typography>
-                          </Grid>
-
-                        </Grid>
-                      </ListItem>
-                    );
-                  })}
-              </List>
-              <Grid container style={{ paddingTop: '10px' }} alignItems="center">
-                <Grid item xs={11}>
-                  <TextField
-                    value={message}
-                    onChange={(event) => setMessage(event.target.value)}
-                    onKeyDown={handleKeyDown}
-                    id="outlined-basic-email"
-                    label="Send message..."
-                    variant="outlined"
-                    className={classes.textField}
-                    style={{ padding: '0px 5px 0px 0px' }}
-                    InputProps={{
-                      endAdornment: (
-                        <Emojis onSelect={handleEmojiSelect} />
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid container justifyContent="flex-end" item xs={1}>
-                  <Fab color="primary" aria-label="add" style={{ height: 'auto', margin: '0px 5px 0px 0px' }}>
-                    <SendIcon onClick={handleSend} />
-                  </Fab>
-                </Grid>
-              </Grid>
-            </>
-          )}
+                Direct Messages
+              </Typography>
+            </Grid>
+          </Draggable>
         </Grid>
-      </Grid>
-    </div>
+        <Grid container component={Paper} className={classes.chatSection} style={{ background: '#fff', borderRadius: '0px 0px 12px 12px' }}>
+          <Grid item xs={3} className={classes.borderRight500}>
+            <Grid item xs={12} style={{ padding: '10px' }}>
+              <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
+            </Grid>
+            <Divider />
+            <div style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease', paddingTop: '10px' }}>
+              <List>
+                {conversations.map((conversation: any, index: number) => {
+                  const otherUser = conversation.members.find((member: any) => (
+                    member.firstName !== user.firstName
+                  ));
+                  const otherUserName = otherUser ? otherUser.firstName : '';
+                  return (
+                    <ListItem
+                      button
+                      key={conversation.id}
+                      onClick={() => {
+                        setCurrentConvo(conversation);
+                        setChatMessages(conversation.messages);
+                      }}
+                      style={{
+                        marginBottom: index === 0 ? '-10px' : 0,
+                        transform: index === 0 && isLoaded ? 'translateY(-10px)' : 'translateY(0)',
+                        transition: 'transform 0.3s ease',
+                      }}
+                    >
+                      <ListItemText>{otherUserName}</ListItemText>
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </div>
+          </Grid>
+          <Grid item xs={9} direction="column" style={{ height: '100%' }}>
+            {!currentConvo && (
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%',
+              }}
+              >
+                <Typography variant="h6" className="header-message">
+                  Select a conversation or start a new one.
+                </Typography>
+              </div>
+            )}
+            {currentConvo && (
+              <>
+                {(() => {
+                  const otherUser = currentConvo.members.find((member: any) => (
+                    member.firstName !== user.firstName
+                  ));
+                  const otherUserFirstName = otherUser ? otherUser.firstName : '';
+                  return (
+                    <Typography
+                      variant="h6"
+                      className="header-message"
+                      style={{
+                        display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#1976d2', color: '#FFF',
+                      }}
+                    >
+                      {otherUserFirstName}
+                    </Typography>
+                  );
+                })()}
+                <Divider />
+                <List
+                  className={classes.messageArea}
+                  style={{
+                    flexGrow: 1,
+                    overflowY: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column-reverse',
+                  }}
+                >
+                  {chatMessages
+                    .slice()
+                    .reverse()
+                    .map((chatMessage: any) => {
+                      const sender = currentConvo.members.find((member: any) => (
+                        member.id === chatMessage.senderId
+                      ));
+                      const senderFirstName = sender ? sender.firstName : '';
+                      const isCurrentUser = sender && sender.id === user.id;
+                      return (
+                        <ListItem key={chatMessage.id}>
+                          <Grid container>
+                            <Grid item xs={12}>
+                              <ListItemText primary={(
+                                <Typography component="span" variant="body2" style={{ display: 'flex', justifyContent: isCurrentUser ? 'flex-end' : 'flex-start', fontSize: '16px' }}>
+                                  <span style={{ margin: '0px 5px 0px 5px', fontWeight: 'bolder', color: isCurrentUser ? 'limegreen' : 'red' }}>
+                                    {senderFirstName}
+                                  </span>
+                                  <span style={{ color: 'rgb(29, 155, 240)' }}>
+                                    {moment(chatMessage.createdAt).isValid()
+                                      ? moment(chatMessage.createdAt).fromNow()
+                                      : 'just now'}
+                                  </span>
+                                </Typography>
+                              )}
+                              />
+                            </Grid>
+                            <Grid item xs={12} style={{ textAlign: isCurrentUser ? 'right' : 'left' }}>
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                style={{
+                                  margin: '0px 5px 0px 5px',
+                                  display: 'inline-block',
+                                  background: isCurrentUser ? '#1976d2' : 'lightgray',
+                                  padding: '2px 10px 2px 10px',
+                                  borderRadius: '16px',
+                                  color: isCurrentUser ? '#FFF' : 'black',
+                                  fontSize: '16px',
+                                }}
+                              >
+                                {chatMessage.text}
+                              </Typography>
+                            </Grid>
+
+                          </Grid>
+                        </ListItem>
+                      );
+                    })}
+                </List>
+                <Grid container style={{ paddingTop: '10px' }} alignItems="center">
+                  <Grid item xs={11}>
+                    <TextField
+                      value={message}
+                      onChange={(event) => setMessage(event.target.value)}
+                      onKeyDown={handleKeyDown}
+                      id="outlined-basic-email"
+                      label="Send message..."
+                      variant="outlined"
+                      className={classes.textField}
+                      style={{ padding: '0px 5px 0px 0px' }}
+                      InputProps={{
+                        endAdornment: (
+                          <Emojis onSelect={handleEmojiSelect} />
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid container justifyContent="flex-end" item xs={1}>
+                    <Fab color="primary" aria-label="add" style={{ height: 'auto', margin: '0px 5px 0px 0px' }}>
+                      <SendIcon onClick={handleSend} />
+                    </Fab>
+                  </Grid>
+                </Grid>
+              </>
+            )}
+          </Grid>
+        </Grid>
+      </ChatOverlay>
+    </Draggable>
   );
 }
 
