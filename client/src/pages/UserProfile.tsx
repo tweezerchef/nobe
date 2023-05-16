@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useNavigate } from 'react-router-dom';
 import React, {
   useState, useEffect,
@@ -9,7 +10,8 @@ import {
 } from '@material-ui/core';
 
 import Modal from '@mui/material/Modal';
-import e from 'express';
+import { ModalClose } from '@mui/joy';
+// import express from 'express';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context';
 import NearBy from '../components/NearBy/NearBy';
@@ -159,6 +161,18 @@ function UsersProfile() {
               : (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>)}
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
               <Box sx={style}>
+                <ModalClose
+                  variant="outlined"
+                  sx={{
+                    position: 'absolute',
+                    top: '16px',
+                    right: '16px',
+                    boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',
+                    borderRadius: '50%',
+                    bgcolor: 'background.body',
+                  }}
+                  onClick={() => handleClose()}
+                />
                 <NearBy />
               </Box>
             </Modal>
