@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context';
+import QuoteDisplay from '../components/QuoteDisplay/QuoteDisplay';
 
 function Recommended() {
   const userContext = useContext(UserContext);
@@ -33,6 +34,7 @@ function Recommended() {
       >
         {loaded
        && <BookDisplay books={books} id={id} />}
+        {!loaded && <QuoteDisplay />}
       </div>
     </div>
   );
