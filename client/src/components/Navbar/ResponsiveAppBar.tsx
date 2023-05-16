@@ -19,7 +19,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Paper } from '@mui/material';
+// import { Paper } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import UserContext from '../../hooks/Context';
 import ModeToggle from '../ColorMode/ColorModeToggle';
@@ -45,13 +45,6 @@ color: white !important;
   display: block !important;
 
 
-`;
-const ChatOverlay = styled(Paper)`
-  position: absolute;
-  right: 0;
-  z-index: 1000;
-  width: 600px;
-  height: '50vh';
 `;
 
 function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
@@ -352,9 +345,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
                 <ChatIcon />
               </IconButton>
               {showChat && (
-                <ChatOverlay>
-                  <Chat />
-                </ChatOverlay>
+                <Chat />
               )}
             </div>
           </Box>
