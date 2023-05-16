@@ -44,9 +44,9 @@ function BigBook(props: any) {
         margin: '10px',
         display: 'flex',
         flexDirection: 'column',
-        width: '90vw',
-        height: '80vh',
-        maxWidth: '800px',
+        width: '80vw',
+        height: '70vh',
+        maxWidth: '600px',
         maxHeight: '1000px',
         overflow: 'auto',
 
@@ -63,9 +63,12 @@ function BigBook(props: any) {
           justifyContent: 'center',
           alignItems: 'center',
           position: 'relative',
-          width: '75%', // Set the width of the container to 100%
-          paddingTop: '25%', // Set the height of the container based on the image aspect ratio (e.g. 3:4 = 75%)
-
+          width: ['100px', '25vw'], // use 300px for small screens, and 50vw for larger ones
+          height: ['150px', '25vw'], // make height the same to keep aspect ratio 1:1
+          maxWidth: '300px', // don't let the image get larger than this
+          maxHeight: '400px',
+          minWidth: '50px', // don't let the image get smaller than this
+          minHeight: '75px',
         }}
       >
         <img
@@ -77,6 +80,7 @@ function BigBook(props: any) {
             position: 'absolute',
             top: 0,
             left: 0,
+            paddingTop: '15px',
             width: '100%',
             height: '100%',
             imageRendering: 'crisp-edges',
