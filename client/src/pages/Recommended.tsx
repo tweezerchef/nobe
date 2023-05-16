@@ -8,8 +8,12 @@ function Recommended() {
   const user = userContext?.user;
   const id = user?.id;
   const [books, setBooks] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    axios.get(`/recommendations/recommended/?id=${id}`).then((res) => setBooks(res.data));
+    axios.get(`/recommendations/recommended/?id=${id}`).then((res) => {
+      setBooks(res.data);
+      setLoaded(true);
+    });
   }, []);
 
   return (
@@ -27,7 +31,8 @@ function Recommended() {
         display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: '20px',
       }}
       >
-        <BookDisplay books={books} id={id} />
+        {loaded
+       && <BookDisplay books={books} id={id} />}
       </div>
     </div>
   );
