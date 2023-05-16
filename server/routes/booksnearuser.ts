@@ -23,6 +23,7 @@ interface AuthenticatedRequest extends Request {
 // }
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
+  // console.log(req, 21);
   // console.log(req, 26);
   try {
     const { lon, lat, radius } = req.query;

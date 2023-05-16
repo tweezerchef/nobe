@@ -4,44 +4,19 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete';
-import '@geoapify/geocoder-autocomplete/styles/minimal.css';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import ReactiveButton from 'reactive-button';
 import Grid from '@mui/material/Grid';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Card from '@mui/joy/Card/Card';
-import { Button, CardContent, Modal } from '@material-ui/core';
+import { Button, CardContent } from '@material-ui/core';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-import { ModalClose } from '@mui/joy';
 import UserContext from '../../hooks/Context';
-
-const marks = [
-  {
-    value: 0,
-    label: '0 mi',
-  },
-  {
-    value: 25,
-    label: '25 mi',
-  },
-  {
-    value: 50,
-    label: '50 mi',
-  },
-  {
-    value: 75,
-    label: '75 mi',
-  },
-  {
-    value: 100,
-    label: '100 mi',
-  },
-];
 
 function NearBy() {
   const userContext = useContext(UserContext);
@@ -61,7 +36,7 @@ function NearBy() {
   const [userLongitude, setUserLongitude] = useState(0);
   const [userLatitude, setUserLatitude] = useState(0);
   const [userLocation, setUserLocation] = useState<any>([]);
-  const [open, setOpen] = React.useState<boolean>(false);
+
   const navigate = useNavigate();
 
   const getUserLocation = async () => {
@@ -70,15 +45,15 @@ function NearBy() {
       // console.log(res, 45);
       setUserLocation(res.data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
+  // console.log(userLocation, 52);
   const handleLookForBooksClick = async () => {
     setButtonState('loading');
     try {
       getUserLocation();
-      // eslint-disable-next-line max-len
       const response = await axios.get('/location/locations', { params: { lon: userLocation.longitude, lat: userLocation.latitude, radius: userLocation.radius } });
       const data = await response.data;
       navigate('/locations', { state: data });
@@ -128,68 +103,42 @@ function NearBy() {
     setRadius(newRadius);
   };
 
-  const handleClose = () => setOpen(false);
-  const handleOpen = () => setOpen(true);
-
-  const valuetext = (value: number) => `${value}°C`;
   // console.log(displayBooks, 154);
 
   return (
     <div>
-      <ModalClose
-        variant="outlined"
-        sx={{
-          position: 'absolute',
-          top: '16px',
-          right: '16px',
-          boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',
-          borderRadius: '50%',
-          bgcolor: 'background.body',
-        }}
-        onClick={() => setOpen(false)}
-      />
-      <Grid container spacing={1}>
-        <Grid xs={6}>
-          <h5>Enter Address</h5>
-          <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
-            <GeoapifyGeocoderAutocomplete
-              placeholder="Enter address here"
-              placeSelect={onPlaceSelect}
-              suggestionsChange={onSuggectionChange}
-            />
-          </GeoapifyContext>
-        </Grid>
-        <Grid xs={6}>
-          <h5>Set Radius</h5>
-          <FormControl sx={{ m: 1, width: '10ch' }} variant="outlined">
-            <OutlinedInput
-              sx={{ height: '4ch' }}
-              id="outlined-adornment-weight"
-              endAdornment={<InputAdornment position="end">mi</InputAdornment>}
-              onChange={handleRadiusChange}
-              value={radius}
-            />
-            <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
-          </FormControl>
-        </Grid>
-      </Grid>
-      <Box sx={{ marginTop: 3, width: 300 }}>
-        <Slider
-          aria-label="Always visible"
-          value={radius}
-          getAriaValueText={valuetext}
+      <h1>Enter Address</h1>
+      <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
+        <GeoapifyGeocoderAutocomplete
+          placeholder="Enter address here"
+          placeSelect={onPlaceSelect}
+          suggestionsChange={onSuggectionChange}
+        />
+      </GeoapifyContext>
+      <h1>Set Radius</h1>
+      <FormControl sx={{ m: 1, width: '24ch' }} variant="outlined">
+        <OutlinedInput
+          sx={{ height: '3ch' }}
+          id="outlined-adornment-weight"
+          endAdornment={<InputAdornment position="end">mi</InputAdornment>}
           onChange={handleRadiusChange}
-          step={5}
-          marks={marks}
+          value={radius}
+        />
+        <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
+        <Slider
+          defaultValue={0}
+          value={radius}
+          onChange={handleRadiusChange}
+          aria-label="Default"
           valueLabelDisplay="auto"
         />
-      </Box>
+      </FormControl>
       <Box>
         <ReactiveButton
           rounded
           size="medium"
           buttonState={locationState}
-          idleText="Save Location"
+          idleText="Save Location Preference"
           loadingText="Saving"
           successText="Done"
           onClick={saveLocation}

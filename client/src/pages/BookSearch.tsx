@@ -4,7 +4,7 @@ import { TextField, Button } from '@material-ui/core';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import BigBook from '../components/Book/BookBig';
 import UserContext from '../hooks/Context';
-// import PlaceDetails from '../components/ReadingSpotsMap/PlaceViewer';
+import QuoteDisplay from '../components/QuoteDisplay/QuoteDisplay';
 
 function BookPage() {
   const userContext = useContext(UserContext);
@@ -35,6 +35,7 @@ function BookPage() {
       </form>
       {book && <BigBook book={book} id={id} />}
       {/* {books.length > 0 && <BigBook book={books[0]} id={id} />} */}
+      {/* <QuoteDisplay /> */}
 
     </div>
   );

@@ -5,11 +5,21 @@ import CardOverflow from '@mui/joy/CardOverflow';
 import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
 import BigBook from './BookBig';
 import LendingLibraryButton from '../Button/LendingLibraryButton';
+
+const useStyles = makeStyles({
+  card: {
+    backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    /* Additional CSS properties */
+  },
+});
 
 const BigBookOverlay = styled.div`
   position: fixed;
@@ -24,6 +34,7 @@ const BigBookOverlay = styled.div`
 `;
 
 const Book = React.memo((props: any) => {
+  const classes = useStyles();
   const [showBigBook, setShowBigBook] = useState(false);
   const { book } = props;
   const userContext = useContext(UserContext);
@@ -54,7 +65,7 @@ const Book = React.memo((props: any) => {
 
   return (
 
-    <Card key={book.id} variant="outlined" sx={{ width: 380, margin: '10px' }}>
+    <Card key={book.id} variant="outlined" className={classes.card} sx={{ width: 380, margin: '10px' }}>
       <CardOverflow onClick={handleOnClick}>
         <AspectRatio ratio="2">
           <img src={book.image} loading="lazy" alt="No Image Found" />
@@ -90,7 +101,7 @@ const Book = React.memo((props: any) => {
           gap: 1.5,
           py: 1.5,
           px: 'var(--Card-padding)',
-          bgcolor: 'background.level1',
+          bgcolor: '#ecd8c6',
         }}
       >
         <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
