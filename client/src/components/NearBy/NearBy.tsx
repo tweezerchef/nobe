@@ -19,10 +19,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import UserContext from '../../hooks/Context';
 
-interface NearByProps {
-  handleClose: (params: false) => void;
-}
-
 const marks = [
   {
     value: 0,
@@ -139,18 +135,6 @@ function NearBy() {
 
   return (
     <div>
-      <ModalClose
-        variant="outlined"
-        sx={{
-          position: 'absolute',
-          top: '16px',
-          right: '16px',
-          boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',
-          borderRadius: '50%',
-          bgcolor: 'background.body',
-        }}
-        onClick={() => handleClose()}
-      />
       <Grid container spacing={1}>
         <Grid xs={7}>
           <h5>Enter Address</h5>
