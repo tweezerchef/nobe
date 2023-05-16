@@ -14,7 +14,7 @@ import LendingLibraryButton from '../Button/LendingLibraryButton';
 
 const useStyles = makeStyles({
   card: {
-    backgroundImage: 'url("https://thumbs2.imgbox.com/34/74/qEamY2Vm_t.jpg")',
+    backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     /* Additional CSS properties */
@@ -68,7 +68,11 @@ const Book = React.memo((props: any) => {
     <Card key={book.id} variant="outlined" className={classes.card} sx={{ width: 380, margin: '10px' }}>
       <CardOverflow onClick={handleOnClick}>
         <AspectRatio ratio="2">
-          <img src={book.image} loading="lazy" alt="No Image Found" />
+          {book.image ? (
+            <img src={book.image} loading="lazy" alt="" />
+          ) : (
+            <img src="https://i.imgur.com/XrUd1L2.jpg" loading="lazy" alt="" />
+          )}
         </AspectRatio>
 
         <LendingLibraryButton book={book} />
