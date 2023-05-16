@@ -63,8 +63,8 @@ const BookIcon: React.FC<BookIconProps> = ({
         <Sheet
           variant="outlined"
           sx={{
-            width: '75%',
-            height: '75%',
+            width: '50%',
+            height: '50%',
             maxWidth: 'auto',
             borderRadius: 'md',
             p: 3,

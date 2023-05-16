@@ -194,6 +194,7 @@ function NearBy() {
           successText="Done"
           onClick={saveLocation}
           color="blue"
+          style={{ padding: '25px' }}
         />
         <ReactiveButton
           rounded
