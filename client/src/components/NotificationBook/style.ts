@@ -20,7 +20,7 @@ justify-content: center;
 const Wrapper = styled(Card)`
   && {
     width: 480px;
-    margin: 50px auto;
+    margin: 30px auto;
   }
 `;
 
@@ -31,7 +31,6 @@ const NotificationsItem = styled(CardContent)`
     justify-content: space-between;
     width: 100%;
     height: 80px;
-    margin-bottom: 20px;
     padding: 0 20px;
     background-color: white;
     border-radius: 5px;
