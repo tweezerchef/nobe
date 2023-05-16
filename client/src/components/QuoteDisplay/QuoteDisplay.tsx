@@ -17,7 +17,10 @@ function QuoteDisplay() {
       .then((res) => {
         setQuote(res.data.content);
         setAuthor(res.data.author);
-        setChecked(true);
+        setChecked(false); // Set checked to false to trigger the slide-out animation
+        setTimeout(() => {
+          setChecked(true); // Set checked to true after a delay to trigger the slide-in animation
+        }, 2000); // Adjust the delay according to your desired transition time
       })
       .catch((err) => {
         console.error(err);
@@ -27,16 +30,15 @@ function QuoteDisplay() {
   useEffect(() => {
     getQuote();
     const interval = setInterval(() => {
-      setChecked(false);
       getQuote();
-    }, 3000);
+    }, 10000); // Adjust the interval time according to your desired interval
     return () => clearInterval(interval);
   }, []);
 
   return (
     <Box display="flex" justifyContent="center" alignItems="flex-start" minHeight="100vh">
       <Slide direction="right" in={checked} mountOnEnter unmountOnExit>
-        <Card sx={{ width: '60vh' }}>
+        <Card variant="outlined" sx={{ width: '60vh', height: '30vh', margin: '10px' }}>
           <CardContent>
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
               Quotes As The Algorithm Works Its Magic

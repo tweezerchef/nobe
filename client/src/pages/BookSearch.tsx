@@ -35,7 +35,7 @@ function BookPage() {
       </form>
       {book && <BigBook book={book} id={id} />}
       {/* {books.length > 0 && <BigBook book={books[0]} id={id} />} */}
-      <QuoteDisplay />
+      {/* <QuoteDisplay /> */}
 
     </div>
   );
