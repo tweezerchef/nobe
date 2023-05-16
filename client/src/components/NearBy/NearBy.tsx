@@ -45,8 +45,9 @@ const marks = [
     label: '100 mi',
   },
 ];
+// { handleClose }: NearByProps
 
-function NearBy({ handleClose }: NearByProps) {
+function NearBy() {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
@@ -64,7 +65,7 @@ function NearBy({ handleClose }: NearByProps) {
   const [userLongitude, setUserLongitude] = useState(0);
   const [userLatitude, setUserLatitude] = useState(0);
   const [userLocation, setUserLocation] = useState<any>([]);
-
+  const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
   const getUserLocation = async () => {
@@ -130,7 +131,7 @@ function NearBy({ handleClose }: NearByProps) {
 
     setRadius(newRadius);
   };
-
+  const handleClose = () => setOpen(false);
   // const handleOpen = () => setOpen(true);
 
   const valuetext = (value: number) => `${value}°C`;
@@ -148,7 +149,7 @@ function NearBy({ handleClose }: NearByProps) {
           borderRadius: '50%',
           bgcolor: 'background.body',
         }}
-        onClick={() => handleClose(false)}
+        onClick={() => handleClose()}
       />
       <Grid container spacing={1}>
         <Grid xs={7}>
