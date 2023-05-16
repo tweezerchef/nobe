@@ -1,24 +1,32 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/react-in-jsx-scope */
-import react, { useState } from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
+import React, { useState } from 'react';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
-import IconButton from '@mui/joy/IconButton';
 import Link from '@mui/joy/Link';
 import Box from '@mui/joy/Box';
 import Button from '@mui/material/Button';
-import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import { makeStyles } from '@material-ui/core/styles';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserReview from '../UserStarRating/UserReview';
 import Reviews from './Reviews';
-import WishListButton from '../Button/WishListButton';
-import LendingLibraryButton from '../Button/LendingLibraryButton';
+import LendingLibraryButtonBigBook from '../Button/LendingLibraryButtonBigBook';
+import WishListButtonBigBook from '../Button/WishListButtonBigBook';
+
+const useStyles = makeStyles({
+  card: {
+    backgroundImage: 'url("https://thumbs2.imgbox.com/34/74/qEamY2Vm_t.jpg")',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    /* Additional CSS properties */
+  },
+});
 
 function BigBook(props: any) {
+  const classes = useStyles();
   const [reviewOpen, setReviewOpen] = useState(false);
   const {
     book, id, onClose, userRating,
@@ -40,16 +48,18 @@ function BigBook(props: any) {
     <Card
       key={book.id}
       variant="outlined"
+      className={classes.card}
       sx={{
         margin: '10px',
         display: 'flex',
-        flexDirection: 'column',
-        width: '80vw',
-        height: '70vh',
-        maxWidth: '600px',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        width: '70vw',
+        height: '90vh',
+        maxWidth: '675px',
         maxHeight: '1000px',
         overflow: 'auto',
-
+        // backgroundImage: 'url("https://imgbox.com/Frdz4hjN")',
         '@media (max-width: 768px)': {
           width: '80vw',
           height: '80vh',
@@ -60,14 +70,15 @@ function BigBook(props: any) {
         sx={{
           flexGrow: 1,
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           position: 'relative',
-          width: ['100px', '25vw'], // use 300px for small screens, and 50vw for larger ones
-          height: ['150px', '25vw'], // make height the same to keep aspect ratio 1:1
-          maxWidth: '300px', // don't let the image get larger than this
+          width: ['100px', '25vw'],
+          height: ['150px', '25vw'],
+          maxWidth: '300px',
           maxHeight: '400px',
-          minWidth: '50px', // don't let the image get smaller than this
+          minWidth: '50px',
           minHeight: '75px',
         }}
       >
@@ -76,7 +87,7 @@ function BigBook(props: any) {
           loading="lazy"
           alt=""
           style={{
-            objectFit: 'contain', // Use object-fit: contain to scale the image without stretching it
+            objectFit: 'contain',
             position: 'absolute',
             top: 0,
             left: 0,
@@ -87,23 +98,36 @@ function BigBook(props: any) {
           }}
           onClick={handleOnClick}
         />
-        <LendingLibraryButton book={book} />
-        <WishListButton book={book} />
+        {/* <LendingLibraryButton book={book} />
+        <WishListButton book={book} /> */}
       </CardOverflow>
-      <UserStarRating book={book} id={id} value={userRating} />
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add Written Review
-      </Button>
-      <UserReview book={book} id={id} open={reviewOpen} handleClose={handleClose} />
-      <Box sx={{ p: 3, flexGrow: 1, overflow: 'auto' }}>
 
-        <span onClick={handleOnClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'left',
+          justifyContent: 'center',
+          pl: 2,
+        }}
+      >
+        <Typography level="h4" onClick={handleOnClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
           {book.title}
-        </span>
-
+        </Typography>
         <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
           <Link href="#multiple-actions">{book.author}</Link>
         </Typography>
+
+        <UserStarRating book={book} id={id} value={userRating} />
+        <Button variant="outlined" onClick={handleClickOpen} sx={{ mt: 1 }}>
+          Add Written Review
+        </Button>
+        <UserReview book={book} id={id} open={reviewOpen} handleClose={handleClose} />
+        <WishListButtonBigBook paddingTop="15px" book={book} />
+        <LendingLibraryButtonBigBook paddingTop="15px" book={book} />
+      </Box>
+      <Box sx={{ p: 3, flexGrow: 1, overflow: 'auto' }}>
+
         <Typography level="body1">
           {book.description}
         </Typography>
