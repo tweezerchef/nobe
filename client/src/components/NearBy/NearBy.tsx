@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Card from '@mui/joy/Card/Card';
 import { Button, CardContent } from '@material-ui/core';
+import ModalClose from '@mui/joy/ModalClose';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -130,7 +131,7 @@ function NearBy({ handleClose }: NearByProps) {
     setRadius(newRadius);
   };
 
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = () => setOpen(true);
 
   const valuetext = (value: number) => `${value}°C`;
   // console.log(displayBooks, 154);
