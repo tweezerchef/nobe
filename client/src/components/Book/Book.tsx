@@ -14,7 +14,7 @@ import LendingLibraryButton from '../Button/LendingLibraryButton';
 
 const useStyles = makeStyles({
   card: {
-    backgroundImage: 'url("https://thumbs2.imgbox.com/34/74/qEamY2Vm_t.jpg")',
+    backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     /* Additional CSS properties */
