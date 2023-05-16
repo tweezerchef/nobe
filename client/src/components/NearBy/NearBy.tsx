@@ -20,6 +20,10 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { ModalClose } from '@mui/joy';
 import UserContext from '../../hooks/Context';
 
+interface NearByProps {
+  handleClose: (params: false) => void;
+}
+
 const marks = [
   {
     value: 0,
@@ -43,7 +47,7 @@ const marks = [
   },
 ];
 
-function NearBy() {
+function NearBy({ handleClose }: NearByProps) {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
@@ -128,7 +132,6 @@ function NearBy() {
     setRadius(newRadius);
   };
 
-  const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
 
   const valuetext = (value: number) => `${value}°C`;
@@ -146,10 +149,10 @@ function NearBy() {
           borderRadius: '50%',
           bgcolor: 'background.body',
         }}
-        onClick={() => setOpen(false)}
+        onClick={() => handleClose(false)}
       />
       <Grid container spacing={1}>
-        <Grid xs={6}>
+        <Grid xs={7}>
           <h5>Enter Address</h5>
           <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
             <GeoapifyGeocoderAutocomplete
@@ -159,9 +162,9 @@ function NearBy() {
             />
           </GeoapifyContext>
         </Grid>
-        <Grid xs={6}>
+        <Grid xs={5}>
           <h5>Set Radius</h5>
-          <FormControl sx={{ m: 1, width: '10ch' }} variant="outlined">
+          <FormControl sx={{ m: 1, width: '8ch' }} variant="outlined">
             <OutlinedInput
               sx={{ height: '4ch' }}
               id="outlined-adornment-weight"
@@ -173,7 +176,7 @@ function NearBy() {
           </FormControl>
         </Grid>
       </Grid>
-      <Box sx={{ marginTop: 3, width: 300 }}>
+      <Box sx={{ marginTop: 2, width: 300 }}>
         <Slider
           aria-label="Always visible"
           value={radius}
@@ -184,28 +187,33 @@ function NearBy() {
           valueLabelDisplay="auto"
         />
       </Box>
-      <Box>
-        <ReactiveButton
-          rounded
-          size="medium"
-          buttonState={locationState}
-          idleText="Save Location"
-          loadingText="Saving"
-          successText="Done"
-          onClick={saveLocation}
-          color="blue"
-          style={{ padding: '25px' }}
-        />
-        <ReactiveButton
-          rounded
-          size="medium"
-          buttonState={buttonState}
-          idleText="Look for Books"
-          loadingText="Loading"
-          successText="Done"
-          onClick={handleLookForBooksClick}
-          color="blue"
-        />
+      <Box sx={{ marginTop: 2 }}>
+        <Grid container spacing={1}>
+          <Grid xs={6}>
+            <ReactiveButton
+              rounded
+              size="medium"
+              buttonState={locationState}
+              idleText="Save Location"
+              loadingText="Saving"
+              successText="Done"
+              onClick={saveLocation}
+              color="blue"
+            />
+          </Grid>
+          <Grid xs={6}>
+            <ReactiveButton
+              rounded
+              size="medium"
+              buttonState={buttonState}
+              idleText="Look for Books"
+              loadingText="Loading"
+              successText="Done"
+              onClick={handleLookForBooksClick}
+              color="blue"
+            />
+          </Grid>
+        </Grid>
       </Box>
     </div>
   );
