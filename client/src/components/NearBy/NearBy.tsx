@@ -11,12 +11,37 @@ import Grid from '@mui/material/Grid';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Card from '@mui/joy/Card/Card';
 import { Button, CardContent } from '@material-ui/core';
+import ModalClose from '@mui/joy/ModalClose';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import UserContext from '../../hooks/Context';
+
+const marks = [
+  {
+    value: 0,
+    label: '0 mi',
+  },
+  {
+    value: 25,
+    label: '25 mi',
+  },
+  {
+    value: 50,
+    label: '50 mi',
+  },
+  {
+    value: 75,
+    label: '75 mi',
+  },
+  {
+    value: 100,
+    label: '100 mi',
+  },
+];
+// { handleClose }: NearByProps
 
 function NearBy() {
   const userContext = useContext(UserContext);
@@ -36,7 +61,7 @@ function NearBy() {
   const [userLongitude, setUserLongitude] = useState(0);
   const [userLatitude, setUserLatitude] = useState(0);
   const [userLocation, setUserLocation] = useState<any>([]);
-
+  const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
   const getUserLocation = async () => {
@@ -102,29 +127,40 @@ function NearBy() {
 
     setRadius(newRadius);
   };
+  const handleClose = () => setOpen(false);
+  // const handleOpen = () => setOpen(true);
 
+  const valuetext = (value: number) => `${value}°C`;
   // console.log(displayBooks, 154);
 
   return (
     <div>
-      <h1>Enter Address</h1>
-      <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
-        <GeoapifyGeocoderAutocomplete
-          placeholder="Enter address here"
-          placeSelect={onPlaceSelect}
-          suggestionsChange={onSuggectionChange}
-        />
-      </GeoapifyContext>
-      <h1>Set Radius</h1>
-      <FormControl sx={{ m: 1, width: '24ch' }} variant="outlined">
-        <OutlinedInput
-          sx={{ height: '3ch' }}
-          id="outlined-adornment-weight"
-          endAdornment={<InputAdornment position="end">mi</InputAdornment>}
-          onChange={handleRadiusChange}
-          value={radius}
-        />
-        <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
+      <Grid container spacing={1}>
+        <Grid xs={7}>
+          <h5>Enter Address</h5>
+          <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
+            <GeoapifyGeocoderAutocomplete
+              placeholder="Enter address here"
+              placeSelect={onPlaceSelect}
+              suggestionsChange={onSuggectionChange}
+            />
+          </GeoapifyContext>
+        </Grid>
+        <Grid xs={5}>
+          <h5>Set Radius</h5>
+          <FormControl sx={{ m: 1, width: '8ch' }} variant="outlined">
+            <OutlinedInput
+              sx={{ height: '4ch' }}
+              id="outlined-adornment-weight"
+              endAdornment={<InputAdornment position="end">mi</InputAdornment>}
+              onChange={handleRadiusChange}
+              value={radius}
+            />
+            <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
+          </FormControl>
+        </Grid>
+      </Grid>
+      <Box sx={{ marginTop: 2, width: 300 }}>
         <Slider
           defaultValue={0}
           value={radius}
@@ -132,28 +168,34 @@ function NearBy() {
           aria-label="Default"
           valueLabelDisplay="auto"
         />
-      </FormControl>
-      <Box>
-        <ReactiveButton
-          rounded
-          size="medium"
-          buttonState={locationState}
-          idleText="Save Location Preference"
-          loadingText="Saving"
-          successText="Done"
-          onClick={saveLocation}
-          color="blue"
-        />
-        <ReactiveButton
-          rounded
-          size="medium"
-          buttonState={buttonState}
-          idleText="Look for Books"
-          loadingText="Loading"
-          successText="Done"
-          onClick={handleLookForBooksClick}
-          color="blue"
-        />
+      </Box>
+      <Box sx={{ marginTop: 2 }}>
+        <Grid container spacing={1}>
+          <Grid xs={6}>
+            <ReactiveButton
+              rounded
+              size="medium"
+              buttonState={locationState}
+              idleText="Save Location"
+              loadingText="Saving"
+              successText="Done"
+              onClick={saveLocation}
+              color="blue"
+            />
+          </Grid>
+          <Grid xs={6}>
+            <ReactiveButton
+              rounded
+              size="medium"
+              buttonState={buttonState}
+              idleText="Look for Books"
+              loadingText="Loading"
+              successText="Done"
+              onClick={handleLookForBooksClick}
+              color="blue"
+            />
+          </Grid>
+        </Grid>
       </Box>
     </div>
   );

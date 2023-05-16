@@ -41,9 +41,11 @@ const BookDisplay = React.memo((props: any) => {
     }
   }, [array]);
 
+  const filteredArray = array.filter((book: any) => book.title);
+
   const createColumns = () => {
     const columnsArray: any[] = Array.from({ length: columns }, () => []);
-    array.forEach((book: any, index: number) => {
+    filteredArray.forEach((book: any, index: number) => {
       columnsArray[index % columns].push(book);
     });
     return columnsArray;

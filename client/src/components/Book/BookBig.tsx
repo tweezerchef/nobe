@@ -10,6 +10,7 @@ import Link from '@mui/joy/Link';
 import Box from '@mui/joy/Box';
 import Button from '@mui/material/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserReview from '../UserStarRating/UserReview';
 import Reviews from './Reviews';
@@ -35,7 +36,12 @@ function BigBook(props: any) {
   const handleOnClick = () => {
     onClose();
   };
-
+  const truncatedTitle = (title: string, maxLength: number) => {
+    if (title.length > maxLength) {
+      return `${title.substring(0, maxLength)}...`;
+    }
+    return title;
+  };
   const handleClickOpen = () => {
     setReviewOpen(true);
   };
@@ -111,9 +117,18 @@ function BigBook(props: any) {
           pl: 2,
         }}
       >
-        <Typography level="h4" onClick={handleOnClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
-          {book.title}
-        </Typography>
+        <Tooltip title={book.title} placement="top">
+          <Typography
+            level="h4"
+            onClick={handleOnClick}
+            style={{
+              cursor: 'pointer', textDecoration: 'underline', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+            }}
+          >
+            {truncatedTitle(book.title, 25)}
+          </Typography>
+        </Tooltip>
+
         <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
           <Link href="#multiple-actions">{book.author}</Link>
         </Typography>

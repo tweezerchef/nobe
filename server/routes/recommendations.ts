@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
 // import findOrCreateBook from './review'
-import { title } from 'process';
 
 const { PrismaClient } = require('@prisma/client');
 
@@ -83,13 +82,6 @@ async function findOrCreateBook(
     console.error(`Error finding or creating book with ISBN10 ${ISBN10}:`);
     return {};
   }
-}
-
-interface Book {
-  image_url: string;
-  image: string;
-  title: string;
-
 }
 
 async function findRandomRows(limit: number) {
