@@ -12,6 +12,7 @@ function LendingLibraryButton(props: any) {
   const user = userContext?.user;
   const id = user?.id;
   const [color, setColor] = useState<CustomColor>('danger');
+  // eslint-disable-next-line max-len
   const [toolTip, setToolTip] = useState<NonNullable<React.ReactNode>>(<h1>Add to Lending Library</h1>);
 
   const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -50,12 +51,8 @@ function LendingLibraryButton(props: any) {
         variant="solid"
         color={color}
         sx={{
-          // position: 'absolute',
-          // zIndex: 2,
           borderRadius: '50%',
-          // right: '4rem',
-          // bottom: 0,
-          // transform: 'translateY(50%)',
+          my: 1,
         }}
         onClick={onClick}
       >
