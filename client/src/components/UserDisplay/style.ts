@@ -11,6 +11,7 @@ const ProfileCard = styled(Card)({
   height: 175,
   margin: '0 auto',
   boxShadow: '0px 0px 25px rgba(0, 0, 0, 0.6)',
+  justifyContent: 'center',
   alignItems: 'center',
 });
 
