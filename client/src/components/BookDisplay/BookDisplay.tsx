@@ -31,11 +31,11 @@ const BookDisplay = React.memo((props: any) => {
   };
   const handleBookClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, book: any) => {
     const rect = (e.target as Element).getBoundingClientRect();
-    let bigBookWidth = window.innerWidth * 0.69; // This should match your BigBook width style
+    let bigBookWidth = window.innerWidth * 0.75; // This should match your BigBook width style
     let bigBookHeight = window.innerHeight * 0.85; // This should match your BigBook height style
 
     // Apply maxWidth and maxHeight restrictions
-    bigBookWidth = Math.min(bigBookWidth, 625);
+    bigBookWidth = Math.min(bigBookWidth, 665);
     bigBookHeight = Math.min(bigBookHeight, 850);
 
     // Apply minWidth and minHeight restrictions (values are arbitrary, adjust as needed)
@@ -47,7 +47,7 @@ const BookDisplay = React.memo((props: any) => {
 
     // If BigBook would overflow the right edge, align it to the right with some padding
     if (window.innerWidth - left < bigBookWidth) {
-      left = window.innerWidth - bigBookWidth - 20;
+      left = window.innerWidth - bigBookWidth - 40;
     }
 
     // If BigBook would overflow the bottom edge, align it to the bottom with some padding
@@ -100,7 +100,7 @@ const BookDisplay = React.memo((props: any) => {
         width: '100%',
         maxWidth: '100%',
         overflowY: 'auto',
-        padding: '20px',
+        margin: '20px',
       }}
     >
       {shouldDisplay

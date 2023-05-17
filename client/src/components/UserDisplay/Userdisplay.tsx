@@ -30,6 +30,11 @@ interface UserProfile {
   picture: string;
 }
 
+// This code generates a user display card that shows a user's name, description, activity count, post count,
+// club count, and avatar. It also has a follow and message button. It also displays a book display
+// component that shows all the books that the user has added to their profile. This code is used
+// to display a user's profile page.
+
 function UserDisplay({ user }: { user: any }) {
   const userBooks = user.UserBooks;
   // console.log(userBooks, 10);
@@ -42,11 +47,8 @@ function UserDisplay({ user }: { user: any }) {
 
   useEffect(() => {
     const booksArray = userBooks?.map((userbook: any) => userbook.Books);
-    // console.log(booksArray, 20);
     setBooks(booksArray);
   }, [userBooks]);
-
-  // console.log(user, 48);
 
   return (
     <div>
@@ -56,7 +58,7 @@ function UserDisplay({ user }: { user: any }) {
             src={user.picture}
             alt={user.name}
             style={{
-              width: '7rem', height: '7rem', marginLeft: '10px', marginTop: '10px',
+              width: '5rem', height: '5rem', marginLeft: '10px', marginTop: '10px',
             }}
           />
         </Link>

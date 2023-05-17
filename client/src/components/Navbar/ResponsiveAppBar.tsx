@@ -379,7 +379,6 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
             >
               <StyledLink to="/booksearch">Book Search</StyledLink>
             </Button>
-            <NotificationIcon />
             <div style={{ position: 'relative' }}>
               <IconButton style={{ width: '32px', margin: '10px' }} onClick={handleChatButtonClick}>
                 <ChatIcon />
@@ -445,6 +444,11 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               )}
             </Menu>
             <ModeToggle setMode={setMode} setJoyMode={setJoyMode} />
+          </Box>
+          <Box sx={{ flexGrow: '0 !important', display: 'block !important' }}>
+            <div style={{ position: 'relative' }}>
+              <NotificationIcon />
+            </div>
           </Box>
         </Toolbar>
       </Container>

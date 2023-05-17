@@ -55,16 +55,11 @@ function BigBook(props: any) {
       variant="outlined"
       className={classes.card}
       sx={{
-        margin: '2px',
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: '75vw',
-        height: '85vh',
-        maxWidth: '665px',
-        maxHeight: '850px',
-        overflow: 'auto',
-        // backgroundImage: 'url("https://imgbox.com/Frdz4hjN")',
+        width: '110%',
+        height: '100%',
+        maxWidth: '600px',
+        maxHeight: '1000px',
+        // Remove overflow: 'auto'
         '@media (max-width: 768px)': {
           width: '80vw',
           height: '80vh',

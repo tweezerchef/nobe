@@ -15,21 +15,17 @@ interface NotificationsCardProps {
 
 }
 
-const NotificationsCard: FC<NotificationsCardProps> = ({ notification }) => {
-  console.log(notification, 17);
-
-  return (
-    <Wrapper>
-      <NotificationsItem>
-        <NotificationsItemAvatar image={notification.User.picture} />
-        <NotificationsItemContent>
-          <div>
-            <NotificationsItemTitle />
-            <NotificationsItemMessage />
-          </div>
-        </NotificationsItemContent>
-      </NotificationsItem>
-    </Wrapper>
-  );
-};
+const NotificationsCard: FC<NotificationsCardProps> = ({ notification }) => (
+  <Wrapper>
+    <NotificationsItem>
+      <NotificationsItemAvatar image={notification.User.picture} />
+      <NotificationsItemContent>
+        <div>
+          <NotificationsItemTitle />
+          <NotificationsItemMessage />
+        </div>
+      </NotificationsItemContent>
+    </NotificationsItem>
+  </Wrapper>
+);
 export default NotificationsCard;

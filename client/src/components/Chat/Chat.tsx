@@ -181,9 +181,11 @@ function Chat() {
 
   useEffect(() => {
     updateUser();
+    console.log('Chat.tsx updateUser');
   }, []);
 
   useEffect(() => {
+    console.log('Chat.tsx userconvo');
     if (user !== null) {
       setConversations(user.Conversations);
     }
@@ -192,6 +194,7 @@ function Chat() {
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
+    console.log('Chat.tsx newSocket');
     if (socketUrl && user) {
       const newSocket = io(socketUrl, {
         query: {
