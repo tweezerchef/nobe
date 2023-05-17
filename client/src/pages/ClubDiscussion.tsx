@@ -21,7 +21,7 @@ interface Club {
 
 function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
-  const [discussions, setDiscussions] = useState<Discussion[]>([]);
+  const [discussionList, setDiscussionList] = useState<Discussion[]>([]);
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -45,7 +45,7 @@ function ClubDiscussion() {
     async function fetchDiscussion() {
       try {
         const { data } = await axios.get(`/api/clubs/${id}/discussion`);
-        setDiscussions(data);
+        setDiscussionList(data);
       } catch (error) {
         console.error(error);
       }
@@ -72,7 +72,7 @@ function ClubDiscussion() {
         title: newDiscussionTitle,
         userId,
       });
-      setDiscussions((discussions) => [...discussions, response.data]);
+      setDiscussionList((discussions) => [...discussions, response.data]);
       setNewDiscussionTitle('');
       setDialogOpen(false);
     } catch (error) {
@@ -125,7 +125,13 @@ function ClubDiscussion() {
         </DialogActions>
       </Dialog>
       )}
-      {id && <DiscussionList discussions={discussions} clubId={id} key={discussions.length} />}
+      {id && (
+      <DiscussionList
+        discussions={discussionList}
+        clubId={id}
+        key={discussionList.length}
+      />
+      )}
     </div>
   );
 }
