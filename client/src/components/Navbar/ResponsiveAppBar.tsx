@@ -14,18 +14,22 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
+// import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 // import { Paper } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
+import Modal from '@mui/material/Modal';
+import { ModalClose } from '@mui/joy';
 import UserContext from '../../hooks/Context';
 import ModeToggle from '../ColorMode/ColorModeToggle';
 import NotificationIcon from '../ActionButton/ActionButton';
 // import NotificationMobile from '../NotificationMessages/Notificationsmobile';
 import Chat from '../Chat/Chat';
+// import StyledBox from './style';
+import NearBy from '../NearBy/NearBy';
 
 const StyledLink = styled(Link)`
   color: white !important;
@@ -55,6 +59,8 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
     null,
   );
   const [showChat, setShowChat] = useState(false);
+
+  const [open, setOpen] = React.useState(false);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -101,6 +107,21 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
 
   const handleChatButtonClick = () => {
     setShowChat(!showChat);
+  };
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
   };
 
   return (
@@ -307,8 +328,27 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               onClick={handleCloseNavMenu}
               sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
             >
-              <StyledButton onClick={handleLookForBooksClick}>Books Near Me</StyledButton>
+              { user?.radius && user?.latitude && user?.latitude > 0 && user?.radius > 0
+                ? <StyledButton onClick={handleLookForBooksClick}>Books Near Me</StyledButton>
+                : (<StyledButton onClick={handleOpen}>Books Near Me</StyledButton>)}
             </Button>
+            <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+              <Box sx={style}>
+                <ModalClose
+                  variant="outlined"
+                  sx={{
+                    position: 'absolute',
+                    top: '16px',
+                    right: '16px',
+                    boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',
+                    borderRadius: '50%',
+                    bgcolor: 'background.body',
+                  }}
+                  onClick={() => handleClose()}
+                />
+                <NearBy />
+              </Box>
+            </Modal>
             <Button
               onClick={handleCloseNavMenu}
               sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
@@ -350,9 +390,9 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
             </div>
           </Box>
           <Box sx={{ flexGrow: '0 !important', display: 'block !important' }}>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: '0 !important' }}>
-                <Avatar alt="pfp" src={loggedIn ? user?.picture : ''} />
-              </IconButton>
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: '0 !important' }}>
+              <Avatar alt="pfp" src={loggedIn ? user?.picture : ''} />
+            </IconButton>
             <Menu
               sx={{ mt: '45px !important', display: 'block !important' }}
               id="menu-appbar"
