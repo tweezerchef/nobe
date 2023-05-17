@@ -49,11 +49,8 @@ function WishListButton(props: any) {
         variant="solid"
         color={color}
         sx={{
-          // position: 'absolute',
           borderRadius: '50%',
-          // bottom: 0,
           my: 1,
-          // transform: 'translateY(50%)',
         }}
         onClick={addToWishlist}
       >
