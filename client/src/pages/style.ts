@@ -50,22 +50,9 @@ const blue = {
   900: '#003A75',
 };
 
-const grey = {
-  50: '#f6f8fa',
-  100: '#eaeef2',
-  200: '#d0d7de',
-  300: '#afb8c1',
-  400: '#8c959f',
-  500: '#6e7781',
-  600: '#57606a',
-  700: '#424a53',
-  800: '#32383f',
-  900: '#24292f',
-};
-
 export const StyledTextarea = styled(TextareaAutosize)(
   () => `
-  width: 320px;
+  width: 400px;
   font-family: IBM Plex Sans, sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
@@ -73,17 +60,14 @@ export const StyledTextarea = styled(TextareaAutosize)(
   padding: 12px;
   border-radius: 12px 12px 0 12px;
 
-
   &:hover {
     border-color: ${blue[400]};
   }
-
-
   }
-
   // firefox
   &:focus-visible {
     outline: 0;
   }
+  padding: 10px;
 `,
 );

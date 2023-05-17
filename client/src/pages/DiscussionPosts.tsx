@@ -4,7 +4,6 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@material-ui/core';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -132,13 +131,14 @@ function DiscussionPosts() {
           <div className="input-container">
             Comment:
             <StyledTextarea
+              minRows={4}
               className="text-area"
               value={newPost}
               onChange={(event) => setNewPost(event.target.value)}
             />
           </div>
           <div>
-            <Button className="post-button" type="submit" variant="contained" size="small">Post</Button>
+            <Button className="post-button" type="submit" variant="contained" size="small" style={{ marginTop: 5 }}>Post</Button>
           </div>
         </form>
       </div>
