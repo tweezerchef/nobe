@@ -59,7 +59,6 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
           setPlace(response.data.place);
           const photo = response.data.place.Places_Pictures[0].url;
           setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
-          console.log('yelp', response.data);
           if (response.data.place.userPlaces) {
             const reviews: Review[] = [];
             response?.data.place?.userPlaces?.forEach((userPlace: Review) => {

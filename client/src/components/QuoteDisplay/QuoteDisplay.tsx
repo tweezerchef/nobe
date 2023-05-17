@@ -38,7 +38,7 @@ function QuoteDisplay() {
   return (
     <Box display="flex" justifyContent="center" alignItems="flex-start" minHeight="100vh">
       <Slide direction="right" in={checked} mountOnEnter unmountOnExit>
-        <Card variant="outlined" sx={{ width: '60vh', height: '10vh', margin: '10px' }}>
+        <Card variant="outlined" sx={{ width: '60vh', height: '20vh', margin: '10px' }}>
           <CardContent>
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
               Quotes As The Algorithm Works Its Magic
