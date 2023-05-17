@@ -19,48 +19,6 @@ interface NotificationMessageIconProps {
 const NotificationMessageIcon: React.FC<NotificationMessageIconProps> = ({ notifications, notificationCount, markAsRead }) => {
   const [open, setOpen] = React.useState<boolean>(false);
 
-  // const [socket, setSocket] = useState<any>(null);
-  // const [notifications, setNotifications] = useState<any>([]);
-  // const [notificationCount, setNotificationCount] = useState(0);
-
-  // console.log(notifications, 64)
-  // useEffect(() => {
-  //   const newSocket = io('http://localhost:3000');
-  //   setSocket(newSocket);
-  //   newSocket.on('new-follower', (data: any) => {
-  //     console.log(data, 65 )
-  //     const { sender, receiver, message } = data;
-  //     setNotifications((prevMessage: any) => [...prevMessage, message]);
-  //     let count = 0;
-  //     count++
-  //     setNotificationCount(count);
-  //   });
-
-  //   newSocket.on('connect_error', (error: any) => {
-  //     console.log('Socket connection error:', error);
-  //   });
-
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, []);
-
-  // const displayNotifications = () => {
-  //   let action;
-  // if(type === 1){
-  //   action= "has followed"
-  // } else if (type === 2){
-  //   action = "has messaged"
-  // } else if (type === 3){
-  //   action = "has added books that are near"
-  // } else {
-  //   action = "has added a new book to discussion for"
-  // }
-  // return (
-  //   <span className='notification'>{`${senderName} ${action} you` </span>
-  // )
-  // }
-
   return (
     <div className="CloseByIcon">
       { notificationCount === 0 ? null : (<Counter />)}

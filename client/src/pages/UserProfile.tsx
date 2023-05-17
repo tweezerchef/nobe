@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useNavigate } from 'react-router-dom';
 import React, {
   useState, useEffect,
@@ -9,6 +10,8 @@ import {
 } from '@material-ui/core';
 
 import Modal from '@mui/material/Modal';
+import { ModalClose } from '@mui/joy';
+// import express from 'express';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context';
 import NearBy from '../components/NearBy/NearBy';
@@ -65,9 +68,15 @@ function UsersProfile() {
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-console, no-sequences
-    axios.get(`/bookdata/title/searchOne?title=${title}`).then((response) => { setBooks([response.data]); });
+    axios.get(`/bookdata/title/searchOne?title=${title}`)
+      .then((response) => {
+        setBooks([response.data]);
+      })
+      .catch((error) => {
+        console.error('Error occurred while fetching book data:', error);
+      });
   };
+
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
@@ -118,23 +127,33 @@ function UsersProfile() {
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div style={{
-          display: 'flex', justifyContent: 'center', width: '100%', background: '#002884',
+          display: 'flex', justifyContent: 'center', width: '100%',
         }}
         >
           <div style={{
             display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%',
           }}
           >
-            <Button variant="contained" style={{ margin: '10px' }} color="primary" type="submit">Book Search</Button>
-            <form onSubmit={handleSubmit}>
-              <TextField
-                label="Book Title"
-                value={title}
-                onChange={handleTitleChange}
-                fullWidth
-              />
-
-            </form>
+            <Box display="flex" alignItems="center">
+              <Button
+                variant="contained"
+                style={{ margin: '10px' }}
+                color="primary"
+                onClick={
+                  (event: React.MouseEvent<HTMLButtonElement>) => handleSubmit(event as
+                    unknown as React.FormEvent<HTMLFormElement>)
+}
+              >
+                Book Search
+              </Button>
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  label="Book Title"
+                  onChange={handleTitleChange}
+                  fullWidth
+                />
+              </form>
+            </Box>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
             {user?.radius && user?.latitude && user?.latitude > 0 && user?.radius > 0
@@ -142,6 +161,18 @@ function UsersProfile() {
               : (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>)}
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
               <Box sx={style}>
+                <ModalClose
+                  variant="outlined"
+                  sx={{
+                    position: 'absolute',
+                    top: '16px',
+                    right: '16px',
+                    boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',
+                    borderRadius: '50%',
+                    bgcolor: 'background.body',
+                  }}
+                  onClick={() => handleClose()}
+                />
                 <NearBy />
               </Box>
             </Modal>

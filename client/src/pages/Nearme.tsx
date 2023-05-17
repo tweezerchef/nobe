@@ -17,7 +17,6 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import OpenIconSpeedDial from '../components/ActionButton/ActionButton';
-import Navbar from '../components/Navbar/Navbar';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context';
 import UserDisplay from '../components/UserDisplay/Userdisplay';
@@ -283,74 +282,3 @@ function Locations() {
   );
 }
 export default Locations;
-
-// <div>
-// eslint-disable-next-line max-len
-//   <Grid style={{ display: "flex", justifyContent: "center" }} container rowSpacing={1} columnSpacing={{ xs: 1 }}>
-//   <Grid xs={3}>
-//       <ButtonGroup
-//         orientation="vertical"
-//         style={{ display: "flex", justifyContent: "right" }}>
-//         <ReactiveButton
-//           rounded
-//           size="medium"
-//           buttonState={locationState}
-//           idleText="Save Location"
-//           loadingText="Saving"
-//           successText="Done"
-//           onClick={saveLocation}
-//           color="blue"
-//         />
-//         <ReactiveButton
-//           rounded
-//           size="medium"
-//           buttonState={radiusState}
-//           idleText="Save Radius"
-//           loadingText="Saving"
-//           successText="Done"
-//           onClick={saveRadius}
-//           color="blue"
-//         />
-//         <ReactiveButton
-//           rounded
-//           size="medium"
-//           buttonState={buttonState}
-//           idleText="Search For Books"
-//           loadingText="Loading"
-//           successText="Done"
-//           onClick={getBooksNearMe}
-//           color="blue"
-//         />
-//       </ButtonGroup>
-//     </Grid>
-//     <Grid xs={3}>
-//       <Card sx={{ height: 200, width: 400 }}>
-//         <h1>Enter Address</h1>
-//         <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
-//           <GeoapifyGeocoderAutocomplete
-//             placeholder="Enter address here"
-//             placeSelect={onPlaceSelect}
-//             suggestionsChange={onSuggectionChange}
-//           />
-//         </GeoapifyContext>
-//       </Card>
-//     </Grid>
-//     <Grid xs={3}>
-//       <Card sx={{ height: 200, width: 400 }}>
-//         <h1>Set Radius</h1>
-//         <FormControl sx={{ m: 1, width: '18ch' }} variant="outlined">
-//           <OutlinedInput sx={{ height: '3ch' }}
-//             id="outlined-adornment-weight"
-//             endAdornment={<InputAdornment position="end">mi</InputAdornment>}
-//             onChange={handleRadiusChange}
-//             value={radius}
-//           />
-//           <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
-//           <Slider defaultValue={0} value={radius}
-//             onChange={handleRadiusChange} aria-label="Default" valueLabelDisplay="auto" />
-//         </FormControl>
-//       </Card>
-//     </Grid>
-//   </Grid>
-//   { booksNearBy.map(user => <UserDisplay user={user} key={user.id} />)}
-// </div>

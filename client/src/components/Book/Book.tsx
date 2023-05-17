@@ -5,35 +5,51 @@ import CardOverflow from '@mui/joy/CardOverflow';
 import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
 import BigBook from './BookBig';
 import LendingLibraryButton from '../Button/LendingLibraryButton';
 
-const BigBookOverlay = styled.div`
-  position: fixed;
-  z-index: 10;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-`;
+interface BigBookOverlayProps {
+  bigBookPosition: {
+    left: number;
+    top: number;
+  };
+}
+
+const useStyles = makeStyles({
+  card: {
+    backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    /* Additional CSS properties */
+  },
+});
 
 const Book = React.memo((props: any) => {
-  const [showBigBook, setShowBigBook] = useState(false);
+  const classes = useStyles();
   const { book } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
+
+  const BigBookOverlay = styled.div<BigBookOverlayProps>`
+      position: static;
+      z-index: 10;  left: ${(props) => props.bigBookPosition.left}px;
+      top: ${(props) => props.bigBookPosition.top}px;// Use the top property
+      border-radius: 20px;
+      box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.15);
+`;
   if (!book) {
     return null;
   }
-  const handleOnClick = () => {
-    setShowBigBook(true);
+  // const handleOnClick = () => {
+  //   setShowBigBook(true);
+  // };
+  const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    props.onClick(e, book);
   };
   let value = 0;
   if (book.UserBooks && book.UserBooks.length > 0) {
@@ -44,20 +60,24 @@ const Book = React.memo((props: any) => {
       }
     });
   }
-  if (showBigBook) {
+  if (props.showBigBook) {
     return (
-      <BigBookOverlay>
-        <BigBook book={book} id={id} userRating={value} onClose={() => setShowBigBook(false)} />
+      <BigBookOverlay bigBookPosition={props.bigBookPosition}>
+        <BigBook book={book} id={id} userRating={value} onClose={() => props.onClose()} />
       </BigBookOverlay>
     );
   }
 
   return (
 
-    <Card key={book.id} variant="outlined" sx={{ width: 380, margin: '10px' }}>
+    <Card key={book.id} variant="outlined" className={classes.card} sx={{ width: 380, margin: '10px' }}>
       <CardOverflow onClick={handleOnClick}>
         <AspectRatio ratio="2">
-          <img src={book.image} loading="lazy" alt="No Image Found" />
+          {book.image ? (
+            <img src={book.image} loading="lazy" alt="" />
+          ) : (
+            <img src="https://i.imgur.com/XrUd1L2.jpg" loading="lazy" alt="" />
+          )}
         </AspectRatio>
 
         <LendingLibraryButton book={book} />
@@ -90,12 +110,11 @@ const Book = React.memo((props: any) => {
           gap: 1.5,
           py: 1.5,
           px: 'var(--Card-padding)',
-          bgcolor: 'background.level1',
+          bgcolor: '#ecd8c6',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
-          {book.rating}
-        </Typography>
         <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }} />
         <UserStarRating book={book} id={id} value={value} />
       </CardOverflow>

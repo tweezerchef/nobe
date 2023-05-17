@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { TextField, Button } from '@material-ui/core';
-import BookDisplay from '../components/BookDisplay/BookDisplay';
+import Box from '@mui/material/Box';
 import BigBook from '../components/Book/BookBig';
 import UserContext from '../hooks/Context';
-// import PlaceDetails from '../components/ReadingSpotsMap/PlaceViewer';
 
 function BookPage() {
   const userContext = useContext(UserContext);
@@ -22,21 +21,40 @@ function BookPage() {
   };
 
   return (
-    <div>
-      <h1> Search For A Book </h1>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Book Title"
-          value={title}
-          onChange={handleTitleChange}
-          fullWidth
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-      {book && <BigBook book={book} id={id} />}
-      {/* {books.length > 0 && <BigBook book={books[0]} id={id} />} */}
+    <>
+      <Box
+        paddingTop={2}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+        minHeight="10vh"
+      >
+        <h1>Search For A Book</h1>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Book Title"
+            value={title}
+            onChange={handleTitleChange}
+            fullWidth
+          />
+          <Button type="submit">Submit</Button>
+        </form>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="70vh"
+      >
+        <div>
+          {book && <BigBook book={book} id={id} />}
+          {/* {books.length > 0 && <BigBook book={books[0]} id={id} />} */}
+          {/* <QuoteDisplay /> */}
+        </div>
+      </Box>
+    </>
 
-    </div>
   );
 }
 
