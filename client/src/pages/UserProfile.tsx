@@ -127,7 +127,7 @@ function UsersProfile() {
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div style={{
-          display: 'flex', justifyContent: 'center', width: '100%', background: '#002884',
+          display: 'flex', justifyContent: 'center', width: '100%',
         }}
         >
           <div style={{
