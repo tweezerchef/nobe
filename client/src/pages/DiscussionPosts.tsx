@@ -4,10 +4,11 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@material-ui/core';
+import TextareaAutosize from '@mui/base/TextareaAutosize';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { ClubHeader } from './style';
+import { ClubHeader, StyledTextarea } from './style';
 import '../styles/discussionPostsStyles.css';
 
 interface Post {
@@ -129,8 +130,8 @@ function DiscussionPosts() {
       <div className="form-div">
         <form onSubmit={handleSubmit}>
           <div className="input-container">
-            <label htmlFor="post">Comment:</label>
-            <textarea
+            Comment:
+            <StyledTextarea
               className="text-area"
               value={newPost}
               onChange={(event) => setNewPost(event.target.value)}
