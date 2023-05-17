@@ -27,7 +27,7 @@ const UserReview: React.FC<UserReviewProps> = ({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Add this line to prevent default form submission behavior
-    console.log('review', review);
+    // console.log('review', review);
     axios.post('/review/WrittenReview', { review, book, id }).then(handleClose);
   };
 

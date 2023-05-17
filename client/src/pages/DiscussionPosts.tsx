@@ -32,6 +32,7 @@ function DiscussionPosts() {
   const [clubId, setClubId] = useState('');
 
   useEffect(() => {
+    console.log('DiscussionPosts');
     async function getPosts() {
       try {
         const { data } = await axios.get(`/api/clubs/${id}/posts`);
