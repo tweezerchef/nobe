@@ -16,6 +16,10 @@ import UserContext from '../hooks/Context';
 import NearBy from '../components/NearBy/NearBy';
 import { Book, UserBook } from '../typings/types';
 
+// The UserProfile interface defines the shape of an object
+// returned from the server representing a user profile. It includes the user's ID, first name, //
+// picture, and an array of books the user has read or wants to read.
+
 interface UserProfile {
   id: string;
   firstName: string;
@@ -100,6 +104,10 @@ function Profile() {
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
+
+  // This function is called when a user follows another user.
+  // It sends a notification to the user being followed
+  // and saves the friendship to the database.
 
   const follow = async () => {
     const userId = user?.id;
