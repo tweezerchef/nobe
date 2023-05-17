@@ -55,7 +55,9 @@ function UserDisplay({ user }: { user: any }) {
           <Avatar
             src={user.picture}
             alt={user.name}
-            style={{ width: '7rem', height: '7rem' }}
+            style={{
+              width: '7rem', height: '7rem', marginLeft: '10px', marginTop: '10px',
+            }}
           />
         </Link>
         <ProfileInfo>
