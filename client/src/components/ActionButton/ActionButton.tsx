@@ -82,18 +82,6 @@ const NotificationIcon: React.FC = () => {
     }
   }, [id, socketUrl]);
 
-  // useEffect(() => {
-  //   const getOnlineNotifications = async () => {
-  //     try {
-  //       const response = await fetch(`/notifications/${id}?offline=false`);
-  //       setNotifications(response);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   getOnlineNotifications();
-  // }, []);
-
   return (
     // eslint-disable-next-line max-len
     <BookIcon notificationCount={notificationCount} notifications={notifications} markAsRead={markAsRead} buttonState={buttonState} />
@@ -101,23 +89,3 @@ const NotificationIcon: React.FC = () => {
   );
 };
 export default NotificationIcon;
-
-// <Draggable>
-// <Box sx={{ width: 100, height: 80, transform: 'translateZ(0px)', flexGrow: 1 }}> */ }
-/* // </Box> */
-// </Draggable>
-
-// <SpeedDial
-//   ariaLabel="SpeedDial openIcon example"
-//   sx={{ top: 1, position: 'absolute' }}
-//   icon={<BookIcon notificationCount={notificationCount} openIcon={<EditIcon />} />}
-//   direction={'down'}
-// >
-//   {actions.map((action) => (
-//     <SpeedDialAction
-//       key={action.name}
-//       icon={action.icon}
-//       tooltipTitle={action.name}
-//     />
-//   ))}
-// </SpeedDial>
