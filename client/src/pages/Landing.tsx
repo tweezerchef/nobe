@@ -15,14 +15,13 @@ function Landing() {
     //     localStorage.clear();
     // })();
   return (
-    <>
-      <h1>Welcome to the Landing page!</h1>
+    <div>
       {isLoggedIn ? (
         <Navigate to="/home" />
       ) : (
         <Login />
       )}
-    </>
+    </div>
   );
 }
 export default Landing;

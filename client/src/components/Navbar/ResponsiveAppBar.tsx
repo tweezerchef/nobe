@@ -350,11 +350,9 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
             </div>
           </Box>
           <Box sx={{ flexGrow: '0 !important', display: 'block !important' }}>
-            <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: '0 !important' }}>
                 <Avatar alt="pfp" src={loggedIn ? user?.picture : ''} />
               </IconButton>
-            </Tooltip>
             <Menu
               sx={{ mt: '45px !important', display: 'block !important' }}
               id="menu-appbar"
