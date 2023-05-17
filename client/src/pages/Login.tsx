@@ -95,7 +95,7 @@ function Login() {
               onChange={(e: any) => setPassword(e.target.value)}
             />
           </InputGroup>
-          <Button full onClick={loginHandler}>
+          <Button full onClick={loginHandler} style={{marginBottom: '40px'}}>
             Log in
           </Button>
           <div

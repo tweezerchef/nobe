@@ -69,13 +69,14 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
       }
     }
 
-    prisma.activity.create({
+    await prisma.activity.create({
       data: {
         userId: id,
         type: 'location',
         description: `${name}`,
       },
     });
+
     const placeId = createdPlace?.id ? createdPlace.id : place.id;
     const googlePlaceId = createdPlace?.googlePlaceId
       ? createdPlace.googlePlaceId : place.googlePlaceId;
