@@ -43,7 +43,7 @@ const BookDisplay = React.memo((props: any) => {
     bigBookHeight = Math.max(bigBookHeight, 200);
 
     let { left } = rect;
-    let { top } = rect;
+    const { bottom } = rect;
 
     // If BigBook would overflow the right edge, align it to the right with some padding
     if (window.innerWidth - left < bigBookWidth) {
@@ -51,8 +51,9 @@ const BookDisplay = React.memo((props: any) => {
     }
 
     // If BigBook would overflow the bottom edge, align it to the bottom with some padding
-    if (window.innerHeight - top < bigBookHeight) {
-      top = window.innerHeight - bigBookHeight - 20;
+    let top = bottom - bigBookHeight;
+    if (top < 0) {
+      top = 20; // minimum top position for BigBook
     }
 
     setBigBookPosition({ top, left });
