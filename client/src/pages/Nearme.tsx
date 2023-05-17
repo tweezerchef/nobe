@@ -117,30 +117,12 @@ function Locations() {
     }
   };
 
-  // const booksNearMe = () => {
-  //   const booksArray: Book[] = [];
-  //   user?.UserBooks?.forEach((book: UserBook) => {
-  //     booksArray.push(book.Books);
-  //   });
-  //   setBooks(booksArray);
-
-  // }
-
   useEffect(() => {
     if (!location.state === null) {
       const myData = location.state;
       setDisplayBooks(myData);
     }
   }, [location]);
-
-  // useEffect(() => {
-  // eslint-disable-next-line max-len
-  // const ownedBooks = booksNearBy.flat().filter(book => book.owned === true).map((book) => book.books);
-  //     // console.log(ownedBooks, '69');
-  //     setDisplayBooks(ownedBooks);
-  //   }, [booksNearBy]);
-
-  // console.log(displayBooks, 131)
 
   useEffect(() => {
     const convert = radius * 32;
