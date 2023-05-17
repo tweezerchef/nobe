@@ -12,6 +12,13 @@ import UserContext from '../../hooks/Context';
 import BigBook from './BookBig';
 import LendingLibraryButton from '../Button/LendingLibraryButton';
 
+interface BigBookOverlayProps {
+  bigBookPosition: {
+    left: number;
+    top: number;
+  };
+}
+
 const useStyles = makeStyles({
   card: {
     backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
@@ -21,30 +28,28 @@ const useStyles = makeStyles({
   },
 });
 
-const BigBookOverlay = styled.div`
-  position: fixed;
-  z-index: 10;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-`;
-
 const Book = React.memo((props: any) => {
   const classes = useStyles();
-  const [showBigBook, setShowBigBook] = useState(false);
   const { book } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
+
+  const BigBookOverlay = styled.div<BigBookOverlayProps>`
+      position: static;
+      z-index: 10;  left: ${(props) => props.bigBookPosition.left}px;
+      top: ${(props) => props.bigBookPosition.top}px;// Use the top property
+      border-radius: 20px;
+      box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.15);
+`;
   if (!book) {
     return null;
   }
-  const handleOnClick = () => {
-    setShowBigBook(true);
+  // const handleOnClick = () => {
+  //   setShowBigBook(true);
+  // };
+  const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    props.onClick(e, book);
   };
   let value = 0;
   if (book.UserBooks && book.UserBooks.length > 0) {
@@ -55,10 +60,10 @@ const Book = React.memo((props: any) => {
       }
     });
   }
-  if (showBigBook) {
+  if (props.showBigBook) {
     return (
-      <BigBookOverlay>
-        <BigBook book={book} id={id} userRating={value} onClose={() => setShowBigBook(false)} />
+      <BigBookOverlay bigBookPosition={props.bigBookPosition}>
+        <BigBook book={book} id={id} userRating={value} onClose={() => props.onClose()} />
       </BigBookOverlay>
     );
   }
@@ -106,11 +111,10 @@ const Book = React.memo((props: any) => {
           py: 1.5,
           px: 'var(--Card-padding)',
           bgcolor: '#ecd8c6',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
-          {book.rating}
-        </Typography>
         <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }} />
         <UserStarRating book={book} id={id} value={value} />
       </CardOverflow>

@@ -17,7 +17,6 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import OpenIconSpeedDial from '../components/ActionButton/ActionButton';
-import Navbar from '../components/Navbar/Navbar';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context';
 import UserDisplay from '../components/UserDisplay/Userdisplay';
