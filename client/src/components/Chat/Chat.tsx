@@ -244,7 +244,7 @@ function Chat() {
                 variant="h4"
                 className="header-message"
                 style={{
-                  display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', borderRadius: '12px 12px 0px 0px',
+                  display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', background: '#002884', color: '#fff', borderRadius: '12px 12px 0px 0px',
                 }}
               >
                 Direct Messages
