@@ -5,23 +5,11 @@ import UserContext from '../../hooks/Context';
 
 type CustomColor = 'success' | 'danger';
 
-// interface Club {
-//   clubId: string
-// }
-
 function JoinClubButton(props: any) {
   const { clubId, member } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
-
-  // const member = user?.clubMembers?.reduce((acc: boolean, club: Club) => {
-  //   if (club.clubId === clubId) {
-  //     acc = true;
-  //     return acc;
-  //   }
-  //   return acc;
-  // }, false);
 
   const [color, setColor] = useState<CustomColor>(member ? 'success' : 'danger');
 

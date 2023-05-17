@@ -23,7 +23,7 @@ function ClubDiscussion() {
   const { id } = useParams<{ id: string }>();
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
-  const [showForm, setShowForm] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const searchParams = new URLSearchParams(location.search);
   const clubName = searchParams.get('name');
@@ -55,8 +55,7 @@ function ClubDiscussion() {
     }
   }, []);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     try {
       if (!user) {
         throw new Error('No user found');
@@ -75,7 +74,7 @@ function ClubDiscussion() {
       });
       setDiscussions((discussions) => [...discussions, response.data]);
       setNewDiscussionTitle('');
-      setShowForm(false);
+      setDialogOpen(false);
     } catch (error) {
       console.error(error);
     }
@@ -91,26 +90,40 @@ function ClubDiscussion() {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => setShowForm(!showForm)}
+            onClick={() => setDialogOpen(!dialogOpen)}
             disabled={!member}
           >
             Create a Thread
           </Button>
         </Stack>
       </div>
-      {showForm && (
-        <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-          <FormControl>
-            <TextField
-              label="Thread Title"
-              variant="outlined"
-              name="title"
-              value={newDiscussionTitle}
-              onChange={(event) => setNewDiscussionTitle(event.target.value)}
-            />
-            <Button type="submit" variant="contained">Create</Button>
-          </FormControl>
-        </form>
+      {dialogOpen && (
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+      >
+        <DialogTitle>Create a Thread</DialogTitle>
+        <DialogContent>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+            <FormControl>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Thread Title"
+                fullWidth
+                variant="outlined"
+                name="title"
+                value={newDiscussionTitle}
+                onChange={(event) => setNewDiscussionTitle(event.target.value)}
+              />
+            </FormControl>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button type="submit" onClick={handleSubmit}>Submit</Button>
+        </DialogActions>
+      </Dialog>
       )}
       {id && <DiscussionList discussions={discussions} clubId={id} key={discussions.length} />}
     </div>
