@@ -60,7 +60,11 @@ function Profile() {
   const handleNearMeClick = async () => {
     try {
     // eslint-disable-next-line max-len
-      const response = await axios.get('/location/locations', { params: { lon: user?.longitude, lat: user?.latitude, radius: user?.radius } });
+      const response = await axios.get('/location/locations', {
+        params: {
+          lon: user?.longitude, lat: user?.latitude, radius: user?.radius,
+        },
+      });
       // console.log(response);
       const data = await response.data;
       navigate('/locations', { state: data });
