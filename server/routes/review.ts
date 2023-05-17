@@ -82,6 +82,7 @@ Review.post('/', async (req: Request, res: Response) => {
       res.sendStatus(500);
     });
   Review.post('/WrittenReview', async (req: Request, res: Response) => {
+    console.log('poop');
     const { book, review, id } = req.body;
 
     const {

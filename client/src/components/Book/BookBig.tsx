@@ -6,7 +6,6 @@ import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
-import Link from '@mui/joy/Link';
 import Box from '@mui/joy/Box';
 import Button from '@mui/material/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -60,10 +59,10 @@ function BigBook(props: any) {
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        width: '70vw',
-        height: '90vh',
-        maxWidth: '675px',
-        maxHeight: '1000px',
+        width: '75vw',
+        height: '85vh',
+        maxWidth: '665px',
+        maxHeight: '850px',
         overflow: 'auto',
         // backgroundImage: 'url("https://imgbox.com/Frdz4hjN")',
         '@media (max-width: 768px)': {
@@ -123,8 +122,6 @@ function BigBook(props: any) {
             onClick={handleOnClick}
           />
         )}
-        {/* <LendingLibraryButton book={book} />
-        <WishListButton book={book} /> */}
       </CardOverflow>
 
       <Box
@@ -133,7 +130,7 @@ function BigBook(props: any) {
           flexDirection: 'column',
           alignItems: 'left',
           justifyContent: 'center',
-          pl: 2,
+          pl: 1,
         }}
       >
         <Tooltip title={book.title} placement="top">
@@ -149,7 +146,7 @@ function BigBook(props: any) {
         </Tooltip>
 
         <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
-          <Link href="#multiple-actions">{book.author}</Link>
+          {book.author}
         </Typography>
 
         <UserStarRating book={book} id={id} value={userRating} />
@@ -157,8 +154,16 @@ function BigBook(props: any) {
           Add Written Review
         </Button>
         <UserReview book={book} id={id} open={reviewOpen} handleClose={handleClose} />
-        <WishListButtonBigBook paddingTop="15px" book={book} />
-        <LendingLibraryButtonBigBook paddingTop="15px" book={book} />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-evenly', // Add some space between the buttons
+            mt: 1, // Use marginTop to separate the buttons from the above element
+          }}
+        >
+          <LendingLibraryButtonBigBook padding="15px" book={book} />
+          <WishListButtonBigBook padding="15px" book={book} />
+        </Box>
       </Box>
       <Box sx={{ p: 3, flexGrow: 1, overflow: 'auto' }}>
 
