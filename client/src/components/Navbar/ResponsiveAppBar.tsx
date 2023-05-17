@@ -94,6 +94,8 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
   };
 
   const navigate = useNavigate();
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleLookForBooksClick = async () => {
     try {
@@ -108,9 +110,6 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
   const handleChatButtonClick = () => {
     setShowChat(!showChat);
   };
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   const style = {
     position: 'absolute' as 'absolute',
