@@ -56,7 +56,7 @@ function BigBook(props: any) {
       variant="outlined"
       className={classes.card}
       sx={{
-        margin: '10px',
+        margin: '2px',
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -88,22 +88,41 @@ function BigBook(props: any) {
           minHeight: '75px',
         }}
       >
-        <img
-          src={book.image}
-          loading="lazy"
-          alt=""
-          style={{
-            objectFit: 'contain',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            paddingTop: '15px',
-            width: '100%',
-            height: '100%',
-            imageRendering: 'crisp-edges',
-          }}
-          onClick={handleOnClick}
-        />
+        {book.image ? (
+          <img
+            src={book.image}
+            loading="lazy"
+            alt=""
+            style={{
+              objectFit: 'contain',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              paddingTop: '15px',
+              width: '100%',
+              height: '100%',
+              imageRendering: 'crisp-edges',
+            }}
+            onClick={handleOnClick}
+          />
+        ) : (
+          <img
+            src="https://i.imgur.com/XrUd1L2.jpg"
+            loading="lazy"
+            alt=""
+            style={{
+              objectFit: 'contain',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              paddingTop: '15px',
+              width: '100%',
+              height: '100%',
+              imageRendering: 'crisp-edges',
+            }}
+            onClick={handleOnClick}
+          />
+        )}
         {/* <LendingLibraryButton book={book} />
         <WishListButton book={book} /> */}
       </CardOverflow>
@@ -146,16 +165,6 @@ function BigBook(props: any) {
         <Typography level="body1">
           {book.description}
         </Typography>
-        <Typography level="body2">
-          Placeholder Data 2:
-          {' '}
-          {book.placeholderData2}
-        </Typography>
-        <Typography level="body2">
-          Placeholder Data 3:
-          {' '}
-          {book.placeholderData3}
-        </Typography>
         <Divider inset="context" />
         <Box
           sx={{
@@ -173,7 +182,7 @@ function BigBook(props: any) {
             </Typography>
             )}
           </Typography>
-          <Divider orientation="vertical" />
+
           <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }} />
 
         </Box>

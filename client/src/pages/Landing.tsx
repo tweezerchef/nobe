@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import Navbar from '../components/Navbar/Navbar';
 import Login from './Login';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Home from './Home';

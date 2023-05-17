@@ -28,7 +28,11 @@ function UserStarRating(props: any) {
   return (
     <Box
       sx={{
-        '& > legend': { mt: 2 },
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center', // Center the content horizontally
+        justifyContent: 'center', // Center the content vertically
+        mt: 2,
       }}
     >
       <Typography sx={{ fontSize: 'md' }} component="legend">Your Rating</Typography>
