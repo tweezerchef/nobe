@@ -41,22 +41,22 @@ model User {
 model PlacesToRead {
   id              String            @id @default(uuid())
   nickName        String?
-  location        String
-  name            String?
   Private         Boolean           @default(false)
   Lat             Float?
   Long            Float?
+  googlePlaceId   String            @unique
+  location        String
+  name            String?
+  placeEditorial  String?
   rating          Float?
+  types           String[]
   website         String?
   phone           String?
-  types           String[]
-  googlePlaceId   String            @unique
-  placeEditorial  String?
+  Activity        Activity[]
   LendingTableIn  LendingTable[]    @relation("inPlace")
   LendingTableOut LendingTable[]    @relation("outPlace")
-  userPlaces      User_Places[]
-  Activity        Activity[]
   Places_Pictures Places_Pictures[]
+  userPlaces      User_Places[]
 }
 
 model Places_Pictures {
@@ -72,12 +72,12 @@ model User_Places {
   id            String       @id @default(uuid())
   userId        String?
   placeId       String
+  Rating        Float?
+  CheckIns      Int?
+  favorite      Boolean      @default(false)
   googlePlaceId String
   private       Boolean      @default(false)
-  favorite      Boolean      @default(false)
-  Rating        Float?
   text          String?
-  CheckIns      Int?
   place         PlacesToRead @relation(fields: [placeId], references: [id])
   user          User?        @relation(fields: [userId], references: [id])
 
@@ -89,19 +89,19 @@ model Notifications {
   socketIOid String?
   createdAt  DateTime @default(now())
   userId     String
+  body       String
   recipient  String?
   type       String?
-  read       Boolean?
   offline    Boolean?
-  body       String
+  read       Boolean?
   User       User     @relation(fields: [userId], references: [id])
 }
 
 model Conversations {
   id        String           @id @default(uuid())
+  updatedAt DateTime         @default(now())
   messages  DirectMessages[] @relation("conversation")
   members   User[]           @relation("conversationMembers")
-  updatedAt DateTime         @default(now())
 }
 
 model DirectMessages {
@@ -128,8 +128,8 @@ model Books {
   Clubs_Books Clubs_Books[]
   Discussions Discussions[]
   genre       Genre[]
-  UserBooks   UserBooks[]
   Posts       Posts[]
+  UserBooks   UserBooks[]
 }
 
 model Genre {
@@ -145,12 +145,12 @@ model UserBooks {
   owned         Boolean         @default(false)
   booksId       String
   userId        String
-  reading       Boolean         @default(false)
-  read          Boolean         @default(false)
   rating        Float?
   review        String?
-  UserBookNotes UserBookNotes[]
+  read          Boolean         @default(false)
+  reading       Boolean         @default(false)
   LendingTable  LendingTable[]
+  UserBookNotes UserBookNotes[]
   Books         Books           @relation(fields: [booksId], references: [id])
   User          User            @relation(fields: [userId], references: [id])
 
@@ -159,11 +159,11 @@ model UserBooks {
 
 model UserBookNotes {
   id         String    @id @default(uuid())
-  userBookId String
   note       String
   created    DateTime  @default(now())
   page       Int?
   mentionId  String?
+  userBookId String
   UserBooks  UserBooks @relation(fields: [userBookId], references: [id])
 }
 
@@ -216,9 +216,9 @@ model Discussions {
   title            String
   clubsId          String
   bookId           String?
-  createdAt        DateTime           @default(now())
   thumbsDown       Int                @default(0)
   thumbsUp         Int                @default(0)
+  createdAt        DateTime           @default(now())
   books            Books?             @relation(fields: [bookId], references: [id])
   clubs            Clubs              @relation(fields: [clubsId], references: [id])
   creator          User               @relation(fields: [userId], references: [id])
@@ -241,10 +241,10 @@ model Posts {
   userId        String
   body          String
   discussionsId String
-  BookId        String?
   createdAt     DateTime     @default(now())
   thumbsDown    Int          @default(0)
   thumbsUp      Int          @default(0)
+  BookId        String?
   Books         Books?       @relation(fields: [BookId], references: [id])
   discussion    Discussions  @relation(fields: [discussionsId], references: [id])
   user          User         @relation(fields: [userId], references: [id])
@@ -265,13 +265,13 @@ model Activity {
   id          String        @id @default(uuid())
   userId      String
   type        String
-  description String?
   bookId      String?
-  placeId     String?
   createdAt   DateTime      @default(now())
+  placeId     String?
+  description String?
   book        Books?        @relation(fields: [bookId], references: [id])
-  user        User          @relation(fields: [userId], references: [id])
   place       PlacesToRead? @relation(fields: [placeId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
 }
 
 model Friendship {
