@@ -40,7 +40,7 @@ const BookIcon: React.FC<BookIconProps> = ({
 
   // console.log(notifications, 31);
   return (
-    <div className="BookIcon" style={{ position: 'relative', marginTop: '11px' }}>
+    <div className="BookIcon" style={{ position: 'relative', marginTop: '4px' }}>
       { notificationCount === 0 ? null : (<Counter />)}
       <SvgIcon
         xmlns="http://www.w3.org/2000/svg"

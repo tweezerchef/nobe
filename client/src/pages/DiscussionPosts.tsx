@@ -7,7 +7,7 @@ import { Button } from '@material-ui/core';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { ClubHeader } from './style';
+import { ClubHeader, StyledTextarea } from './style';
 import '../styles/discussionPostsStyles.css';
 
 interface Post {
@@ -130,15 +130,16 @@ function DiscussionPosts() {
       <div className="form-div">
         <form onSubmit={handleSubmit}>
           <div className="input-container">
-            <label htmlFor="post">Comment:</label>
-            <textarea
+            Comment:
+            <StyledTextarea
+              minRows={4}
               className="text-area"
               value={newPost}
               onChange={(event) => setNewPost(event.target.value)}
             />
           </div>
           <div>
-            <Button className="post-button" type="submit" variant="contained" size="small">Post</Button>
+            <Button className="post-button" type="submit" variant="contained" size="small" style={{ marginTop: 5 }}>Post</Button>
           </div>
         </form>
       </div>
