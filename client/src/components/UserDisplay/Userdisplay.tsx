@@ -56,7 +56,7 @@ function UserDisplay({ user }: { user: any }) {
             src={user.picture}
             alt={user.name}
             style={{
-              width: '7rem', height: '7rem', marginLeft: '10px', marginTop: '10px',
+              width: '5rem', height: '5rem', marginLeft: '10px', marginTop: '10px',
             }}
           />
         </Link>
