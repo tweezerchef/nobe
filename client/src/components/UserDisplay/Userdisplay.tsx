@@ -42,11 +42,8 @@ function UserDisplay({ user }: { user: any }) {
 
   useEffect(() => {
     const booksArray = userBooks?.map((userbook: any) => userbook.Books);
-    // console.log(booksArray, 20);
     setBooks(booksArray);
   }, [userBooks]);
-
-  // console.log(user, 48);
 
   return (
     <div>

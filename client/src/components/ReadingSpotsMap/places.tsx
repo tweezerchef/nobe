@@ -22,8 +22,6 @@ function Places({ setLatLng, setLocation, setPlaceId }: PlacesProps) {
     clearSuggestions,
   } = usePlacesAutoComplete();
 
-  // console.log({ status, data });
-
   const handleSelect = async (val: string) => {
     setValue(val, false);
     clearSuggestions();
