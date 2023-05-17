@@ -5,7 +5,9 @@
 import React, { useState } from 'react';
 // import { io, Socket } from 'socket.io-client';
 import ReactiveButton from 'reactive-button';
-import { SvgIcon, Button, Avatar } from '@material-ui/core';
+import {
+  SvgIcon, Button, Avatar, Box,
+} from '@material-ui/core';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
@@ -98,27 +100,29 @@ const BookIcon: React.FC<BookIconProps> = ({
               style={{ margin: '10px' }}
             />
           </Typography>
-          {/* { Array.isArray(notifications) ? (: (<h1> Sorry you have no notfications at the moment, please check back later!</h1>) */}
-          <Typography id="modal-desc" textColor="text.tertiary">
-            { notifications.map((notification: any) => (
-              <Wrapper>
-                <NotificationsItem>
-                  <NotificationsItemAvatar>
-                    <Avatar src={notification.User.picture} />
-                  </NotificationsItemAvatar>
-                  <NotificationsItemContent>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <div style={{ flexGrow: 1 }}>
-                        <NotificationsItemTitle>{notification.type}</NotificationsItemTitle>
-                        <NotificationsItemMessage className="NotificationsItemMessage">{notification.body}</NotificationsItemMessage>
-                      </div>
-                      <TrashIcon />
-                    </div>
-                  </NotificationsItemContent>
-                </NotificationsItem>
-              </Wrapper>
-            ))}
-          </Typography>
+          { notificationCount === 0 ? (<Box sx={{ marginTop: 30 }}><h1> Sorry you have no notfications at the moment, please check back later!</h1></Box>)
+            : (
+              <Typography id="modal-desc" textColor="text.tertiary">
+                { notifications.map((notification: any) => (
+                  <Wrapper>
+                    <NotificationsItem>
+                      <NotificationsItemAvatar>
+                        <Avatar src={notification.User.picture} />
+                      </NotificationsItemAvatar>
+                      <NotificationsItemContent>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <div style={{ flexGrow: 1 }}>
+                            <NotificationsItemTitle>{notification.type}</NotificationsItemTitle>
+                            <NotificationsItemMessage className="NotificationsItemMessage">{notification.body}</NotificationsItemMessage>
+                          </div>
+                          <TrashIcon />
+                        </div>
+                      </NotificationsItemContent>
+                    </NotificationsItem>
+                  </Wrapper>
+                ))}
+              </Typography>
+            )}
         </Sheet>
       </Modal>
     </div>
