@@ -10,7 +10,7 @@
 
 .brown-box {
     width: 100%;
-    background: #ecd8c6;
+    background: #f2d4b1d1;
     font-size: 15px;
     padding: 5px;
     margin: 0 auto;
@@ -46,6 +46,7 @@
     width: 400px;
     padding-top: 4px;
     margin: 0 auto;
+    background-color: #faf1e7b5;
 }
 
 .post-button {
