@@ -6,7 +6,7 @@ export interface ButtonProps extends React.PropsWithChildren {
   fill?: boolean;
   onClick?: () => void;
   style?: React.CSSProperties;
-  // Add any other props specific to the Button component here
+
 }
 
 function Button({ children, onClick, ...props }: ButtonProps) {
