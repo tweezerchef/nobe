@@ -36,8 +36,15 @@ function DiscussionPosts() {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  // console.log(user);
   const userId = user?.id;
+
+  const member = user?.clubMembers?.reduce((acc: boolean, club: Club) => {
+    if (club.clubId === clubId) {
+      acc = true;
+      return acc;
+    }
+    return acc;
+  }, false);
 
   useEffect(() => {
     async function getPosts() {
@@ -66,6 +73,11 @@ function DiscussionPosts() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (!member) {
+      alert('Not a member of this club');
+      return;
+    }
 
     if (newPost.trim().length === 0) {
       alert('Post cannot be empty!');
