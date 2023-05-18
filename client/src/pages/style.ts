@@ -19,6 +19,10 @@ export const ClubHeader = styled.h1`
 text-align: center;
 `;
 
+export const ClubDescription = styled.h2`
+text-align: center;
+`;
+
 export const SpotContainer = styled.div`
 display: flex;
 height: 100vh;
