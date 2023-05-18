@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@material-ui/core';
+import Avatar from '@mui/material/Avatar';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -18,9 +19,10 @@ interface Post {
   discussionId: string;
   createdAt: string;
   user: {
+    firstName: string;
     lastName: string;
     username: string;
-    firstName: string;
+    picture: string;
   }
 }
 
@@ -34,6 +36,7 @@ function DiscussionPosts() {
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
+  // console.log(user);
   const userId = user?.id;
 
   useEffect(() => {
@@ -104,7 +107,7 @@ function DiscussionPosts() {
             {clubName}
           </Link>
           {' '}
-          Discussion
+          Thread
         </ClubHeader>
       )}
       <ClubHeader>{discussionTitle}</ClubHeader>
@@ -112,13 +115,23 @@ function DiscussionPosts() {
         <div className="post">
           <div className="post-content" key={post.id}>
             <div className="brown-box">
-              {'by '}
-              {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
-              {' '}
-              <div className="date-time">
-                {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
+              <div className="post-info-container">
+                <Link to={`/profile/${post.userId}`}>
+                  <Avatar
+                    src={post.user?.picture}
+                    alt={post.user?.username}
+                    className="avatar"
+                  />
+                </Link>
+                <Link to={`/profile/${post.userId}`} className="username-link">
+                  {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
+                </Link>
+                <div className="date-time">
+                  {moment(post.createdAt).format('h:mm a MM/DD/YY')}
+                </div>
               </div>
             </div>
+
             <div className="post-body">
               {post.body}
               {post.userId === userId && (

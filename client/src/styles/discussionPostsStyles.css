@@ -13,10 +13,24 @@
     background: #f3efe7;
     font-size: 15px;
     padding: 5px;
+    margin: 0 auto;
+    border-radius: 6px;
+}
+
+.post-info-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-right: 10px;
 }
 
 .date-time {
-    float: right;
+    margin-left: auto;
 }
 
 .post-body {

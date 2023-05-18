@@ -50,6 +50,7 @@ ClubsRoute.get('/:id/posts', async (req: Request, res: Response) => {
             firstName: true,
             lastName: true,
             username: true,
+            picture: true,
           },
         },
       },
