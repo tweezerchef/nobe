@@ -10,14 +10,21 @@ function JoinClubButton(props: any) {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
+  const setUser = userContext?.setUser;
 
   const [color, setColor] = useState<CustomColor>(member ? 'success' : 'danger');
 
-  const addToClub = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const addToClub = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     axios.post('/api/clubs/join', {
       id,
       clubId,
+    }).then(() => {
+      axios.get(`/user/id?id=${id}`).then((newUser) => {
+        if (setUser && newUser && newUser?.data && newUser?.data !== undefined) {
+          setUser(newUser?.data);
+        }
+      });
     });
     if (color === 'success') {
       setColor('danger' as CustomColor);
