@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect, useContext } from 'react';
 import {
   Navigate,
@@ -23,7 +24,9 @@ import ReadingSpots from './pages/ReadingSpots';
 import Feed from './pages/Feed';
 import BookSearch from './pages/BookSearch';
 import UsersProfile from './pages/UserProfile';
+import UserForm from './pages/UserForm';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface User {
   email: string;
 }
@@ -65,6 +68,7 @@ function Router() {
       <Route path="/feed" element={<Feed />} />
       <Route path="/booksearch" element={<BookSearch />} />
       <Route path="/usersprofile" element={<UsersProfile />} />
+      <Route path="/userform" element={<UserForm />} />
     </Routes>
   );
 }
