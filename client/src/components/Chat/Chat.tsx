@@ -19,6 +19,7 @@ import SendIcon from '@material-ui/icons/Send';
 import moment from 'moment';
 import UserContext from '../../hooks/Context';
 import Emojis from '../Emojis/Emojis';
+// import { useChatContext } from '../../hooks/ChatContext';
 
 const useStyles = makeStyles({
   table: {
@@ -81,7 +82,7 @@ type EmojiSelectHandler = (emoji: string) => void;
 
 const socketUrl = process.env.SOCKET_URL;
 
-function Chat() {
+function Chat({ chatUser }: { chatUser: any }) {
   const classes = useStyles();
 
   const [message, setMessage] = useState<string>('');
@@ -92,6 +93,9 @@ function Chat() {
   const [socket, setSocket] = useState<any>(null);
   const [user, setUser] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [newChatUser, setNewChatUser] = useState<any>(null);
+
+  // const { chatUser } = useChatContext();
 
   const userContext = useContext(UserContext);
   const userId = userContext?.user.id;
@@ -152,40 +156,68 @@ function Chat() {
     }
   };
 
-  const handleSearch = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      try {
-        const response = await axios.post('/conversations', {
-          currentUser: user.id,
-          otherUser: searchQuery,
+  const handleSearch = async () => {
+    try {
+      const response = await axios.post('/conversations', {
+        currentUser: user.id,
+        otherUser: searchQuery,
+      });
+
+      const newConversation: any = response.data;
+
+      if (newConversation) {
+        setConversations((prevConversations) => {
+          const updatedConversations = [...prevConversations, newConversation];
+          user.Conversations = updatedConversations;
+          return updatedConversations;
         });
-
-        const newConversation: any = response.data;
-
-        if (newConversation) {
-          setConversations((prevConversations) => {
-            const updatedConversations = [...prevConversations, newConversation];
-            user.Conversations = updatedConversations;
-            return updatedConversations;
-          });
-          setCurrentConvo(newConversation);
-          setChatMessages(newConversation.messages);
-        }
-      } catch (error) {
-        console.error(error);
+        setCurrentConvo(newConversation);
+        setChatMessages(newConversation.messages);
       }
-      setSearchQuery('');
+    } catch (error) {
+      console.error(error);
     }
+    setSearchQuery('');
+  };
+
+  const convoClick = async () => {
+    try {
+      const response = await axios.post('/conversations', {
+        currentUser: user.id,
+        otherUser: newChatUser,
+      });
+
+      const newConversation: any = response.data;
+
+      if (newConversation) {
+        setConversations((prevConversations) => {
+          const updatedConversations = [...prevConversations, newConversation];
+          user.Conversations = updatedConversations;
+          return updatedConversations;
+        });
+        setCurrentConvo(newConversation);
+        setChatMessages(newConversation.messages);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setNewChatUser(null);
   };
 
   useEffect(() => {
     updateUser();
-    console.log('Chat.tsx updateUser');
-  }, []);
+    if (chatUser) {
+      setNewChatUser(chatUser.firstName);
+    }
+  }, [chatUser]);
 
   useEffect(() => {
-    console.log('Chat.tsx userconvo');
+    if (newChatUser && user) {
+      convoClick();
+    }
+  }, [newChatUser, user]);
+
+  useEffect(() => {
     if (user !== null) {
       setConversations(user.Conversations);
     }
@@ -194,7 +226,6 @@ function Chat() {
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    console.log('Chat.tsx newSocket');
     if (socketUrl && user) {
       const newSocket = io(socketUrl, {
         query: {
@@ -258,7 +289,7 @@ function Chat() {
         <Grid container component={Paper} className={classes.chatSection} style={{ background: '#fff', borderRadius: '0px 0px 12px 12px' }}>
           <Grid item xs={3} className={classes.borderRight500}>
             <Grid item xs={12} style={{ padding: '10px' }}>
-              <TextField value={searchQuery} onKeyDown={handleSearch} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
+              <TextField value={searchQuery} onKeyDown={(event) => (event.key === 'Enter' ? handleSearch() : null)} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
             </Grid>
             <Divider />
             <div style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease', paddingTop: '10px' }}>

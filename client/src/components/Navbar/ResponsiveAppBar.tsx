@@ -1,8 +1,9 @@
 import React, {
-  useState,
+  // useState,
   // useEffect, useRef,
   useContext,
 } from 'react';
+
 import axios from 'axios';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -30,6 +31,7 @@ import NotificationIcon from '../ActionButton/ActionButton';
 import Chat from '../Chat/Chat';
 // import StyledBox from './style';
 import NearBy from '../NearBy/NearBy';
+import { useChatContext } from '../../hooks/ChatContext';
 
 const StyledLink = styled(Link)`
   color: white !important;
@@ -58,7 +60,8 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
-  const [showChat, setShowChat] = useState(false);
+
+  const { chatState, setChatState, chatUser } = useChatContext();
 
   const [open, setOpen] = React.useState(false);
 
@@ -106,7 +109,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
   };
 
   const handleChatButtonClick = () => {
-    setShowChat(!showChat);
+    setChatState(!chatState);
   };
 
   const handleOpen = () => setOpen(true);
@@ -328,7 +331,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               onClick={handleCloseNavMenu}
               sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
             >
-              { user?.radius && user?.latitude && user?.latitude > 0 && user?.radius > 0
+              {user?.radius && user?.latitude && user?.latitude > 0 && user?.radius > 0
                 ? <StyledButton onClick={handleLookForBooksClick}>Books Near Me</StyledButton>
                 : (<StyledButton onClick={handleOpen}>Books Near Me</StyledButton>)}
             </Button>
@@ -383,8 +386,8 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               <IconButton style={{ width: '32px', margin: '10px' }} onClick={handleChatButtonClick}>
                 <ChatIcon />
               </IconButton>
-              {showChat && (
-                <Chat />
+              {chatState && (
+                <Chat chatUser={chatUser} />
               )}
             </div>
           </Box>
