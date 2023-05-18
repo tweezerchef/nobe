@@ -5,6 +5,13 @@ interface Discussion {
   id: string;
   Posts: DiscussionPost[];
   title: string;
+  clubs: Clubs[];
+}
+interface Clubs {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
 }
 interface DiscussionPost {
   id: string;

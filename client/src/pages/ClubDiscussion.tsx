@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 
 import axios from 'axios';
-import { ClubHeader } from './style';
+import { ClubHeader, ClubDescription } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
 import '../styles/clubDiscussionStyle.css';
 import DiscussionList from '../components/DiscussionForum/Discussions';
@@ -16,10 +16,15 @@ import UserContext from '../hooks/Context';
 import { Discussion } from '../typings/types';
 
 interface Club {
-  clubId: string
+  clubId: string;
+  name: string;
+  description: string;
+  image: string;
+  clubMembers: string[];
 }
 
 function ClubDiscussion() {
+  const [thisClub, setClub] = useState<Club[]>([]);
   const { id } = useParams<{ id: string }>();
   const [discussionList, setDiscussionList] = useState<Discussion[]>([]);
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
@@ -41,10 +46,15 @@ function ClubDiscussion() {
     return acc;
   }, false);
 
+  async function fetchClubs() {
+    const response = await axios.get(`/api/clubs/${clubId}`);
+    setClub(response.data);
+  }
+
   useEffect(() => {
     async function fetchDiscussion() {
       try {
-        const { data } = await axios.get(`/api/clubs/${id}/discussion`);
+        const { data } = await axios.get(`/api/clubs/${clubId}/discussion`);
         setDiscussionList(data);
       } catch (error) {
         console.error(error);
@@ -52,6 +62,7 @@ function ClubDiscussion() {
     }
     if (id) {
       fetchDiscussion();
+      fetchClubs();
     }
   }, []);
 
@@ -68,7 +79,7 @@ function ClubDiscussion() {
         alert('Not a member of this club');
         return;
       }
-      const response = await axios.post(`/api/clubs/${id}/discussion`, {
+      const response = await axios.post(`/api/clubs/${clubId}/discussion`, {
         title: newDiscussionTitle,
         userId,
       });
@@ -83,7 +94,7 @@ function ClubDiscussion() {
   return (
     <div>
       <ClubHeader style={{ textAlign: 'center' }}>{clubName}</ClubHeader>
-
+      <ClubDescription style={{ textAlign: 'center' }}>{thisClub[0]?.description}</ClubDescription>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Stack spacing={2} direction="row">
           <JoinClubButton clubId={clubId} member={member} />

@@ -26,6 +26,10 @@ interface Post {
   }
 }
 
+interface Club {
+  clubId: string
+}
+
 function DiscussionPosts() {
   const { id } = useParams<{ id: string }>();
   const [posts, setPosts] = useState<Post[]>([]);

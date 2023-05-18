@@ -20,6 +20,20 @@ ClubsRoute.get('/', async (req: Request, res: Response) => {
   }
 });
 
+ClubsRoute.get('/:id', async (req: Request, res: Response) => {
+  try {
+    const club = await prisma.clubs.findMany({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json(club);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
 ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
   try {
     const discussion = await prisma.discussions.findMany({
@@ -28,6 +42,14 @@ ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
       },
       include: {
         Posts: true,
+        clubs: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            image: true,
+          },
+        },
       },
     });
     res.json(discussion);
