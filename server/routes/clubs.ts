@@ -180,6 +180,8 @@ ClubsRoute.post('/join', async (req: Request, res: Response) => {
       where: {
         id: clubMember.id,
       },
+    }).then((club: any) => {
+      res.send(club).status(200);
     });
   } else {
     await prisma.clubMembers.create({
@@ -187,6 +189,8 @@ ClubsRoute.post('/join', async (req: Request, res: Response) => {
         userId: id,
         clubId,
       },
+    }).then((club: any) => {
+      res.send(club).status(200);
     });
   }
 

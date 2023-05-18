@@ -5,31 +5,26 @@ import UserContext from '../../hooks/Context';
 
 type CustomColor = 'success' | 'danger';
 
-// interface Club {
-//   clubId: string
-// }
-
 function JoinClubButton(props: any) {
   const { clubId, member } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
-
-  // const member = user?.clubMembers?.reduce((acc: boolean, club: Club) => {
-  //   if (club.clubId === clubId) {
-  //     acc = true;
-  //     return acc;
-  //   }
-  //   return acc;
-  // }, false);
+  const setUser = userContext?.setUser;
 
   const [color, setColor] = useState<CustomColor>(member ? 'success' : 'danger');
 
-  const addToClub = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const addToClub = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     axios.post('/api/clubs/join', {
       id,
       clubId,
+    }).then(() => {
+      axios.get(`/user/id?id=${id}`).then((newUser) => {
+        if (setUser && newUser && newUser?.data && newUser?.data !== undefined) {
+          setUser(newUser?.data);
+        }
+      });
     });
     if (color === 'success') {
       setColor('danger' as CustomColor);
