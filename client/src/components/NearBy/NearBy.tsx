@@ -46,7 +46,6 @@ function NearBy() {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
-  console.log(user, 31);
 
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);

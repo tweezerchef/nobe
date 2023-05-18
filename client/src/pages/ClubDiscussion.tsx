@@ -87,11 +87,12 @@ function ClubDiscussion() {
 
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Stack spacing={2} direction="row">
-          <JoinClubButton clubId={clubId} />
+          <JoinClubButton clubId={clubId} member={member} />
           <Button
             variant="contained"
             color="primary"
             onClick={() => setShowForm(!showForm)}
+            disabled={!member}
           >
             Create a Thread
           </Button>
