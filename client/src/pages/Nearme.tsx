@@ -99,7 +99,7 @@ function Locations() {
         setRadiusState('success');
       }, 1500);
     } catch (err) {
-    // console.error(err);
+      // console.error(err);
     }
   };
 

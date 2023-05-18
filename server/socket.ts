@@ -108,7 +108,7 @@ io.on('connection', async (socket) => {
     if (index !== -1) {
       connectedUsers.splice(index, 1);
     }
-    // console.log('someone has disconnected:', userId);
+    console.log('someone has disconnected:', userId);
   });
 });
 
