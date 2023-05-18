@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -7,6 +7,7 @@ import { Button } from '@material-ui/core';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
+import UserContext from '../hooks/Context';
 import { ClubHeader, StyledTextarea } from './style';
 import '../styles/discussionPostsStyles.css';
 
@@ -31,8 +32,11 @@ function DiscussionPosts() {
   const [clubName, setClubName] = useState('');
   const [clubId, setClubId] = useState('');
 
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const userId = user?.id;
+
   useEffect(() => {
-    console.log('DiscussionPosts');
     async function getPosts() {
       try {
         const { data } = await axios.get(`/api/clubs/${id}/posts`);
@@ -66,10 +70,9 @@ function DiscussionPosts() {
     }
 
     try {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
       const currentDate = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ');
       const { data } = await axios.post(`/api/clubs/${id}/posts`, {
-        userId: user.id,
+        userId: user?.id,
         body: newPost,
         createdAt: currentDate,
       });
@@ -106,24 +109,26 @@ function DiscussionPosts() {
       )}
       <ClubHeader>{discussionTitle}</ClubHeader>
       {posts?.map((post) => (
-        <div className="posts-box" key={post.id}>
-          <div className="brown-box">
-            {'by '}
-            {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
-            {' '}
-            <div className="date-time">
-              {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
+        <div className="post">
+          <div className="post-content" key={post.id}>
+            <div className="brown-box">
+              {'by '}
+              {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
+              {' '}
+              <div className="date-time">
+                {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
+              </div>
             </div>
-          </div>
-          <div className="post-body">
-            {post.body}
-            {post.userId === JSON.parse(localStorage.getItem('user') || '{}').id && (
-            <Stack direction="row" spacing={1} className="delete-icon">
-              <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
-                <DeleteIcon />
-              </IconButton>
-            </Stack>
-            )}
+            <div className="post-body">
+              {post.body}
+              {post.userId === userId && (
+              <Stack direction="row" spacing={1} className="delete-icon">
+                <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </Stack>
+              )}
+            </div>
           </div>
         </div>
       ))}
@@ -132,7 +137,7 @@ function DiscussionPosts() {
           <div className="input-container">
             Comment:
             <StyledTextarea
-              minRows={4}
+              minRows={8}
               className="text-area"
               value={newPost}
               onChange={(event) => setNewPost(event.target.value)}

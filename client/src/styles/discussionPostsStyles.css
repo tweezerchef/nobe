@@ -1,12 +1,16 @@
-.posts-page {
+/* .posts-page {
     margin: 0px auto;
-    text-align: left;
     width: 800px;
+} */
+
+.post {
+    margin: 0px auto;
+    width: 600px;
 }
 
 .brown-box {
     width: 100%;
-    background: #f4f1ea;
+    background: #f3efe7;
     font-size: 15px;
     padding: 5px;
 }
@@ -19,6 +23,8 @@
     line-height: 21px;
     padding-top: 8px;
     padding-bottom: 8px;
+    margin-left: 8px;
+    margin-right: 5px;
 }
 
 .text-area {
@@ -38,6 +44,7 @@
 
 .form-div {
     text-align: center;
+    margin-bottom: 20px;
 }
 
 .link:hover {
