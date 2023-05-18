@@ -136,10 +136,10 @@ function ClubDiscussion() {
         </DialogActions>
       </Dialog>
       )}
-      {id && (
+      {clubId && (
       <DiscussionList
         discussions={discussionList}
-        clubId={id}
+        clubId={clubId}
         key={discussionList.length}
       />
       )}
