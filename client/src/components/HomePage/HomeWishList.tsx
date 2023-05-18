@@ -1,10 +1,92 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import axios from 'axios';
+import Stack from '@mui/joy/Stack';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import Box from '@mui/material/Box';
+import { IconButton } from '@mui/material';
+import UserContext from '../../hooks/Context';
+import { UserBook } from '../../typings/types';
+import Book from '../Book/HomeBook';
 
+interface Book {
+  books: {
+    id: string;
+    title: string;
+    author: string;
+    image: string;
+  }
+  id: string;
+  wishlist: boolean;
+  owned: boolean;
+}
 function HomeWishList() {
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const id = user?.id;
+  const [books, setBooks] = useState<Book[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const reviewsPerPage = 4;
+
+  const handleNextPage = () => {
+    if (
+      currentPage
+      < Math.ceil((books?.length || 0) / reviewsPerPage) - 1
+    ) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const getUserBooks = async () => {
+    setIsLoading(true);
+    const booksArray: Book[] = [];
+
+    const userBooks = await axios.get(`/user-books/wishlist/${id}`);
+    userBooks.data.forEach((book: UserBook) => {
+      booksArray.push(book.Books);
+    });
+    setBooks(booksArray);
+
+    setIsLoading(false);
+  };
+  useEffect(() => {
+    getUserBooks();
+  }, []);
+
   return (
-    <div>
-      <h1>HomeWishList</h1>
-    </div>
+    <Box maxWidth="100%" maxHeight="40vh" overflow="contain">
+      {books && books.length && (
+        <IconButton onClick={handlePrevPage} disabled={currentPage === 0}>
+          <NavigateBeforeIcon />
+        </IconButton>
+      )}
+      <Stack spacing={2} direction="row" maxWidth="100%">
+        {books
+          .slice(
+            currentPage * reviewsPerPage,
+            currentPage * reviewsPerPage + reviewsPerPage,
+          )
+          .map((book: Book) => (
+            <Box key={book.id}>
+              <Book book={book} />
+            </Box>
+          ))}
+      </Stack>
+      <IconButton
+        onClick={handleNextPage}
+        disabled={currentPage >= Math.ceil((books.length || 0) / reviewsPerPage) - 1}
+      >
+        <NavigateNextIcon />
+      </IconButton>
+    </Box>
   );
 }
 export default HomeWishList;
