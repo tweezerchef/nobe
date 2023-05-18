@@ -14,6 +14,7 @@ interface DiscussionPost {
 }
 interface Place {
   location: ReactNode;
+  nickName: string;
   userPlaces: any;
   User_Places: any;
   place_id: any;
@@ -40,6 +41,7 @@ interface Place {
   website: string;
   types: string[];
   reviews: Review[];
+  Places_Pictures: any;
   Description_Places: any;
   id: number;
   Location: string;

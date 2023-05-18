@@ -8,7 +8,7 @@ import UserContext from '../../hooks/Context';
 
 import {
   ProfileCard, StatusText, StatusValue, Status,
-  Name, ProfileInfo, ProfileImage, StatusItem,
+  Name, ProfileInfo, StatusItem,
 } from './homeStyle';
 
 function HomeUserDisplay() {

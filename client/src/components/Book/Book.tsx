@@ -70,7 +70,7 @@ const Book = React.memo((props: any) => {
 
   return (
 
-    <Card key={book.id} variant="outlined" className={classes.card} sx={{ width: 380, margin: '10px', boxShadow: '0px 0px 25px rgba(0, 0, 0, 0.6)' }}>
+    <Card key={book.id} variant="outlined" className={classes.card} sx={{ width: 380, margin: '10px', boxShadow: '0px 0px 25px rgba(37, 37, 37, 0.6)' }}>
       <CardOverflow onClick={handleOnClick}>
         <AspectRatio ratio="2">
           {book.image ? (

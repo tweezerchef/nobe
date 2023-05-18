@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -75,7 +75,7 @@ const Book = React.memo((props: any) => {
       variant="outlined"
       className={classes.card}
       sx={{
-        width: '35vh', height: '100%', margin: '10px', boxShadow: '0px 0px 25px rgba(0, 0, 0, 0.6)',
+        width: '25vh', height: '90%', margin: '10px', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
       }}
     >
       <CardOverflow onClick={handleOnClick}>

@@ -5,6 +5,7 @@ import Stack from '@mui/joy/Stack';
 import Feed from './Feed';
 import HomeWishList from '../components/HomePage/HomeWishList';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
+import HomePlaces from '../components/HomePage/HomePlaces';
 
 function HomeNew() {
   const colWidth = {
@@ -49,6 +50,7 @@ function HomeNew() {
             spacing={1}
           >
             <HomeWishList />
+            <HomePlaces />
           </Stack>
         </Grid>
       </Grid>
