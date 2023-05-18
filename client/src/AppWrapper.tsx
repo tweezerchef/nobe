@@ -17,10 +17,14 @@ const materialTheme = materialExtendTheme({
     light: {
       palette: {
         primary: {
-          main: blue[400],
+          main: '#3f51b5',
+        },
+        secondary: {
+          main: '#f50057',
         },
         background: {
-          default: '#92bcff', // The background color for light mode
+          default: '#efefef',
+          paper: '#d6d6d6',
         },
       },
     },
