@@ -68,12 +68,14 @@ function HomeWishList() {
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '400px',
+        height: '360px',
       }}
     >
       <IconButton
         onClick={handlePrevPage}
-        sx={{ margin: 0, padding: 0, alignSelf: 'center' }}
+        sx={{
+          alignSelf: 'center', justifySelf: 'start',
+        }}
         disabled={currentPage === 0}
       >
         <NavigateBeforeIcon />
@@ -105,7 +107,9 @@ function HomeWishList() {
 
       <IconButton
         onClick={handleNextPage}
-        sx={{ margin: 0, padding: 0, alignSelf: 'center' }}
+        sx={{
+          marginLeft: 15, padding: 0, alignSelf: 'center', justifySelf: 'end',
+        }}
         disabled={currentPage >= Math.ceil((books.length || 0) / booksPerPage) - 1}
       >
         <NavigateNextIcon />

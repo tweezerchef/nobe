@@ -6,6 +6,7 @@ import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
+import { margin } from '@mui/system';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
@@ -75,7 +76,7 @@ const Book = React.memo((props: any) => {
       variant="outlined"
       className={classes.card}
       sx={{
-        width: '25vh', height: '90%', margin: '10px', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+        width: '13vw', height: '100%', margin: '10px', marginBottom: '0px', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
       }}
     >
       <CardOverflow onClick={handleOnClick}>
@@ -94,12 +95,10 @@ const Book = React.memo((props: any) => {
       <Typography
         level="body1"
         sx={{
-          fontSize: '1.5rem !important', mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical',
+          mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical',
         }}
       >
-        <span onClick={handleOnClick}>
-          {book.title}
-        </span>
+        {book.title}
       </Typography>
       <Typography
         level="body2"

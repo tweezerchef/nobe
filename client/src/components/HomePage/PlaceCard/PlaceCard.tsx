@@ -22,7 +22,6 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
   const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log(place);
     const fetchImage = async () => {
       const photo = Places_Pictures[0].url;
       const imageUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`;

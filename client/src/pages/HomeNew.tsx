@@ -71,6 +71,15 @@ function HomeNew() {
               <FlameStyledChip label="Hot Places To Read" />
             </StyledDivider>
             <HomePlaces />
+            <Box
+              sx={{
+                width: '100%',
+                height: '400px', // Adjust the height of the banner as needed
+                backgroundImage: 'url(https://i.imgur.com/lAKiMMj.jpg',
+                backgroundSize: 'cover',
+                backgroundPosition: 'bottom',
+              }}
+            />
           </Stack>
         </Grid>
       </Grid>
