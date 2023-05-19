@@ -11,6 +11,10 @@ const ProfileCard = styled(Card)({
   margin: '0 auto',
   justifyContent: 'center',
   alignItems: 'center',
+  height: '200px',
+  boxShadow: 'none', // Remove box-shadow
+  border: 'none', // Remove border
+  outline: 'none', // Remove outline
 });
 
 const ProfileImage = styled(CardMedia)({

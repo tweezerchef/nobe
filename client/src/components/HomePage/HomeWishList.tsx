@@ -31,7 +31,7 @@ function HomeWishList() {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
 
-  const reviewsPerPage = 4;
+  const booksPerPage = 5;
 
   const handleNextPage = () => {
     setSlideDirection('left');
@@ -61,40 +61,57 @@ function HomeWishList() {
   }, []);
 
   return (
-    <Box maxWidth="100%" maxHeight="90%" overflow="contain" alignContent="center" alignItems="center" position="static">
-      {books && books.length && (
-        <IconButton onClick={handlePrevPage} disabled={currentPage === 0}>
-          <NavigateBeforeIcon />
-        </IconButton>
-      )}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '400px',
+      }}
+    >
+      <IconButton
+        onClick={handlePrevPage}
+        sx={{ margin: 0, padding: 0, alignSelf: 'center' }}
+        disabled={currentPage === 0}
+      >
+        <NavigateBeforeIcon />
+      </IconButton>
 
-      {[...Array(Math.ceil(books.length / reviewsPerPage))].map((_, index) => (
-        <Box sx={{ overflow: 'hidden', width: '100%', height: '100%' }}>
-          <Slide direction={slideDirection} in={currentPage === index} mountOnEnter unmountOnExit>
-            <Stack spacing={2} direction="row" maxWidth="100%" maxHeight="95%" alignContent="center">
-              {books
-                .slice(
-                  index * reviewsPerPage,
-                  index * reviewsPerPage + reviewsPerPage,
-                )
-                .map((book: Book) => (
-                  <Box key={book.id}>
-                    <Book book={book} />
-                  </Box>
-                ))}
-            </Stack>
-          </Slide>
-        </Box>
-
-      ))}
+      <Box sx={{ position: 'relative', width: '80%', height: '100%' }}>
+        {[...Array(Math.ceil(books.length / booksPerPage))].map((_, index) => (
+          <Box sx={{
+            position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+          }}
+          >
+            <Slide direction={slideDirection} in={currentPage === index} mountOnEnter unmountOnExit>
+              <Stack spacing={2} direction="row" maxWidth="100%" maxHeight="95%" alignContent="center">
+                {books
+                  .slice(
+                    index * booksPerPage,
+                    index * booksPerPage + booksPerPage,
+                  )
+                  .map((book: Book) => (
+                    <Box key={book.id}>
+                      <Book book={book} />
+                    </Box>
+                  ))}
+              </Stack>
+            </Slide>
+          </Box>
+        ))}
+      </Box>
 
       <IconButton
         onClick={handleNextPage}
-        disabled={currentPage >= Math.ceil((books.length || 0) / reviewsPerPage) - 1}
+        sx={{ margin: 0, padding: 0, alignSelf: 'center' }}
+        disabled={currentPage >= Math.ceil((books.length || 0) / booksPerPage) - 1}
       >
         <NavigateNextIcon />
       </IconButton>
     </Box>
+
   );
 }
 

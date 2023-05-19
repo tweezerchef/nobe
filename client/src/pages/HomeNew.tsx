@@ -64,7 +64,7 @@ function HomeNew() {
             <StyledDivider textAlign="right">
               <Chip color="primary" label="Your Wish List" />
             </StyledDivider>
-            <Box overflow="hidden" sx={{ width: '100%', maxHeight: '90%' }}>
+            <Box overflow="clip" sx={{ width: '100%', height: '30vh' /* adjust this */ }}>
               <HomeWishList />
             </Box>
             <StyledDivider textAlign="left">
