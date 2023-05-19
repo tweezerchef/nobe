@@ -138,7 +138,7 @@ BookData.post('/title/owned', async (req, res) => {
   });
   res.send(newBook);
 });
-BookData.post('/title/wishlist', async (req, res) => {
+BookData.post('/title', async (req, res) => {
   const {
     title, ISBN10, author, image, description,
   } = req.body;

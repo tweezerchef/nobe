@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useParams, useNavigate } from 'react-router-dom';
 import React, {
   useState, useEffect,
@@ -13,23 +14,11 @@ import Modal from '@mui/material/Modal';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context';
 import NearBy from '../components/NearBy/NearBy';
+import { Book, UserBook } from '../typings/types';
 
-interface UserBook {
-  wishlist: any;
-  owned: any;
-  Books: Book;
-}
-interface Book {
-  books: {
-    id: string;
-    title: string;
-    author: string;
-    image: string;
-  }
-  id: string;
-  wishlist: boolean;
-  owned: boolean;
-}
+// The UserProfile interface defines the shape of an object
+// returned from the server representing a user profile. It includes the user's ID, first name, //
+// picture, and an array of books the user has read or wants to read.
 
 interface UserProfile {
   id: string;
@@ -47,6 +36,7 @@ function Profile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   // const [socket, setSocket] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
+  // const [userLocation, setUserLocation] = useState<any>([]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -57,7 +47,7 @@ function Profile() {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
 
-  const { id } = user;
+  const id = user?.id;
   const friendId: string = useParams().id || '';
 
   const getProfile = async () => {
@@ -73,7 +63,13 @@ function Profile() {
 
   const handleNearMeClick = async () => {
     try {
-      const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+    // eslint-disable-next-line max-len
+      const response = await axios.get('/location/locations', {
+        params: {
+          lon: user?.longitude, lat: user?.latitude, radius: user?.radius,
+        },
+      });
+      // console.log(response);
       const data = await response.data;
       navigate('/locations', { state: data });
     } catch (error) {
@@ -109,9 +105,13 @@ function Profile() {
     setTitle(event.target.value);
   };
 
+  // This function is called when a user follows another user.
+  // It sends a notification to the user being followed
+  // and saves the friendship to the database.
+
   const follow = async () => {
-    const userId = user.id;
-    const userFirstName = user.firstName;
+    const userId = user?.id;
+    const userFirstName = user?.firstName;
 
     try {
       if (socketUrl) {
@@ -139,7 +139,7 @@ function Profile() {
   useEffect(() => {
     if (friendId !== '') {
       getProfile();
-    } else {
+    } else if (user) {
       setProfile(user);
     }
   }, []);
@@ -171,7 +171,7 @@ function Profile() {
         <Grid container>
           <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
             <Typography variant="h4">
-              {friendId === '' ? `${user.firstName}'s` : `${profile?.firstName}'s`}
+              {friendId === '' ? `${user?.firstName}'s` : `${profile?.firstName}'s`}
               {' '}
               Books
             </Typography>
@@ -184,7 +184,7 @@ function Profile() {
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div style={{
-          display: 'flex', justifyContent: 'center', width: '100%', background: '#002884',
+          display: 'flex', justifyContent: 'center', width: '100%',
         }}
         >
           <div style={{
@@ -203,7 +203,7 @@ function Profile() {
             </form>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={ownedClicked}>Owned</Button>
             <Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={wishClicked}>WishList</Button>
-            {user.latitude > 0 && user.radius > 0 ? (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleNearMeClick}>Near Me</Button>)
+            {user?.radius && user?.latitude && user?.latitude > 0 && user?.radius > 0 ? (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleNearMeClick}>Near Me</Button>)
               : (<Button variant="contained" color="primary" style={{ margin: '10px' }} onClick={handleOpen}>Near Me</Button>)}
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
               <Box sx={style}>

@@ -1,40 +1,16 @@
-import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
-import { NavProps } from './Navbar'
-import { Button } from '@material-ui/core';
+import Box from '@mui/material/Box';
+import styled from 'styled-components';
 
-export const StyledNavbar = styled.nav<NavProps>`
-position: sticky;
-top: 0;
-display: flex;
-align-items: center; justify-content: flex-end;
-width: 100%;
-height: 70px;
-padding: 0 30px;
-color: #ffffff;
-background-color: #202023;
-box-shadow: 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-z-index: 100;
+const StyledBox = styled(Box)`
+  position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
 `;
 
-export const NavItemLink = styled(Link) <NavProps>`
-color: inherit;
-margin-left: 16px;
-${props => props.fill && css`
-padding: 8px 16px;
-border-radius: 4px;
-background-color: #2f8bfd;
-transition: background-color 0.2s; &:hover { background-color: #0072ff; }
-`};
-`;
-
-export const locationRoute = styled(Button)<NavProps>`
-color: inherit;
-margin-left: 16px;
-${props => props.fill && css`
-padding: 8px 16px;
-border-radius: 4px;
-background-color: #2f8bfd;
-transition: background-color 0.2s; &:hover { background-color: #0072ff; }
-`};
-`
+export default StyledBox;

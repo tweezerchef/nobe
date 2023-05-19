@@ -20,6 +20,7 @@ import Places from './places';
 import '../../styles/mapstyles.css';
 import UserContext from '../../hooks/Context';
 import PlaceViewer from './PlaceViewer';
+import { Place } from '../../typings/types';
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
@@ -94,22 +95,6 @@ function ReadingSpotsMap() {
     fetchSavedPlaces();
   }, []);
 
-  const handleFormSubmit = async () => {
-    try {
-      if (!description) {
-        toast.error('Please enter a description.');
-        return;
-      }
-      await axios.post('/api/places-to-read/writtenReview', { body: description, userId: id, placeId: selectedPlace });
-      setDescription('');
-      setIsAddingDescription(false);
-      setIsFormOpen(false);
-      fetchSavedPlaces();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     setDescription('');
     fetchSavedPlaces();
@@ -152,7 +137,13 @@ function ReadingSpotsMap() {
                   },
                 }}
               >
-                <ListItemText primary={<Typography color="gray">{place.Location}</Typography>} />
+                <ListItemText primary={(
+                  <Typography gutterBottom variant="body1" color="text.secondary">
+                    {place.name}
+                    {place.location}
+                  </Typography>
+)}
+                />
               </ListItemButton>
             ))}
           </List>
@@ -211,7 +202,7 @@ function ReadingSpotsMap() {
                               </DialogContent>
                               <DialogActions>
                                 <Button onClick={handleFormCancel}>Cancel</Button>
-                                <Button onClick={handleFormSubmit}>Save</Button>
+                                {/* <Button onClick={handleFormSubmit}>Save</Button> */}
                               </DialogActions>
                             </Dialog>
                           </Card>
@@ -266,7 +257,7 @@ function ReadingSpotsMap() {
                               </DialogContent>
                               <DialogActions>
                                 <Button onClick={handleFormCancel}>Cancel</Button>
-                                <Button onClick={handleFormSubmit}>Save</Button>
+                                {/* <Button onClick={handleFormSubmit}>Save</Button> */}
                               </DialogActions>
                             </Dialog>
                           </Card>

@@ -1,10 +1,17 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
+import IconButton from '@mui/joy/IconButton';
+import { Tooltip } from '@material-ui/core';
+import { fontSize } from '@mui/system';
+import UserContext from '../../hooks/Context';
 
 function UserStarRating(props: any) {
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const setUser = userContext?.setUser;
   const { book, id } = props;
 
   // eslint-disable-next-line react/destructuring-assignment
@@ -22,18 +29,26 @@ function UserStarRating(props: any) {
   };
 
   return (
-    <Box
-      sx={{
-        '& > legend': { mt: 2 },
-      }}
-    >
-      <Typography sx={{ fontSize: 'md' }} component="legend">Your Rating</Typography>
-      <Rating
-        name="simple-controlled"
-        value={value}
-        onChange={handleRatingChange}
-      />
-    </Box>
+    <Tooltip title="your rating" placement="top-end">
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center', // Center the content horizontally
+          justifyContent: 'center', // Center the content vertically
+          size: 'lg',
+        }}
+      >
+        <Rating
+          name="simple-controlled"
+          value={value}
+          onChange={handleRatingChange}
+        />
+
+      </Box>
+    </Tooltip>
+
   );
 }
 

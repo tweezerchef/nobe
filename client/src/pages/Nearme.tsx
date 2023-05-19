@@ -17,7 +17,6 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import OpenIconSpeedDial from '../components/ActionButton/ActionButton';
-import Navbar from '../components/Navbar/Navbar';
 import BookDisplay from '../components/BookDisplay/BookDisplay';
 import UserContext from '../hooks/Context';
 import UserDisplay from '../components/UserDisplay/Userdisplay';
@@ -48,7 +47,7 @@ interface Props {
 function Locations() {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const { id } = user;
+  const id = user?.id;
 
   // console.log(user);
 
@@ -100,14 +99,18 @@ function Locations() {
         setRadiusState('success');
       }, 1500);
     } catch (err) {
-    // console.error(err);
+      // console.error(err);
     }
   };
 
   const getBooksNearMe = async () => {
     setButtonState('loading');
     try {
-      const res = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      const res = await axios.get('/location/locations', {
+        params: {
+          lon: user?.longitude, lat: user?.latitude, radius: user?.radius,
+        },
+      });
       // console.log(res.data, 99);
       setBooksNearBy(res.data);
       setTimeout(() => {
@@ -118,30 +121,12 @@ function Locations() {
     }
   };
 
-  // const booksNearMe = () => {
-  //   const booksArray: Book[] = [];
-  //   user?.UserBooks?.forEach((book: UserBook) => {
-  //     booksArray.push(book.Books);
-  //   });
-  //   setBooks(booksArray);
-
-  // }
-
   useEffect(() => {
     if (!location.state === null) {
       const myData = location.state;
       setDisplayBooks(myData);
     }
   }, [location]);
-
-  // useEffect(() => {
-  // eslint-disable-next-line max-len
-  // const ownedBooks = booksNearBy.flat().filter(book => book.owned === true).map((book) => book.books);
-  //     // console.log(ownedBooks, '69');
-  //     setDisplayBooks(ownedBooks);
-  //   }, [booksNearBy]);
-
-  // console.log(displayBooks, 131)
 
   useEffect(() => {
     const convert = radius * 32;
@@ -283,74 +268,3 @@ function Locations() {
   );
 }
 export default Locations;
-
-// <div>
-// eslint-disable-next-line max-len
-//   <Grid style={{ display: "flex", justifyContent: "center" }} container rowSpacing={1} columnSpacing={{ xs: 1 }}>
-//   <Grid xs={3}>
-//       <ButtonGroup
-//         orientation="vertical"
-//         style={{ display: "flex", justifyContent: "right" }}>
-//         <ReactiveButton
-//           rounded
-//           size="medium"
-//           buttonState={locationState}
-//           idleText="Save Location"
-//           loadingText="Saving"
-//           successText="Done"
-//           onClick={saveLocation}
-//           color="blue"
-//         />
-//         <ReactiveButton
-//           rounded
-//           size="medium"
-//           buttonState={radiusState}
-//           idleText="Save Radius"
-//           loadingText="Saving"
-//           successText="Done"
-//           onClick={saveRadius}
-//           color="blue"
-//         />
-//         <ReactiveButton
-//           rounded
-//           size="medium"
-//           buttonState={buttonState}
-//           idleText="Search For Books"
-//           loadingText="Loading"
-//           successText="Done"
-//           onClick={getBooksNearMe}
-//           color="blue"
-//         />
-//       </ButtonGroup>
-//     </Grid>
-//     <Grid xs={3}>
-//       <Card sx={{ height: 200, width: 400 }}>
-//         <h1>Enter Address</h1>
-//         <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
-//           <GeoapifyGeocoderAutocomplete
-//             placeholder="Enter address here"
-//             placeSelect={onPlaceSelect}
-//             suggestionsChange={onSuggectionChange}
-//           />
-//         </GeoapifyContext>
-//       </Card>
-//     </Grid>
-//     <Grid xs={3}>
-//       <Card sx={{ height: 200, width: 400 }}>
-//         <h1>Set Radius</h1>
-//         <FormControl sx={{ m: 1, width: '18ch' }} variant="outlined">
-//           <OutlinedInput sx={{ height: '3ch' }}
-//             id="outlined-adornment-weight"
-//             endAdornment={<InputAdornment position="end">mi</InputAdornment>}
-//             onChange={handleRadiusChange}
-//             value={radius}
-//           />
-//           <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
-//           <Slider defaultValue={0} value={radius}
-//             onChange={handleRadiusChange} aria-label="Default" valueLabelDisplay="auto" />
-//         </FormControl>
-//       </Card>
-//     </Grid>
-//   </Grid>
-//   { booksNearBy.map(user => <UserDisplay user={user} key={user.id} />)}
-// </div>

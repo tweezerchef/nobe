@@ -42,7 +42,7 @@ Trending.post('/inventory', async (req, res) => {
       title, ISBN10, author, image, description,
     } = response.data;
 
-    const newBook = await axios.post('http://localhost:8080/bookdata/title/wishlist', {
+    const newBook = await axios.post('http://localhost:8080/bookdata/title', {
       title,
       ISBN10,
       author,

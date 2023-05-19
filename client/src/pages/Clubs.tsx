@@ -37,7 +37,6 @@ function Clubs() {
   flex-basis: ${(props) => props.flexBasis || '33%'};
   margin: 10px;
   transition: transform 0.2s ease-in-out;
-  background-color: #f4f1ea !important;
 
   &:hover {
     transform: scale(1.02);
@@ -77,6 +76,7 @@ function Clubs() {
                   }}
                 >
                   <iframe
+                    title={`Club image for ${club.name}`}
                     src={club.image}
                     style={{
                       pointerEvents: 'none', display: 'block', margin: '0 auto', border: 'none', paddingTop: '8px', width: '100%',

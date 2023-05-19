@@ -7,10 +7,12 @@ import styled from 'styled-components';
 
 const ProfileCard = styled(Card)({
   display: 'flex',
-  width: 400,
+  width: '100%',
   height: 175,
   margin: '0 auto',
   boxShadow: '0px 0px 25px rgba(0, 0, 0, 0.6)',
+  justifyContent: 'center',
+  alignItems: 'center',
 });
 
 const ProfileImage = styled(CardMedia)({
@@ -75,12 +77,13 @@ const FollowButton = styled(Button)({
 });
 
 const MessageButton = styled(Button)({
-  backgroundColor: 'transparent',
-  color: '#1976d2',
+  backgroundColor: '#1976d2',
+  color: 'white',
   borderRadius: '0.35rem',
   fontWeight: 'bold',
   padding: '0.8em 1.9em',
   cursor: 'pointer',
+  marginRight: '10px',
 });
 
 export {

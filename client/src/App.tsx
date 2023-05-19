@@ -1,5 +1,5 @@
 // export { }
-import react, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import {
   experimental_extendTheme as materialExtendTheme,
@@ -8,7 +8,6 @@ import {
 } from '@mui/material/styles';
 import Router from './Router';
 import ResponsiveAppBar from './components/Navbar/ResponsiveAppBar';
-import OpenIconSpeedDial from './components/ActionButton/ActionButton';
 import UserContext, { UserContextType } from './hooks/Context';
 import ChatContext, { ChatContextType } from './hooks/ChatContext';
 
@@ -23,6 +22,8 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [messages, setMessages] = useState<any[]>([]);
+  const [chatState, setChatState] = useState<boolean>(false);
+  const [chatUser, setChatUser] = useState<any>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,10 +57,12 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
     setUser: setUserAndSave,
   };
 
-  const chatContextValue: ChatContextType = {
-    messages,
-    setMessages,
-  };
+  const chatContextValue: ChatContextType = useMemo(() => ({
+    chatState,
+    setChatState,
+    chatUser,
+    setChatUser,
+  }), [chatState, setChatState]);
 
   return (
 

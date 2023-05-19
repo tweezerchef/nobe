@@ -1,8 +1,9 @@
 import React, {
-  useState,
+  // useState,
   // useEffect, useRef,
   useContext,
 } from 'react';
+
 import axios from 'axios';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -14,18 +15,23 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
+// import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Paper } from '@mui/material';
+// import { Paper } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
+import Modal from '@mui/material/Modal';
+import { ModalClose } from '@mui/joy';
 import UserContext from '../../hooks/Context';
 import ModeToggle from '../ColorMode/ColorModeToggle';
 import NotificationIcon from '../ActionButton/ActionButton';
 // import NotificationMobile from '../NotificationMessages/Notificationsmobile';
 import Chat from '../Chat/Chat';
+// import StyledBox from './style';
+import NearBy from '../NearBy/NearBy';
+import { useChatContext } from '../../hooks/ChatContext';
 
 const StyledLink = styled(Link)`
   color: white !important;
@@ -46,13 +52,6 @@ color: white !important;
 
 
 `;
-const ChatOverlay = styled(Paper)`
-  position: absolute;
-  right: 0;
-  z-index: 1000;
-  width: 600px;
-  height: '50vh';
-`;
 
 function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -61,7 +60,10 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
-  const [showChat, setShowChat] = useState(false);
+
+  const { chatState, setChatState, chatUser } = useChatContext();
+
+  const [open, setOpen] = React.useState(false);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -98,7 +100,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
 
   const handleLookForBooksClick = async () => {
     try {
-      const response = await axios.get('/location/locations', { params: { lon: user.longitude, lat: user.latitude, radius: user.radius } });
+      const response = await axios.get('/location/locations', { params: { lon: user?.longitude, lat: user?.latitude, radius: user?.radius } });
       const data = await response.data;
       navigate('/locations', { state: data });
     } catch (error) {
@@ -107,7 +109,22 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
   };
 
   const handleChatButtonClick = () => {
-    setShowChat(!showChat);
+    setChatState(!chatState);
+  };
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
   };
 
   return (
@@ -314,8 +331,27 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               onClick={handleCloseNavMenu}
               sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
             >
-              <StyledButton onClick={handleLookForBooksClick}>Books Near Me</StyledButton>
+              {user?.radius && user?.latitude && user?.latitude > 0 && user?.radius > 0
+                ? <StyledButton onClick={handleLookForBooksClick}>Books Near Me</StyledButton>
+                : (<StyledButton onClick={handleOpen}>Books Near Me</StyledButton>)}
             </Button>
+            <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+              <Box sx={style}>
+                <ModalClose
+                  variant="outlined"
+                  sx={{
+                    position: 'absolute',
+                    top: '16px',
+                    right: '16px',
+                    boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',
+                    borderRadius: '50%',
+                    bgcolor: 'background.body',
+                  }}
+                  onClick={() => handleClose()}
+                />
+                <NearBy />
+              </Box>
+            </Modal>
             <Button
               onClick={handleCloseNavMenu}
               sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
@@ -346,24 +382,19 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
             >
               <StyledLink to="/booksearch">Book Search</StyledLink>
             </Button>
-            <NotificationIcon />
             <div style={{ position: 'relative' }}>
               <IconButton style={{ width: '32px', margin: '10px' }} onClick={handleChatButtonClick}>
                 <ChatIcon />
               </IconButton>
-              {showChat && (
-                <ChatOverlay>
-                  <Chat />
-                </ChatOverlay>
+              {chatState && (
+                <Chat chatUser={chatUser} />
               )}
             </div>
           </Box>
           <Box sx={{ flexGrow: '0 !important', display: 'block !important' }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: '0 !important' }}>
-                <Avatar alt="pfp" src={loggedIn ? user.picture : null} />
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: '0 !important' }}>
+              <Avatar alt="pfp" src={loggedIn ? user?.picture : ''} />
+            </IconButton>
             <Menu
               sx={{ mt: '45px !important', display: 'block !important' }}
               id="menu-appbar"
@@ -387,7 +418,7 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
                 }}
               >
                 <Typography textAlign="center">
-                  <Link to="/profile">Profile</Link>
+                  <Link to="/usersprofile">Profile</Link>
                 </Typography>
               </MenuItem>
               {loggedIn ? (
@@ -416,6 +447,11 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               )}
             </Menu>
             <ModeToggle setMode={setMode} setJoyMode={setJoyMode} />
+          </Box>
+          <Box sx={{ flexGrow: '0 !important', display: 'block !important' }}>
+            <div style={{ position: 'relative' }}>
+              <NotificationIcon />
+            </div>
           </Box>
         </Toolbar>
       </Container>

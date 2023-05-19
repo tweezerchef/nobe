@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@material-ui/core';
+import Avatar from '@mui/material/Avatar';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { ClubHeader } from './style';
+import UserContext from '../hooks/Context';
+import { ClubHeader, StyledTextarea } from './style';
 import '../styles/discussionPostsStyles.css';
 
 interface Post {
@@ -17,9 +19,10 @@ interface Post {
   discussionId: string;
   createdAt: string;
   user: {
+    firstName: string;
     lastName: string;
     username: string;
-    firstName: string;
+    picture: string;
   }
 }
 
@@ -30,6 +33,10 @@ function DiscussionPosts() {
   const [discussionTitle, setDiscussionTitle] = useState('');
   const [clubName, setClubName] = useState('');
   const [clubId, setClubId] = useState('');
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const userId = user?.id;
 
   useEffect(() => {
     async function getPosts() {
@@ -65,10 +72,9 @@ function DiscussionPosts() {
     }
 
     try {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
       const currentDate = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ');
       const { data } = await axios.post(`/api/clubs/${id}/posts`, {
-        userId: user.id,
+        userId: user?.id,
         body: newPost,
         createdAt: currentDate,
       });
@@ -100,44 +106,57 @@ function DiscussionPosts() {
             {clubName}
           </Link>
           {' '}
-          Discussion
+          Thread
         </ClubHeader>
       )}
       <ClubHeader>{discussionTitle}</ClubHeader>
       {posts?.map((post) => (
-        <div className="posts-box" key={post.id}>
-          <div className="brown-box">
-            {'by '}
-            {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
-            {' '}
-            <div className="date-time">
-              {moment(post.createdAt).format('h:mm a MMMM D, YYYY')}
+        <div className="post">
+          <div className="post-content" key={post.id}>
+            <div className="brown-box">
+              <div className="post-info-container">
+                <Link to={`/profile/${post.userId}`}>
+                  <Avatar
+                    src={post.user?.picture}
+                    alt={post.user?.username}
+                    className="avatar"
+                  />
+                </Link>
+                <Link to={`/profile/${post.userId}`} className="username-link">
+                  {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
+                </Link>
+                <div className="date-time">
+                  {moment(post.createdAt).format('h:mm a MM/DD/YY')}
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="post-body">
-            {post.body}
-            {post.userId === JSON.parse(localStorage.getItem('user') || '{}').id && (
+
+            <div className="post-body">
+              {post.body}
+              {post.userId === userId && (
               <Stack direction="row" spacing={1} className="delete-icon">
                 <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
                   <DeleteIcon />
                 </IconButton>
               </Stack>
-            )}
+              )}
+            </div>
           </div>
         </div>
       ))}
       <div className="form-div">
         <form onSubmit={handleSubmit}>
           <div className="input-container">
-            <label htmlFor="post">Comment:</label>
-            <textarea
+            Comment:
+            <StyledTextarea
+              minRows={8}
               className="text-area"
               value={newPost}
               onChange={(event) => setNewPost(event.target.value)}
             />
           </div>
           <div>
-            <Button className="post-button" type="submit" variant="contained" size="small">Post</Button>
+            <Button className="post-button" type="submit" variant="contained" size="small" style={{ marginTop: 5 }}>Post</Button>
           </div>
         </form>
       </div>

@@ -23,6 +23,7 @@ import {
   ProfileCard, MessageButton, FollowButton, Action, StatusText, StatusValue, Status,
   Name, Desc, ProfileInfo, ProfileImage, StatusItem,
 } from './style';
+import { useChatContext } from '../../hooks/ChatContext';
 
 interface UserProfile {
   id: string;
@@ -30,19 +31,28 @@ interface UserProfile {
   picture: string;
 }
 
+// This code generates a user display card that shows a user's name, description, activity count, post count,
+// club count, and avatar. It also has a follow and message button. It also displays a book display
+// component that shows all the books that the user has added to their profile. This code is used
+// to display a user's profile page.
+
 function UserDisplay({ user }: { user: any }) {
   const userBooks = user.UserBooks;
   // console.log(userBooks, 10);
 
-  // const userContext = useContext(UserContext);
   // const profile = userContext?.user;
   // const [profile, setProfile] = useState<UserProfile | null>(null);
 
   const [books, setBooks] = useState<any>([]);
+  const { chatState, setChatState, setChatUser } = useChatContext();
+
+  const handleChatButtonClick = () => {
+    setChatState(!chatState);
+    setChatUser(user);
+  };
 
   useEffect(() => {
     const booksArray = userBooks?.map((userbook: any) => userbook.Books);
-    // console.log(booksArray, 20);
     setBooks(booksArray);
   }, [userBooks]);
 
@@ -53,7 +63,9 @@ function UserDisplay({ user }: { user: any }) {
           <Avatar
             src={user.picture}
             alt={user.name}
-            style={{ width: '7rem', height: '7rem' }}
+            style={{
+              width: '5rem', height: '5rem', marginLeft: '10px', marginTop: '10px',
+            }}
           />
         </Link>
         <ProfileInfo>
@@ -75,7 +87,7 @@ function UserDisplay({ user }: { user: any }) {
           </Status>
           <Action>
             <FollowButton variant="contained">Follow</FollowButton>
-            <MessageButton variant="contained">Message</MessageButton>
+            <MessageButton variant="contained" onClick={handleChatButtonClick}>Message</MessageButton>
           </Action>
         </ProfileInfo>
       </ProfileCard>

@@ -5,7 +5,7 @@ import Book from '../Book/Book';
 import UserContext from '../../hooks/Context';
 
 const BookDisplay = React.memo((props: any) => {
-  const { books: array, id } = props;
+  const { books: array } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   if (!user) {
@@ -15,15 +15,53 @@ const BookDisplay = React.memo((props: any) => {
   if (!array) {
     return <div>Loading...</div>;
   }
+  const id = user?.id;
+  const [showBigBook, setShowBigBook] = useState(false);
+  const [bigBookPosition, setBigBookPosition] = useState({ top: 0, left: 0 });
+  const [selectedBook, setSelectedBook] = useState(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState(1);
+  const [shouldDisplay, setShouldDisplay] = useState(false);
 
   const updateColumns = () => {
     const containerWidth = containerRef.current?.clientWidth ?? 0;
     const numColumns = Math.floor(containerWidth / 400);
-    // adjust this value to the desired card width
     setColumns(numColumns > 0 ? numColumns : 1);
+  };
+  const handleBookClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, book: any) => {
+    const rect = (e.target as Element).getBoundingClientRect();
+    let bigBookWidth = window.innerWidth * 0.75; // This should match your BigBook width style
+    let bigBookHeight = window.innerHeight * 0.85; // This should match your BigBook height style
+
+    // Apply maxWidth and maxHeight restrictions
+    bigBookWidth = Math.min(bigBookWidth, 665);
+    bigBookHeight = Math.min(bigBookHeight, 850);
+
+    // Apply minWidth and minHeight restrictions (values are arbitrary, adjust as needed)
+    bigBookWidth = Math.max(bigBookWidth, 200);
+    bigBookHeight = Math.max(bigBookHeight, 200);
+
+    let { left } = rect;
+    let { top } = rect;
+
+    // If BigBook would overflow the right edge, align it to the right with some padding
+    if (window.innerWidth - left < bigBookWidth) {
+      left = window.innerWidth - bigBookWidth - 40;
+    }
+
+    // If BigBook would overflow the bottom edge, align it to the bottom with some padding
+    if (window.innerHeight - top < bigBookHeight) {
+      top = window.innerHeight - bigBookHeight - 20;
+    }
+
+    setBigBookPosition({ top, left });
+    setSelectedBook(book);
+    setShowBigBook(true);
+  };
+
+  const handleBigBookClose = () => {
+    setShowBigBook(false);
   };
 
   useEffect(() => {
@@ -34,9 +72,17 @@ const BookDisplay = React.memo((props: any) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (array.length > 0) {
+      setShouldDisplay(true);
+    }
+  }, [array]);
+
+  const filteredArray = array.filter((book: any) => book.title && book.author);
+
   const createColumns = () => {
     const columnsArray: any[] = Array.from({ length: columns }, () => []);
-    array.forEach((book: any, index: number) => {
+    filteredArray.forEach((book: any, index: number) => {
       columnsArray[index % columns].push(book);
     });
     return columnsArray;
@@ -54,21 +100,33 @@ const BookDisplay = React.memo((props: any) => {
         width: '100%',
         maxWidth: '100%',
         overflowY: 'auto',
-        padding: '20px',
+        margin: '20px',
       }}
     >
-      {renderedColumns.map((column, columnIndex) => (
-        <div
-          key={columnIndex}
-          style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px',
-          }}
-        >
-          {column.map((book: any) => (
-            <Book book={book} id={id} key={book.ISBN10} />
-          ))}
-        </div>
-      ))}
+      {shouldDisplay
+        && renderedColumns.map((column, columnIndex) => (
+          <div
+            key={columnIndex}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '20px',
+            }}
+          >
+            {column.map((book: any, index: number) => (
+              <Book
+                book={book}
+                id={id}
+                key={index}
+                onClick={handleBookClick}
+                onClose={handleBigBookClose}
+                showBigBook={showBigBook && book === selectedBook}
+                bigBookPosition={bigBookPosition}
+              />
+            ))}
+          </div>
+        ))}
     </div>
   );
 });
