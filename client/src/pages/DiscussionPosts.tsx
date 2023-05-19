@@ -117,11 +117,11 @@ function DiscussionPosts() {
           <div className="post-body">
             {post.body}
             {post.userId === JSON.parse(localStorage.getItem('user') || '{}').id && (
-            <Stack direction="row" spacing={1} className="delete-icon">
-              <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
-                <DeleteIcon />
-              </IconButton>
-            </Stack>
+              <Stack direction="row" spacing={1} className="delete-icon">
+                <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </Stack>
             )}
           </div>
         </div>
