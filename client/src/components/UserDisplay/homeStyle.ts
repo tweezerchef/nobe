@@ -9,7 +9,6 @@ const ProfileCard = styled(Card)({
   display: 'flex',
   width: '100%',
   margin: '0 auto',
-  boxShadow: '0px 0px 25px rgba(0, 0, 0, 0.6)',
   justifyContent: 'center',
   alignItems: 'center',
 });
@@ -27,13 +26,13 @@ const ProfileInfo = styled(CardContent)({
 });
 
 const Name = styled(Typography)({
-  color: '#212121',
+  // color: '#212121',
   fontWeight: 'bold',
   fontSize: '24px',
 });
 
 const Desc = styled(Typography)({
-  color: '#666666',
+  // color: '#666666',
   fontSize: '18px',
 });
 
@@ -51,13 +50,13 @@ const StatusItem = styled.li`
 `;
 
 const StatusValue = styled(Typography)({
-  color: '#212121',
+  // color: '#212121',
   fontWeight: 'bold',
 });
 
 const StatusText = styled(Typography)({
   fontSize: '14px',
-  color: '#7c7c7d',
+  // color: '#7c7c7d',
 });
 
 const Action = styled('div')({

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { get } from 'http';
+import Box from '@mui/material/Box';
+import Stack from '@mui/joy/Stack';
 import PlaceCard from './PlaceCard/PlaceCard';
 import { Place } from '../../typings/types';
 
@@ -25,10 +26,13 @@ function HomePlaces() {
     getPlaces();
   }, []);
   return (
-    <div>
-      {places.length > 0 && places
-      && <PlaceCard place={places[0]} />}
-    </div>
+    <Box maxWidth="100%" maxHeight="40vh" overflow="auto">
+      <Stack spacing={2} direction="row" maxWidth="100%">
+        {places.length > 0 && places
+
+      && places.map((place) => <PlaceCard place={place} />)}
+      </Stack>
+    </Box>
   );
 }
 

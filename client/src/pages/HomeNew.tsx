@@ -2,6 +2,8 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/joy/Stack';
+import Chip from '@mui/material/Chip';
+import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
 import HomeWishList from '../components/HomePage/HomeWishList';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
@@ -12,7 +14,7 @@ function HomeNew() {
     xs: 12, sm: 6, md: 4, lg: 3,
   } as const;
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, marginTop: '10px' }}>
       <Grid
         container
         spacing={0}
@@ -48,8 +50,26 @@ function HomeNew() {
             justifyContent="center"
             alignItems="center"
             spacing={1}
+            width="100%"
           >
-            <HomeWishList />
+            <Box
+              sx={{
+                width: '100%',
+                height: '200px', // Adjust the height of the banner as needed
+                backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <StyledDivider textAlign="right">
+              <Chip color="primary" label="Your Wish List" />
+            </StyledDivider>
+            <Box overflow="hidden" sx={{ width: '100%', maxHeight: '90%' }}>
+              <HomeWishList />
+            </Box>
+            <StyledDivider textAlign="left">
+              <FlameStyledChip label="Hot Places To Read" />
+            </StyledDivider>
             <HomePlaces />
           </Stack>
         </Grid>

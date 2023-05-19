@@ -9,6 +9,7 @@ Places.get('/', async (req: Request, res: Response) => {
     const places = await prisma.placesToRead.findMany({
       select: {
         id: true,
+        name: true,
         nickName: true,
         location: true,
         Private: true,
@@ -41,7 +42,7 @@ Places.get('/', async (req: Request, res: Response) => {
       },
       take: 10, // Limit the result to ten records
     });
-    console.log(places);
+
     res.send(places);
   } catch (error) {
     console.error(error);

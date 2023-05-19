@@ -5,6 +5,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
+import Slide from '@mui/material/Slide';
 import UserContext from '../../hooks/Context';
 import { UserBook } from '../../typings/types';
 import Book from '../Book/HomeBook';
@@ -20,6 +21,7 @@ interface Book {
   wishlist: boolean;
   owned: boolean;
 }
+
 function HomeWishList() {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -27,22 +29,18 @@ function HomeWishList() {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
 
   const reviewsPerPage = 4;
 
   const handleNextPage = () => {
-    if (
-      currentPage
-      < Math.ceil((books?.length || 0) / reviewsPerPage) - 1
-    ) {
-      setCurrentPage(currentPage + 1);
-    }
+    setSlideDirection('left');
+    setCurrentPage((prevPage) => prevPage + 1);
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
+    setSlideDirection('right');
+    setCurrentPage((prevPage) => prevPage - 1);
   };
 
   const getUserBooks = async () => {
@@ -57,29 +55,39 @@ function HomeWishList() {
 
     setIsLoading(false);
   };
+
   useEffect(() => {
     getUserBooks();
   }, []);
 
   return (
-    <Box maxWidth="100%" maxHeight="40vh" overflow="contain">
+    <Box maxWidth="100%" maxHeight="90%" overflow="contain" alignContent="center" alignItems="center" position="static">
       {books && books.length && (
         <IconButton onClick={handlePrevPage} disabled={currentPage === 0}>
           <NavigateBeforeIcon />
         </IconButton>
       )}
-      <Stack spacing={2} direction="row" maxWidth="100%">
-        {books
-          .slice(
-            currentPage * reviewsPerPage,
-            currentPage * reviewsPerPage + reviewsPerPage,
-          )
-          .map((book: Book) => (
-            <Box key={book.id}>
-              <Book book={book} />
-            </Box>
-          ))}
-      </Stack>
+
+      {[...Array(Math.ceil(books.length / reviewsPerPage))].map((_, index) => (
+        <Box sx={{ overflow: 'hidden', width: '100%', height: '100%' }}>
+          <Slide direction={slideDirection} in={currentPage === index} mountOnEnter unmountOnExit>
+            <Stack spacing={2} direction="row" maxWidth="100%" maxHeight="95%" alignContent="center">
+              {books
+                .slice(
+                  index * reviewsPerPage,
+                  index * reviewsPerPage + reviewsPerPage,
+                )
+                .map((book: Book) => (
+                  <Box key={book.id}>
+                    <Book book={book} />
+                  </Box>
+                ))}
+            </Stack>
+          </Slide>
+        </Box>
+
+      ))}
+
       <IconButton
         onClick={handleNextPage}
         disabled={currentPage >= Math.ceil((books.length || 0) / reviewsPerPage) - 1}
@@ -89,4 +97,5 @@ function HomeWishList() {
     </Box>
   );
 }
+
 export default HomeWishList;
