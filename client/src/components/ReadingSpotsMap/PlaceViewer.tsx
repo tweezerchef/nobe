@@ -214,13 +214,6 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                     </Button>
                   </Box>
                 </Box>
-                {/*
-                {place?.address && (
-                  <Typography gutterBottom variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center' }}>
-                    <LocationOnIcon />
-                    {place?.formatted_address}
-                  </Typography>
-                )} */}
               </CardContent>
             </Grid>
           </Grid>

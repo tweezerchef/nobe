@@ -70,7 +70,7 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
       <UserContext.Provider value={userContextValue}>
         <ChatContext.Provider value={chatContextValue}>
           <ResponsiveAppBar setMode={setMaterialMode} setJoyMode={setJoyMode} />
-          {isLoading ? <div>Loading...</div> : <Router />}
+          {isLoading ? null : <Router />}
         </ChatContext.Provider>
       </UserContext.Provider>
     </div>

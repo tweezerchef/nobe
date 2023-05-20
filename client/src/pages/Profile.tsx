@@ -34,15 +34,12 @@ function Profile() {
   const [inventory, setInventory] = useState<string>('Owned');
   const [title, setTitle] = useState<string>('');
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  // const [socket, setSocket] = useState<any>(null);
+
   const [open, setOpen] = React.useState(false);
-  // const [userLocation, setUserLocation] = useState<any>([]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
-
-  // const chatContext = useContext(ChatContext);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -69,7 +66,6 @@ function Profile() {
           lon: user?.longitude, lat: user?.latitude, radius: user?.radius,
         },
       });
-      // console.log(response);
       const data = await response.data;
       navigate('/locations', { state: data });
     } catch (error) {
@@ -99,7 +95,6 @@ function Profile() {
     event.preventDefault();
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-console, no-sequences
     axios.get(`/bookdata/title/searchOne?title=${title}`).then((response) => { setBooks([response.data]), console.log(response.data); });
-    // .then(() => console.log(books))
   };
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -162,7 +157,6 @@ function Profile() {
     p: 4,
   };
 
-  // console.log(user, 168);
   return (
 
     <div>
