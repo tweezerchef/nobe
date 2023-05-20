@@ -9,6 +9,7 @@ import HomeWishList from '../components/HomePage/HomeWishList';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import HomePlaces from '../components/HomePage/HomePlaces';
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
+import HomeNearMe from '../components/HomePage/HomeNearMe';
 
 function HomeNew() {
   const colWidth = {
@@ -94,6 +95,9 @@ function HomeNew() {
             <StyledDivider textAlign="left">
               <FlameStyledChip label="Books You Want In Your Hood" />
             </StyledDivider>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '33vh' /* adjust this */ }}>
+              <HomeNearMe />
+            </Box>
           </Stack>
         </Grid>
       </Grid>
