@@ -42,7 +42,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
         )}
       </AspectRatio>
       {name && (
-      <StyledBigTypog>
+      <StyledBigTypog level="h5">
         {name}
         <Tooltip title="One of our favorite places to read">
           <RecommendIcon sx={{ color: 'green' }} />
