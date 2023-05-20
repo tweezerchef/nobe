@@ -88,8 +88,11 @@ function HomeNew() {
               <Chip color="primary" label="Let Us Guide You" />
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '30vh' /* adjust this */ }}>
-              <HomeRecommendedBooks />
+              {/* <HomeRecommendedBooks /> */}
             </Box>
+            <StyledDivider textAlign="left">
+              <FlameStyledChip label="Books You Want In Your Hood" />
+            </StyledDivider>
           </Stack>
         </Grid>
       </Grid>
