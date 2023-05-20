@@ -6,7 +6,6 @@ import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
-import { margin } from '@mui/system';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
@@ -25,7 +24,6 @@ const useStyles = makeStyles({
     backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
-    /* Additional CSS properties */
   },
 });
 
@@ -39,16 +37,14 @@ const Book = React.memo((props: any) => {
   const BigBookOverlay = styled.div<BigBookOverlayProps>`
       position: static;
       z-index: 10;  left: ${(props) => props.bigBookPosition.left}px;
-      top: ${(props) => props.bigBookPosition.top}px;// Use the top property
+      top: ${(props) => props.bigBookPosition.top}px;
       border-radius: 20px;
       box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.15);
 `;
   if (!book) {
     return null;
   }
-  // const handleOnClick = () => {
-  //   setShowBigBook(true);
-  // };
+
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     props.onClick(e, book);
   };
@@ -57,7 +53,6 @@ const Book = React.memo((props: any) => {
     book.UserBooks.forEach((entry: any) => {
       if (entry.userId === id && entry.rating !== 0) {
         value = entry.rating;
-        // console.log('value', value)
       }
     });
   }
@@ -76,7 +71,7 @@ const Book = React.memo((props: any) => {
       variant="outlined"
       className={classes.card}
       sx={{
-        width: '13vw', height: '100%', margin: '10px', marginBottom: '0px', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+        width: '16vw', height: '100%', margin: '8px', marginBottom: '0px', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
       }}
     >
       <CardOverflow onClick={handleOnClick}>

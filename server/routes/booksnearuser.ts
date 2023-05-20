@@ -15,12 +15,127 @@ const LocationRoute = express.Router();
 interface AuthenticatedRequest extends Request {
   user: {
     id: string;
-    // add other properties as needed
   };
 }
-// interface QueryResult {
-//   id: number;
-// }
+LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const {
+      lon, lat, radius, UserBooks,
+    } = req.query;
+    //  coordinates are sent in the request body
+    if (!lat || !lon || !radius) {
+      return res.status(400).json({ error: 'Missing coordinates or radius' });
+    }
+    // Cast lat, lon, and radius to numbers
+    const wishList = await prisma.userBooks.findMany({
+      where: { userId: req.user.id, wishlist: true },
+    });
+    const bookIds = wishList.map((book) => book.booksId);
+    console.log(bookIds, 21);
+
+    const latNum = Number(lat);
+    const lonNum = Number(lon);
+    const radiusNum = Number(radius);
+    const users = await prisma.user.findMany({
+      where: {
+        AND: [
+          {
+            latitude: {
+              gte: latNum - radiusNum / 69.0,
+              lte: latNum + radiusNum / 69.0,
+            },
+          },
+          {
+            longitude: {
+              gte: lonNum - radiusNum / (69.0 * Math.cos(latNum * Math.PI / 180.0)),
+              lte: lonNum + radiusNum / (69.0 * Math.cos(latNum * Math.PI / 180.0)),
+            },
+          },
+          {
+            UserBooks: {
+              some: {
+                owned: true,
+              },
+            },
+          },
+        ],
+      },
+      select: {
+        // include all columns from the books table
+        id: true,
+        firstName: true,
+        username: true,
+        email: true,
+        googleId: true,
+        lastName: true,
+        picture: true,
+        token: true,
+        latitude: true,
+        longitude: true,
+        radius: true,
+        NotificationsCount: true,
+        clubMembers: true,
+        Activity: true,
+        Discussions: true,
+        DiscussionsUsers: true,
+        Posts: true,
+        PostsUsers: true,
+        Conversations: {
+          select: {
+            id: true,
+            members: true,
+            messages: true,
+          },
+        },
+        UserBooks: {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            Books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks: {
+                  select: {
+                    id: true,
+                    wishlist: true,
+                    owned: true,
+                    booksId: true,
+                    userId: true,
+                    rating: true,
+                    review: true,
+                    LendingTable: true,
+                    User: true,
+                  },
+                },
+                Discussions: true,
+                Activity: true,
+              },
+            },
+          },
+          where: {
+            owned: true,
+          },
+        },
+      },
+    });
+    // console.log(users, 67);
+    res.status(200).send(users);
+  } catch (error) {
+    // console.error('Error getting users within radius:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
   // console.log(req, 21);

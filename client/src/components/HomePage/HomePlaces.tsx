@@ -6,6 +6,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { IconButton } from '@mui/material';
 import Slide from '@mui/material/Slide';
+import { padding } from '@mui/system';
 import { Place } from '../../typings/types';
 import PlaceCard from './PlaceCard/PlaceCard';
 
@@ -49,9 +50,10 @@ function HomePlaces() {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        alignContent: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '275px',
+        height: '300px',
         paddingBottom: '0',
       }}
     >

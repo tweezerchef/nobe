@@ -10,6 +10,7 @@ import Typography from '@mui/joy/Typography';
 import { Rating, Tooltip } from '@mui/material';
 import RecommendIcon from '@mui/icons-material/Recommend';
 import WhatshotTwoToneIcon from '@mui/icons-material/WhatshotTwoTone';
+import Box from '@mui/material/Box';
 import { Place } from '../../../typings/types';
 import { PlaceCard1, StyledBigTypog } from './styles';
 
@@ -51,6 +52,21 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
         </Tooltip>
       </StyledBigTypog>
       )}
+      <CardOverflow
+        variant="soft"
+        sx={{
+          display: 'flex',
+          gap: 1.5,
+          py: 1.5,
+          px: 'var(--Card-padding)',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }} />
+        <Rating name="read-only" value={Number(place?.rating)} readOnly />
+      </CardOverflow>
+
     </PlaceCard1>
 
   );

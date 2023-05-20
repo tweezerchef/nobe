@@ -10,6 +10,8 @@ const StyledDivider = styled(Divider)({
 
 const FlameStyledChip = styled(Chip)({
   backgroundImage: 'url("https://i.imgur.com/N9ZrzL0.jpg")',
+  width: '100%',
+
 });
 
 export { StyledDivider, FlameStyledChip };

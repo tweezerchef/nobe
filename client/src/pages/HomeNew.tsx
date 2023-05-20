@@ -8,6 +8,7 @@ import Feed from './Feed';
 import HomeWishList from '../components/HomePage/HomeWishList';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import HomePlaces from '../components/HomePage/HomePlaces';
+import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 
 function HomeNew() {
   const colWidth = {
@@ -64,13 +65,15 @@ function HomeNew() {
             <StyledDivider textAlign="right">
               <Chip color="primary" label="Your Wish List" />
             </StyledDivider>
-            <Box overflow="clip" sx={{ width: '100%', height: '30vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '30vh' /* adjust this */ }}>
               <HomeWishList />
             </Box>
             <StyledDivider textAlign="left">
               <FlameStyledChip label="Hot Places To Read" />
             </StyledDivider>
-            <HomePlaces />
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '30vh' /* adjust this */ }}>
+              <HomePlaces />
+            </Box>
             <Box
               sx={{
                 width: '100%',
@@ -80,6 +83,13 @@ function HomeNew() {
                 backgroundPosition: 'bottom',
               }}
             />
+
+            <StyledDivider textAlign="right">
+              <Chip color="primary" label="Let Us Guide You" />
+            </StyledDivider>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '30vh' /* adjust this */ }}>
+              <HomeRecommendedBooks />
+            </Box>
           </Stack>
         </Grid>
       </Grid>
