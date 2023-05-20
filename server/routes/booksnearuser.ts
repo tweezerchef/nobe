@@ -5,6 +5,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 // import UserBooks from './userbooks';
+import User from './User';
 
 const express = require('express');
 // const axios = require('axios');
@@ -20,7 +21,7 @@ interface AuthenticatedRequest extends Request {
 LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const {
-      lon, lat, radius, UserBooks,
+      lon, lat, radius, userId,
     } = req.query;
     //  coordinates are sent in the request body
     if (!lat || !lon || !radius) {
@@ -28,7 +29,7 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
     }
     // Cast lat, lon, and radius to numbers
     const wishList = await prisma.userBooks.findMany({
-      where: { userId: req.user.id, wishlist: true },
+      where: { userId, wishlist: true },
     });
     const bookIds = wishList.map((book) => book.booksId);
     console.log(bookIds, 21);
