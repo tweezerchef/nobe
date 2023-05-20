@@ -9,17 +9,14 @@ import ReactiveButton from 'reactive-button';
 import { Modal } from '@material-ui/core';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
-
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-
-
+import Form from '../components/Form/Form';
 
 function UserForm() {
   // const userContext = useContext(UserContext);
   // const user = userContext?.user;
   // const id = user?.id;
-
 
   // const [longitude, setLongitude] = useState(0);
   // const [latitude, setLatitude] = useState(0);
@@ -32,9 +29,6 @@ function UserForm() {
   // const [radiusState, setRadiusState] = useState('idle');
   // const [userLongitude, setUserLongitude] = useState(0);
   // const [userLatitude, setUserLatitude] = useState(0);
-
-
-
 
   // useEffect(() => {
   //   const convert = radius * 32;
@@ -78,101 +72,10 @@ function UserForm() {
   // console.log(displayBooks, 206);
 
   return (
+    <div>
+      <Form />
+    </div>
 
   );
 }
 export default UserForm;
-{/* <div style={{ overflow: 'auto' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{
-          display: 'flex', justifyContent: 'center', width: '100%', height: '60px', background: 'rgb(32, 32, 35)',
-        }}
-        >
-          <div style={{
-            display: 'flex', justifyContent: 'center', maxWidth: '800px', width: '100%',
-          }}
-          >
-            <ReactiveButton
-              rounded
-              size="medium"
-              buttonState={buttonState}
-              idleText="Search For Books"
-              loadingText="Loading"
-              successText="Done"
-              onClick={getBooksNearMe}
-              color="blue"
-              style={{ margin: '10px' }}
-            />
-            <ReactiveButton
-              rounded
-              size="medium"
-              idleText="Set Location Preference"
-              onClick={handleOpen}
-              color="blue"
-              style={{ margin: '10px' }}
-            />
-            <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-              <Box sx={style}>
-                <h1>Enter Address</h1>
-                <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
-                  <GeoapifyGeocoderAutocomplete
-                    placeholder="Enter address here"
-                    placeSelect={onPlaceSelect}
-                    suggestionsChange={onSuggectionChange}
-                  />
-                </GeoapifyContext>
-                <ReactiveButton
-                  rounded
-                  size="medium"
-                  buttonState={locationState}
-                  idleText="Save Location"
-                  loadingText="Saving"
-                  successText="Done"
-                  onClick={saveLocation}
-                  color="blue"
-                />
-                <h1>Set Radius</h1>
-                <FormControl sx={{ m: 1, width: '18ch' }} variant="outlined">
-                  <OutlinedInput
-                    sx={{ height: '3ch' }}
-                    id="outlined-adornment-weight"
-                    endAdornment={<InputAdornment position="end">mi</InputAdornment>}
-                    onChange={handleRadiusChange}
-                    value={radius}
-                  />
-                  <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
-                  <Slider
-                    defaultValue={0}
-                    value={radius}
-                    onChange={handleRadiusChange}
-                    aria-label="Default"
-                    valueLabelDisplay="auto"
-                  />
-                </FormControl>
-                <ReactiveButton
-                  rounded
-                  size="medium"
-                  buttonState={radiusState}
-                  idleText="Save Radius"
-                  loadingText="Saving"
-                  successText="Done"
-                  onClick={saveRadius}
-                  color="blue"
-                />
-              </Box>
-            </Modal>
-          </div>
-        </div>
-      </div>
-      {location.state === null ? (
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        booksNearBy.map((user: any) => (
-          <UserDisplay user={user} key={user.id} />
-        ))
-      ) : (
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        location.state.map((user: any) => (
-          <UserDisplay user={user} key={user.id} />
-        ))
-      )}
-    </div> */}
