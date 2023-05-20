@@ -20,6 +20,20 @@ ClubsRoute.get('/', async (req: Request, res: Response) => {
   }
 });
 
+ClubsRoute.get('/:id', async (req: Request, res: Response) => {
+  try {
+    const club = await prisma.clubs.findMany({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json(club);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
 ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
   try {
     const discussion = await prisma.discussions.findMany({
@@ -28,6 +42,14 @@ ClubsRoute.get('/:id/discussion', async (req: Request, res: Response) => {
       },
       include: {
         Posts: true,
+        clubs: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            image: true,
+          },
+        },
       },
     });
     res.json(discussion);
@@ -50,6 +72,7 @@ ClubsRoute.get('/:id/posts', async (req: Request, res: Response) => {
             firstName: true,
             lastName: true,
             username: true,
+            picture: true,
           },
         },
       },
@@ -192,41 +215,6 @@ ClubsRoute.post('/join', async (req: Request, res: Response) => {
     }).then((club: any) => {
       res.send(club).status(200);
     });
-  }
-
-  // async function addUserToClub(email: string, clubId: string) {
-  //   const user = await prisma.user.findFirst({ where: { email } });
-  //   if (user) {
-  //     const clubMember = await prisma.clubMembers.create({
-  //       data: {
-  //         user: { connect: { id: user.id } },
-  //         club: { connect: { id: clubId } },
-  //       },
-  //     });
-  //     // console.log(`Added user ${user.firstName} to club ${clubMember.clubId}`);
-  //     res.json(clubMember);
-  //   } else {
-  //     console.error(`User with email ${email} not found`);
-  //   }
-  // }
-  // addUserToClub(email, id);
-});
-
-ClubsRoute.delete('/:id/leave', async (req: Request, res: Response) => {
-  try {
-    const { email } = req.body;
-    const club = await prisma.clubs.update({
-      where: { id: req.params.id },
-      data: {
-        clubMembers: {
-          delete: { email },
-        },
-      },
-    });
-    res.json(club);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Something went wrong' });
   }
 });
 
