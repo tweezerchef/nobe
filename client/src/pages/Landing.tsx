@@ -11,9 +11,9 @@ function Landing() {
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
-    // (function () {
-    //     localStorage.clear();
-    // })();
+  // (function () {
+  //     localStorage.clear();
+  // })();
   return (
     <div>
       {isLoggedIn ? (

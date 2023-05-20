@@ -58,8 +58,9 @@ function BigBook(props: any) {
         width: '110%',
         height: '100%',
         maxWidth: '600px',
+        boxShadow: '0px 0px 25px rgba(0, 0, 0, 0.6)',
         maxHeight: '1000px',
-        // Remove overflow: 'auto'
+
         '@media (max-width: 768px)': {
           width: '80vw',
           height: '80vh',

@@ -1,14 +1,12 @@
-import React, { useContext } from 'react';
-import UserContext from '../hooks/Context';
-import Profile from './Profile';
+import React from 'react';
+
 import UsersProfile from './UserProfile';
+import HomeNew from './HomeNew';
 
 function Home() {
-  const userContext = useContext(UserContext);
-  const user = userContext?.user;
-
   return (
-    <UsersProfile />
+    <HomeNew />
+  // <UsersProfile />
   );
   // }
 }

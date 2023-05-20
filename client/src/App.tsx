@@ -1,5 +1,5 @@
 // export { }
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import {
   experimental_extendTheme as materialExtendTheme,
@@ -22,6 +22,8 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [messages, setMessages] = useState<any[]>([]);
+  const [chatState, setChatState] = useState<boolean>(false);
+  const [chatUser, setChatUser] = useState<any>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,10 +57,12 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
     setUser: setUserAndSave,
   };
 
-  const chatContextValue: ChatContextType = {
-    messages,
-    setMessages,
-  };
+  const chatContextValue: ChatContextType = useMemo(() => ({
+    chatState,
+    setChatState,
+    chatUser,
+    setChatUser,
+  }), [chatState, setChatState]);
 
   return (
 
@@ -66,7 +70,7 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
       <UserContext.Provider value={userContextValue}>
         <ChatContext.Provider value={chatContextValue}>
           <ResponsiveAppBar setMode={setMaterialMode} setJoyMode={setJoyMode} />
-          {isLoading ? <div>Loading...</div> : <Router />}
+          {isLoading ? null : <Router />}
         </ChatContext.Provider>
       </UserContext.Provider>
     </div>

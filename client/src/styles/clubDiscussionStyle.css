@@ -1,11 +1,11 @@
 .club-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
+    border: 1px solid #ffe4c385;
+    border-radius: 6px;
     padding: 1rem;
-    max-width: 500px;
+    max-width: 450px;
     margin: 0 auto;
     transition: transform 0.2s ease-in-out;
-    background-color: #f4f1ea !important
+    background-color: #f2d4b1d1 !important
 }
 
 .club-card:hover {

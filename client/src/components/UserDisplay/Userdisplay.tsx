@@ -24,6 +24,7 @@ import {
   ProfileCard, MessageButton, FollowButton, Action, StatusText, StatusValue, Status,
   Name, Desc, ProfileInfo, ProfileImage, StatusItem,
 } from './style';
+import { useChatContext } from '../../hooks/ChatContext';
 
 interface UserProfile {
   id: string;
@@ -40,11 +41,16 @@ function UserDisplay({ user }: { user: any }) {
   const userBooks = user.UserBooks;
   // console.log(userBooks, 10);
 
-  // const userContext = useContext(UserContext);
   // const profile = userContext?.user;
   // const [profile, setProfile] = useState<UserProfile | null>(null);
 
   const [books, setBooks] = useState<any>([]);
+  const { chatState, setChatState, setChatUser } = useChatContext();
+
+  const handleChatButtonClick = () => {
+    setChatState(!chatState);
+    setChatUser(user);
+  };
 
   useEffect(() => {
     const booksArray = userBooks?.map((userbook: any) => userbook.Books);
@@ -82,7 +88,7 @@ function UserDisplay({ user }: { user: any }) {
           </Status>
           <Action>
             <FollowButton variant="contained">Follow</FollowButton>
-            <MessageButton variant="contained">Message</MessageButton>
+            <MessageButton variant="contained" onClick={handleChatButtonClick}>Message</MessageButton>
           </Action>
         </ProfileInfo>
       </ProfileCard>

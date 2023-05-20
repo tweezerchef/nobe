@@ -1,10 +1,13 @@
+/* eslint-disable import/first */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable no-console */
+
+require('dotenv').config();
+
 import path from 'path';
 import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
 // import morgan from 'morgan';
 import { PrismaClient } from '@prisma/client';
@@ -23,7 +26,7 @@ import User from './routes/User';
 import GoogleBooks from './routes/GoogleBooks';
 import SpotsMapRoute from './routes/spotsmap';
 import Auth from './routes/authorization';
-
+import Places from './routes/places';
 import Friendship from './routes/friendship';
 import Activity from './routes/activity';
 import DirectMessages from './routes/directMessages';
@@ -31,7 +34,7 @@ import Conversations from './routes/conversations';
 import Notifications from './routes/notifications';
 
 // Routes
-dotenv.config();
+
 startSocketServer();
 const app = express();
 const CLIENT_PATH = path.resolve(__dirname, '../client/build');
@@ -56,6 +59,7 @@ app.use("/api/clubs", Clubs);
 app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
 // app.use("/api/wishlist", Wishlist);
+app.use("/places", Places);
 app.use("/openai", OpenAI);
 app.use("/bookdata", BookData);
 app.use("/user", User);
