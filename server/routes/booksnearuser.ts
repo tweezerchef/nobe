@@ -24,7 +24,7 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
       lon, lat, radius, userId,
     } = req.query;
     //  coordinates are sent in the request body
-    if (!lat || !lon || !radius) {
+    if (!lat || !lon || !radius || Array.isArray(userId)) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
     }
     // Cast lat, lon, and radius to numbers
@@ -32,7 +32,6 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
       where: { userId, wishlist: true },
     });
     const bookIds = wishList.map((book) => book.booksId);
-    console.log(bookIds, 21);
 
     const latNum = Number(lat);
     const lonNum = Number(lon);
@@ -70,24 +69,6 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
         googleId: true,
         lastName: true,
         picture: true,
-        token: true,
-        latitude: true,
-        longitude: true,
-        radius: true,
-        NotificationsCount: true,
-        clubMembers: true,
-        Activity: true,
-        Discussions: true,
-        DiscussionsUsers: true,
-        Posts: true,
-        PostsUsers: true,
-        Conversations: {
-          select: {
-            id: true,
-            members: true,
-            messages: true,
-          },
-        },
         UserBooks: {
           select: {
             id: true,
@@ -106,21 +87,6 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
                 ISBN10: true,
                 description: true,
                 image: true,
-                UserBooks: {
-                  select: {
-                    id: true,
-                    wishlist: true,
-                    owned: true,
-                    booksId: true,
-                    userId: true,
-                    rating: true,
-                    review: true,
-                    LendingTable: true,
-                    User: true,
-                  },
-                },
-                Discussions: true,
-                Activity: true,
               },
             },
           },
@@ -130,10 +96,19 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
         },
       },
     });
-    // console.log(users, 67);
-    res.status(200).send(users);
+    // function to filter though users and return only those userbooks that have the same bookId as the  bookId's in the wishlist i
+    // where is it looking for the bookId that matches withe the wishlist bookId
+    const usersWithBooks = users.filter((user) => user.UserBooks.length > 0);
+    const usersWithBooksAndWishList = usersWithBooks.map((user) => {  // eslint-disable-line
+      const userBooks = user.UserBooks.filter((userBook) => bookIds.includes(userBook.booksId));
+      return { ...user, UserBooks: userBooks };
+    });
+    // remove the the user that is the same as the original userId
+    // and and entry where userbooks is empty
+    const usersWithBooksAndWishListMinusUser = usersWithBooksAndWishList.filter((user) => user.id !== userId && user.UserBooks.length > 0);
+
+    res.status(200).send(usersWithBooksAndWishListMinusUser);
   } catch (error) {
-    // console.error('Error getting users within radius:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
