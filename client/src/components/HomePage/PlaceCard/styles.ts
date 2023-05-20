@@ -8,9 +8,9 @@ const PlaceCard1 = styled(Card)({
   width: '20vw',
   height: '100%',
   margin: '10px',
-  backgroundColor: blueGrey[50],
   boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
   alignContent: 'center',
+  backgroundColor: '#f5f5f5',
 });
 
 const StyledBigTypog = styled(Typography)({

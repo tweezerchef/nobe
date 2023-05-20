@@ -53,7 +53,6 @@ function HomeRecommendedBooks() {
   return (
     <Box
       sx={{
-
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -61,7 +60,6 @@ function HomeRecommendedBooks() {
         justifyContent: 'center',
         width: '100%',
         height: '300px',
-        // paddingTop: '2',
         paddingBottom: '0',
       }}
     >
@@ -77,38 +75,44 @@ function HomeRecommendedBooks() {
       </IconButton>
 
       <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
-        {[...Array(Math.ceil(books.length / booksPerPage))].map((_, index) => (
-          <Box sx={{
-            position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-          }}
+        {books.map((book, index) => (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              display: currentPage === index ? 'block' : 'none',
+            }}
           >
-            { !loading
-            && books.length > 0 && (
-              <Slide
-                direction={slideDirection}
-                in={currentPage === index}
-                mountOnEnter
-                unmountOnExit
+            {!loading && books.length > 0 && (
+            <Slide direction={slideDirection} in={currentPage === index}>
+              <Stack
+                spacing={2}
+                direction="row"
+                maxWidth="100%"
+                maxHeight="100%"
+                alignContent="center"
+                justifyContent="center"
               >
-                <Stack spacing={2} direction="row" maxWidth="100%" maxHeight="100%" alignContent="center" justifyContent="center">
-                  {books
-                    .slice(
-                      index * booksPerPage,
-                      index * booksPerPage + booksPerPage,
-                    )
-                    .map((book: Book) => (
-                      <Box key={book.id}>
-                        <Book book={book} />
-                      </Box>
-                    ))}
-                </Stack>
-              </Slide>
+                {books
+                  .slice(
+                    index * booksPerPage,
+                    index * booksPerPage + booksPerPage,
+                  )
+                  // eslint-disable-next-line @typescript-eslint/no-shadow
+                  .map((book: Book) => (
+                    <Box key={book.id}>
+                      <Book book={book} />
+                    </Box>
+                  ))}
+              </Stack>
+            </Slide>
             )}
-
           </Box>
         ))}
-        { loading && (
-        <QuoteDisplay />)}
+        {loading && <QuoteDisplay />}
       </Box>
 
       <IconButton

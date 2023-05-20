@@ -6,7 +6,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 // import UserBooks from './userbooks';
-import User from './User';
 
 const express = require('express');
 // const axios = require('axios');
