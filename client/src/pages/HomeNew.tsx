@@ -9,6 +9,7 @@ import HomeWishList from '../components/HomePage/HomeWishList';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import HomePlaces from '../components/HomePage/HomePlaces';
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
+import HomeNearMe from '../components/HomePage/HomeNearMe';
 
 function HomeNew() {
   const colWidth = {
@@ -65,19 +66,20 @@ function HomeNew() {
             <StyledDivider textAlign="right">
               <Chip color="primary" label="Your Wish List" />
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '30vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '37vh' }}>
               <HomeWishList />
             </Box>
             <StyledDivider textAlign="left">
               <FlameStyledChip label="Hot Places To Read" />
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '30vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', maxHeight: '33vh' }}>
               <HomePlaces />
             </Box>
+            <StyledDivider />
             <Box
               sx={{
                 width: '100%',
-                height: '400px', // Adjust the height of the banner as needed
+                height: '400px',
                 backgroundImage: 'url(https://i.imgur.com/lAKiMMj.jpg',
                 backgroundSize: 'cover',
                 backgroundPosition: 'bottom',
@@ -87,12 +89,15 @@ function HomeNew() {
             <StyledDivider textAlign="right">
               <Chip color="primary" label="Let Us Guide You" />
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '30vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '33vh' /* adjust this */ }}>
               {/* <HomeRecommendedBooks /> */}
             </Box>
             <StyledDivider textAlign="left">
               <FlameStyledChip label="Books You Want In Your Hood" />
             </StyledDivider>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '33vh' /* adjust this */ }}>
+              <HomeNearMe />
+            </Box>
           </Stack>
         </Grid>
       </Grid>

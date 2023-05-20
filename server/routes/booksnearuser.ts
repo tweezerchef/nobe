@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable max-len */
 /* eslint-disable consistent-return */
 /* eslint-disable no-mixed-operators */
@@ -21,17 +22,22 @@ interface AuthenticatedRequest extends Request {
 LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const {
-      lon, lat, radius, userId,
+      lon, lat, radius, id,
     } = req.query;
+
+    console.log(req.query);
     //  coordinates are sent in the request body
-    if (!lat || !lon || !radius || Array.isArray(userId)) {
+    if (!lat || !lon || !radius || Array.isArray(id)) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
     }
     // Cast lat, lon, and radius to numbers
     const wishList = await prisma.userBooks.findMany({
-      where: { userId, wishlist: true },
+      where: {
+        userId: id,
+        wishlist: true,
+      },
     });
-    const bookIds = wishList.map((book) => book.booksId);
+    const wishlistBookIds = wishList.map((book) => book.booksId);
 
     const latNum = Number(lat);
     const lonNum = Number(lon);
@@ -79,6 +85,7 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
             rating: true,
             review: true,
             LendingTable: true,
+            User: true,
             Books: {
               select: {
                 id: true,
@@ -96,18 +103,27 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
         },
       },
     });
-    // function to filter though users and return only those userbooks that have the same bookId as the  bookId's in the wishlist i
-    // where is it looking for the bookId that matches withe the wishlist bookId
+    // filter out users the users that don't have any userbooks
     const usersWithBooks = users.filter((user) => user.UserBooks.length > 0);
-    const usersWithBooksAndWishList = usersWithBooks.map((user) => {  // eslint-disable-line
-      const userBooks = user.UserBooks.filter((userBook) => bookIds.includes(userBook.booksId));
-      return { ...user, UserBooks: userBooks };
-    });
-    // remove the the user that is the same as the original userId
-    // and and entry where userbooks is empty
-    const usersWithBooksAndWishListMinusUser = usersWithBooksAndWishList.filter((user) => user.id !== userId && user.UserBooks.length > 0);
 
-    res.status(200).send(usersWithBooksAndWishListMinusUser);
+    const userBooksArray = usersWithBooks.map((user) => {
+      // remove any userbooks array that is the own user
+      if (user.id !== id) {
+        const userBooks = user.UserBooks;
+        return userBooks;
+      }
+    });
+    // flatten array so that it is an array of userbooks w/o the user object
+    const flatUserBooksArray = userBooksArray.flat();
+    // filter out any userbooks that in the flatUserBooksArray that have the same book.id as the numbers in the bookIds array
+    const filteredUserBooksArray = flatUserBooksArray.filter((userBook) => {
+      if (userBook && userBook.booksId) {
+        return wishlistBookIds.includes(userBook.booksId);
+      }
+      return false;
+    });
+
+    res.status(200).send(filteredUserBooksArray);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }

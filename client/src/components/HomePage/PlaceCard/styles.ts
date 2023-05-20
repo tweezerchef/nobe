@@ -14,12 +14,13 @@ const PlaceCard1 = styled(Card)({
 });
 
 const StyledBigTypog = styled(Typography)({
-  fontSize: '1.5rem',
   mt: 2,
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  width: '100%',
+  display: '-webkit-box',
+  '-webkit-line-clamp': 2,
+  '-webkit-box-orient': 'vertical',
 
 });
 
