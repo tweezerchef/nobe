@@ -16,7 +16,7 @@ function HomeNew() {
     xs: 12, sm: 6, md: 4, lg: 3,
   } as const;
   return (
-    <Box sx={{ flexGrow: 1, marginTop: '10px' }}>
+    <Box sx={{ flexGrow: 1, marginTop: '10px', overflow: 'auto' }}>
       <Grid
         container
         spacing={0}
@@ -42,13 +42,15 @@ function HomeNew() {
           },
         })}
       >
-        <Grid xs={2.5}>
-          <HomeUserDisplay />
-          <Box sx={{ width: '100%', maxHeight: '100vh', overflow: 'auto' }}>
+        <Grid xs={2.5} sx={{ position: 'sticky', top: '0px' }}>
+          <Box sx={{ width: '100%', maxHeight: '20vh', overflow: 'auto' }}>
+            <HomeUserDisplay />
+          </Box>
+          <Box sx={{ width: '100%', maxHeight: '75vh', overflow: 'auto' }}>
             <Feed />
           </Box>
         </Grid>
-        <Grid xs={9.5}>
+        <Grid xs={9.5} sx={{ maxHeight: '90vh', overflow: 'auto' }}>
           <Stack
             direction="column"
             justifyContent="center"
@@ -96,7 +98,7 @@ function HomeNew() {
             <StyledDivider textAlign="left">
               <FlameStyledChip label="Books You Want In Your Hood" />
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '15vh', maxHeight: '25vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '20vh', maxHeight: '25vh' /* adjust this */ }}>
               <HomeNearMe />
             </Box>
             <Box
