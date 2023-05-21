@@ -55,7 +55,7 @@ function HomeNew() {
             <Feed />
           </Box>
         </Grid>
-        <Grid xs={9.5} sx={{ maxHeight: '93vh', overflow: 'auto', paddingBottom: '10px' }}>
+        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '8vh' }}>
           <Stack
             direction="column"
             justifyContent="center"
@@ -124,7 +124,7 @@ function HomeNew() {
               }}
             />
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '33vh' /* adjust this */ }}>
-              <HomeExploreBooks />
+              {/* <HomeExploreBooks /> */}
             </Box>
             <Box
               sx={{
@@ -133,6 +133,7 @@ function HomeNew() {
                 backgroundImage: 'url(https://i.imgur.com/mVbf3MT.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
+                paddingBottom: '20px',
               }}
             />
           </Stack>
