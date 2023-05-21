@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Card, CardContent, Typography,
+  Grid, Card, CardContent, Typography,
 } from '@material-ui/core';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid1 from '@mui/material/Unstable_Grid2';
 import axios from 'axios';
 import styled from 'styled-components';
 import Feed from './Feed';
@@ -20,7 +20,7 @@ export interface Club {
   clubMembers: string[];
 }
 
-function Clubs() {
+function ClubsNew() {
   const [clubs, setClubs] = useState<Club[]>([]);
 
   const colWidth = {
@@ -64,7 +64,7 @@ function Clubs() {
       flexGrow: 1, marginTop: '10px', overflow: 'auto', height: '100vh',
     }}
     >
-      <Grid
+      <Grid1
         container
         spacing={0}
         sx={(theme) => ({
@@ -89,7 +89,7 @@ function Clubs() {
           },
         })}
       >
-        <Grid
+        <Grid1
           xs={2.5}
           sx={{
             position: 'sticky', top: '0px', height: '98vh', paddingBottom: '8vh',
@@ -109,8 +109,17 @@ function Clubs() {
           <Box sx={{ width: '100%', maxHeight: '70vh', overflow: 'auto' }}>
             <Feed />
           </Box>
-        </Grid>
-        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
+        </Grid1>
+        <Grid1 xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
+          <Box
+            sx={{
+              width: '100%',
+              height: '20vh',
+              backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
           <div>
             <Grid container spacing={2}>
               <Grid item xs={12} md={4}>
@@ -167,9 +176,9 @@ function Clubs() {
               </Grid>
             </Grid>
           </div>
-        </Grid>
-      </Grid>
+        </Grid1>
+      </Grid1>
     </Box>
   );
 }
-export default Clubs;
+export default ClubsNew;
