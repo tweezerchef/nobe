@@ -91,7 +91,6 @@ Recommendations.get('/random', async (req : Request, res: Response) => {
       const existingBook = await findBook(book.ISBN10);
 
       if (existingBook) {
-        console.log('yes');
         return existingBook;
       }
       // If not, get data from Google Books API

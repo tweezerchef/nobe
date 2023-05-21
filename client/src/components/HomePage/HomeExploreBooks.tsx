@@ -38,10 +38,7 @@ function HomeBuildRecomendations() {
 
   const handleSearch = (event: FormEvent) => {
     event.preventDefault(); // Prevent form submission
-    console.log('Perform search with:', searchText);
     axios.get(`/bookdata/title/searchOne?title=${searchText}`).then((res) => {
-      console.log(res.data);
-
       setBooks((prevBooks) => [...[res.data], ...prevBooks]);
     });
     // Here you would typically call your search function with `searchText` as argument
