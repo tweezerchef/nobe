@@ -204,7 +204,6 @@ BookData.post('/title', async (req, res) => {
   res.send(newBook);
 });
 BookData.get('/title/searchOne', async (req, res) => {
-  console.log('why');
   let book;
   const { title } = req.query;
   try {
@@ -277,7 +276,6 @@ BookData.get('/title/searchOne', async (req, res) => {
         res.status(500).send('Error retrieving book data from Google Books');
       }
     }
-    console.log('bool', book);
     res.send(book);
   }
 });
