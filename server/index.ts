@@ -20,6 +20,7 @@ import Trending from './routes/trending';
 import Recommendations from './routes/recommendations';
 import Review from './routes/review';
 // import Wishlist from './routes/wishlist';
+import Amazon from './routes/S3';
 import OpenAI from './routes/OpenAI';
 import BookData from './routes/BookData';
 import User from './routes/User';
@@ -69,6 +70,7 @@ app.use("/api/friendship", Friendship);
 app.use("/api/activity", Activity);
 app.use("/direct-messages", DirectMessages);
 app.use("/conversations", Conversations);
+app.use("/amazon", Amazon);
 app.use("/auth", Auth);
 
 const allowedOrigins = ['http://ec2-18-221-114-235.us-east-2.compute.amazonaws.com:8080', 'http://localhost:8080', '/'];

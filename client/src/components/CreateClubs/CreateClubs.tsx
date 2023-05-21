@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Button } from '@material-ui/core';
 import GifSearch from './GifSearch';
 import UserContext from '../../hooks/Context';
+import PhotoUpload from '../Button/ImageUploadButton';
 
 const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
@@ -86,6 +87,7 @@ const createClubs = (props: any) => {
         required
       />
       <GifSearch setClubImage={setClubImage} />
+      <PhotoUpload />
       <Button variant="contained" size="small" color="primary" onClick={() => handleSubmit()}>
         Create Club
       </Button>
