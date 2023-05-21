@@ -62,8 +62,9 @@ function HomeNearMe() {
         alignContent: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '300px',
+        height: '200px',
         paddingBottom: '0',
+        marginTop: '4px',
       }}
     >
       <IconButton

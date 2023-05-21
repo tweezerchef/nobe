@@ -44,7 +44,7 @@ function HomeNew() {
       >
         <Grid xs={2.5}>
           <HomeUserDisplay />
-          <Box sx={{ width: '100%', maxHeight: '800px', overflow: 'auto' }}>
+          <Box sx={{ width: '100%', maxHeight: '100vh', overflow: 'auto' }}>
             <Feed />
           </Box>
         </Grid>
