@@ -61,9 +61,10 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
           px: 'var(--Card-padding)',
           justifyContent: 'center',
           alignItems: 'center',
+          backgroundColor: '#f0f0f0',
         }}
       >
-        <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }} />
+        <Typography level="body3" sx={{ fontWeight: 'md' }} />
         <Rating name="read-only" value={Number(place?.rating)} readOnly />
       </CardOverflow>
 

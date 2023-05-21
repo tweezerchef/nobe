@@ -16,7 +16,7 @@ function HomeNew() {
     xs: 12, sm: 6, md: 4, lg: 3,
   } as const;
   return (
-    <Box sx={{ flexGrow: 1, marginTop: '10px' }}>
+    <Box sx={{ flexGrow: 1, marginTop: '10px', overflow: 'auto' }}>
       <Grid
         container
         spacing={0}
@@ -42,11 +42,15 @@ function HomeNew() {
           },
         })}
       >
-        <Grid xs={2}>
-          <HomeUserDisplay />
-          <Feed />
+        <Grid xs={2.5} sx={{ position: 'sticky', top: '0px' }}>
+          <Box sx={{ width: '100%', maxHeight: '20vh', overflow: 'auto' }}>
+            <HomeUserDisplay />
+          </Box>
+          <Box sx={{ width: '100%', maxHeight: '75vh', overflow: 'auto' }}>
+            <Feed />
+          </Box>
         </Grid>
-        <Grid xs={10}>
+        <Grid xs={9.5} sx={{ maxHeight: '90vh', overflow: 'auto' }}>
           <Stack
             direction="column"
             justifyContent="center"
@@ -72,10 +76,9 @@ function HomeNew() {
             <StyledDivider textAlign="left">
               <FlameStyledChip label="Hot Places To Read" />
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', maxHeight: '33vh' }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '33vh' }}>
               <HomePlaces />
             </Box>
-            <StyledDivider />
             <Box
               sx={{
                 width: '100%',
@@ -89,15 +92,24 @@ function HomeNew() {
             <StyledDivider textAlign="right">
               <Chip color="primary" label="Let Us Guide You" />
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '33vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '33vh' /* adjust this */ }}>
               {/* <HomeRecommendedBooks /> */}
             </Box>
             <StyledDivider textAlign="left">
               <FlameStyledChip label="Books You Want In Your Hood" />
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', height: '33vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '20vh', maxHeight: '25vh' /* adjust this */ }}>
               <HomeNearMe />
             </Box>
+            <Box
+              sx={{
+                width: '100%',
+                height: '400px',
+                backgroundImage: 'url(https://i.imgur.com/3IgzOa8.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'top',
+              }}
+            />
           </Stack>
         </Grid>
       </Grid>
