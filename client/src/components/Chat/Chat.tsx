@@ -272,19 +272,17 @@ function Chat({ chatUser }: { chatUser: any }) {
     <Draggable handle=".header-message">
       <ChatOverlay>
         <Grid container>
-          <Draggable>
-            <Grid item xs={12}>
-              <Typography
-                variant="h4"
-                className="header-message"
-                style={{
-                  display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', background: '#002884', color: '#fff', borderRadius: '12px 12px 0px 0px',
-                }}
-              >
-                Direct Messages
-              </Typography>
-            </Grid>
-          </Draggable>
+          <Grid item xs={12}>
+            <Typography
+              variant="h4"
+              className="header-message"
+              style={{
+                display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', background: '#002884', color: '#fff', borderRadius: '12px 12px 0px 0px',
+              }}
+            >
+              Direct Messages
+            </Typography>
+          </Grid>
         </Grid>
         <Grid container component={Paper} className={classes.chatSection} style={{ background: '#fff', borderRadius: '0px 0px 12px 12px' }}>
           <Grid item xs={3} className={classes.borderRight500}>
