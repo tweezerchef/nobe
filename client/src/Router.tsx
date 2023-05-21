@@ -11,7 +11,7 @@ import UserContext from './hooks/Context';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import ClubsNew from './pages/ClubsNew';
+import Clubs from './pages/Clubs';
 import ClubDiscussion from './pages/ClubDiscussion';
 import DiscussionPosts from './pages/DiscussionPosts';
 import Locations from './pages/Nearme';
@@ -55,7 +55,7 @@ function Router() {
         path="/login"
         element={user?.email ? <Navigate to="/home" /> : <Login />}
       />
-      <Route path="/clubs" element={<ClubsNew />} />
+      <Route path="/clubs" element={<Clubs />} />
       <Route path="/clubs/:id" element={<ClubDiscussion />} />
       <Route path="/clubs/:id/discussion/:id" element={<DiscussionPosts />} />
       <Route path="/trending" element={<Trending />} />
