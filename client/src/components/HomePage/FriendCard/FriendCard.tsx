@@ -10,10 +10,11 @@ import {
 import { User } from '../../../typings/types';
 
 interface FriendCardProps {
-  user: User;
+  userFriend: User;
 }
 
-function FriendCard({ user }: FriendCardProps) {
+function FriendCard({ userFriend }: FriendCardProps) {
+  const user = userFriend;
   const owned = 10;
   const wishlist = 10;
   return (

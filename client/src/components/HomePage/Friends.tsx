@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-import axios from 'axios';
 import Stack from '@mui/joy/Stack';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
@@ -8,7 +7,6 @@ import { IconButton } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import { User } from '../../typings/types';
 import UserContext from '../../hooks/Context';
-import Book from '../Book/HomeBook';
 import FriendCard from './FriendCard/FriendCard';
 
 type Friendships = {
@@ -16,8 +14,8 @@ type Friendships = {
   userId: string;
   friendId: string;
   confirmed: boolean;
-  friend: User
-  user: User
+  friend?: User
+  user?: User
 
 };
 
@@ -29,12 +27,12 @@ function FriendsComponent() {
   const user = userContext?.user;
 
   const getFriends = () => {
-    console.log('friends', user?.friendships);
+    console.log('friends', user);
     if (user?.friendships) {
       setFriends(user?.friendships);
     }
   };
-  const booksPerPage = 4;
+  const friendsPerPage = 4;
 
   const handleNextPage = () => {
     setSlideDirection('left');
@@ -96,13 +94,14 @@ function FriendsComponent() {
                 justifyContent="center"
               >
                 {friends.slice(
-                  index * booksPerPage,
-                  index * booksPerPage + booksPerPage,
+                  index * friendsPerPage,
+                  index * friendsPerPage + friendsPerPage,
                 )
                   // eslint-disable-next-line @typescript-eslint/no-shadow
                   .map((friend) => (
                     <Box>
-                      <FriendCard user={friend.friend} />
+                      {friend.friend
+                      && <FriendCard userFriend={friend.friend} />}
                     </Box>
                   ))}
               </Stack>

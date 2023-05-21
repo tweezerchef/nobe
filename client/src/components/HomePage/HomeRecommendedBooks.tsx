@@ -47,7 +47,7 @@ function HomeRecommendedBooks() {
   };
 
   useEffect(() => {
-    getRecommendations();
+    // getRecommendations();
   }, []);
 
   return (
