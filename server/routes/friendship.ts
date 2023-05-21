@@ -51,7 +51,6 @@ Friendship.post('/', async (req, res) => {
       });
       if (!offline) {
         io.to(friendId).emit('new-notification', data);
-        console.log(data, 120);
       }
     }
   } catch (error) {

@@ -15,7 +15,6 @@ const ProfileCard = styled(Card)({
   boxShadow: 'none', // Remove box-shadow
   border: 'none', // Remove border
   outline: 'none', // Remove outline
-  backgroundColor: 'transparent',
 });
 
 const ProfileImage = styled(CardMedia)({

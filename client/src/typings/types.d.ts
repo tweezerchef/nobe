@@ -1,3 +1,4 @@
+import { Friendship } from '@prisma/client';
 import Activity from '../../../server/routes/activity';
 import DirectMessages from '../../../server/routes/directMessages';
 // import { User } from '../hooks/ChatContext';
@@ -88,6 +89,7 @@ interface User {
   Discussion: Discussions[];
   DiscussionUsers: DiscussionUsers[];
   friendships: Friendship[];
+  friends: Friendship[]
   LendingTable: LendingTable[];
   Notifications: Notifications[];
   Posts: Posts[];

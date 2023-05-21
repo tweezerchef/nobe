@@ -24,7 +24,6 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
       lon, lat, radius, id,
     } = req.query;
 
-    console.log(req.query);
     //  coordinates are sent in the request body
     if (!lat || !lon || !radius || Array.isArray(id)) {
       return res.status(400).json({ error: 'Missing coordinates or radius' });
