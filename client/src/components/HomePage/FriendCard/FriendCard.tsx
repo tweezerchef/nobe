@@ -1,19 +1,20 @@
-import React, {
-  useContext,
-} from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import UserContext from '../../hooks/Context';
 
 import {
   ProfileCard, StatusText, StatusValue, Status,
   Name, ProfileInfo, StatusItem,
 } from './homeStyle';
+import { User } from '../../../typings/types';
 
-function HomeUserDisplay() {
-  const userContext = useContext(UserContext);
-  const user = userContext?.user;
+interface FriendCardProps {
+  userFriend: User;
+}
+
+function FriendCard({ userFriend }: FriendCardProps) {
+  const user = userFriend;
   const owned = 10;
   const wishlist = 10;
   return (
@@ -61,4 +62,4 @@ function HomeUserDisplay() {
   );
 }
 
-export default HomeUserDisplay;
+export default FriendCard;

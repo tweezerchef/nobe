@@ -1,40 +1,38 @@
 import React, { useContext, useState, useEffect } from 'react';
-import axios from 'axios';
 import Stack from '@mui/joy/Stack';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import Slide from '@mui/material/Slide';
+import { User } from '../../typings/types';
 import UserContext from '../../hooks/Context';
-import QuoteDisplay from '../QuoteDisplay/QuoteDisplay';
-import Book from '../Book/HomeBook';
+import FriendCard from './FriendCard/FriendCard';
 
-function HomeRecommendedBooks() {
+type Friendships = {
+  id: string;
+  userId: string;
+  friendId: string;
+  confirmed: boolean;
+  friend?: User
+  user?: User
+
+};
+
+function FriendsComponent() {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [friends, setFriends] = useState<Friendships[]>([]);
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const id = user?.id;
 
-  interface Book {
-    books: {
-      id: string;
-      title: string;
-      author: string;
-      image: string;
+  const getFriends = () => {
+    console.log('friends', user);
+    if (user?.friendships) {
+      setFriends(user?.friendships);
     }
-    id: string;
-    wishlist: boolean;
-    owned: boolean;
-  }
-
-  const getRecommendations = () => {
-    axios.get(`/recommendations/recommended/10/?id=${id}`).then((res) => setBooks(res.data)).then(() => setLoading(false));
   };
-  const booksPerPage = 4;
+  const friendsPerPage = 4;
 
   const handleNextPage = () => {
     setSlideDirection('left');
@@ -47,7 +45,7 @@ function HomeRecommendedBooks() {
   };
 
   useEffect(() => {
-    // getRecommendations();
+    getFriends();
   }, []);
 
   return (
@@ -75,7 +73,7 @@ function HomeRecommendedBooks() {
       </IconButton>
 
       <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
-        {books.map((book, index) => (
+        {friends.map((friend, index) => (
           <Box
             sx={{
               position: 'absolute',
@@ -86,7 +84,6 @@ function HomeRecommendedBooks() {
               display: currentPage === index ? 'block' : 'none',
             }}
           >
-            {!loading && books.length > 0 && (
             <Slide direction={slideDirection} in={currentPage === index}>
               <Stack
                 spacing={2}
@@ -96,23 +93,22 @@ function HomeRecommendedBooks() {
                 alignContent="center"
                 justifyContent="center"
               >
-                {books
-                  .slice(
-                    index * booksPerPage,
-                    index * booksPerPage + booksPerPage,
-                  )
+                {friends.slice(
+                  index * friendsPerPage,
+                  index * friendsPerPage + friendsPerPage,
+                )
                   // eslint-disable-next-line @typescript-eslint/no-shadow
-                  .map((book: Book) => (
-                    <Box key={book.id}>
-                      <Book book={book} />
+                  .map((friend) => (
+                    <Box>
+                      {friend.friend
+                      && <FriendCard userFriend={friend.friend} />}
                     </Box>
                   ))}
               </Stack>
             </Slide>
-            )}
+
           </Box>
         ))}
-        {loading && <QuoteDisplay />}
       </Box>
 
       <IconButton
@@ -120,11 +116,11 @@ function HomeRecommendedBooks() {
         sx={{
           margin: 5, marginLeft: 10, padding: 0, alignSelf: 'center', justifySelf: 'end',
         }}
-        disabled={currentPage >= Math.ceil((books.length || 0) / booksPerPage) - 1}
+        disabled={currentPage >= Math.ceil((friends.length || 0) / friendsPerPage) - 1}
       >
         <NavigateNextIcon />
       </IconButton>
     </Box>
   );
 }
-export default HomeRecommendedBooks;
+export default FriendsComponent;
