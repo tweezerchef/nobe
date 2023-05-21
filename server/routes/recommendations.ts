@@ -10,21 +10,12 @@ dotenv.config();
 const Recommendations = express.Router();
 
 const prisma = new PrismaClient();
-async function findOrCreateBook(
+async function findBook(
   ISBN10: string,
-  title: string,
-  author: string,
-  image: string,
-  description: string,
 ) {
   try {
-    const newBook = await prisma.Books.upsert({
-      where: { title },
-      update: {},
-      create: {
-        ISBN10, title, author, image, description,
-      },
-
+    const newBook = await prisma.Books.findUnique({
+      where: { ISBN10 },
       select: {
         // include all columns from the books table
         id: true,
@@ -93,22 +84,24 @@ async function findRandomRows(limit: number) {
 
 Recommendations.get('/random', async (req : Request, res: Response) => {
   try {
-    const amazonBooks = await findRandomRows(20);
+    const amazonBooks = await findRandomRows(30);
 
     const returnArray = await Promise.all(amazonBooks.map(async (book: any) => {
-      const data = await axios.get(`http://localhost:8080/google-books?title=${book.title}`);
+      // First, find the book in our database
+      const existingBook = await findBook(book.ISBN10);
 
-      const transFormedData = data.data;
-      const {
-        ISBN10, title, author, image, description,
-      } = transFormedData;
-      const ourBookData = findOrCreateBook(ISBN10, title, author, image, description);
-      return ourBookData;
+      if (existingBook) {
+        return existingBook;
+      }
+      // If not, get data from Google Books API
+      const data = await axios.get(`http://localhost:8080/google-books?title=${book.title}`);
+      const googleBook = data.data;
+      return googleBook;
     }));
 
     res.send(returnArray);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).send(error);
   }
 });
