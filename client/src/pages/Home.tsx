@@ -1,10 +1,12 @@
 import React from 'react';
 
 import UsersProfile from './UserProfile';
+import HomeNew from './HomeNew';
 
 function Home() {
   return (
-    <UsersProfile />
+    <HomeNew />
+  // <UsersProfile />
   );
   // }
 }

@@ -1,5 +1,6 @@
 import Activity from '../../../server/routes/activity';
 import DirectMessages from '../../../server/routes/directMessages';
+// import { User } from '../hooks/ChatContext';
 
 interface Discussion {
   id: string;
@@ -14,6 +15,7 @@ interface DiscussionPost {
 }
 interface Place {
   location: ReactNode;
+  nickName: string;
   userPlaces: any;
   User_Places: any;
   place_id: any;
@@ -40,6 +42,7 @@ interface Place {
   website: string;
   types: string[];
   reviews: Review[];
+  Places_Pictures: any;
   Description_Places: any;
   id: number;
   Location: string;
@@ -94,9 +97,11 @@ interface User {
   Conversations: Conversations[];
 }
 interface UserBook {
+  id: string;
   wishlist: any;
   owned: any;
   Books: Book;
+  User: User;
 }
 interface Book {
   books: {
@@ -108,4 +113,6 @@ interface Book {
   id: string;
   wishlist: boolean;
   owned: boolean;
+  image: string;
+  title: string;
 }

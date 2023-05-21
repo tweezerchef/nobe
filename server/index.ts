@@ -26,7 +26,7 @@ import User from './routes/User';
 import GoogleBooks from './routes/GoogleBooks';
 import SpotsMapRoute from './routes/spotsmap';
 import Auth from './routes/authorization';
-
+import Places from './routes/places';
 import Friendship from './routes/friendship';
 import Activity from './routes/activity';
 import DirectMessages from './routes/directMessages';
@@ -59,6 +59,7 @@ app.use("/api/clubs", Clubs);
 app.use('/api/create-club', CreateClub);
 app.use("/api/trending", Trending);
 // app.use("/api/wishlist", Wishlist);
+app.use("/places", Places);
 app.use("/openai", OpenAI);
 app.use("/bookdata", BookData);
 app.use("/user", User);

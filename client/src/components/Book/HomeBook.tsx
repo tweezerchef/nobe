@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -24,7 +24,6 @@ const useStyles = makeStyles({
     backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
-    /* Additional CSS properties */
   },
 });
 
@@ -38,16 +37,14 @@ const Book = React.memo((props: any) => {
   const BigBookOverlay = styled.div<BigBookOverlayProps>`
       position: static;
       z-index: 10;  left: ${(props) => props.bigBookPosition.left}px;
-      top: ${(props) => props.bigBookPosition.top}px;// Use the top property
+      top: ${(props) => props.bigBookPosition.top}px;
       border-radius: 20px;
       box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.15);
 `;
   if (!book) {
     return null;
   }
-  // const handleOnClick = () => {
-  //   setShowBigBook(true);
-  // };
+
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     props.onClick(e, book);
   };
@@ -56,7 +53,6 @@ const Book = React.memo((props: any) => {
     book.UserBooks.forEach((entry: any) => {
       if (entry.userId === id && entry.rating !== 0) {
         value = entry.rating;
-        // console.log('value', value)
       }
     });
   }
@@ -70,7 +66,14 @@ const Book = React.memo((props: any) => {
 
   return (
 
-    <Card key={book.id} variant="outlined" className={classes.card} sx={{ width: 380, margin: '10px', boxShadow: '0px 0px 25px rgba(37, 37, 37, 0.6)' }}>
+    <Card
+      key={book.id}
+      variant="outlined"
+      className={classes.card}
+      sx={{
+        width: '16vw', height: '100%', margin: '8px', marginBottom: '0px', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+      }}
+    >
       <CardOverflow onClick={handleOnClick}>
         <AspectRatio ratio="2">
           {book.image ? (
@@ -87,12 +90,10 @@ const Book = React.memo((props: any) => {
       <Typography
         level="body1"
         sx={{
-          fontSize: '1.5rem !important', mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical',
+          mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical',
         }}
       >
-        <span onClick={handleOnClick}>
-          {book.title}
-        </span>
+        {book.title}
       </Typography>
       <Typography
         level="body2"

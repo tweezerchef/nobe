@@ -17,7 +17,7 @@ function QuoteDisplay() {
       .then((res) => {
         setQuote(res.data.content);
         setAuthor(res.data.author);
-        setChecked(false); // Set checked to false to trigger the slide-out animation
+        setChecked(false);
         setTimeout(() => {
           setChecked(true); // Set checked to true after a delay to trigger the slide-in animation
         }, 2000); // Adjust the delay according to your desired transition time
@@ -31,7 +31,7 @@ function QuoteDisplay() {
     getQuote();
     const interval = setInterval(() => {
       getQuote();
-    }, 10000); // Adjust the interval time according to your desired interval
+    }, 7000); // Adjust the interval time according to your desired interval
     return () => clearInterval(interval);
   }, []);
 
