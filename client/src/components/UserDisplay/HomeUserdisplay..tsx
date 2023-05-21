@@ -17,7 +17,7 @@ function HomeUserDisplay() {
   const owned = 10;
   const wishlist = 10;
   return (
-    <Box sx={{ flexGrow: 1 }} maxWidth="100%">
+    <Box sx={{ flexGrow: 1 }} maxWidth="100%" height="100%">
       <ProfileCard>
         <Link to={`/profile/${user?.id}`}>
           <Avatar

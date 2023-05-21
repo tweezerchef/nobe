@@ -8,10 +8,10 @@ import styled from 'styled-components';
 const ProfileCard = styled(Card)({
   display: 'flex',
   width: '100%',
+  height: '100%',
   margin: '0 auto',
   justifyContent: 'center',
   alignItems: 'center',
-  height: '200px',
   boxShadow: 'none', // Remove box-shadow
   border: 'none', // Remove border
   outline: 'none', // Remove outline
