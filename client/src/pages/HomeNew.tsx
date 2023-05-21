@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
+import { padding } from '@mui/system';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
 import HomeWishList from '../components/HomePage/HomeWishList';
@@ -11,6 +12,7 @@ import HomePlaces from '../components/HomePage/HomePlaces';
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 import HomeNearMe from '../components/HomePage/HomeNearMe';
 import HomeExploreBooks from '../components/HomePage/HomeExploreBooks';
+import HomeFriends from '../components/HomePage/Friends';
 
 function HomeNew() {
   const colWidth = {
@@ -46,15 +48,28 @@ function HomeNew() {
           },
         })}
       >
-        <Grid xs={2.5} sx={{ position: 'sticky', top: '0px', height: '98vh' }}>
-          <Box sx={{ width: '100%', height: '20vh', overflow: 'clip' }}>
+        <Grid
+          xs={2.5}
+          sx={{
+            position: 'sticky', top: '0px', height: '98vh', paddingBottom: '8vh',
+          }}
+        >
+          <Box sx={{
+            width: '100%',
+            height: '20vh',
+            overflow: 'clip',
+            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+          >
             <HomeUserDisplay />
           </Box>
           <Box sx={{ width: '100%', maxHeight: '70vh', overflow: 'auto' }}>
             <Feed />
           </Box>
         </Grid>
-        <Grid xs={9.5} sx={{ maxHeight: '96vh', overflow: 'auto' }}>
+        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
           <Stack
             direction="column"
             justifyContent="center"
@@ -123,8 +138,20 @@ function HomeNew() {
               }}
             />
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '33vh' /* adjust this */ }}>
-              <HomeExploreBooks />
+              {/* <HomeExploreBooks /> */}
             </Box>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '25vh' /* adjust this */ }}>
+              <HomeFriends />
+            </Box>
+            <Box
+              sx={{
+                width: '100%',
+                height: '35vh',
+                backgroundImage: 'url(https://i.imgur.com/mVbf3MT.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: '50% 70%',
+              }}
+            />
           </Stack>
         </Grid>
       </Grid>
