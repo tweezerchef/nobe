@@ -14,8 +14,8 @@ const ProfileCard = styled(Card)({
   alignItems: 'center',
   boxShadow: 'none', // Remove box-shadow
   border: 'none', // Remove border
-  outline: 'none', // Remove outline
-  backgroundColor: 'transparent',
+  outline: 'none', // Remove out1line
+  backgroundColor: 'transparent !important',
 });
 
 const ProfileImage = styled(CardMedia)({

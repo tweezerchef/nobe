@@ -4,7 +4,6 @@ import {
   Grid, Card, CardContent, Typography,
 } from '@material-ui/core';
 import AspectRatio from '@mui/joy/AspectRatio';
-// import Card from '@mui/joy/Card';
 import Box from '@mui/material/Box';
 import Grid1 from '@mui/material/Unstable_Grid2';
 import axios from 'axios';
