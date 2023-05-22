@@ -421,16 +421,28 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
                 </Typography>
               </MenuItem>
               {loggedIn ? (
-                <MenuItem
-                  onClick={logout}
-                  sx={{
-                    display: 'block !important', padding: '8px !important',
-                  }}
-                >
-                  <Typography textAlign="center">
-                    Logout
-                  </Typography>
-                </MenuItem>
+                <>
+                  <MenuItem
+                    onClick={logout}
+                    sx={{
+                      display: 'block !important', padding: '8px !important',
+                    }}
+                  >
+                    <Typography textAlign="center">
+                      Logout
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      display: 'block !important', padding: '8px !important',
+                    }}
+                  >
+                    <Typography textAlign="center">
+                      <Link to="/usersettings">Settings</Link>
+                    </Typography>
+                  </MenuItem>
+
+                </>
               ) : (
                 <MenuItem sx={{
                   display: 'block !important', padding: '8px !important',
