@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import {
   Box,
-  Button, Container, FormControl, FormHelperText, Grid, InputAdornment, OutlinedInput, Slider, TextField,
+  Button, Container, FormControl, FormHelperText, Grid,
+  InputAdornment, OutlinedInput, Slider, TextField,
 } from '@material-ui/core';
 import styled from 'styled-components';
 import { Sheet } from '@mui/joy';
@@ -9,21 +11,7 @@ import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-g
 import '@geoapify/geocoder-autocomplete/styles/minimal.css';
 
 const UserDetail = styled.div({
-  backgroundColor: '#fff',
   position: 'relative',
-  padding: '115px 0px 10px 0px',
-  color: '#8B8B89',
-});
-
-const ProfilePic = styled.div({
-  position: 'absolute',
-  height: '120px',
-  width: '120px',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  top: '0px',
-  zIndex: '1001',
-  padding: '10px',
 });
 
 const ProfileImage = styled.img({
@@ -95,23 +83,23 @@ function UserInfo() {
   const valuetext = (value: number) => `${value}Â°C`;
 
   return (
-    <Sheet sx={{ height: '100vh', width: '100%' }}>
-      <Grid container justifyContent="center">
-        <ProfilePic>
-          <ProfileImage
-            alt="User Pic"
-            src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
-            id="profile-image1"
-            height="200"
-          />
-          <input
-            id="profile-image-upload"
-            className="hidden"
-            type="file"
-            onChange={() => {}}
-          />
-          <div style={{ color: '#999' }}> </div>
-        </ProfilePic>
+    <Box sx={{
+      height: '100vh', width: '100%', justifyContent: 'center', alignItems: 'center',
+    }}
+    >
+      <Container>
+        <ProfileImage
+          alt="User Pic"
+          src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
+          id="profile-image1"
+          height="200"
+        />
+        <input
+          id="profile-image-upload"
+          className="hidden"
+          type="file"
+          onChange={() => {}}
+        />
         <UserDetail>
           <form>
             <TextField
@@ -122,6 +110,12 @@ function UserInfo() {
             />
             <TextField
               label="Last Name"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Age"
               variant="outlined"
               fullWidth
               margin="normal"
@@ -139,41 +133,41 @@ function UserInfo() {
                 suggestionsChange={onSuggectionChange}
               />
             </GeoapifyContext>
-            <TextField
-              label="Age"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
             <Box>
               <h5>Set Radius</h5>
-              <FormControl sx={{ m: 1, width: '7ch' }} variant="outlined">
-                <OutlinedInput
-                  sx={{ height: '4ch' }}
-                  id="outlined-adornment-weight"
-                  endAdornment={<InputAdornment position="end">mi</InputAdornment>}
-                  onChange={handleRadiusChange}
-                  value={radius}
-                />
-                <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
-              </FormControl>
-              <Slider
-                aria-label="Always visible"
-                value={radius}
-                getAriaValueText={valuetext}
-                onChange={handleRadiusChange}
-                step={5}
-                marks={marks}
-                valueLabelDisplay="auto"
-              />
+              <Grid container spacing={1}>
+                <Grid xs={3}>
+                  <FormControl style={{ width: '7ch' }} variant="outlined">
+                    <OutlinedInput
+                      style={{ height: '4ch' }}
+                      id="outlined-adornment-weight"
+                      endAdornment={<InputAdornment position="end">mi</InputAdornment>}
+                      onChange={handleRadiusChange}
+                      value={radius}
+                    />
+                    <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid xs={7}>
+                  <Slider
+                    aria-label="Always visible"
+                    value={radius}
+                    getAriaValueText={valuetext}
+                    onChange={handleRadiusChange}
+                    step={5}
+                    marks={marks}
+                    valueLabelDisplay="auto"
+                  />
+                </Grid>
+              </Grid>
             </Box>
             <Button variant="contained" color="primary" fullWidth>
               Update Profile
             </Button>
           </form>
         </UserDetail>
-      </Grid>
-    </Sheet>
+      </Container>
+    </Box>
   );
 }
 export default UserInfo;

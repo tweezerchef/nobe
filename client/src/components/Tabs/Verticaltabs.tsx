@@ -66,10 +66,10 @@ function VerticalTabs() {
         aria-label="Vertical tabs example"
         sx={{ borderRight: 1, borderColor: 'divider' }}
       >
-        <Tab label="User Information" {...a11yProps(0)} />
-        <Tab label="Profile Settings" {...a11yProps(1)} />
-        <Tab label="Security Settings" {...a11yProps(2)} />
-        <Tab label="Notification Settings" {...a11yProps(3)} />
+        <Tab label="Profile Settings" {...a11yProps(0)} />
+        <Tab label="User Preferences" {...a11yProps(1)} />
+        <Tab label="Favorites" {...a11yProps(2)} />
+        <Tab label="Book Ratings" {...a11yProps(3)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <UserInfo />
