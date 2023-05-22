@@ -21,7 +21,7 @@ import UserContext from '../../hooks/Context';
 import Emojis from '../Emojis/Emojis';
 // import { useChatContext } from '../../hooks/ChatContext';
 
-const useStyles = makeStyles({
+const chatStyles = makeStyles({
   table: {
     minWidth: 650,
   },
@@ -83,7 +83,7 @@ type EmojiSelectHandler = (emoji: string) => void;
 const socketUrl = process.env.SOCKET_URL;
 
 function Chat({ chatUser }: { chatUser: any }) {
-  const classes = useStyles();
+  const chatClasses = chatStyles();
 
   const [message, setMessage] = useState<string>('');
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
@@ -284,8 +284,8 @@ function Chat({ chatUser }: { chatUser: any }) {
             </Typography>
           </Grid>
         </Grid>
-        <Grid container component={Paper} className={classes.chatSection} style={{ background: '#fff', borderRadius: '0px 0px 12px 12px' }}>
-          <Grid item xs={3} className={classes.borderRight500}>
+        <Grid container component={Paper} className={chatClasses.chatSection} style={{ background: '#fff', borderRadius: '0px 0px 12px 12px' }}>
+          <Grid item xs={3} className={chatClasses.borderRight500}>
             <Grid item xs={12} style={{ padding: '10px' }}>
               <TextField value={searchQuery} onKeyDown={(event) => (event.key === 'Enter' ? handleSearch() : null)} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
             </Grid>
@@ -350,7 +350,7 @@ function Chat({ chatUser }: { chatUser: any }) {
                 })()}
                 <Divider />
                 <List
-                  className={classes.messageArea}
+                  className={chatClasses.messageArea}
                   style={{
                     flexGrow: 1,
                     overflowY: 'auto',
@@ -417,7 +417,7 @@ function Chat({ chatUser }: { chatUser: any }) {
                       id="outlined-basic-email"
                       label="Send message..."
                       variant="outlined"
-                      className={classes.textField}
+                      className={chatClasses.textField}
                       style={{ padding: '0px 5px 0px 0px' }}
                       InputProps={{
                         endAdornment: (
