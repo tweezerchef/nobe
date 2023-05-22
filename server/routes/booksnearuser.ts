@@ -126,6 +126,111 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
     res.status(500).json({ error: 'Server error' });
   }
 });
+LocationRoute.get('/locations/login', async (req: AuthenticatedRequest, res: Response) => {
+  // console.log(req, 21);
+  // console.log(req, 26);
+  try {
+    const { lon, lat, radius } = req.query;
+    // console.log(lon, lat, radius, 25);
+    //  coordinates are sent in the request body
+    if (!lat || !lon || !radius) {
+      return res.status(400).json({ error: 'Missing coordinates or radius' });
+    }
+    // Cast lat, lon, and radius to numbers
+    const latNum = Number(lat);
+    const lonNum = Number(lon);
+    const radiusNum = Number(radius);
+    const users = await prisma.user.findMany({
+      where: {
+        AND: [
+          {
+            latitude: {
+              gte: latNum - radiusNum / 69.0,
+              lte: latNum + radiusNum / 69.0,
+            },
+          },
+          {
+            longitude: {
+              gte: lonNum - radiusNum / (69.0 * Math.cos(latNum * Math.PI / 180.0)),
+              lte: lonNum + radiusNum / (69.0 * Math.cos(latNum * Math.PI / 180.0)),
+            },
+          },
+          {
+            UserBooks: {
+              some: {
+                owned: true,
+              },
+            },
+          },
+        ],
+      },
+      select: {
+        UserBooks: {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            Books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks: {
+                  select: {
+                    id: true,
+                    wishlist: true,
+                    owned: true,
+                    booksId: true,
+                    userId: true,
+                    rating: true,
+                    review: true,
+                    LendingTable: true,
+                    User: true,
+                  },
+                },
+                Discussions: true,
+                Activity: true,
+              },
+            },
+          },
+          where: {
+            owned: true,
+          },
+        },
+      },
+    });
+    // create a function that filters through users and returns an array of all the "BooksId" from all the UserBooks tables
+    const userBooksArray = users.map((user: any) => {
+      // get all the BooksId from the UserBooks table
+      const userBooks = user.UserBooks;
+      return userBooks;
+    });
+    console.log(userBooksArray, 67);
+    const flatUserBooksArray = userBooksArray.flat();
+    // now just get the booksId from each userBook
+    const bookIds = flatUserBooksArray.map((userBook: any) => {
+      // get all the BooksId from the UserBooks table
+      const bookId = userBook.booksId;
+      return bookId;
+    });
+    console.log(bookIds, 92);
+
+    // flatten array so that it is an array of userbooks w/o the user object
+    // console.log(users, 67);
+    res.status(200).send(bookIds);
+  } catch (error) {
+    // console.error('Error getting users within radius:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 LocationRoute.get('/locations', async (req: AuthenticatedRequest, res: Response) => {
   // console.log(req, 21);

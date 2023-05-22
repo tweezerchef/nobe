@@ -8,6 +8,7 @@ import {
   Name, ProfileInfo, StatusItem, AvatarWrapper,
 } from './homeStyle';
 import { User } from '../../../typings/types';
+import { StyledDivider } from '../PlaceCard/styles';
 
 interface FriendCardProps {
   userFriend: User;
@@ -30,8 +31,10 @@ function FriendCard({ userFriend }: FriendCardProps) {
             }}
           />
         </Link>
+
       </AvatarWrapper>
       <ProfileInfo>
+        <StyledDivider />
         <Name variant="h2">{user?.firstName}</Name>
         {/* <Desc>{user?.description}</Desc> */}
         <Status>
