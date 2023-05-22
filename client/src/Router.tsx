@@ -65,6 +65,7 @@ function Router() {
       <Route path="/user-reco-input" element={<UserRecoInputPage />} />
       <Route path="/recommended" element={<Recommended />} />
       <Route path="/reading-spots" element={<ReadingSpots />} />
+      <Route path="/reading-spots/:linkPlaceId?" element={<ReadingSpots />} />
       <Route path="/feed" element={<Feed />} />
       <Route path="/booksearch" element={<BookSearch />} />
       <Route path="/usersprofile" element={<UsersProfile />} />
