@@ -12,6 +12,7 @@ import HomePlaces from '../components/HomePage/HomePlaces';
 import HomeNearMe from '../components/HomePage/HomeNearMe';
 import HomeExploreBooks from '../components/HomePage/HomeExploreBooks';
 import HomeFriends from '../components/HomePage/Friends';
+import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 
 function HomeNew() {
   const colWidth = {
@@ -144,7 +145,7 @@ function HomeNew() {
                 Friends
               </Chip>
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', maxHeight: '30vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', maxHeight: '35vh' /* adjust this */ }}>
               <HomeFriends />
             </Box>
             <Box
@@ -152,7 +153,7 @@ function HomeNew() {
                 paddingTop: '0',
                 marginTop: '0',
                 width: '100%',
-                height: '35vh',
+                height: '30vh',
                 backgroundImage: 'url(https://i.imgur.com/mVbf3MT.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: '50% 70%',

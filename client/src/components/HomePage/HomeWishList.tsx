@@ -28,10 +28,45 @@ function HomeWishList() {
   const user = userContext?.user;
   const id = user?.id;
   const [books, setBooks] = useState<Book[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [showBigBook, setShowBigBook] = useState(false);
+  const [bigBookPosition, setBigBookPosition] = useState({ top: 0, left: 0 });
+  const [selectedBook, setSelectedBook] = useState(null);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
+
+  const handleBookClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, book: any) => {
+    const rect = (e.target as Element).getBoundingClientRect();
+    let bigBookWidth = window.innerWidth * 0.75; // This should match your BigBook width style
+    let bigBookHeight = window.innerHeight * 0.85; // This should match your BigBook height style
+
+    // Apply maxWidth and maxHeight restrictions
+    bigBookWidth = Math.min(bigBookWidth, 665);
+    bigBookHeight = Math.min(bigBookHeight, 850);
+
+    // Apply minWidth and minHeight restrictions (values are arbitrary, adjust as needed)
+    bigBookWidth = Math.max(bigBookWidth, 200);
+    bigBookHeight = Math.max(bigBookHeight, 200);
+
+    let { left } = rect;
+    let { top } = rect;
+
+    // If BigBook would overflow the right edge, align it to the right with some padding
+    if (window.innerWidth - left < bigBookWidth) {
+      left = window.innerWidth - bigBookWidth - 40;
+    }
+
+    // If BigBook would overflow the bottom edge, align it to the bottom with some padding
+    if (window.innerHeight - top < bigBookHeight) {
+      top = window.innerHeight - bigBookHeight - 20;
+    }
+
+    setBigBookPosition({ top, left });
+    setSelectedBook(book);
+    setShowBigBook(true);
+  };
+  const handleBigBookClose = () => {
+    setShowBigBook(false);
+  };
 
   const booksPerPage = 4;
 
@@ -46,7 +81,6 @@ function HomeWishList() {
   };
 
   const getUserBooks = async () => {
-    setIsLoading(true);
     const booksArray: Book[] = [];
 
     const userBooks = await axios.get(`/user-books/wishlist/${id}`);
@@ -54,8 +88,6 @@ function HomeWishList() {
       booksArray.push(book.Books);
     });
     setBooks(booksArray);
-
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -117,7 +149,13 @@ function HomeWishList() {
                   // eslint-disable-next-line @typescript-eslint/no-shadow
                   .map((book: Book) => (
                     <Box key={book.id}>
-                      <Book book={book} />
+                      <Book
+                        book={book}
+                        onClick={handleBookClick}
+                        onClose={handleBigBookClose}
+                        showBigBook={showBigBook && book === selectedBook}
+                        bigBookPosition={bigBookPosition}
+                      />
                     </Box>
                   ))}
               </Stack>
