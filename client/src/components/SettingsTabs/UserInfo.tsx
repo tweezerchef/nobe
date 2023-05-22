@@ -2,9 +2,13 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Button, Container, FormControl, FormHelperText, Grid,
-  InputAdornment, OutlinedInput, Slider, TextField,
+  Button, Container, Slider, TextField, Grid,
 } from '@material-ui/core';
+import FormControl from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
 import styled from 'styled-components';
 import { Sheet } from '@mui/joy';
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete';
@@ -103,6 +107,12 @@ function UserInfo() {
         <UserDetail>
           <form>
             <TextField
+              label="Username"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
               label="First Name"
               variant="outlined"
               fullWidth
@@ -115,31 +125,39 @@ function UserInfo() {
               margin="normal"
             />
             <TextField
-              label="Age"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-            <TextField
               label="Mobile Number"
               variant="outlined"
               fullWidth
               margin="normal"
             />
-            <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
-              <GeoapifyGeocoderAutocomplete
-                placeholder="Enter address here"
-                placeSelect={onPlaceSelect}
-                suggestionsChange={onSuggectionChange}
-              />
-            </GeoapifyContext>
+            <TextField
+              label="Favorite Generes"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Favorite Hobbies"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
             <Box>
-              <h5>Set Radius</h5>
+              <h3> Location Preferences </h3>
               <Grid container spacing={1}>
+                <Grid xs={4}>
+                  <GeoapifyContext apiKey="6d182d93697140e88a9e75ab8d892bc5">
+                    <GeoapifyGeocoderAutocomplete
+                      placeholder="Enter address here"
+                      placeSelect={onPlaceSelect}
+                      suggestionsChange={onSuggectionChange}
+                    />
+                  </GeoapifyContext>
+                </Grid>
                 <Grid xs={3}>
-                  <FormControl style={{ width: '7ch' }} variant="outlined">
+                  <FormControl sx={{ m: 1, width: '10ch' }} variant="outlined">
                     <OutlinedInput
-                      style={{ height: '4ch' }}
+                      sx={{ height: '4ch' }}
                       id="outlined-adornment-weight"
                       endAdornment={<InputAdornment position="end">mi</InputAdornment>}
                       onChange={handleRadiusChange}
@@ -148,7 +166,7 @@ function UserInfo() {
                     <FormHelperText id="outlined-weight-helper-text">Miles</FormHelperText>
                   </FormControl>
                 </Grid>
-                <Grid xs={7}>
+                <Grid xs={4}>
                   <Slider
                     aria-label="Always visible"
                     value={radius}

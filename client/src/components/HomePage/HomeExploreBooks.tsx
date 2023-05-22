@@ -4,6 +4,7 @@ import React, {
 import axios from 'axios';
 import Stack from '@mui/joy/Stack';
 import Divider from '@mui/material/Divider';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Chip from '@mui/joy/Chip';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
@@ -15,6 +16,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
 import Book from '../Book/HomeBook';
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 interface Book {
   books: {
     id: string;
