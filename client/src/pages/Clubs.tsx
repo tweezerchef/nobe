@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import {
   Grid, Card, CardContent, Typography,
 } from '@material-ui/core';
+import AspectRatio from '@mui/joy/AspectRatio';
+// import Card from '@mui/joy/Card';
 import Box from '@mui/material/Box';
 import Grid1 from '@mui/material/Unstable_Grid2';
 import axios from 'axios';
@@ -36,10 +38,18 @@ function Clubs() {
   }, []);
 
   const CardContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  `;
+
+  //   const CardContainer = styled.div`
+  //   width: 16vw;
+  //   height: 100$;
+  //   margin: 8px;
+  //   margin-bottom: 0px;
+  //   box-shadow: 0px 0px 25px rgba(37, 37, 37, 0.6)
+  // `;
 
   const StyledCard = styled(Card) <{ flexBasis?: string }>`
   flex-basis: ${(props) => props.flexBasis || '33%'};
@@ -142,13 +152,16 @@ function Clubs() {
                           color: 'black', textDecoration: 'none', fontSize: '24px', fontWeight: 600, display: 'block', width: '100%',
                         }}
                       >
-                        <iframe
-                          title={`Club image for ${club.name}`}
-                          src={club.image}
-                          style={{
-                            pointerEvents: 'none', display: 'block', margin: '0 auto', border: 'none', paddingTop: '8px', width: '100%',
-                          }}
-                        />
+                        <AspectRatio ratio="2">
+                          <img
+                            alt=""
+                            title={`Club image for ${club.name}`}
+                            src={club.image}
+                            style={{
+                              pointerEvents: 'none', display: 'block', margin: '0 auto', border: 'none', width: '100%',
+                            }}
+                          />
+                        </AspectRatio>
                         <CardContent style={{
                           display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative',
                         }}
