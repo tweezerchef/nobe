@@ -46,17 +46,17 @@ const createClubs = (props: any) => {
       data.append('email', user?.email);
       data.append('image', clubImage);
       try {
-        axios.post('/api/create-club', data);
-      // .then((response) => {
-      //   setClubs(response.data.clubs);
-      //   setClubName('');
-      //   setClubDescription('');
-      //   return response;
-      // }).then((response) => {
-      //   if (setUser && response?.data?.user && response?.data?.user !== undefined) {
-      //     setUser(response?.data?.user);
-      //   }
-      // });
+        axios.post('/api/create-club', data)
+          .then((response) => {
+            setClubs(response.data.clubs);
+            setClubName('');
+            setClubDescription('');
+            return response;
+          }).then((response) => {
+            if (setUser && response?.data?.user && response?.data?.user !== undefined) {
+              setUser(response?.data?.user);
+            }
+          });
       } catch (error) {
         console.error(error);
       }

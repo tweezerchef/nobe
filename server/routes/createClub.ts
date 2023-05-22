@@ -16,7 +16,7 @@ aws.config.update({
 });
 
 const uploadToS3 = (file: Express.Multer.File): Promise<string> => {
-  const s3FileURL = `https://nobe-pjkdbp7yoy8qtzs38qo8s95bkqwoeuse1a-s3alias.s3-accesspoint.us-east-1.amazonaws.com/${file.originalname}`;
+  const s3FileURL = `https://nobe-bucket.s3.amazonaws.com/${file.originalname}`;
 
   const s3bucket = new aws.S3({
     accessKeyId: process.env.ACCESS_KEY,
@@ -61,46 +61,47 @@ async function findOrCreateClub(
 
 CreateClubRoute.post('/', upload.single('image'), async (req: Request, res: Response) => {
   const createdBy = req.body.email;
-  const { userId } = req.body;
+  const { userId, name, description } = req.body;
 
   const { file } = req;
   if (!file) {
     res.status(400).json({ error: true, Message: 'No file uploaded' });
     return;
   }
-  try {
-    const s3FileURL = await uploadToS3(file);
-    console.log('s3FileURL: ', s3FileURL);
-  }
 
-  // findOrCreateClub(req.body.name, req.body.description, image, userId)
-  //   .then(async () => {
-  //     try {
-  //       const s3Response = await axios.put('http://localhost:8080/amazon/club', {
-  //         image,
-  //       });
-  //       console.log('s3Response', s3Response.data);
-  //       res.send(s3Response);
-  //     }
-  catch (error) {
+  try {
+    const image = await uploadToS3(file);
+    console.log('s3FileURL: ', image);
+
+    findOrCreateClub(name, description, image, userId)
+      .then(async () => {
+        try {
+          // const s3Response = await axios.put('http://localhost:8080/amazon/club', {
+          //   image,
+          // });
+          // console.log('s3Response', s3Response.data);
+          const clubs = await prisma.clubs.findMany({
+            include: {
+              clubMembers: true,
+            },
+          });
+          const userData = await axios.get(`http://localhost:8080/user?email=${createdBy}`);
+          const user = userData.data;
+          const response = { clubs, user };
+          res.send(response);
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ error: 'Something went wrong' });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json({ error: 'Something went wrong' });
+      });
+  } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Something went wrong' });
   }
-
-  //     const clubs = await prisma.clubs.findMany({
-  //       include: {
-  //         clubMembers: true,
-  //       },
-  //     });
-  //     const userData = await axios.get(`http://localhost:8080/user?email=${createdBy}`);
-  //     const user = userData.data;
-  //     const response = { clubs, user };
-  //     res.send(response);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //     res.status(500).json({ error: 'Something went wrong' });
-  //   });
 });
 
 export default CreateClubRoute;
