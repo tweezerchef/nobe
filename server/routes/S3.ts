@@ -1,17 +1,17 @@
 import express, { Request, Response } from 'express';
-import multer, { File } from 'multer';
+import multer from 'multer';
 import aws from 'aws-sdk';
 import fs from 'fs';
 
-interface MulterRequest extends Request {
-  file: File;
-}
+// interface MulterRequest extends Request {
+//   file: File;
+// }
 const upload = multer({ dest: 'uploads/' });
 const Amazon = express.Router();
 
 aws.config.update({
-  accessKeyId: 'AKIAYGT7FTGUWZTSAKPM',
-  secretAccessKey: '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',
+  accessKeyId: process.env.ACCESS_KEY,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
   region: 'US East (N. Virginia) us-east-1', // your region
 });
 
@@ -22,12 +22,11 @@ Amazon.put('/club', upload.single('image'), (req, res) => {
     return;
   }
 
-  const s3FileURL = `https://yourBucket.s3.amazonaws.com/${file.originalname}`;
+  const s3FileURL = `https://nobe-bucket.s3.amazonaws.com/${file.originalname}`;
 
   const s3bucket = new aws.S3({
-    accessKeyId: 'AKIAYGT7FTGUWZTSAKPM',
-    secretAccessKey: '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',
-    Bucket: 'nobe-bucket',
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
   });
 
   const params: aws.S3.PutObjectRequest = {
@@ -49,6 +48,9 @@ Amazon.put('/club', upload.single('image'), (req, res) => {
         fileLink: s3FileURL,
         s3_key: params.Key,
       };
+
+      // TOM SEND URL BACK TO CREATE CLUBS
+
       // Save the file name into database
       // yourDatabaseModel.create(newFileUploaded, (err, data) => {
       //   if (err) {

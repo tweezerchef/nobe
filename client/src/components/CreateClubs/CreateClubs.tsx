@@ -10,7 +10,7 @@ import PhotoUpload from '../Button/ImageUploadButton';
 const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
-  const [clubImage, setClubImage] = useState('');
+  const [clubImage, setClubImage] = useState(null);
   const { setClubs } = props;
 
   const userContext = useContext(UserContext);
@@ -43,7 +43,6 @@ const createClubs = (props: any) => {
           setClubs(data.data.clubs);
           setClubName('');
           setClubDescription('');
-          setClubImage('');
           return data;
         }).then((data) => {
           if (setUser && data?.data?.user && data?.data?.user !== undefined) {
@@ -87,7 +86,7 @@ const createClubs = (props: any) => {
         required
       />
       <GifSearch setClubImage={setClubImage} />
-      <PhotoUpload />
+      <PhotoUpload setClubImage={setClubImage} />
       <Button variant="contained" size="small" color="primary" onClick={() => handleSubmit()}>
         Create Club
       </Button>
