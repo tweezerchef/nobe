@@ -59,18 +59,30 @@ function VerticalTabs() {
         height: '100vh',
       }}
     >
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: 'divider' }}
+      <Box sx={{
+        borderRight: 1,
+        width: 200,
+        backgroundImage: 'url(https://m.media-amazon.com/images/I/71q3D33qowL._AC_SY879_.jpg)',
+        backgroundSize: 'cover',
+      }}
       >
-        <Tab label="Profile Settings" {...a11yProps(0)} />
-        <Tab label="Favorite Books" {...a11yProps(1)} />
-        <Tab label="Favorite Places" {...a11yProps(2)} />
-      </Tabs>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={value}
+          onChange={handleChange}
+          aria-label="Vertical tabs example"
+          sx={{
+            borderRight: 1,
+            borderColor: 'divider',
+            width: 200,
+          }}
+        >
+          <Tab sx={{ bgcolor: 'primary.main' }} label="Profile Settings" {...a11yProps(0)} />
+          <Tab label="Favorite Books" {...a11yProps(1)} />
+          <Tab label="Favorite Places" {...a11yProps(2)} />
+        </Tabs>
+      </Box>
       <TabPanel value={value} index={0}>
         <UserInfo />
       </TabPanel>

@@ -88,7 +88,7 @@ function UserInfo() {
 
   return (
     <Box sx={{
-      height: '100vh', width: '100%', justifyContent: 'center', alignItems: 'center',
+      height: '100vh', width: '75%', ml: 20,
     }}
     >
       <Container>
@@ -142,7 +142,7 @@ function UserInfo() {
               fullWidth
               margin="normal"
             />
-            <Box>
+            <Box sx={{ mt: 2 }}>
               <h3> Location Preferences </h3>
               <Grid container spacing={1}>
                 <Grid xs={4}>
@@ -179,9 +179,11 @@ function UserInfo() {
                 </Grid>
               </Grid>
             </Box>
-            <Button variant="contained" color="primary" fullWidth>
-              Update Profile
-            </Button>
+            <Box sx={{ mt: 4 }}>
+              <Button variant="contained" color="primary" fullWidth>
+                Update Profile
+              </Button>
+            </Box>
           </form>
         </UserDetail>
       </Container>
