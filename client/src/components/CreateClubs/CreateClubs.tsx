@@ -11,7 +11,6 @@ const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
   const [clubImage, setClubImage] = useState(null);
-  console.log(clubImage);
   const { setClubs } = props;
 
   const userContext = useContext(UserContext);
