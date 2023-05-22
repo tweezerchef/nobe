@@ -12,11 +12,12 @@ const Amazon = express.Router();
 aws.config.update({
   accessKeyId: process.env.ACCESS_KEY,
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
-  region: 'US East (N. Virginia) us-east-1', // your region
+  region: 'US East (N. Virginia) us-east-1',
 });
 
-Amazon.put('/club', upload.single('image'), (req, res) => {
+Amazon.put('/club', upload.single('image'), (req: Request, res: Response) => {
   const file = req?.file;
+  console.log(file);
   if (!file) {
     res.status(400).json({ error: true, Message: 'No file uploaded' });
     return;

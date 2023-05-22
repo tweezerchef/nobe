@@ -11,7 +11,6 @@ async function findOrCreateClub(
   image: string,
   userId: string,
 ) {
-  console.log('userId: ', userId);
   const newClub = await prisma.clubs.upsert({
     where: { name },
     update: {},
@@ -26,7 +25,6 @@ async function findOrCreateClub(
 CreateClubRoute.post('/', async (req: Request, res: Response) => {
   const createdBy = req.body.email;
   const { userId } = req.body;
-  // console.log('userId', userId);
 
   // image should equl s3 url
   // call amazon get url
@@ -34,13 +32,14 @@ CreateClubRoute.post('/', async (req: Request, res: Response) => {
   const { image } = req.body;
   // console.log('image: ', image);
 
-  findOrCreateClub(req.body.name, req.body.description, userId, image)
+  findOrCreateClub(req.body.name, req.body.description, image, userId)
     .then(async () => {
       try {
         const s3Response = await axios.put('http://localhost:8080/amazon/club', {
           image,
         });
-        console.log(s3Response.data);
+        console.log('s3Response', s3Response.data);
+        res.send(s3Response);
       } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
