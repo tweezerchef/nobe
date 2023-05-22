@@ -57,7 +57,6 @@ function HomeNew() {
           <Box sx={{
             width: '100%',
             height: '20vh',
-            overflow: 'clip',
             backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',

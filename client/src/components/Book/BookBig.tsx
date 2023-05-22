@@ -85,6 +85,7 @@ function BigBook(props: any) {
     <Modal
       aria-labelledby="modal-title"
       aria-describedby="modal-desc"
+      // @ts-ignore
       open={open}
       // onClose={() => setOpen(false)}
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
