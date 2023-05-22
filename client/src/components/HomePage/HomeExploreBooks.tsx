@@ -61,7 +61,7 @@ function HomeBuildRecomendations() {
   };
 
   useEffect(() => {
-    // getRecommendations();
+    getRecommendations();
   }, []);
 
   return (
