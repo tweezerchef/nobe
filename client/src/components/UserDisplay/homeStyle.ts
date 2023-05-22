@@ -6,15 +6,15 @@ import Button from '@mui/material/Button';
 import styled from 'styled-components';
 
 const ProfileCard = styled(Card)({
-  display: 'flex',
-  width: '100%',
-  height: '100%',
-  margin: '0 auto',
-  justifyContent: 'center',
-  alignItems: 'center',
-  boxShadow: 'none', // Remove box-shadow
-  border: 'none', // Remove border
-  outline: 'none', // Remove out1line
+  display: 'flex !important',
+  width: '100% !important',
+  height: '100% !important',
+  margin: '0 auto !important',
+  justifyContent: 'center !important',
+  alignItems: 'center !important',
+  boxShadow: 'none !important', // Remove box-shadow
+  border: 'none !important', // Remove border
+  outline: 'none !important', // Remove out1line
   backgroundColor: 'transparent !important',
 });
 
@@ -24,49 +24,49 @@ const ProfileImage = styled(CardMedia)({
 });
 
 const ProfileInfo = styled(CardContent)({
-  display: 'flex',
+  display: 'flex !important',
   flexDirection: 'column',
-  alignItems: 'center',
+  alignItems: 'center !important',
   textAlign: 'center',
 });
 
 const Name = styled(Typography)({
   // color: '#212121',
-  fontWeight: 'bold',
-  fontSize: '24px',
+  fontWeight: 'bold !important',
+  fontSize: '24px !important',
 });
 
 const Desc = styled(Typography)({
   // color: '#666666',
-  fontSize: '18px',
+  fontSize: '18px !important',
 });
 
 const Status = styled('ul')({
-  display: 'flex',
-  justifyContent: 'space-between',
-  maxWidth: '100%',
-  listStyle: 'none',
+  display: 'flex !important',
+  justifyContent: 'space-between !important',
+  maxWidth: '100% !important',
+  listStyle: 'none !important',
   textAlign: 'center',
   lineHeight: '1rem',
 });
 
 const StatusItem = styled.li`
-  margin-right: 1rem;
+  margin-right: 1rem !important;
 `;
 
 const StatusValue = styled(Typography)({
   // color: '#212121',
-  fontWeight: 'bold',
+  fontWeight: 'bold !important',
 });
 
 const StatusText = styled(Typography)({
-  fontSize: '14px',
+  fontSize: '14px !important',
   // color: '#7c7c7d',
 });
 
 const Action = styled('div')({
-  display: 'flex',
-  justifyContent: 'space-between',
+  display: 'flex !important',
+  justifyContent: 'space-between !important',
 });
 
 export {

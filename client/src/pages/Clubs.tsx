@@ -8,7 +8,6 @@ import Box from '@mui/material/Box';
 import Grid1 from '@mui/material/Unstable_Grid2';
 import axios from 'axios';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import Feed from './Feed';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import CreateClubs from '../components/CreateClubs/CreateClubs';
@@ -60,10 +59,6 @@ function Clubs() {
     transform: scale(1.02);
   }
 `;
-
-  StyledCard.propTypes = {
-    flexBasis: PropTypes.string,
-  };
 
   // const HeaderBox = styled.div`
   //   background-color: #e0d0c2;
