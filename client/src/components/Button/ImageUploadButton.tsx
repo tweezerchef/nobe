@@ -17,8 +17,7 @@ function PhotoUpload(props: any) {
   //   };
   const imageSetter = () => {
     if (selectedImage) {
-      setImageUrl(URL.createObjectURL(selectedImage));
-      setClubImage(selectedImage);
+      setClubImage(URL.createObjectURL(selectedImage));
     }
   };
 

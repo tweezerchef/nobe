@@ -25,11 +25,13 @@ async function findOrCreateClub(
 CreateClubRoute.post('/', async (req: Request, res: Response) => {
   const createdBy = req.body.email;
   const { userId } = req.body;
+  console.log('userId', userId);
+  console.log('req.body: ', req.body);
   // image should equl s3 url
   // call amazon get url
   // send image file req.body.image to /amazon/club
   const { image } = req.body;
-  console.log(image);
+  console.log('image: ', image);
 
   // findOrCreateClub(req.body.name, req.body.description, userId, image)
   //   .then(async () => {
