@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import UserInfo from '../SettingsTabs/UserInfo';
+import FavBooksPlaces from '../SettingsTabs/FavBooksPlaces';
 
 interface TabPanelProps {
   // eslint-disable-next-line react/require-default-props
@@ -52,36 +53,44 @@ function VerticalTabs() {
   return (
     <Box
       sx={{
-        flexGrow: 1,
+        flexGrow: 'auto',
         bgcolor: '##fff',
         display: 'flex',
         height: '100vh',
       }}
     >
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: 'divider' }}
+      <Box sx={{
+        borderRight: 1,
+        width: 200,
+        backgroundImage: 'url(https://m.media-amazon.com/images/I/71q3D33qowL._AC_SY879_.jpg)',
+        backgroundSize: 'cover',
+      }}
       >
-        <Tab label="Profile Settings" {...a11yProps(0)} />
-        <Tab label="User Preferences" {...a11yProps(1)} />
-        <Tab label="Favorites" {...a11yProps(2)} />
-        <Tab label="Book Ratings" {...a11yProps(3)} />
-      </Tabs>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={value}
+          onChange={handleChange}
+          aria-label="Vertical tabs example"
+          sx={{
+            borderRight: 1,
+            borderColor: 'divider',
+            width: 200,
+          }}
+        >
+          <Tab sx={{ bgcolor: 'primary.main' }} label="Profile Settings" {...a11yProps(0)} />
+          <Tab label="Favorite Books" {...a11yProps(1)} />
+          <Tab label="Favorite Places" {...a11yProps(2)} />
+        </Tabs>
+      </Box>
       <TabPanel value={value} index={0}>
         <UserInfo />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {/* <ProfileSettings /> */}
+        <FavBooksPlaces />
       </TabPanel>
       <TabPanel value={value} index={2}>
         {/* <SecuritySettings /> */}
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        {/* <NotificationSettings /> */}
       </TabPanel>
     </Box>
   );

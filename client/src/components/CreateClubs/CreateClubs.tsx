@@ -1,15 +1,17 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { Button } from '@material-ui/core';
 import GifSearch from './GifSearch';
 import UserContext from '../../hooks/Context';
+import PhotoUpload from '../Button/ImageUploadButton';
 
 const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
-  const [clubImage, setClubImage] = useState('');
+  const [clubImage, setClubImage] = useState(null);
+  console.log(clubImage);
   const { setClubs } = props;
 
   const userContext = useContext(UserContext);
@@ -29,28 +31,35 @@ const createClubs = (props: any) => {
       return;
     }
 
-    const body = {
-      name: clubName,
-      description: clubDescription,
-      image: clubImage,
-      userId: user?.id,
-      email: user?.email,
-    };
-    try {
-      axios.post('/api/create-club', body)
-        .then((data) => {
-          setClubs(data.data.clubs);
-          setClubName('');
-          setClubDescription('');
-          setClubImage('');
-          return data;
-        }).then((data) => {
-          if (setUser && data?.data?.user && data?.data?.user !== undefined) {
-            setUser(data?.data?.user);
-          }
-        });
-    } catch (error) {
-      console.error(error);
+    // const body = {
+    //   name: clubName,
+    //   description: clubDescription,
+    //   image: clubImage,
+    //   userId: user?.id,
+    //   email: user?.email,
+    // };
+    if (user && user.id && user.email && clubImage) {
+      const data = new FormData();
+      data.append('name', clubName);
+      data.append('description', clubDescription);
+      data.append('userId', user?.id);
+      data.append('email', user?.email);
+      data.append('image', clubImage);
+      try {
+        axios.post('/api/create-club', data)
+          .then((response) => {
+            setClubs(response.data.clubs);
+            setClubName('');
+            setClubDescription('');
+            return response;
+          }).then((response) => {
+            if (setUser && response?.data?.user && response?.data?.user !== undefined) {
+              setUser(response?.data?.user);
+            }
+          });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -86,6 +95,7 @@ const createClubs = (props: any) => {
         required
       />
       <GifSearch setClubImage={setClubImage} />
+      <PhotoUpload setClubImage={setClubImage} />
       <Button variant="contained" size="small" color="primary" onClick={() => handleSubmit()}>
         Create Club
       </Button>
