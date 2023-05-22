@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useState, useContext, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -11,7 +12,7 @@ const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
   const [clubImage, setClubImage] = useState(null);
-  console.log(clubImage);
+  // console.log(clubImage);
   const { setClubs } = props;
 
   const userContext = useContext(UserContext);

@@ -76,9 +76,10 @@ function VerticalTabs() {
             borderRight: 1,
             borderColor: 'divider',
             width: 200,
+            bgcolor: '##fff',
           }}
         >
-          <Tab sx={{ bgcolor: 'primary.main' }} label="Profile Settings" {...a11yProps(0)} />
+          <Tab label="Profile Settings" {...a11yProps(0)} />
           <Tab label="Favorite Books" {...a11yProps(1)} />
           <Tab label="Favorite Places" {...a11yProps(2)} />
         </Tabs>

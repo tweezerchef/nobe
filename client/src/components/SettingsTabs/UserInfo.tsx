@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Button, Container, Slider, TextField, Grid,
@@ -13,6 +13,9 @@ import styled from 'styled-components';
 import { Sheet } from '@mui/joy';
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete';
 import '@geoapify/geocoder-autocomplete/styles/minimal.css';
+import ReactiveButton from 'reactive-button';
+import axios from 'axios';
+import UserContext from '../../hooks/Context';
 
 const UserDetail = styled.div({
   position: 'relative',
@@ -49,12 +52,38 @@ const marks = [
   },
 ];
 function UserInfo() {
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const id = user?.id;
+
   const [image, setImage] = useState('');
 
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [favGenres, setFavGenres] = useState([]);
+  const [favHobbies, setFavHobbies] = useState([]);
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
   const [radius, setRadius] = useState(0);
+  const [buttonState, setButtonState] = useState('idle');
+
+  const updateUserInfo = async () => {
+    setButtonState('loading');
+    try {
+      const res = await axios.put(`/location/${id}/location`, {
+        longitude,
+        latitude,
+        radius,
+      });
+      setTimeout(() => {
+        setButtonState('success');
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -179,10 +208,17 @@ function UserInfo() {
                 </Grid>
               </Grid>
             </Box>
-            <Box sx={{ mt: 4 }}>
-              <Button variant="contained" color="primary" fullWidth>
-                Update Profile
-              </Button>
+            <Box sx={{ mt: 4, width: 'auto' }}>
+              <ReactiveButton
+                rounded
+                size="medium"
+                buttonState={buttonState}
+                idleText="Update User Information"
+                loadingText="Loading"
+                successText="Done"
+                onClick={updateUserInfo}
+                color="blue"
+              />
             </Box>
           </form>
         </UserDetail>

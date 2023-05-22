@@ -24,7 +24,7 @@ import ReadingSpots from './pages/ReadingSpots';
 import Feed from './pages/Feed';
 import BookSearch from './pages/BookSearch';
 import UsersProfile from './pages/UserProfile';
-import UserSettings from './pages/UserSettings';
+import UserSettings from './pages/UserSettingsPage';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface User {
