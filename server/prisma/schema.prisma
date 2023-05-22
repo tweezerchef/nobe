@@ -38,6 +38,7 @@ model User {
   UserBooks          UserBooks[]
   User_Places        User_Places[]
   UserGenre          UserGenre[]
+  UserHobbies        UserHobbies[]
   Conversations      Conversations[]    @relation("conversationMembers")
 }
 
