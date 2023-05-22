@@ -33,22 +33,22 @@ CreateClubRoute.post('/', async (req: Request, res: Response) => {
   const { image } = req.body;
   console.log('image: ', image);
 
-  // findOrCreateClub(req.body.name, req.body.description, userId, image)
-  //   .then(async () => {
-  //     const clubs = await prisma.clubs.findMany({
-  //       include: {
-  //         clubMembers: true,
-  //       },
-  //     });
-  //     const userData = await axios.get(`http://localhost:8080/user?email=${createdBy}`);
-  //     const user = userData.data;
-  //     const response = { clubs, user };
-  //     res.send(response);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //     res.status(500).json({ error: 'Something went wrong' });
-  //   });
+  findOrCreateClub(req.body.name, req.body.description, userId, image)
+    .then(async () => {
+      const clubs = await prisma.clubs.findMany({
+        include: {
+          clubMembers: true,
+        },
+      });
+      const userData = await axios.get(`http://localhost:8080/user?email=${createdBy}`);
+      const user = userData.data;
+      const response = { clubs, user };
+      res.send(response);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: 'Something went wrong' });
+    });
 });
 
 export default CreateClubRoute;
