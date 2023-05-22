@@ -3,8 +3,12 @@ import { Link } from 'react-router-dom';
 import {
   Grid, Card, CardContent, Typography,
 } from '@material-ui/core';
+import Box from '@mui/material/Box';
+import Grid1 from '@mui/material/Unstable_Grid2';
 import axios from 'axios';
 import styled from 'styled-components';
+import Feed from './Feed';
+import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import CreateClubs from '../components/CreateClubs/CreateClubs';
 import { ClubHeader } from './style';
 
@@ -53,7 +57,31 @@ function Clubs() {
   // `;
 
   return (
-    <div>
+    <Box sx={{
+      flexGrow: 1, marginTop: '10px', overflow: 'auto', height: '95vh',
+    }}
+    >
+      <Grid1
+        xs={2.5}
+        sx={{
+          position: 'sticky', top: '0px', height: '98vh', paddingBottom: '8vh',
+        }}
+      >
+        <Box sx={{
+          width: '100%',
+          height: '20vh',
+          overflow: 'clip',
+          backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+        >
+          <HomeUserDisplay />
+        </Box>
+        <Box sx={{ width: '100%', maxHeight: '70vh', overflow: 'auto' }}>
+          <Feed />
+        </Box>
+      </Grid1>
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           {/* <HeaderBox> */}
@@ -108,7 +136,7 @@ function Clubs() {
           </CardContainer>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 }
 
