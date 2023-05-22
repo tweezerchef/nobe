@@ -11,19 +11,11 @@ import UserContext from '../../hooks/Context';
 import { UserBook } from '../../typings/types';
 import Book from '../Book/HomeBook';
 
-interface Book {
-  books: {
-    id: string;
-    title: string;
-    author: string;
-    image: string;
-  }
-  id: string;
-  wishlist: boolean;
-  owned: boolean;
+interface HomeWishListProps {
+  nearMeBooks: string[];
 }
 
-function HomeWishList() {
+function HomeWishList({ nearMeBooks }: HomeWishListProps) {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
@@ -155,6 +147,7 @@ function HomeWishList() {
                         onClose={handleBigBookClose}
                         showBigBook={showBigBook && book === selectedBook}
                         bigBookPosition={bigBookPosition}
+                        nearMeBooks={nearMeBooks}
                       />
                     </Box>
                   ))}

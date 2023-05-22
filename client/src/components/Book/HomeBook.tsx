@@ -11,12 +11,26 @@ import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
 import BigBook from './BookBig';
 import LendingLibraryButton from '../Button/LendingLibraryButton';
+import NearMeButton from '../Button/NearMeButton';
+import { Book } from '../../typings/types';
 
 interface BigBookOverlayProps {
   bigBookPosition: {
     left: number;
     top: number;
   };
+}
+interface HomeBookProps {
+  book: Book;
+  onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, book: Book) => void;
+  showBigBook: boolean;
+  bigBookPosition: {
+    left: number;
+    top: number;
+  };
+  onClose: () => void;
+  nearMeBooks: string[];
+
 }
 
 const useStyles = makeStyles({
@@ -29,7 +43,7 @@ const useStyles = makeStyles({
 
 const Book = React.memo((props: any) => {
   const classes = useStyles();
-  const { book } = props;
+  const { book, nearMeBooks } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
@@ -82,7 +96,7 @@ const Book = React.memo((props: any) => {
             <img src="https://i.imgur.com/XrUd1L2.jpg" loading="lazy" alt="" />
           )}
         </AspectRatio>
-
+        <NearMeButton book={book} nearMeBooks={nearMeBooks} />
         <LendingLibraryButton book={book} />
         <WishListButton book={book} />
 

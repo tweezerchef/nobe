@@ -10,17 +10,17 @@ import UserContext from '../../hooks/Context';
 import QuoteDisplay from '../QuoteDisplay/QuoteDisplay';
 import Book from '../Book/HomeBook';
 
-interface Book {
-  books: {
-    id: string;
-    title: string;
-    author: string;
-    image: string;
-  }
-  id: string;
-  wishlist: boolean;
-  owned: boolean;
-}
+// interface Book {
+//   books: {
+//     id: string;
+//     title: string;
+//     author: string;
+//     image: string;
+//   }
+//   id: string;
+//   wishlist: boolean;
+//   owned: boolean;
+// }
 
 function HomeRecommendedBooks() {
   const [currentPage, setCurrentPage] = useState(0);

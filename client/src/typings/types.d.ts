@@ -2,6 +2,7 @@ import { Friendship } from '@prisma/client';
 import Activity from '../../../server/routes/activity';
 import DirectMessages from '../../../server/routes/directMessages';
 // import { User } from '../hooks/ChatContext';
+import UserBooks from '../../../server/routes/userbooks';
 
 interface Discussion {
   id: string;
@@ -112,6 +113,7 @@ interface Book {
     author: string;
     image: string;
   }
+  UserBooks: UserBook[];
   id: string;
   wishlist: boolean;
   owned: boolean;

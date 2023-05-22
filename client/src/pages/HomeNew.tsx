@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import axios from 'axios';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
+import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
 import HomeWishList from '../components/HomePage/HomeWishList';
@@ -15,6 +17,31 @@ import HomeFriends from '../components/HomePage/Friends';
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 
 function HomeNew() {
+  const [nearMeBooks, setNearMeBooks] = useState<any[]>([]);
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+
+  const getNearMeBooks = async () => {
+    // Get user's latitude, longitude, and radius from the user object
+    if (!user) return;
+    const { latitude, longitude, radius } = user;
+
+    // Make the request to fetch nearMeBooks with query parameters
+    const response = await axios.get('/location/locations/login', {
+      params: {
+        lat: latitude,
+        lon: longitude,
+        radius,
+      },
+    });
+
+    setNearMeBooks(response.data);
+  };
+  useEffect(() => {
+    getNearMeBooks();
+  }, [user]);
+
   const colWidth = {
     xs: 12, sm: 6, md: 4, lg: 3,
   } as const;
@@ -91,7 +118,7 @@ function HomeNew() {
               </Chip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '37vh' }}>
-              <HomeWishList />
+              <HomeWishList nearMeBooks={nearMeBooks} />
             </Box>
             <StyledDivider textAlign="left">
               <FlameStyledChip size="lg">

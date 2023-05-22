@@ -4,7 +4,6 @@ import React, {
 import axios from 'axios';
 import Stack from '@mui/joy/Stack';
 import Divider from '@mui/material/Divider';
-import Chip from '@mui/joy/Chip';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import Box from '@mui/material/Box';
@@ -14,18 +13,6 @@ import TextField from '@mui/material/TextField';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
 import Book from '../Book/HomeBook';
-
-interface Book {
-  books: {
-    id: string;
-    title: string;
-    author: string;
-    image: string;
-  }
-  id: string;
-  wishlist: boolean;
-  owned: boolean;
-}
 
 function HomeBuildRecomendations() {
   const [currentPage, setCurrentPage] = useState(0);
