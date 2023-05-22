@@ -24,7 +24,7 @@ import ReadingSpots from './pages/ReadingSpots';
 import Feed from './pages/Feed';
 import BookSearch from './pages/BookSearch';
 import UsersProfile from './pages/UserProfile';
-import UserForm from './pages/UserForm';
+import UserSettings from './pages/UserSettings';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface User {
@@ -65,10 +65,11 @@ function Router() {
       <Route path="/user-reco-input" element={<UserRecoInputPage />} />
       <Route path="/recommended" element={<Recommended />} />
       <Route path="/reading-spots" element={<ReadingSpots />} />
+      <Route path="/reading-spots/:linkPlaceId?" element={<ReadingSpots />} />
       <Route path="/feed" element={<Feed />} />
       <Route path="/booksearch" element={<BookSearch />} />
       <Route path="/usersprofile" element={<UsersProfile />} />
-      <Route path="/userform" element={<UserForm />} />
+      <Route path="/usersettings" element={<UserSettings />} />
     </Routes>
   );
 }

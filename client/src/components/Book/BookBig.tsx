@@ -85,6 +85,7 @@ function BigBook(props: any) {
     <Modal
       aria-labelledby="modal-title"
       aria-describedby="modal-desc"
+      // @ts-ignore
       open={open}
       // onClose={() => setOpen(false)}
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
@@ -159,7 +160,7 @@ function BigBook(props: any) {
               borderRadius: '50%',
               bgcolor: 'background.body',
             }}
-            // onClick={() => setOpen(false)}
+            onClick={handleOnClick}
           />
           <Box
             sx={{

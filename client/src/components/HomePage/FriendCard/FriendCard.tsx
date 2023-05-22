@@ -5,9 +5,10 @@ import Box from '@mui/material/Box';
 
 import {
   ProfileCard, StatusText, StatusValue, Status,
-  Name, ProfileInfo, StatusItem,
+  Name, ProfileInfo, StatusItem, AvatarWrapper,
 } from './homeStyle';
 import { User } from '../../../typings/types';
+import { StyledDivider } from '../PlaceCard/styles';
 
 interface FriendCardProps {
   userFriend: User;
@@ -18,47 +19,51 @@ function FriendCard({ userFriend }: FriendCardProps) {
   const owned = 10;
   const wishlist = 10;
   return (
-    <Box sx={{ flexGrow: 1 }} maxWidth="100%" height="100%">
-      <ProfileCard>
+  // <Box sx={{ flexGrow: 1 }} maxWidth="100%" maxHeight="100%">
+    <ProfileCard>
+      <AvatarWrapper>
         <Link to={`/profile/${user?.id}`}>
           <Avatar
             src={user?.picture}
             alt={user?.firstName}
             style={{
-              width: '5rem', height: '5rem', marginLeft: '10px', marginTop: '10px',
+              width: '5rem', height: '5rem',
             }}
           />
         </Link>
-        <ProfileInfo>
-          <Name variant="h2">{user?.firstName}</Name>
-          {/* <Desc>{user?.description}</Desc> */}
-          <Status>
-            <StatusItem>
-              <StatusValue>{user?.Activity.length}</StatusValue>
-              <StatusText>Activity</StatusText>
-            </StatusItem>
-            <StatusItem>
-              <StatusValue>{user?.Posts.length}</StatusValue>
-              <StatusText>Posts</StatusText>
-            </StatusItem>
-            <StatusItem>
-              <StatusValue>{user?.clubMembers.length}</StatusValue>
-              <StatusText>Clubs</StatusText>
-            </StatusItem>
-          </Status>
-          <Status>
-            <StatusItem>
-              <StatusValue>{owned}</StatusValue>
-              <StatusText>Inventory</StatusText>
-            </StatusItem>
-            <StatusItem>
-              <StatusValue>{wishlist}</StatusValue>
-              <StatusText>Wish List</StatusText>
-            </StatusItem>
-          </Status>
-        </ProfileInfo>
-      </ProfileCard>
-    </Box>
+
+      </AvatarWrapper>
+      <ProfileInfo>
+        <StyledDivider />
+        <Name variant="h2">{user?.firstName}</Name>
+        {/* <Desc>{user?.description}</Desc> */}
+        <Status>
+          <StatusItem>
+            <StatusValue>{user?.Activity.length}</StatusValue>
+            <StatusText>Activity</StatusText>
+          </StatusItem>
+          <StatusItem>
+            <StatusValue>{user?.Posts.length}</StatusValue>
+            <StatusText>Posts</StatusText>
+          </StatusItem>
+          <StatusItem>
+            <StatusValue>{user?.clubMembers.length}</StatusValue>
+            <StatusText>Clubs</StatusText>
+          </StatusItem>
+        </Status>
+        <Status>
+          <StatusItem>
+            <StatusValue>{owned}</StatusValue>
+            <StatusText>Inventory</StatusText>
+          </StatusItem>
+          <StatusItem>
+            <StatusValue>{wishlist}</StatusValue>
+            <StatusText>Wish List</StatusText>
+          </StatusItem>
+        </Status>
+      </ProfileInfo>
+    </ProfileCard>
+  // </Box>
   );
 }
 

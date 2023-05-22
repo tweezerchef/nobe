@@ -15,23 +15,61 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
 import Book from '../Book/HomeBook';
 
+interface Book {
+  books: {
+    id: string;
+    title: string;
+    author: string;
+    image: string;
+  }
+  id: string;
+  wishlist: boolean;
+  owned: boolean;
+}
+
 function HomeBuildRecomendations() {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [books, setBooks] = useState<Book[]>([]);
   const [searchText, setSearchText] = useState('');
+  const [showBigBook, setShowBigBook] = useState(false);
+  const [bigBookPosition, setBigBookPosition] = useState({ top: 0, left: 0 });
+  const [selectedBook, setSelectedBook] = useState(null);
 
-  interface Book {
-    books: {
-      id: string;
-      title: string;
-      author: string;
-      image: string;
+  const handleBookClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, book: any) => {
+    const rect = (e.target as Element).getBoundingClientRect();
+    let bigBookWidth = window.innerWidth * 0.75; // This should match your BigBook width style
+    let bigBookHeight = window.innerHeight * 0.85; // This should match your BigBook height style
+
+    // Apply maxWidth and maxHeight restrictions
+    bigBookWidth = Math.min(bigBookWidth, 665);
+    bigBookHeight = Math.min(bigBookHeight, 850);
+
+    // Apply minWidth and minHeight restrictions (values are arbitrary, adjust as needed)
+    bigBookWidth = Math.max(bigBookWidth, 200);
+    bigBookHeight = Math.max(bigBookHeight, 200);
+
+    let { left } = rect;
+    let { top } = rect;
+
+    // If BigBook would overflow the right edge, align it to the right with some padding
+    if (window.innerWidth - left < bigBookWidth) {
+      left = window.innerWidth - bigBookWidth - 40;
     }
-    id: string;
-    wishlist: boolean;
-    owned: boolean;
-  }
+
+    // If BigBook would overflow the bottom edge, align it to the bottom with some padding
+    if (window.innerHeight - top < bigBookHeight) {
+      top = window.innerHeight - bigBookHeight - 20;
+    }
+
+    setBigBookPosition({ top, left });
+    setSelectedBook(book);
+    setShowBigBook(true);
+  };
+  const handleBigBookClose = () => {
+    setShowBigBook(false);
+  };
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
   };
@@ -61,7 +99,7 @@ function HomeBuildRecomendations() {
   };
 
   useEffect(() => {
-    // getRecommendations();
+    getRecommendations();
   }, []);
 
   return (
@@ -157,7 +195,13 @@ function HomeBuildRecomendations() {
                   // eslint-disable-next-line @typescript-eslint/no-shadow
                     .map((book: Book) => (
                       <Box>
-                        <Book book={book} />
+                        <Book
+                          book={book}
+                          onClick={handleBookClick}
+                          onClose={handleBigBookClose}
+                          showBigBook={showBigBook && book === selectedBook}
+                          bigBookPosition={bigBookPosition}
+                        />
                       </Box>
                     ))}
                 </Stack>

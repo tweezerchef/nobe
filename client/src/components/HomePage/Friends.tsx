@@ -27,12 +27,11 @@ function FriendsComponent() {
   const user = userContext?.user;
 
   const getFriends = () => {
-    console.log('friends', user);
     if (user?.friendships) {
       setFriends(user?.friendships);
     }
   };
-  const friendsPerPage = 4;
+  const friendsPerPage = 3;
 
   const handleNextPage = () => {
     setSlideDirection('left');
@@ -56,9 +55,9 @@ function FriendsComponent() {
         alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center',
+        justifyItems: 'center',
         width: '100%',
         height: '300px',
-        paddingBottom: '0',
       }}
     >
       <IconButton

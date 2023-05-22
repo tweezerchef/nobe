@@ -3,16 +3,16 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
-import { padding } from '@mui/system';
+import Diversity2Icon from '@mui/icons-material/Diversity2';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
 import HomeWishList from '../components/HomePage/HomeWishList';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import HomePlaces from '../components/HomePage/HomePlaces';
-import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 import HomeNearMe from '../components/HomePage/HomeNearMe';
 import HomeExploreBooks from '../components/HomePage/HomeExploreBooks';
 import HomeFriends from '../components/HomePage/Friends';
+import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 
 function HomeNew() {
   const colWidth = {
@@ -57,7 +57,6 @@ function HomeNew() {
           <Box sx={{
             width: '100%',
             height: '20vh',
-            overflow: 'clip',
             backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -137,16 +136,24 @@ function HomeNew() {
                 backgroundPosition: 'top',
               }}
             />
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '33vh' /* adjust this */ }}>
-              {/* <HomeExploreBooks /> */}
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', maxHeight: '40vh' /* adjust this */ }}>
+              <HomeExploreBooks />
             </Box>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '25vh' /* adjust this */ }}>
+            <StyledDivider textAlign="left">
+              <Chip size="lg">
+                <Diversity2Icon />
+                Friends
+              </Chip>
+            </StyledDivider>
+            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', maxHeight: '35vh' /* adjust this */ }}>
               <HomeFriends />
             </Box>
             <Box
               sx={{
+                paddingTop: '0',
+                marginTop: '0',
                 width: '100%',
-                height: '35vh',
+                height: '30vh',
                 backgroundImage: 'url(https://i.imgur.com/mVbf3MT.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: '50% 70%',

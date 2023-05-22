@@ -189,7 +189,7 @@ const Form: React.FC = () => {
           )}
           {activeStep === 1 && (
             <>
-              <Typography variant="h6">Step 2 - Favorite Books & Places to Read</Typography>
+              <Typography variant="h6">Step 2 - Add A Picture</Typography>
               <TextField
                 label="Email"
                 name="email"
@@ -201,7 +201,7 @@ const Form: React.FC = () => {
           )}
           {activeStep === 2 && (
             <>
-              <Typography variant="h6">Step 3 - Favorite Genres & Hobbies</Typography>
+              <Typography variant="h6">Step 3 - Favorite Books & Places to Read</Typography>
               <TextField
                 label="Phone"
                 name="phone"
@@ -213,7 +213,7 @@ const Form: React.FC = () => {
           )}
           {activeStep === 3 && (
             <>
-              <Typography variant="h6">Step 4</Typography>
+              <Typography variant="h6">Step 4 - Favorite Genres & Hobbies</Typography>
               <TextField
                 label="Phone"
                 name="phone"

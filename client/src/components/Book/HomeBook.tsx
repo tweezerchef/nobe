@@ -93,7 +93,10 @@ const Book = React.memo((props: any) => {
           mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical',
         }}
       >
-        {book.title}
+        {' '}
+        <span onClick={handleOnClick}>
+          {book.title}
+        </span>
       </Typography>
       <Typography
         level="body2"
