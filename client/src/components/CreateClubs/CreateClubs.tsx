@@ -31,27 +31,35 @@ const createClubs = (props: any) => {
       return;
     }
 
-    const body = {
-      name: clubName,
-      description: clubDescription,
-      image: clubImage,
-      userId: user?.id,
-      email: user?.email,
-    };
-    try {
-      axios.post('/api/create-club', body)
-        .then((data) => {
-          setClubs(data.data.clubs);
-          setClubName('');
-          setClubDescription('');
-          return data;
-        }).then((data) => {
-          if (setUser && data?.data?.user && data?.data?.user !== undefined) {
-            setUser(data?.data?.user);
-          }
-        });
-    } catch (error) {
-      console.error(error);
+    // const body = {
+    //   name: clubName,
+    //   description: clubDescription,
+    //   image: clubImage,
+    //   userId: user?.id,
+    //   email: user?.email,
+    // };
+    if (user && user.id && user.email && clubImage) {
+      const data = new FormData();
+      data.append('name', clubName);
+      data.append('description', clubDescription);
+      data.append('userId', user?.id);
+      data.append('email', user?.email);
+      data.append('image', clubImage);
+      try {
+        axios.post('/api/create-club', data);
+      // .then((response) => {
+      //   setClubs(response.data.clubs);
+      //   setClubName('');
+      //   setClubDescription('');
+      //   return response;
+      // }).then((response) => {
+      //   if (setUser && response?.data?.user && response?.data?.user !== undefined) {
+      //     setUser(response?.data?.user);
+      //   }
+      // });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 

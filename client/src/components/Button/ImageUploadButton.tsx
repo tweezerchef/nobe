@@ -17,7 +17,8 @@ function PhotoUpload(props: any) {
   //   };
   const imageSetter = () => {
     if (selectedImage) {
-      setClubImage(URL.createObjectURL(selectedImage));
+      setClubImage(selectedImage);
+      //  setClubImage(URL.createObjectURL(selectedImage));
     }
   };
 
@@ -27,6 +28,7 @@ function PhotoUpload(props: any) {
         setError('File must be in JPEG/JNP format');
         return;
       }
+      setImageUrl(URL.createObjectURL(selectedImage));
       imageSetter();
     }
   }, [selectedImage]);
