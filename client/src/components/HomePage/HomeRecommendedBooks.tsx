@@ -10,26 +10,64 @@ import UserContext from '../../hooks/Context';
 import QuoteDisplay from '../QuoteDisplay/QuoteDisplay';
 import Book from '../Book/HomeBook';
 
+interface Book {
+  books: {
+    id: string;
+    title: string;
+    author: string;
+    image: string;
+  }
+  id: string;
+  wishlist: boolean;
+  owned: boolean;
+}
+
 function HomeRecommendedBooks() {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showBigBook, setShowBigBook] = useState(false);
+  const [bigBookPosition, setBigBookPosition] = useState({ top: 0, left: 0 });
+  const [selectedBook, setSelectedBook] = useState(null);
+
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
 
-  interface Book {
-    books: {
-      id: string;
-      title: string;
-      author: string;
-      image: string;
+  const handleBookClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, book: any) => {
+    const rect = (e.target as Element).getBoundingClientRect();
+    let bigBookWidth = window.innerWidth * 0.75; // This should match your BigBook width style
+    let bigBookHeight = window.innerHeight * 0.85; // This should match your BigBook height style
+
+    // Apply maxWidth and maxHeight restrictions
+    bigBookWidth = Math.min(bigBookWidth, 665);
+    bigBookHeight = Math.min(bigBookHeight, 850);
+
+    // Apply minWidth and minHeight restrictions (values are arbitrary, adjust as needed)
+    bigBookWidth = Math.max(bigBookWidth, 200);
+    bigBookHeight = Math.max(bigBookHeight, 200);
+
+    let { left } = rect;
+    let { top } = rect;
+
+    // If BigBook would overflow the right edge, align it to the right with some padding
+    if (window.innerWidth - left < bigBookWidth) {
+      left = window.innerWidth - bigBookWidth - 40;
     }
-    id: string;
-    wishlist: boolean;
-    owned: boolean;
-  }
+
+    // If BigBook would overflow the bottom edge, align it to the bottom with some padding
+    if (window.innerHeight - top < bigBookHeight) {
+      top = window.innerHeight - bigBookHeight - 20;
+    }
+
+    setBigBookPosition({ top, left });
+    setSelectedBook(book);
+    setShowBigBook(true);
+  };
+  const handleBigBookClose = () => {
+    setShowBigBook(false);
+  };
 
   const getRecommendations = () => {
     axios.get(`/recommendations/recommended/10/?id=${id}`).then((res) => setBooks(res.data)).then(() => setLoading(false));
@@ -47,7 +85,7 @@ function HomeRecommendedBooks() {
   };
 
   useEffect(() => {
-    // getRecommendations();
+    getRecommendations();
   }, []);
 
   return (
@@ -104,7 +142,13 @@ function HomeRecommendedBooks() {
                   // eslint-disable-next-line @typescript-eslint/no-shadow
                   .map((book: Book) => (
                     <Box key={book.id}>
-                      <Book book={book} />
+                      <Book
+                        book={book}
+                        onClick={handleBookClick}
+                        onClose={handleBigBookClose}
+                        showBigBook={showBigBook && book === selectedBook}
+                        bigBookPosition={bigBookPosition}
+                      />
                     </Box>
                   ))}
               </Stack>
