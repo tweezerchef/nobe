@@ -4,10 +4,14 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@material-ui/core';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Unstable_Grid2';
 import Avatar from '@mui/material/Avatar';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
+import Feed from './Feed';
+import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import UserContext from '../hooks/Context';
 import { ClubHeader, StyledTextarea } from './style';
 import '../styles/discussionPostsStyles.css';
@@ -37,6 +41,10 @@ function DiscussionPosts() {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const userId = user?.id;
+
+  const colWidth = {
+    xs: 12, sm: 6, md: 4, lg: 3,
+  } as const;
 
   useEffect(() => {
     async function getPosts() {
@@ -95,72 +103,135 @@ function DiscussionPosts() {
   }
 
   return (
-    <div className="posts-page">
-      {clubName && (
-        <ClubHeader>
-          <Link
-            to={`/clubs/${clubId}?name=${encodeURIComponent(clubName)}`}
-            style={{ color: 'black' }}
-            className="link"
+    <Box sx={{
+      flexGrow: 1, marginTop: '10px', overflow: 'auto', height: '100vh',
+    }}
+    >
+      <Grid
+        container
+        spacing={0}
+        sx={(theme) => ({
+          '--Grid-borderWidth': '1px',
+          borderTop: 'var(--Grid-borderWidth) solid',
+          borderColor: 'divider',
+          '& > div': {
+            borderRight: 'var(--Grid-borderWidth) solid',
+            borderBottom: 'var(--Grid-borderWidth) solid',
+            borderColor: 'divider',
+            ...(Object.keys(colWidth) as Array<keyof typeof colWidth>).reduce(
+              (result, key) => ({
+                ...result,
+                [`&:nth-of-type(${12 / colWidth[key]}n)`]: {
+                  [theme.breakpoints.only(key)]: {
+                    borderRight: 'none',
+                  },
+                },
+              }),
+              {},
+            ),
+          },
+        })}
+      >
+        <Grid
+          xs={2.5}
+          sx={{
+            position: 'sticky', top: '0px', height: '98vh', paddingBottom: '8vh',
+          }}
+        >
+          <Box sx={{
+            width: '100%',
+            height: '20vh',
+            overflow: 'clip',
+            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
           >
-            {clubName}
-          </Link>
-          {' '}
-          Thread
-        </ClubHeader>
-      )}
-      <ClubHeader>{discussionTitle}</ClubHeader>
-      {posts?.map((post) => (
-        <div className="post">
-          <div className="post-content" key={post.id}>
-            <div className="brown-box">
-              <div className="post-info-container">
-                <Link to={`/profile/${post.userId}`}>
-                  <Avatar
-                    src={post.user?.picture}
-                    alt={post.user?.username}
-                    className="avatar"
-                  />
-                </Link>
-                <Link to={`/profile/${post.userId}`} className="username-link">
-                  {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
-                </Link>
-                <div className="date-time">
-                  {moment(post.createdAt).format('h:mm a MM/DD/YY')}
+            <HomeUserDisplay />
+          </Box>
+          <Box sx={{ width: '100%', maxHeight: '70vh', overflow: 'auto' }}>
+            <Feed />
+          </Box>
+        </Grid>
+        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
+          <Box
+            sx={{
+              width: '100%',
+              height: '20vh',
+              backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
+          <div className="posts-page">
+            {clubName && (
+            <ClubHeader>
+              <Link
+                to={`/clubs/${clubId}?name=${encodeURIComponent(clubName)}`}
+                style={{ color: 'black' }}
+                className="link"
+              >
+                {clubName}
+              </Link>
+              {' '}
+              Thread
+            </ClubHeader>
+            )}
+            <ClubHeader>{discussionTitle}</ClubHeader>
+            {posts?.map((post) => (
+              <div className="post">
+                <div className="post-content" key={post.id}>
+                  <div className="brown-box">
+                    <div className="post-info-container">
+                      <Link to={`/profile/${post.userId}`}>
+                        <Avatar
+                          src={post.user?.picture}
+                          alt={post.user?.username}
+                          className="avatar"
+                        />
+                      </Link>
+                      <Link to={`/profile/${post.userId}`} className="username-link">
+                        {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
+                      </Link>
+                      <div className="date-time">
+                        {moment(post.createdAt).format('h:mm a MM/DD/YY')}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="post-body">
+                    {post.body}
+                    {post.userId === userId && (
+                    <Stack direction="row" spacing={1} className="delete-icon">
+                      <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Stack>
+                    )}
+                  </div>
                 </div>
               </div>
+            ))}
+            <div className="form-div">
+              <form onSubmit={handleSubmit}>
+                <div className="input-container">
+                  Comment:
+                  <StyledTextarea
+                    minRows={8}
+                    className="text-area"
+                    value={newPost}
+                    onChange={(event) => setNewPost(event.target.value)}
+                  />
+                </div>
+                <div>
+                  <Button className="post-button" type="submit" variant="contained" size="small" style={{ marginTop: 5 }}>Post</Button>
+                </div>
+              </form>
             </div>
-
-            <div className="post-body">
-              {post.body}
-              {post.userId === userId && (
-              <Stack direction="row" spacing={1} className="delete-icon">
-                <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
-                  <DeleteIcon />
-                </IconButton>
-              </Stack>
-              )}
-            </div>
           </div>
-        </div>
-      ))}
-      <div className="form-div">
-        <form onSubmit={handleSubmit}>
-          <div className="input-container">
-            Comment:
-            <StyledTextarea
-              minRows={8}
-              className="text-area"
-              value={newPost}
-              onChange={(event) => setNewPost(event.target.value)}
-            />
-          </div>
-          <div>
-            <Button className="post-button" type="submit" variant="contained" size="small" style={{ marginTop: 5 }}>Post</Button>
-          </div>
-        </form>
-      </div>
-    </div>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
 

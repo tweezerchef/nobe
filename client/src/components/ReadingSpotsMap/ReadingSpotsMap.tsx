@@ -14,7 +14,6 @@ import {
   ListItemButton,
   Typography,
 } from '@mui/material';
-import { toast } from 'react-toastify';
 import axios from 'axios';
 import Places from './places';
 import '../../styles/mapstyles.css';
@@ -24,8 +23,15 @@ import { Place } from '../../typings/types';
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
+interface ReadingSpotsProps {
+  linkPlaceId?: string;
+}
 
-function ReadingSpotsMap() {
+function ReadingSpotsMap(props: ReadingSpotsProps) {
+  const { linkPlaceId } = props;
+  console.log(props);
+  console.log('poop');
+  console.log(linkPlaceId);
   const [latlng, setLatLng] = useState<LatLngLiteral>();
   const [location, setLocation] = useState<string>('');
   const [showInfoWindow, setShowInfoWindow] = useState(false);
@@ -35,7 +41,7 @@ function ReadingSpotsMap() {
   const [description, setDescription] = useState<string>('');
   const [isAddingDescription, setIsAddingDescription] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [placeId, setPlaceId] = useState<string>('ChIJZYIRslSkIIYRtNMiXuhbBts');
+  const [placeId, setPlaceId] = useState<string>(linkPlaceId || 'ChIJZYIRslSkIIYRtNMiXuhbBts');
   const [userPlaces, setUserPlaces] = useState<Place[]>([]);
 
   const userContext = useContext(UserContext);

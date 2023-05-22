@@ -6,15 +6,21 @@ import Button from '@mui/material/Button';
 import styled from 'styled-components';
 
 const ProfileCard = styled(Card)({
+  width: '20vw',
+  height: '25vh',
+  margin: '10px',
+  boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+  alignContent: 'center',
+  justifyContent: 'center',
+  justifyItems: 'center',
+  backgroundColor: '#f5f5f5',
+});
+
+const AvatarWrapper = styled('div')({
   display: 'flex',
-  width: '100%',
-  height: '100%',
-  margin: '0 auto',
   justifyContent: 'center',
   alignItems: 'center',
-  boxShadow: 'none', // Remove box-shadow
-  border: 'none', // Remove border
-  outline: 'none', // Remove outline
+  margin: '1rem',
 });
 
 const ProfileImage = styled(CardMedia)({
@@ -26,6 +32,7 @@ const ProfileInfo = styled(CardContent)({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  alignContent: 'start',
   textAlign: 'center',
 });
 
@@ -70,5 +77,5 @@ const Action = styled('div')({
 
 export {
   ProfileCard, Action, StatusText, StatusValue, Status,
-  Name, Desc, ProfileInfo, ProfileImage, StatusItem,
+  Name, Desc, ProfileInfo, ProfileImage, StatusItem, AvatarWrapper,
 };

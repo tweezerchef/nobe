@@ -86,8 +86,8 @@ const createClubs = (props: any) => {
         required
       />
       <GifSearch setClubImage={setClubImage} />
-      <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
-        Create a new club
+      <Button variant="contained" size="small" color="primary" onClick={() => handleSubmit()}>
+        Create Club
       </Button>
     </Box>
   );

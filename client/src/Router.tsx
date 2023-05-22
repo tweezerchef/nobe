@@ -11,7 +11,7 @@ import UserContext from './hooks/Context';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Clubs from './pages/Clubs';
+import ClubsNew from './pages/ClubsNew';
 import ClubDiscussion from './pages/ClubDiscussion';
 import DiscussionPosts from './pages/DiscussionPosts';
 import Locations from './pages/Nearme';
@@ -55,7 +55,7 @@ function Router() {
         path="/login"
         element={user?.email ? <Navigate to="/home" /> : <Login />}
       />
-      <Route path="/clubs" element={<Clubs />} />
+      <Route path="/clubs" element={<ClubsNew />} />
       <Route path="/clubs/:id" element={<ClubDiscussion />} />
       <Route path="/clubs/:id/discussion/:id" element={<DiscussionPosts />} />
       <Route path="/trending" element={<Trending />} />
@@ -65,6 +65,7 @@ function Router() {
       <Route path="/user-reco-input" element={<UserRecoInputPage />} />
       <Route path="/recommended" element={<Recommended />} />
       <Route path="/reading-spots" element={<ReadingSpots />} />
+      <Route path="/reading-spots/:linkPlaceId?" element={<ReadingSpots />} />
       <Route path="/feed" element={<Feed />} />
       <Route path="/booksearch" element={<BookSearch />} />
       <Route path="/usersprofile" element={<UsersProfile />} />
