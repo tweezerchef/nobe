@@ -17,10 +17,11 @@ const ProfileCard = styled(Card)({
 });
 
 const AvatarWrapper = styled('div')({
+  marginTop: '1rem',
   display: 'flex',
   justifyContent: 'center',
+  alignContent: 'center',
   alignItems: 'center',
-  margin: '1rem',
 });
 
 const ProfileImage = styled(CardMedia)({
