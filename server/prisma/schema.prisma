@@ -181,9 +181,16 @@ model Books {
   Activity    Activity[]
   Clubs_Books Clubs_Books[]
   Discussions Discussions[]
-  genre       Genre[]
+  Genre       Genre[]
   Posts       Posts[]
   UserBooks   UserBooks[]
+}
+
+model Genre {
+  id      String @id @default(uuid())
+  genre   String
+  booksId String
+  Books   Books  @relation(fields: [booksId], references: [id])
 }
 
 model bookdata {
