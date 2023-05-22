@@ -76,7 +76,7 @@ async function findBook(
 }
 
 async function findRandomRows(limit: number) {
-  const allRows = await prisma.bookdata.findMany();
+  const allRows = await prisma.Books.findMany();
   const shuffledRows = allRows.sort(() => 0.5 - Math.random());
   const randomRows = shuffledRows.slice(0, limit);
   return randomRows;
@@ -86,20 +86,20 @@ Recommendations.get('/random', async (req : Request, res: Response) => {
   try {
     const amazonBooks = await findRandomRows(30);
 
-    const returnArray = await Promise.all(amazonBooks.map(async (book: any) => {
-      // First, find the book in our database
-      const existingBook = await findBook(book.ISBN10);
+    // const returnArray = await Promise.all(amazonBooks.map(async (book: any) => {
+    //   // First, find the book in our database
+    //   const existingBook = await findBook(book.ISBN10);
 
-      if (existingBook) {
-        return existingBook;
-      }
-      // If not, get data from Google Books API
-      const data = await axios.get(`http://localhost:8080/google-books?title=${book.title}`);
-      const googleBook = data.data;
-      return googleBook;
-    }));
+    //   if (existingBook) {
+    //     return existingBook;
+    //   }
+    //   // If not, get data from Google Books API
+    //   const data = await axios.get(`http://localhost:8080/google-books?title=${book.title}`);
+    //   const googleBook = data.data;
+    //   return googleBook;
+    // }));
 
-    res.send(returnArray);
+    res.send(amazonBooks);
   } catch (error) {
     // console.error(error);
     res.status(500).send(error);

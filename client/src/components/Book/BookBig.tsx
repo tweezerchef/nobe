@@ -160,7 +160,7 @@ function BigBook(props: any) {
               borderRadius: '50%',
               bgcolor: 'background.body',
             }}
-            // onClick={() => setOpen(false)}
+            onClick={handleOnClick}
           />
           <Box
             sx={{
