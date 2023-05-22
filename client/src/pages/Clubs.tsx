@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import {
   Grid, Card, CardContent, Typography,
 } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/material/Box';
 import Grid1 from '@mui/material/Unstable_Grid2';
@@ -23,10 +30,19 @@ export interface Club {
 
 function Clubs() {
   const [clubs, setClubs] = useState<Club[]>([]);
+  const [open, setOpen] = React.useState(false);
 
   const colWidth = {
     xs: 12, sm: 6, md: 4, lg: 3,
   } as const;
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     async function fetchClubs() {
@@ -53,6 +69,7 @@ function Clubs() {
   const StyledCard = styled(Card) <{ flexBasis?: string }>`
   flex-basis: ${(props) => props.flexBasis || '33%'};
   margin: 10px;
+  boxShadow: 0px 0px 25px  rgba(37, 37, 37, 0.6);
   transition: transform 0.2s ease-in-out;
 
   &:hover {
@@ -131,20 +148,35 @@ function Clubs() {
           />
           <div>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
-                {/* <HeaderBox> */}
-                <ClubHeader>Create a Club</ClubHeader>
-                {/* </HeaderBox> */}
-                <CreateClubs setClubs={setClubs} />
-              </Grid>
+              {/* <Grid item xs={12} md={4}> */}
 
-              <Grid item xs={12} md={8}>
+              {/* <HeaderBox> */}
+              {/* <ClubHeader>Create a Club</ClubHeader> */}
+              {/* </HeaderBox> */}
+
+              {/* <Button variant="outlined" onClick={handleClickOpen}>
+                  Create a Club
+                </Button>
+                <Dialog open={open} onClose={handleClose}>
+                  <CreateClubs setClubs={setClubs} />
+                </Dialog>
+              </Grid> */}
+
+              <Grid item xs={12} md={12}>
                 {/* <HeaderBox> */}
                 <ClubHeader>Book Clubs</ClubHeader>
                 {/* </HeaderBox> */}
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
+                  <Button variant="contained" onClick={handleClickOpen}>
+                    Create a Club
+                  </Button>
+                </Box>
+                <Dialog open={open} onClose={handleClose}>
+                  <CreateClubs setClubs={setClubs} />
+                </Dialog>
                 <CardContainer>
                   {clubs && clubs.length > 0 && clubs.map((club) => (
-                    <StyledCard key={club.id} flexBasis="25%">
+                    <StyledCard key={club.id} flexBasis="25%" variant="outlined">
                       <Link
                         to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
                         style={{

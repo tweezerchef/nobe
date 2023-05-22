@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
@@ -71,7 +71,7 @@ const createClubs = (props: any) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        '& > :not(style)': { m: 1, width: '25ch' },
+        '& > :not(style)': { m: 1 },
         justifyContent: 'center',
       }}
       noValidate
@@ -95,7 +95,7 @@ const createClubs = (props: any) => {
       />
       <GifSearch setClubImage={setClubImage} />
       <PhotoUpload setClubImage={setClubImage} />
-      <Button variant="contained" size="small" color="primary" onClick={() => handleSubmit()}>
+      <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
         Create Club
       </Button>
     </Box>
