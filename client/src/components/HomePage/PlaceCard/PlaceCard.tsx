@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -21,6 +22,7 @@ interface PlaceCardProps {
 const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
   const { Places_Pictures, name } = place;
   const [image, setImage] = useState<string | null>(null);
+  const to = place.googlePlaceId ? `/reading-spots/${place.googlePlaceId}` : '/reading-spots';
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -33,43 +35,45 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
   }, [Places_Pictures]);
 
   return (
-    <PlaceCard1 variant="outlined">
-      <AspectRatio ratio="2">
-        {image ? (
-          <img src={image} loading="lazy" alt="" />
-        ) : (
-          <img src="https://i.imgur.com/XrUd1L2.jpg" loading="lazy" alt="" />
+    <Link to={to}>
+      <PlaceCard1 variant="outlined">
+
+        <AspectRatio ratio="2">
+          {image ? (
+            <img src={image} loading="lazy" alt="" />
+          ) : (
+            <img src="https://i.imgur.com/XrUd1L2.jpg" loading="lazy" alt="" />
+          )}
+        </AspectRatio>
+        {name && (
+        <StyledBigTypog level="h5">
+          {name}
+          <Tooltip title="One of our favorite places to read">
+            <RecommendIcon sx={{ color: 'green' }} />
+          </Tooltip>
+          <Tooltip title="This Place Is HOT">
+            <WhatshotTwoToneIcon color="warning" />
+          </Tooltip>
+        </StyledBigTypog>
         )}
-      </AspectRatio>
-      {name && (
-      <StyledBigTypog level="h5">
-        {name}
-        <Tooltip title="One of our favorite places to read">
-          <RecommendIcon sx={{ color: 'green' }} />
-        </Tooltip>
-        <Tooltip title="This Place Is HOT">
-          <WhatshotTwoToneIcon color="warning" />
-        </Tooltip>
-      </StyledBigTypog>
-      )}
-      <CardOverflow
-        variant="soft"
-        sx={{
-          display: 'flex',
-          gap: 1.5,
-          py: 1.5,
-          px: 'var(--Card-padding)',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#f0f0f0',
-        }}
-      >
-        <Typography level="body3" sx={{ fontWeight: 'md' }} />
-        <Rating name="read-only" value={Number(place?.rating)} readOnly />
-      </CardOverflow>
+        <CardOverflow
+          variant="soft"
+          sx={{
+            display: 'flex',
+            gap: 1.5,
+            py: 1.5,
+            px: 'var(--Card-padding)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#f0f0f0',
+          }}
+        >
+          <Typography level="body3" sx={{ fontWeight: 'md' }} />
+          <Rating name="read-only" value={Number(place?.rating)} readOnly />
+        </CardOverflow>
 
-    </PlaceCard1>
-
+      </PlaceCard1>
+    </Link>
   );
 };
 export default PlaceCard;

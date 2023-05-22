@@ -69,18 +69,28 @@ function HomePlaces() {
 
       <Box sx={{ position: 'relative', width: '90%', height: '100%' }}>
         {[...Array(Math.ceil(places.length / placesPerPage))].map((_, index) => (
-          <Box sx={{
-            position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-          }}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              display: currentPage === index ? 'block' : 'none',
+            }}
           >
-
             <Slide direction={slideDirection} in={currentPage === index} mountOnEnter unmountOnExit>
-              <Stack spacing={2} direction="row" maxWidth="100%" maxHeight="95%" alignContent="center" justifyContent="center">
+              <Stack
+                spacing={2}
+                direction="row"
+                maxWidth="100%"
+                maxHeight="95%"
+                alignContent="center"
+                justifyContent="center"
+              >
                 {places
-                  .slice(
-                    index * placesPerPage,
-                    index * placesPerPage + placesPerPage,
-                  ).map((place: Place) => (
+                  .slice(index * placesPerPage, index * placesPerPage + placesPerPage)
+                  .map((place: Place) => (
                     <Box key={place.id}>
                       <PlaceCard place={place} />
                     </Box>
@@ -89,6 +99,7 @@ function HomePlaces() {
             </Slide>
           </Box>
         ))}
+
       </Box>
 
       <IconButton
