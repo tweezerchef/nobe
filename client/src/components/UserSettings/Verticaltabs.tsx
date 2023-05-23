@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import UserInfo from '../SettingsTabs/UserInfo';
 import FavBooksPlaces from '../SettingsTabs/FavBooksPlaces';
+import FavGenres from '../SettingsTabs/FavGenres';
 
 interface TabPanelProps {
   // eslint-disable-next-line react/require-default-props
@@ -80,17 +81,21 @@ function VerticalTabs() {
           }}
         >
           <Tab label="Profile Settings" {...a11yProps(0)} />
-          <Tab label="Favorite Books" {...a11yProps(1)} />
-          <Tab label="Favorite Places" {...a11yProps(2)} />
+          <Tab label="Favorite Genres" {...a11yProps(1)} />
+          <Tab label="Favorite Books" {...a11yProps(2)} />
+          <Tab label="Favorite Places" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <UserInfo />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <FavBooksPlaces />
+        <FavGenres />
       </TabPanel>
       <TabPanel value={value} index={2}>
+        <FavBooksPlaces />
+      </TabPanel>
+      <TabPanel value={value} index={3}>
         {/* <SecuritySettings /> */}
       </TabPanel>
     </Box>

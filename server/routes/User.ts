@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from 'express';
 import dotenv from 'dotenv';
 
@@ -265,6 +266,40 @@ User.get('/id/conversations', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Error retrieving conversation data');
+  }
+});
+
+User.put('/:id/preferences', async (req, res) => {
+  console.log(req, 273);
+  const { id } = req.params;
+  const {
+    username, firstName, lastName, phoneNumber, longitude,
+    latitude,
+    radius,
+  } = req.body;
+  const radNum = Number(radius);
+  try {
+    const userUpdatePreferences = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        username,
+        firstName,
+        lastName,
+        phoneNumber,
+        longitude,
+        latitude,
+        radius: radNum,
+      },
+    });
+    console.log(userUpdatePreferences, 295);
+    res.status(200).json({ userUpdatePreferences });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      error: 'Server error!',
+    });
   }
 });
 

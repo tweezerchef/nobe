@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useState } from 'react';
 import {
@@ -62,8 +63,6 @@ function UserInfo() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [favGenres, setFavGenres] = useState([]);
-  const [favHobbies, setFavHobbies] = useState([]);
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
   const [radius, setRadius] = useState(0);
@@ -72,11 +71,16 @@ function UserInfo() {
   const updateUserInfo = async () => {
     setButtonState('loading');
     try {
-      const res = await axios.put(`/location/${id}/location`, {
+      const res = await axios.put(`/user/${id}/preferences`, {
+        username,
+        firstName,
+        lastName,
+        phoneNumber,
         longitude,
         latitude,
         radius,
       });
+      console.log(res);
       setTimeout(() => {
         setButtonState('success');
       }, 2000);
@@ -140,36 +144,28 @@ function UserInfo() {
               variant="outlined"
               fullWidth
               margin="normal"
+              onChange={(event) => setUsername(event.target.value)}
             />
             <TextField
               label="First Name"
               variant="outlined"
               fullWidth
               margin="normal"
+              onChange={(event) => setFirstName(event.target.value)}
             />
             <TextField
               label="Last Name"
               variant="outlined"
               fullWidth
               margin="normal"
+              onChange={(event) => setLastName(event.target.value)}
             />
             <TextField
               label="Mobile Number"
               variant="outlined"
               fullWidth
               margin="normal"
-            />
-            <TextField
-              label="Favorite Generes"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Favorite Hobbies"
-              variant="outlined"
-              fullWidth
-              margin="normal"
+              onChange={(event) => setPhoneNumber(event.target.value)}
             />
             <Box sx={{ mt: 2 }}>
               <h3> Location Preferences </h3>
