@@ -24,43 +24,38 @@ const ProfileImage = styled(CardMedia)({
 });
 
 const ProfileInfo = styled(CardContent)({
-  display: 'flex !important',
-  flexDirection: 'column',
-  alignItems: 'center !important',
+
+  alignItems: 'center',
   textAlign: 'center',
 });
 
 const Name = styled(Typography)({
   // color: '#212121',
   fontWeight: 'bold !important',
-  fontSize: '24px !important',
+  fontSize: '16px !important',
 });
 
 const Desc = styled(Typography)({
   // color: '#666666',
-  fontSize: '18px !important',
+  fontSize: '14px !important',
 });
 
 const Status = styled('ul')({
-  display: 'flex !important',
   justifyContent: 'space-between !important',
   maxWidth: '100% !important',
-  listStyle: 'none !important',
   textAlign: 'center',
-  lineHeight: '1rem',
 });
 
 const StatusItem = styled.li`
-  margin-right: 1rem !important;
 `;
 
 const StatusValue = styled(Typography)({
   // color: '#212121',
-  fontWeight: 'bold !important',
+  // fontWeight: 'bold !important',
 });
 
 const StatusText = styled(Typography)({
-  fontSize: '14px !important',
+  // fontSize: '12px !important',
   // color: '#7c7c7d',
 });
 

@@ -13,7 +13,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import { TabPanel } from '@mui/base';
 import Form from '../components/SettingsTabs/Form';
-import VerticalTabs from '../components/Tabs/Verticaltabs';
+import VerticalTabs from '../components/UserSettings/Verticaltabs';
 
 function UserSettings() {
   const [value, setValue] = React.useState(0);

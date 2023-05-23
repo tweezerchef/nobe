@@ -11,19 +11,11 @@ import UserContext from '../../hooks/Context';
 import { UserBook } from '../../typings/types';
 import Book from '../Book/HomeBook';
 
-interface Book {
-  books: {
-    id: string;
-    title: string;
-    author: string;
-    image: string;
-  }
-  id: string;
-  wishlist: boolean;
-  owned: boolean;
+interface HomeWishListProps {
+  nearMeBooks: string[];
 }
 
-function HomeWishList() {
+function HomeWishList({ nearMeBooks }: HomeWishListProps) {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
@@ -104,7 +96,8 @@ function HomeWishList() {
         alignContent: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '300px',
+        height: '25vh',
+        marginTop: '1.5vh',
         // paddingTop: '2',
         paddingBottom: '0',
       }}
@@ -112,7 +105,7 @@ function HomeWishList() {
       <IconButton
         onClick={handlePrevPage}
         sx={{
-          margin: 5, marginRight: 10, padding: 0, alignSelf: 'center', justifySelf: 'start',
+          marginRight: 10, padding: 0, alignSelf: 'center', justifySelf: 'start',
 
         }}
         disabled={currentPage === 0}
@@ -155,6 +148,7 @@ function HomeWishList() {
                         onClose={handleBigBookClose}
                         showBigBook={showBigBook && book === selectedBook}
                         bigBookPosition={bigBookPosition}
+                        nearMeBooks={nearMeBooks}
                       />
                     </Box>
                   ))}
@@ -167,7 +161,7 @@ function HomeWishList() {
       <IconButton
         onClick={handleNextPage}
         sx={{
-          margin: 5, marginLeft: 10, padding: 0, alignSelf: 'center', justifySelf: 'end',
+          marginLeft: 10, marginRight: 1, padding: 0, alignSelf: 'center', justifySelf: 'end',
         }}
         disabled={currentPage >= Math.ceil((books.length || 0) / booksPerPage) - 1}
       >

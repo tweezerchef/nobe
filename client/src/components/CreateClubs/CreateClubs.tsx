@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { Button } from '@material-ui/core';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import GifSearch from './GifSearch';
 import UserContext from '../../hooks/Context';
 import PhotoUpload from '../Button/ImageUploadButton';
@@ -16,6 +17,7 @@ const createClubs = (props: any) => {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const setUser = userContext?.setUser;
+
   const handleSubmit = async () => {
     if (!clubName || !clubDescription || !clubImage) {
       alert('Please enter a value for all fields!');
