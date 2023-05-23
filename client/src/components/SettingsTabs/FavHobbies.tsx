@@ -55,7 +55,7 @@ function FavHobbies() {
       const res = await axios.put(`/user-settings/${id}/hobbies`, {
         checkedHobbies,
       });
-      console.log(res);
+      // console.log(res);
       setTimeout(() => {
         setButtonState('success');
       }, 2000);
