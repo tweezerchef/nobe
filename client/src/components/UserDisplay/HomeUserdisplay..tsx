@@ -31,13 +31,13 @@ function HomeUserDisplay() {
         boxShadow: 'none',
       }}
       >
-        <Stack direction="row" spacing={2} sx={{ marginLeft: '1rem' }}>
+        <Stack direction="row" spacing={1}>
           <Link to={`/profile/${user?.id}`}>
             <Avatar
               src={user?.picture}
               alt={user?.firstName}
               style={{
-                width: '4rem', height: '4rem',
+                width: '3rem', height: '3rem',
               }}
             />
             {user?.firstName}
