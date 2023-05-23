@@ -9,6 +9,7 @@ interface Discussion {
   title: string;
 }
 interface DiscussionPost {
+  createdAt: ReactNode;
   id: string;
   body: string;
   userId: string;
