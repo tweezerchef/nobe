@@ -85,10 +85,10 @@ const Book = React.memo((props: any) => {
       variant="outlined"
       className={classes.card}
       sx={{
-        width: '16vw', height: '100%', margin: '8px', marginBottom: '0px', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+        width: '16.5vw', height: '24vh', margin: '.1vh', marginBottom: '0px', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)', display: 'flex', flexDirection: 'column',
       }}
     >
-      <CardOverflow onClick={handleOnClick}>
+      <CardOverflow onClick={handleOnClick} sx={{ flex: 1 }}>
         <AspectRatio ratio="2">
           {book.image ? (
             <img src={book.image} loading="lazy" alt="" />

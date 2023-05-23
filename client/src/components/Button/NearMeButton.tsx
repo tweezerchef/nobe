@@ -15,10 +15,10 @@ const pulse = keyframes`
     background-color: #ff9800;
   }
   50% {
-    background-color: #ff5722;
+    background-color: #fdfdfd6a;
   }
   100% {
-    background-color: #ff9800;
+    background-color: #ff0000cc;
   }
 `;
 
@@ -50,11 +50,11 @@ function NearMeButton({ book, nearMeBooks }: NearMeButtonProps) {
             position: 'absolute',
             zIndex: 2,
             borderRadius: '50%',
-            left: '2rem',
+            left: '3%',
             bottom: 0,
             transform: 'translateY(50%)',
-            width: '25px',
-            height: '25px',
+            width: '30px',
+            height: '30px',
           }}
           onClick={goToBook}
         >
@@ -62,8 +62,8 @@ function NearMeButton({ book, nearMeBooks }: NearMeButtonProps) {
             src="https://nobe.s3.us-east-2.amazonaws.com/iconnear.png"
             alt="Wishlist"
             style={{
-              height: '20px',
-              width: '20px',
+              height: '30px',
+              width: '30px',
               objectFit: 'cover',
               borderRadius: '50%',
             }}
