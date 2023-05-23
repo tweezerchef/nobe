@@ -17,6 +17,7 @@ import '@geoapify/geocoder-autocomplete/styles/minimal.css';
 import ReactiveButton from 'reactive-button';
 import axios from 'axios';
 import UserContext from '../../hooks/Context';
+import PhotoUpload from '../Button/ImageUploadButton';
 
 const UserDetail = styled.div({
   position: 'relative',
@@ -57,8 +58,7 @@ function UserInfo() {
   const user = userContext?.user;
   const id = user?.id;
 
-  const [image, setImage] = useState('');
-
+  const [userImage, setUserImage] = useState(null);
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -69,9 +69,15 @@ function UserInfo() {
   const [buttonState, setButtonState] = useState('idle');
 
   const updateUserInfo = async () => {
+    if (!userImage || !username || !firstName || !lastName
+      || !phoneNumber || !longitude || !latitude || !radius) {
+      alert('Please enter a value for all fields!');
+      return;
+    }
     setButtonState('loading');
     try {
-      const res = await axios.put(`/user/${id}/preferences`, {
+      const res = await axios.put(`/user-settings/${id}/preferences`, {
+        userImage,
         username,
         firstName,
         lastName,
@@ -80,25 +86,12 @@ function UserInfo() {
         latitude,
         radius,
       });
-      // console.log(res);
+      console.log(res);
       setTimeout(() => {
         setButtonState('success');
       }, 2000);
     } catch (err) {
       console.error(err);
-    }
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target) {
-          setImage(event.target.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
     }
   };
 
@@ -131,12 +124,7 @@ function UserInfo() {
           id="profile-image1"
           height="200"
         />
-        <input
-          id="profile-image-upload"
-          className="hidden"
-          type="file"
-          onChange={() => {}}
-        />
+        <PhotoUpload setClubImage={setUserImage} />
         <UserDetail>
           <form>
             <TextField

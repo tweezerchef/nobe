@@ -52,7 +52,7 @@ function FavHobbies() {
   const updateUserHobbies = async () => {
     setButtonState('loading');
     try {
-      const res = await axios.put(`/user/${id}/hobbies`, {
+      const res = await axios.put(`/user-settings/${id}/hobbies`, {
       });
       console.log(res);
       setTimeout(() => {

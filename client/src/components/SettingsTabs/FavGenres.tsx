@@ -54,7 +54,7 @@ function FavGenres() {
   const updateUserGenres = async () => {
     setButtonState('loading');
     try {
-      const res = await axios.put(`/user/${id}/genres`, {
+      const res = await axios.put(`/user-settings/${id}/genres`, {
 
       });
       console.log(res);
