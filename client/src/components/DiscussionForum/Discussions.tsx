@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/prop-types */
 import React, { memo } from 'react';
+import moment from 'moment';
 import { Link } from 'react-router-dom';
 
 import {
@@ -28,12 +29,10 @@ function deepEqual(obj1: any, obj2: any) {
     return false;
   }
 
-  for (const key of keys1) {
-    if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
-      return false;
-    }
+  const allKeysMatch = keys1.every((key) => keys2.includes(key) && deepEqual(obj1[key], obj2[key]));
+  if (!allKeysMatch) {
+    return false;
   }
-
   return true;
 }
 
@@ -50,9 +49,25 @@ const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => (
               <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }}>
                 {discussion.title}
               </Typography>
-              <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '15px', color: 'gray' }}>
+              <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '16px', color: 'gray' }}>
                 {discussion.Posts && discussion.Posts.length === 1 ? '1 Post' : `${discussion.Posts?.length || 0} Posts`}
-
+              </Typography>
+              {/* <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '15px', color: 'gray' }}>
+                {`Total Posts: ${discussion.Posts?.length || 0}`}
+              </Typography> */}
+              <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '12px', color: 'gray' }}>
+                Last post:
+                {' '}
+                {discussion.Posts && discussion.Posts.length > 0 ? (
+                  moment(discussion.Posts[discussion.Posts.length - 1].createdAt).calendar(null, {
+                    lastDay: '[Yesterday at] h:mma',
+                    sameDay: '[Today at] h:mma',
+                    lastWeek: 'dddd [at] h:mma',
+                    sameElse: 'MMM D [at] h:mma',
+                  })
+                ) : (
+                  'No posts'
+                )}
               </Typography>
             </CardContent>
           </Link>
