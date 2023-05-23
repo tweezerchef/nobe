@@ -33,7 +33,6 @@ function deepEqual(obj1: any, obj2: any) {
   if (!allKeysMatch) {
     return false;
   }
-
   return true;
 }
 
