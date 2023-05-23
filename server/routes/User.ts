@@ -268,5 +268,21 @@ User.get('/id/conversations', async (req, res) => {
     res.status(500).send('Error retrieving conversation data');
   }
 });
+User.get('/allUsers', async (req, res) => {
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        firstName: true,
+        username: true,
+        picture: true,
+      },
+    });
+    res.send(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving conversation data');
+  }
+});
 
 export default User;

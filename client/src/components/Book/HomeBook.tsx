@@ -85,7 +85,7 @@ const Book = React.memo((props: any) => {
       variant="outlined"
       className={classes.card}
       sx={{
-        width: '17vw', height: '28vh', maxHeight: '300px', margin: '.2vh', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+        width: '17vw', height: '28vh', minHeight: '150px', maxHeight: '300px', margin: '.2vh', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
       }}
     >
       <CardOverflow onClick={handleOnClick}>
@@ -103,14 +103,12 @@ const Book = React.memo((props: any) => {
       </CardOverflow>
       <Typography
         level="body1"
+        onClick={handleOnClick}
         sx={{
           mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical',
         }}
       >
-        {' '}
-        <span onClick={handleOnClick}>
-          {book.title}
-        </span>
+        {book.title}
       </Typography>
       <Typography
         level="body2"

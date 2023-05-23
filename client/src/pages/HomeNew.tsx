@@ -48,7 +48,7 @@ function HomeNew() {
   } as const;
   return (
     <Box sx={{
-      flexGrow: 1, overflow: 'auto', height: '100vh',
+      flexGrow: 1, overflow: 'clip', height: '98vh',
     }}
     >
       <Grid
@@ -121,7 +121,7 @@ function HomeNew() {
                 Your Wish List
               </Chip>
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '30vh', maxHeight: '33vh' }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '31vh', maxHeight: '33vh' }}>
               <HomeWishList nearMeBooks={nearMeBooks} />
             </Box>
             <StyledDivider textAlign="left">
