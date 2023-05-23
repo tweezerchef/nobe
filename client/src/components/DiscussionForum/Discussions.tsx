@@ -41,7 +41,7 @@ const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => (
   <>
     {discussions?.map((discussion) => (
       <Box sx={{ my: 1 }}>
-        <Card key={discussion.id} className="club-card">
+        <Card key={discussion.id} className="club-card" variant="outlined">
           <Link
             to={`/clubs/${clubId}/discussion/${discussion.id}`}
             style={{ color: 'black', textDecoration: 'none' }}

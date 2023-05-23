@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Grid, Card, CardContent, Typography,
+  Grid, CardContent, Typography,
 } from '@material-ui/core';
+import {
+  Card,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -73,7 +76,7 @@ function Clubs() {
   transition: transform 0.2s ease-in-out;
 
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
   }
 `;
 
@@ -171,8 +174,9 @@ function Clubs() {
                     Create a Club
                   </Button>
                 </Box>
-                <Dialog open={open} onClose={handleClose}>
-                  <CreateClubs setClubs={setClubs} />
+                <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+                  <DialogTitle>Create a Club</DialogTitle>
+                  <CreateClubs handleClose={handleClose} setClubs={setClubs} />
                 </Dialog>
                 <CardContainer>
                   {clubs && clubs.length > 0 && clubs.map((club) => (

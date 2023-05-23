@@ -11,7 +11,7 @@ const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
   const [clubImage, setClubImage] = useState(null);
-  const { setClubs } = props;
+  const { setClubs, handleClose } = props;
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -56,6 +56,7 @@ const createClubs = (props: any) => {
               setUser(response?.data?.user);
             }
           });
+        handleClose();
       } catch (error) {
         console.error(error);
       }
@@ -66,8 +67,8 @@ const createClubs = (props: any) => {
     <Box
       component="form"
       sx={{
-        maxWidth: '600px',
-        margin: '0 auto',
+        // maxWidth: '100%',
+        margin: '20px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -78,9 +79,12 @@ const createClubs = (props: any) => {
       autoComplete="off"
     >
       <TextField
+        autoFocus
         id="club-name"
         label="Club Name"
         variant="outlined"
+        type="string"
+        fullWidth
         value={clubName}
         onChange={(e) => setClubName(e.target.value)}
         required
@@ -89,11 +93,13 @@ const createClubs = (props: any) => {
         id="club-description"
         label="Club Description"
         variant="outlined"
+        type="string"
+        fullWidth
         value={clubDescription}
         onChange={(e) => setClubDescription(e.target.value)}
         required
       />
-      <GifSearch setClubImage={setClubImage} />
+      {/* <GifSearch setClubImage={setClubImage} /> */}
       <PhotoUpload setClubImage={setClubImage} />
       <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
         Create Club
