@@ -118,7 +118,7 @@ function HomeNew() {
                 Your Wish List
               </Chip>
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '26vh', maxHeight: '30vh' }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '28vh', maxHeight: '33vh' }}>
               <HomeWishList nearMeBooks={nearMeBooks} />
             </Box>
             <StyledDivider textAlign="left">
@@ -164,7 +164,7 @@ function HomeNew() {
                 backgroundPosition: 'top',
               }}
             />
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', maxHeight: '40vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '28vh', maxHeight: '35vh' /* adjust this */ }}>
               <HomeExploreBooks />
             </Box>
             <StyledDivider textAlign="left">
@@ -178,15 +178,15 @@ function HomeNew() {
             </Box>
             <Box
               sx={{
-                paddingTop: '0',
-                marginTop: '0',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
                 width: '100%',
-                height: '30vh',
-                backgroundImage: 'url(https://i.imgur.com/mVbf3MT.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: '50% 70%',
+
               }}
-            />
+            >
+              <img src="https://nobe.s3.us-east-2.amazonaws.com/logo1000.png" alt="logo" />
+            </Box>
           </Stack>
         </Grid>
       </Grid>
