@@ -24,7 +24,7 @@ function HomeUserDisplay() {
             src={user?.picture}
             alt={user?.firstName}
             style={{
-              width: '5rem', height: '5rem', marginLeft: '10px', marginTop: '10px',
+              width: '4rem', height: '4rem',
             }}
           />
         </Link>
