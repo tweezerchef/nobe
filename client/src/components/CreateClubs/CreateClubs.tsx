@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
@@ -11,8 +11,7 @@ const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
   const [clubImage, setClubImage] = useState(null);
-  console.log(clubImage);
-  const { setClubs } = props;
+  const { setClubs, handleClose } = props;
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -57,6 +56,7 @@ const createClubs = (props: any) => {
               setUser(response?.data?.user);
             }
           });
+        handleClose();
       } catch (error) {
         console.error(error);
       }
@@ -67,21 +67,24 @@ const createClubs = (props: any) => {
     <Box
       component="form"
       sx={{
-        maxWidth: '600px',
-        margin: '0 auto',
+        // maxWidth: '100%',
+        margin: '20px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        '& > :not(style)': { m: 1, width: '25ch' },
+        '& > :not(style)': { m: 1 },
         justifyContent: 'center',
       }}
       noValidate
       autoComplete="off"
     >
       <TextField
+        autoFocus
         id="club-name"
         label="Club Name"
         variant="outlined"
+        type="string"
+        fullWidth
         value={clubName}
         onChange={(e) => setClubName(e.target.value)}
         required
@@ -90,13 +93,15 @@ const createClubs = (props: any) => {
         id="club-description"
         label="Club Description"
         variant="outlined"
+        type="string"
+        fullWidth
         value={clubDescription}
         onChange={(e) => setClubDescription(e.target.value)}
         required
       />
-      <GifSearch setClubImage={setClubImage} />
+      {/* <GifSearch setClubImage={setClubImage} /> */}
       <PhotoUpload setClubImage={setClubImage} />
-      <Button variant="contained" size="small" color="primary" onClick={() => handleSubmit()}>
+      <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
         Create Club
       </Button>
     </Box>
