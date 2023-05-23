@@ -79,7 +79,7 @@ function HomeNew() {
         <Grid
           xs={2.5}
           sx={{
-            position: 'sticky', top: '0px', height: '98vh', paddingBottom: '8vh',
+            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '8vh',
           }}
         >
           <Box sx={{
@@ -92,7 +92,10 @@ function HomeNew() {
           >
             <HomeUserDisplay />
           </Box>
-          <Box sx={{ width: '100%', maxHeight: '70vh', overflow: 'auto' }}>
+          <Box sx={{
+            width: '100%', maxHeight: '70vh', overflowY: 'auto', overflowX: 'clip',
+          }}
+          >
             <Feed />
           </Box>
         </Grid>
@@ -118,7 +121,7 @@ function HomeNew() {
                 Your Wish List
               </Chip>
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '28vh', maxHeight: '33vh' }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '30vh', maxHeight: '33vh' }}>
               <HomeWishList nearMeBooks={nearMeBooks} />
             </Box>
             <StyledDivider textAlign="left">
@@ -126,7 +129,7 @@ function HomeNew() {
                 Hot Places To Read
               </FlameStyledChip>
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '33vh' }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '25vh', maxHeight: '33vh' }}>
               <HomePlaces />
             </Box>
             <Box
@@ -152,7 +155,7 @@ function HomeNew() {
                 Books You Want In Your Hood
               </FlameStyledChip>
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '20vh', maxHeight: '25vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '24vh', maxHeight: '29vh' /* adjust this */ }}>
               <HomeNearMe />
             </Box>
             <Box
@@ -164,7 +167,7 @@ function HomeNew() {
                 backgroundPosition: 'top',
               }}
             />
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '28vh', maxHeight: '35vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '39vh', maxHeight: '43vh' /* adjust this */ }}>
               <HomeExploreBooks />
             </Box>
             <StyledDivider textAlign="left">
@@ -182,10 +185,11 @@ function HomeNew() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
+                vh: '28vh',
 
               }}
             >
-              <img src="https://nobe.s3.us-east-2.amazonaws.com/logo1000.png" alt="logo" />
+              <img src="https://nobe.s3.us-east-2.amazonaws.com/backroundBottomtues_auto_x3.png" style={{ height: '300px' }} alt="logo" />
             </Box>
           </Stack>
         </Grid>

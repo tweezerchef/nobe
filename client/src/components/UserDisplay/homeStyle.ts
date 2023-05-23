@@ -33,12 +33,12 @@ const ProfileInfo = styled(CardContent)({
 const Name = styled(Typography)({
   // color: '#212121',
   fontWeight: 'bold !important',
-  fontSize: '24px !important',
+  fontSize: '16px !important',
 });
 
 const Desc = styled(Typography)({
   // color: '#666666',
-  fontSize: '18px !important',
+  fontSize: '14px !important',
 });
 
 const Status = styled('ul')({
@@ -56,11 +56,11 @@ const StatusItem = styled.li`
 
 const StatusValue = styled(Typography)({
   // color: '#212121',
-  fontWeight: 'bold !important',
+  // fontWeight: 'bold !important',
 });
 
 const StatusText = styled(Typography)({
-  fontSize: '14px !important',
+  // fontSize: '12px !important',
   // color: '#7c7c7d',
 });
 
