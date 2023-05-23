@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Button, Container, Slider, TextField, Grid,
@@ -13,6 +14,10 @@ import styled from 'styled-components';
 import { Sheet } from '@mui/joy';
 import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete';
 import '@geoapify/geocoder-autocomplete/styles/minimal.css';
+import ReactiveButton from 'reactive-button';
+import axios from 'axios';
+import UserContext from '../../hooks/Context';
+import PhotoUpload from '../Button/ImageUploadButton';
 
 const UserDetail = styled.div({
   position: 'relative',
@@ -49,23 +54,49 @@ const marks = [
   },
 ];
 function UserInfo() {
-  const [image, setImage] = useState('');
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const id = user?.id;
 
-  const [name, setName] = useState('');
+  const [userImage, setUserImage] = useState(null);
+  // console.log('userImage', userImage);
+  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
   const [radius, setRadius] = useState(0);
+  const [buttonState, setButtonState] = useState('idle');
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target) {
-          setImage(event.target.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
+  const updateUserInfo = async () => {
+    if (!userImage || !username || !firstName || !lastName
+      || !phoneNumber || !longitude || !latitude || !radius) {
+      alert('Please enter a value for all fields!');
+      return;
+    }
+    if (user && user.id && user.email && userImage) {
+      const data = new FormData();
+      data.append('image', userImage);
+      data.append('username', username);
+      data.append('firstName', firstName);
+      data.append('lastName', lastName);
+      data.append('phoneNumber', phoneNumber);
+      data.append('longitude', longitude.toString());
+      data.append('latitude', latitude.toString());
+      data.append('radius', radius.toString());
+      setButtonState('loading');
+      try {
+        axios.put(`/user-settings/${id}/preferences`, data)
+          .then((res) => {
+            // console.log(res);
+          });
+        setTimeout(() => {
+          setButtonState('success');
+        }, 2000);
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -98,12 +129,7 @@ function UserInfo() {
           id="profile-image1"
           height="200"
         />
-        <input
-          id="profile-image-upload"
-          className="hidden"
-          type="file"
-          onChange={() => {}}
-        />
+        <PhotoUpload setClubImage={setUserImage} />
         <UserDetail>
           <form>
             <TextField
@@ -111,36 +137,28 @@ function UserInfo() {
               variant="outlined"
               fullWidth
               margin="normal"
+              onChange={(event) => setUsername(event.target.value)}
             />
             <TextField
               label="First Name"
               variant="outlined"
               fullWidth
               margin="normal"
+              onChange={(event) => setFirstName(event.target.value)}
             />
             <TextField
               label="Last Name"
               variant="outlined"
               fullWidth
               margin="normal"
+              onChange={(event) => setLastName(event.target.value)}
             />
             <TextField
               label="Mobile Number"
               variant="outlined"
               fullWidth
               margin="normal"
-            />
-            <TextField
-              label="Favorite Generes"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Favorite Hobbies"
-              variant="outlined"
-              fullWidth
-              margin="normal"
+              onChange={(event) => setPhoneNumber(event.target.value)}
             />
             <Box sx={{ mt: 2 }}>
               <h3> Location Preferences </h3>
@@ -179,10 +197,17 @@ function UserInfo() {
                 </Grid>
               </Grid>
             </Box>
-            <Box sx={{ mt: 4 }}>
-              <Button variant="contained" color="primary" fullWidth>
-                Update Profile
-              </Button>
+            <Box sx={{ mt: 4, width: 'auto' }}>
+              <ReactiveButton
+                rounded
+                size="medium"
+                buttonState={buttonState}
+                idleText="Update User Information"
+                loadingText="Loading"
+                successText="Done"
+                onClick={updateUserInfo}
+                color="blue"
+              />
             </Box>
           </form>
         </UserDetail>
@@ -190,4 +215,5 @@ function UserInfo() {
     </Box>
   );
 }
+
 export default UserInfo;
