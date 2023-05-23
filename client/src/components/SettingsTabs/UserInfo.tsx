@@ -80,7 +80,7 @@ function UserInfo() {
         latitude,
         radius,
       });
-      console.log(res);
+      // console.log(res);
       setTimeout(() => {
         setButtonState('success');
       }, 2000);
