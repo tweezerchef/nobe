@@ -9,7 +9,8 @@
 }
 
 .club-card:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
+    box-shadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)';
 }
 
 .club-card-title {

@@ -14,6 +14,7 @@ import HomePlaces from '../components/HomePage/HomePlaces';
 import HomeNearMe from '../components/HomePage/HomeNearMe';
 import HomeExploreBooks from '../components/HomePage/HomeExploreBooks';
 import HomeFriends from '../components/HomePage/Friends';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 
 function HomeNew() {
