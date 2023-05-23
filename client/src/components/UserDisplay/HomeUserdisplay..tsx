@@ -2,12 +2,15 @@ import React, {
   useContext,
 } from 'react';
 import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/joy/Stack';
+
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import UserContext from '../../hooks/Context';
 
 import {
-  ProfileCard, StatusText, StatusValue, Status,
+  StatusText, StatusValue, Status,
   Name, ProfileInfo, StatusItem,
 } from './homeStyle';
 
@@ -18,18 +21,30 @@ function HomeUserDisplay() {
   const wishlist = 10;
   return (
     <Box sx={{ flexGrow: 1 }} maxWidth="100%" height="100%">
-      <ProfileCard>
-        <Link to={`/profile/${user?.id}`}>
-          <Avatar
-            src={user?.picture}
-            alt={user?.firstName}
-            style={{
-              width: '4rem', height: '4rem',
-            }}
-          />
-        </Link>
+      <Card sx={{
+        backgroundColor: 'transparent',
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        boxShadow: 'none',
+      }}
+      >
+        <Stack direction="row" spacing={2} sx={{ marginLeft: '1rem' }}>
+          <Link to={`/profile/${user?.id}`}>
+            <Avatar
+              src={user?.picture}
+              alt={user?.firstName}
+              style={{
+                width: '4rem', height: '4rem',
+              }}
+            />
+            {user?.firstName}
+          </Link>
+        </Stack>
         <ProfileInfo>
-          <Name variant="h2">{user?.firstName}</Name>
+          <Name variant="h2" />
           {/* <Desc>{user?.description}</Desc> */}
           <Status>
             <StatusItem>
@@ -56,7 +71,7 @@ function HomeUserDisplay() {
             </StatusItem>
           </Status>
         </ProfileInfo>
-      </ProfileCard>
+      </Card>
     </Box>
   );
 }

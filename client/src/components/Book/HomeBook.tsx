@@ -85,7 +85,7 @@ const Book = React.memo((props: any) => {
       variant="outlined"
       className={classes.card}
       sx={{
-        width: '17vw', height: '28vh', margin: '.2vh', marginBottom: '0px', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+        width: '17vw', height: '28vh', margin: '.2vh', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
       }}
     >
       <CardOverflow onClick={handleOnClick}>
