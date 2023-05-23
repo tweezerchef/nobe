@@ -166,12 +166,11 @@ function ClubDiscussion() {
             <ClubHeader style={{ textAlign: 'center' }}>{clubName}</ClubHeader>
             <ClubDescription style={{ textAlign: 'center' }}>{thisClub[0]?.description}</ClubDescription>
             <div style={{
-              display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '10px',
+              display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '8px',
             }}
             >
               <Card sx={{
                 flexBasis: '33%',
-                margin: '10px',
                 borderRadius: '12px',
                 boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
                 maxWidth: '20%',
@@ -190,7 +189,14 @@ function ClubDiscussion() {
               </Card>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Stack spacing={2} direction="row" paddingBottom="10px">
+              <Stack
+                spacing={2}
+                direction="row"
+                sx={{
+                  paddingTop: '20px',
+                  paddingBottom: '10px',
+                }}
+              >
                 <JoinClubButton clubId={clubId} member={member} />
                 <Button
                   variant="contained"
