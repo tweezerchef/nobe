@@ -48,7 +48,7 @@ function HomeNew() {
   } as const;
   return (
     <Box sx={{
-      flexGrow: 1, marginTop: '10px', overflow: 'clip', height: '98vh',
+      flexGrow: 1, overflow: 'auto', height: '100vh',
     }}
     >
       <Grid
