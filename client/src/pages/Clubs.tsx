@@ -10,8 +10,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/material/Box';
@@ -72,6 +70,7 @@ function Clubs() {
   const StyledCard = styled(Card) <{ flexBasis?: string }>`
   flex-basis: ${(props) => props.flexBasis || '33%'};
   margin: 10px;
+  border-radius: 12px;
   boxShadow: 0px 0px 25px  rgba(37, 37, 37, 0.6);
   transition: transform 0.2s ease-in-out;
 
@@ -90,7 +89,7 @@ function Clubs() {
   // `;
   return (
     <Box sx={{
-      flexGrow: 1, marginTop: '10px', overflow: 'auto', height: '100vh',
+      flexGrow: 1, overflow: 'auto', height: '100vh',
     }}
     >
       <Grid1
@@ -170,7 +169,7 @@ function Clubs() {
                 <ClubHeader>Book Clubs</ClubHeader>
                 {/* </HeaderBox> */}
                 <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
-                  <Button variant="contained" onClick={handleClickOpen}>
+                  <Button variant="contained" onClick={handleClickOpen} sx={{ marginBottom: '10px' }}>
                     Create a Club
                   </Button>
                 </Box>

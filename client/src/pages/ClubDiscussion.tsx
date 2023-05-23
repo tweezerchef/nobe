@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  Button, TextField, FormControl,
+  Button, TextField, FormControl, CardMedia,
 } from '@material-ui/core';
 import {
   Stack, Dialog, DialogTitle, DialogContent, DialogActions,
@@ -32,6 +32,8 @@ function ClubDiscussion() {
   const [discussionList, setDiscussionList] = useState<Discussion[]>([]);
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [clubImage, setClubImage] = useState('');
+  console.log(clubImage);
 
   const searchParams = new URLSearchParams(location.search);
   const clubName = searchParams.get('name');
@@ -56,6 +58,7 @@ function ClubDiscussion() {
   async function fetchClubs() {
     const response = await axios.get(`/api/clubs/${clubId}`);
     setClub(response.data);
+    setClubImage(response.data[0]?.image);
   }
 
   useEffect(() => {
@@ -100,7 +103,7 @@ function ClubDiscussion() {
 
   return (
     <Box sx={{
-      flexGrow: 1, marginTop: '10px', overflow: 'auto', height: '100vh',
+      flexGrow: 1, overflow: 'auto', height: '100vh',
     }}
     >
       <Grid
@@ -162,6 +165,14 @@ function ClubDiscussion() {
           <div>
             <ClubHeader style={{ textAlign: 'center' }}>{clubName}</ClubHeader>
             <ClubDescription style={{ textAlign: 'center' }}>{thisClub[0]?.description}</ClubDescription>
+            <CardMedia
+              component="img"
+              alt={`Club image for ${clubName}`}
+              image={clubImage}
+              style={{
+                height: '20vh', objectFit: 'contain', borderRadius: '12px', marginTop: '5px', marginBottom: '15px',
+              }}
+            />
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <Stack spacing={2} direction="row">
                 <JoinClubButton clubId={clubId} member={member} />
