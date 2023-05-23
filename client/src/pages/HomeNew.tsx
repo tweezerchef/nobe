@@ -9,7 +9,6 @@ import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
 import HomeWishList from '../components/HomePage/HomeWishList';
-// import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
 import HomePlaces from '../components/HomePage/HomePlaces';
 import HomeNearMe from '../components/HomePage/HomeNearMe';
@@ -123,7 +122,7 @@ function HomeNew() {
               </Chip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '30vh', maxHeight: '33vh' }}>
-              {/* <HomeWishList nearMeBooks={nearMeBooks} /> */}
+              <HomeWishList nearMeBooks={nearMeBooks} />
             </Box>
             <StyledDivider textAlign="left">
               <FlameStyledChip size="lg">
@@ -131,7 +130,7 @@ function HomeNew() {
               </FlameStyledChip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '25vh', maxHeight: '33vh' }}>
-              {/* <HomePlaces /> */}
+              <HomePlaces />
             </Box>
             <Box
               sx={{
@@ -157,7 +156,7 @@ function HomeNew() {
               </FlameStyledChip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '24vh', maxHeight: '29vh' /* adjust this */ }}>
-              {/* <HomeNearMe /> */}
+              <HomeNearMe />
             </Box>
             <Box
               sx={{
@@ -169,7 +168,7 @@ function HomeNew() {
               }}
             />
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '39vh', maxHeight: '43vh' /* adjust this */ }}>
-              {/* <HomeExploreBooks /> */}
+              <HomeExploreBooks />
             </Box>
             <StyledDivider textAlign="left">
               <Chip size="lg">
@@ -178,7 +177,7 @@ function HomeNew() {
               </Chip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', maxHeight: '35vh' /* adjust this */ }}>
-              {/* <HomeFriends /> */}
+              <HomeFriends />
             </Box>
             <Box
               sx={{
@@ -190,7 +189,7 @@ function HomeNew() {
 
               }}
             >
-              <img src="https://nobe.s3.us-east-2.amazonaws.com/backroundBottomtues_auto_x3.png" style={{ height: '300px' }} alt="logo" />
+              <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" style={{ height: '300px' }} alt="logo" />
             </Box>
           </Stack>
         </Grid>
