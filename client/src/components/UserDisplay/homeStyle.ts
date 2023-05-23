@@ -24,9 +24,8 @@ const ProfileImage = styled(CardMedia)({
 });
 
 const ProfileInfo = styled(CardContent)({
-  display: 'flex !important',
-  flexDirection: 'column',
-  alignItems: 'center !important',
+
+  alignItems: 'center',
   textAlign: 'center',
 });
 
@@ -42,16 +41,12 @@ const Desc = styled(Typography)({
 });
 
 const Status = styled('ul')({
-  display: 'flex !important',
   justifyContent: 'space-between !important',
   maxWidth: '100% !important',
-  listStyle: 'none !important',
   textAlign: 'center',
-  lineHeight: '1rem',
 });
 
 const StatusItem = styled.li`
-  margin-right: 1rem !important;
 `;
 
 const StatusValue = styled(Typography)({

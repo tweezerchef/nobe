@@ -9,7 +9,7 @@ import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
 import HomeWishList from '../components/HomePage/HomeWishList';
-import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
+import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
 import HomePlaces from '../components/HomePage/HomePlaces';
 import HomeNearMe from '../components/HomePage/HomeNearMe';
 import HomeExploreBooks from '../components/HomePage/HomeExploreBooks';
@@ -48,7 +48,7 @@ function HomeNew() {
   } as const;
   return (
     <Box sx={{
-      flexGrow: 1, marginTop: '10px', overflow: 'auto', height: '100vh',
+      flexGrow: 1, marginTop: '10px', overflow: 'clip', height: '98vh',
     }}
     >
       <Grid
@@ -90,7 +90,7 @@ function HomeNew() {
             backgroundPosition: 'center',
           }}
           >
-            <HomeUserDisplay />
+            <ProfileCard />
           </Box>
           <Box sx={{
             width: '100%', maxHeight: '70vh', overflowY: 'auto', overflowX: 'clip',
@@ -189,7 +189,7 @@ function HomeNew() {
 
               }}
             >
-              <img src="https://nobe.s3.us-east-2.amazonaws.com/backroundBottomtues_auto_x3.png" style={{ height: '300px' }} alt="logo" />
+              <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" style={{ height: '300px' }} alt="logo" />
             </Box>
           </Stack>
         </Grid>
