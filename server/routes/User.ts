@@ -270,7 +270,7 @@ User.get('/id/conversations', async (req, res) => {
 });
 
 User.put('/:id/preferences', async (req, res) => {
-  console.log(req, 273);
+  // console.log(req, 273);
   const { id } = req.params;
   const {
     username, firstName, lastName, phoneNumber, longitude,
@@ -293,8 +293,54 @@ User.put('/:id/preferences', async (req, res) => {
         radius: radNum,
       },
     });
-    console.log(userUpdatePreferences, 295);
+    // console.log(userUpdatePreferences, 295);
     res.status(200).json({ userUpdatePreferences });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      error: 'Server error!',
+    });
+  }
+});
+
+User.put('/:id/genres', async (req, res) => {
+  // console.log(req, 273);
+  const { id } = req.params;
+  const { genres } = req.body;
+  try {
+    const userUpdateGenres = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        UserGenre: genres,
+      },
+    });
+    // console.log(userUpdatePreferences, 295);
+    res.status(200).json({ userUpdateGenres });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      error: 'Server error!',
+    });
+  }
+});
+
+User.put('/:id/hobbies', async (req, res) => {
+  // console.log(req, 273);
+  const { id } = req.params;
+  const { hobbies } = req.body;
+  try {
+    const userUpdateHobbies = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        UserHobbies: hobbies,
+      },
+    });
+    // console.log(userUpdatePreferences, 295);
+    res.status(200).json({ userUpdateHobbies });
   } catch (e) {
     console.error(e);
     res.status(500).json({
