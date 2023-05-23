@@ -17,6 +17,7 @@ const createClubs = (props: any) => {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const setUser = userContext?.setUser;
+
   const handleSubmit = async () => {
     if (!clubName || !clubDescription || !clubImage) {
       alert('Please enter a value for all fields!');

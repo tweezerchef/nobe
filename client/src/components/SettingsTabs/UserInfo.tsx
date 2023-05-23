@@ -59,6 +59,7 @@ function UserInfo() {
   const id = user?.id;
 
   const [userImage, setUserImage] = useState(null);
+  // console.log('userImage', userImage);
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -74,24 +75,28 @@ function UserInfo() {
       alert('Please enter a value for all fields!');
       return;
     }
-    setButtonState('loading');
-    try {
-      const res = await axios.put(`/user-settings/${id}/preferences`, {
-        userImage,
-        username,
-        firstName,
-        lastName,
-        phoneNumber,
-        longitude,
-        latitude,
-        radius,
-      });
-      console.log(res);
-      setTimeout(() => {
-        setButtonState('success');
-      }, 2000);
-    } catch (err) {
-      console.error(err);
+    if (user && user.id && user.email && userImage) {
+      const data = new FormData();
+      data.append('image', userImage);
+      data.append('username', username);
+      data.append('firstName', firstName);
+      data.append('lastName', lastName);
+      data.append('phoneNumber', phoneNumber);
+      data.append('longitude', longitude.toString());
+      data.append('latitude', latitude.toString());
+      data.append('radius', radius.toString());
+      setButtonState('loading');
+      try {
+        axios.put(`/user-settings/${id}/preferences`, data)
+          .then((res) => {
+            // console.log(res);
+          });
+        setTimeout(() => {
+          setButtonState('success');
+        }, 2000);
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -210,4 +215,5 @@ function UserInfo() {
     </Box>
   );
 }
+
 export default UserInfo;

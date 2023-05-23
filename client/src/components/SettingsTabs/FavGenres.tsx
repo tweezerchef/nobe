@@ -55,7 +55,7 @@ function FavGenres() {
     setButtonState('loading');
     try {
       const res = await axios.put(`/user-settings/${id}/genres`, {
-
+        checkedGenres,
       });
       console.log(res);
       setTimeout(() => {

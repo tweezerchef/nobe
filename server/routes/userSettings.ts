@@ -44,43 +44,52 @@ const uploadToS3 = (file: Express.Multer.File): Promise<string> => {
   });
 };
 
-UserSettings.put('/:id/preferences', async (req, res) => {
-  console.log(req, 273);
+UserSettings.put('/:id/preferences', upload.single('image'), async (req: Request, res: Response) => {
+  // console.log(req, 273);
   const { id } = req.params;
-  // const {
-  //   username, firstName, lastName, phoneNumber, longitude,
-  //   latitude,
-  //   radius,
-  // } = req.body;
-  // const radNum = Number(radius);
-  // try {
-  //   const userUpdatePreferences = await prisma.user.update({
-  //     where: {
-  //       id,
-  //     },
-  //     data: {
-  //       picture,
-  //       username,
-  //       firstName,
-  //       lastName,
-  //       phoneNumber,
-  //       longitude,
-  //       latitude,
-  //       radius: radNum,
-  //     },
-  //   });
-  //   // console.log(userUpdatePreferences, 295);
-  //   res.status(200).json({ userUpdatePreferences });
-  // } catch (e) {
-  //   console.error(e);
-  //   res.status(500).json({
-  //     error: 'Server error!',
-  //   });
-  // }
+  const { file } = req;
+  // console.log(file, 51);
+  if (!file) {
+    res.status(400).json({ error: true, Message: 'No file uploaded' });
+    return;
+  }
+  const {
+    username, firstName, lastName, phoneNumber, longitude,
+    latitude,
+    radius,
+  } = req.body;
+  const lonNum = Number(longitude);
+  const latNum = Number(latitude);
+  const radNum = Number(radius);
+  const picture = await uploadToS3(file);
+  try {
+    const userUpdatePreferences = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        picture,
+        username,
+        firstName,
+        lastName,
+        phoneNumber,
+        longitude: lonNum,
+        latitude: latNum,
+        radius: radNum,
+      },
+    });
+    // console.log(userUpdatePreferences, 295);
+    res.status(200).json({ userUpdatePreferences });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      error: 'Server error!',
+    });
+  }
 });
 
 UserSettings.put('/:id/genres', async (req, res) => {
-  // console.log(req, 273);
+  // console.log(req, 83);
   const { id } = req.params;
   const { genres } = req.body;
   try {
@@ -92,7 +101,7 @@ UserSettings.put('/:id/genres', async (req, res) => {
         UserGenre: genres,
       },
     });
-    // console.log(userUpdatePreferences, 295);
+    // console.log(userUpdateGenres, 295);
     res.status(200).json({ userUpdateGenres });
   } catch (e) {
     console.error(e);
@@ -103,7 +112,7 @@ UserSettings.put('/:id/genres', async (req, res) => {
 });
 
 UserSettings.put('/:id/hobbies', async (req, res) => {
-  // console.log(req, 273);
+  // console.log(req, 106);
   const { id } = req.params;
   const { hobbies } = req.body;
   try {
@@ -115,7 +124,7 @@ UserSettings.put('/:id/hobbies', async (req, res) => {
         UserHobbies: hobbies,
       },
     });
-    // console.log(userUpdatePreferences, 295);
+    // console.log(userUpdateHobbies, 295);
     res.status(200).json({ userUpdateHobbies });
   } catch (e) {
     console.error(e);
