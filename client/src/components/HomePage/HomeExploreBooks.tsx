@@ -139,14 +139,15 @@ function HomeBuildRecomendations() {
           alignContent: 'center',
           justifyContent: 'center',
           width: '100%',
-          height: '300px',
+          height: '25vh',
+          marginTop: '3vh',
           paddingBottom: '0',
         }}
       >
         <IconButton
           onClick={handlePrevPage}
           sx={{
-            margin: 5, marginRight: 10, padding: 0, alignSelf: 'center', justifySelf: 'start',
+            marginRight: 10, padding: 0, alignSelf: 'center', justifySelf: 'start',
 
           }}
           disabled={currentPage === 0}
@@ -202,7 +203,7 @@ function HomeBuildRecomendations() {
         <IconButton
           onClick={handleNextPage}
           sx={{
-            margin: 5, marginLeft: 10, padding: 0, alignSelf: 'center', justifySelf: 'end',
+            marginLeft: 10, marginRight: 1, padding: 0, alignSelf: 'center', justifySelf: 'end',
           }}
           disabled={currentPage >= Math.ceil((books.length || 0) / booksPerPage) - 1}
         >
