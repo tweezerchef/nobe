@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  Button, TextField, FormControl, CardMedia,
+  Button, FormControl, CardMedia,
 } from '@material-ui/core';
-import {
-  Stack, Dialog, DialogTitle, DialogContent, DialogActions, Card,
-} from '@mui/material';
+import TextField from '@material-ui/core/TextField';
+import Stack from '@mui/material/Stack';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import AspectRatio from '@mui/joy/AspectRatio';
@@ -182,7 +186,7 @@ function ClubDiscussion() {
                     alt={`Club image for ${clubName}`}
                     image={clubImage}
                     style={{
-                      objectFit: 'contain',
+                      objectFit: 'fill',
                     }}
                   />
                 </AspectRatio>

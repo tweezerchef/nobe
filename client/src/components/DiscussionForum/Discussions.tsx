@@ -3,10 +3,10 @@
 import React, { memo } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-
-import {
-  Card, CardContent, Typography, Box,
-} from '@mui/material';
+import Card from '@mui/material/Card';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
+import Box from '@mui/material/Box';
 import { Discussion } from '../../typings/types';
 
 type DiscussionListProps = {
