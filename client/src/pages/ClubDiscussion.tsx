@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  Button, FormControl, CardMedia,
-} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import CardMedia from '@material-ui/core/CardMedia';
 import Stack from '@mui/material/Stack';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -170,7 +170,7 @@ function ClubDiscussion() {
             <ClubHeader style={{ textAlign: 'center' }}>{clubName}</ClubHeader>
             <ClubDescription style={{ textAlign: 'center' }}>{thisClub[0]?.description}</ClubDescription>
             <div style={{
-              display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '8px',
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
             }}
             >
               <Card sx={{
@@ -197,7 +197,7 @@ function ClubDiscussion() {
                 spacing={2}
                 direction="row"
                 sx={{
-                  paddingTop: '20px',
+                  paddingTop: '25px',
                   paddingBottom: '10px',
                 }}
               >
