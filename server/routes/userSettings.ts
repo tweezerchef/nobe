@@ -89,16 +89,20 @@ UserSettings.put('/:id/preferences', upload.single('image'), async (req: Request
 });
 
 UserSettings.put('/:id/genres', async (req, res) => {
-  // console.log(req, 83);
+//  console.log(req, 83);
   const { id } = req.params;
-  const { genres } = req.body;
+  const { checkedGenres }: { checkedGenres: string[] } = req.body;
+
   try {
     const userUpdateGenres = await prisma.user.update({
       where: {
         id,
       },
       data: {
-        UserGenre: genres,
+        UserGenre: {
+          deleteMany: {},
+          create: checkedGenres.map((genre) => ({ genre })),
+        },
       },
     });
     // console.log(userUpdateGenres, 295);
@@ -114,14 +118,18 @@ UserSettings.put('/:id/genres', async (req, res) => {
 UserSettings.put('/:id/hobbies', async (req, res) => {
   // console.log(req, 106);
   const { id } = req.params;
-  const { hobbies } = req.body;
+  const { checkedHobbies }: { checkedHobbies: string[] } = req.body;
+
   try {
     const userUpdateHobbies = await prisma.user.update({
       where: {
         id,
       },
       data: {
-        UserHobbies: hobbies,
+        UserHobbies: {
+          deleteMany: {},
+          create: checkedHobbies.map((hobbies) => ({ hobbies })),
+        },
       },
     });
     // console.log(userUpdateHobbies, 295);
