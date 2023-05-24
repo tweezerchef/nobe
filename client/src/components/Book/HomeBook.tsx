@@ -58,6 +58,13 @@ const Book = React.memo((props: any) => {
   if (!book) {
     return null;
   }
+  const maxCharacters = 50;
+  const ellipsisCharacters = 10; // Number of characters to show before the ellipsis
+
+  let displayedTitle = book.title;
+  if (book.title.length > maxCharacters) {
+    displayedTitle = `${book.title.substring(0, maxCharacters - ellipsisCharacters)}...`;
+  }
 
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     props.onClick(e, book);
@@ -112,15 +119,14 @@ const Book = React.memo((props: any) => {
         level="body1"
         onClick={handleOnClick}
         sx={{
-          mt: 3,
+          mt: 2.4,
           overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: book.title.length > 40 ? 'nowrap' : 'normal',
+          whiteSpace: 'normal',
           flexWrap: 'wrap',
           textAlign: 'center',
         }}
       >
-        {book.title}
+        {displayedTitle}
       </Typography>
 
       <Typography
