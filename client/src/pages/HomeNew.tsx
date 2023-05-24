@@ -5,6 +5,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
+import { AspectRatio } from '@mui/joy';
 import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
@@ -16,6 +17,7 @@ import HomeExploreBooks from '../components/HomePage/HomeExploreBooks';
 import HomeFriends from '../components/HomePage/Friends';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
+import FriendFinder from '../components/HomePage/FriendFinder';
 
 function HomeNew() {
   const [nearMeBooks, setNearMeBooks] = useState<any[]>([]);
@@ -48,7 +50,7 @@ function HomeNew() {
   } as const;
   return (
     <Box sx={{
-      flexGrow: 1, overflow: 'auto', height: '100vh',
+      flexGrow: 1, overflow: 'clip', height: '98vh',
     }}
     >
       <Grid
@@ -121,7 +123,7 @@ function HomeNew() {
                 Your Wish List
               </Chip>
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '30vh', maxHeight: '33vh' }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '31vh', maxHeight: '33vh' }}>
               <HomeWishList nearMeBooks={nearMeBooks} />
             </Box>
             <StyledDivider textAlign="left">
@@ -176,21 +178,26 @@ function HomeNew() {
                 Friends
               </Chip>
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', maxHeight: '35vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '39', maxHeight: '43vh' /* adjust this */ }}>
               <HomeFriends />
             </Box>
-            <Box
+            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '39', maxHeight: '43vh' /* adjust this */ }}>
+              <FriendFinder />
+            </Box>
+
+            {/* <Box
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
-                vh: '28vh',
+                vh: '25vh',
 
               }}
-            >
-              <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" style={{ height: '300px' }} alt="logo" />
-            </Box>
+            > */}
+
+            <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" width="100%" />
+            {/* </Box> */}
           </Stack>
         </Grid>
       </Grid>

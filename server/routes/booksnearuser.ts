@@ -213,7 +213,6 @@ LocationRoute.get('/locations/login', async (req: AuthenticatedRequest, res: Res
       const userBooks = user.UserBooks;
       return userBooks;
     });
-    console.log(userBooksArray, 67);
     const flatUserBooksArray = userBooksArray.flat();
     // now just get the booksId from each userBook
     const bookIds = flatUserBooksArray.map((userBook: any) => {
@@ -221,7 +220,6 @@ LocationRoute.get('/locations/login', async (req: AuthenticatedRequest, res: Res
       const bookId = userBook.booksId;
       return bookId;
     });
-    console.log(bookIds, 92);
 
     // flatten array so that it is an array of userbooks w/o the user object
     // console.log(users, 67);
