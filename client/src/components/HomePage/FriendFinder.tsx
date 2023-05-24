@@ -20,7 +20,7 @@ function FriendsComponent() {
     });
   };
 
-  const friendsPerPage = 3;
+  const randomUsersPerPage = 3;
 
   const handleNextPage = () => {
     setSlideDirection('left');
@@ -82,8 +82,8 @@ function FriendsComponent() {
                 justifyContent="center"
               >
                 {randomUsers.slice(
-                  index * friendsPerPage,
-                  index * friendsPerPage + friendsPerPage,
+                  index * randomUsersPerPage,
+                  index * randomUsersPerPage + randomUsersPerPage,
                 )
                   // eslint-disable-next-line @typescript-eslint/no-shadow
                   .map((randomUser) => (
@@ -104,7 +104,7 @@ function FriendsComponent() {
         sx={{
           margin: 5, marginLeft: 10, padding: 0, alignSelf: 'center', justifySelf: 'end',
         }}
-        disabled={currentPage >= Math.ceil((friends.length || 0) / friendsPerPage) - 1}
+        disabled={currentPage >= Math.ceil((randomUsers.length || 0) / randomUsersPerPage) - 1}
       >
         <NavigateNextIcon />
       </IconButton>

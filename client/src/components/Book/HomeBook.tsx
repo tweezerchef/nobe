@@ -112,9 +112,10 @@ const Book = React.memo((props: any) => {
         level="body1"
         onClick={handleOnClick}
         sx={{
-          mt: 2,
+          mt: 3,
           overflow: 'hidden',
           textOverflow: 'ellipsis',
+          whiteSpace: book.title.length > 40 ? 'nowrap' : 'normal',
           flexWrap: 'wrap',
           textAlign: 'center',
         }}
