@@ -45,7 +45,7 @@ function WishListButton(props: any) {
     <Tooltip title={toolTip} placement="top-end">
       <IconButton
         aria-label="Add to Wishlist"
-        size="md"
+        size="sm"
         variant="solid"
         color={color}
         sx={{

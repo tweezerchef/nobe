@@ -58,6 +58,13 @@ const Book = React.memo((props: any) => {
   if (!book) {
     return null;
   }
+  const maxCharacters = 50;
+  const ellipsisCharacters = 10; // Number of characters to show before the ellipsis
+
+  let displayedTitle = book.title;
+  if (book.title.length > maxCharacters) {
+    displayedTitle = `${book.title.substring(0, maxCharacters - ellipsisCharacters)}...`;
+  }
 
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     props.onClick(e, book);
@@ -85,7 +92,14 @@ const Book = React.memo((props: any) => {
       variant="outlined"
       className={classes.card}
       sx={{
-        width: '17vw', height: '28vh', margin: '.2vh', marginBottom: '0px', boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+        width: '17vw',
+        height: '28vh',
+        minHeight: '150px',
+        maxHeight: '300px',
+        margin: '.2vh',
+        boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <CardOverflow onClick={handleOnClick}>
@@ -103,19 +117,27 @@ const Book = React.memo((props: any) => {
       </CardOverflow>
       <Typography
         level="body1"
+        onClick={handleOnClick}
         sx={{
-          mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical',
+          mt: 2.4,
+          overflow: 'hidden',
+          whiteSpace: 'normal',
+          flexWrap: 'wrap',
+          textAlign: 'center',
         }}
       >
-        {' '}
-        <span onClick={handleOnClick}>
-          {book.title}
-        </span>
+        {displayedTitle}
       </Typography>
+
       <Typography
         level="body2"
         sx={{
-          mt: 0.5, mb: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+          mt: 'auto',
+          mb: 'auto',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          textAlign: 'center',
         }}
       >
         {book.author}

@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  Button, TextField, FormControl,
+  Button, TextField, FormControl, CardMedia,
 } from '@material-ui/core';
 import {
-  Stack, Dialog, DialogTitle, DialogContent, DialogActions,
+  Stack, Dialog, DialogTitle, DialogContent, DialogActions, Card,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
+import AspectRatio from '@mui/joy/AspectRatio';
 import axios from 'axios';
 import { ClubHeader, ClubDescription } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
@@ -32,6 +33,7 @@ function ClubDiscussion() {
   const [discussionList, setDiscussionList] = useState<Discussion[]>([]);
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [clubImage, setClubImage] = useState('');
 
   const searchParams = new URLSearchParams(location.search);
   const clubName = searchParams.get('name');
@@ -56,6 +58,7 @@ function ClubDiscussion() {
   async function fetchClubs() {
     const response = await axios.get(`/api/clubs/${clubId}`);
     setClub(response.data);
+    setClubImage(response.data[0]?.image);
   }
 
   useEffect(() => {
@@ -100,7 +103,7 @@ function ClubDiscussion() {
 
   return (
     <Box sx={{
-      flexGrow: 1, marginTop: '10px', overflow: 'auto', height: '100vh',
+      flexGrow: 1, overflow: 'auto', height: '100vh',
     }}
     >
       <Grid
@@ -162,8 +165,38 @@ function ClubDiscussion() {
           <div>
             <ClubHeader style={{ textAlign: 'center' }}>{clubName}</ClubHeader>
             <ClubDescription style={{ textAlign: 'center' }}>{thisClub[0]?.description}</ClubDescription>
+            <div style={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '8px',
+            }}
+            >
+              <Card sx={{
+                flexBasis: '33%',
+                borderRadius: '12px',
+                boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
+                maxWidth: '20%',
+              }}
+              >
+                <AspectRatio ratio="1">
+                  <CardMedia
+                    component="img"
+                    alt={`Club image for ${clubName}`}
+                    image={clubImage}
+                    style={{
+                      objectFit: 'contain',
+                    }}
+                  />
+                </AspectRatio>
+              </Card>
+            </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Stack spacing={2} direction="row">
+              <Stack
+                spacing={2}
+                direction="row"
+                sx={{
+                  paddingTop: '20px',
+                  paddingBottom: '10px',
+                }}
+              >
                 <JoinClubButton clubId={clubId} member={member} />
                 <Button
                   variant="contained"

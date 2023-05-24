@@ -10,70 +10,6 @@ dotenv.config();
 const Recommendations = express.Router();
 
 const prisma = new PrismaClient();
-async function findBook(
-  ISBN10: string,
-) {
-  try {
-    const newBook = await prisma.Books.findUnique({
-      where: { ISBN10 },
-      select: {
-        // include all columns from the books table
-        id: true,
-        title: true,
-        author: true,
-        ISBN10: true,
-        description: true,
-        image: true,
-        UserBooks: {
-          select: {
-            id: true,
-            wishlist: true,
-            owned: true,
-            booksId: true,
-            userId: true,
-            rating: true,
-            review: true,
-            LendingTable: true,
-            Books: {
-              select: {
-                id: true,
-                title: true,
-                author: true,
-                ISBN10: true,
-                description: true,
-                image: true,
-                UserBooks: {
-                  select: {
-                    id: true,
-                    wishlist: true,
-                    owned: true,
-                    booksId: true,
-                    userId: true,
-                    rating: true,
-                    review: true,
-                    LendingTable: true,
-                    User: true,
-                  },
-                },
-                Discussions: true,
-                Activity: true,
-              },
-            },
-            User: true,
-          },
-        },
-        Discussions: true,
-        Activity: true,
-      },
-
-    });
-
-    return newBook;
-  } catch (error) {
-    console.error(`Error finding or creating book with ISBN10 ${ISBN10}:`);
-    return {};
-  }
-}
 
 async function findRandomRows(limit: number) {
   const allRows = await prisma.Books.findMany();
@@ -85,19 +21,6 @@ async function findRandomRows(limit: number) {
 Recommendations.get('/random', async (req : Request, res: Response) => {
   try {
     const amazonBooks = await findRandomRows(30);
-
-    // const returnArray = await Promise.all(amazonBooks.map(async (book: any) => {
-    //   // First, find the book in our database
-    //   const existingBook = await findBook(book.ISBN10);
-
-    //   if (existingBook) {
-    //     return existingBook;
-    //   }
-    //   // If not, get data from Google Books API
-    //   const data = await axios.get(`http://localhost:8080/google-books?title=${book.title}`);
-    //   const googleBook = data.data;
-    //   return googleBook;
-    // }));
 
     res.send(amazonBooks);
   } catch (error) {

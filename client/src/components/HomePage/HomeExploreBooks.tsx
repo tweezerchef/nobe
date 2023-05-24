@@ -139,8 +139,8 @@ function HomeBuildRecomendations() {
           alignContent: 'center',
           justifyContent: 'center',
           width: '100%',
-          height: '28vh',
-          marginTop: '1vh',
+          height: '30vh',
+          marginTop: '1.5vh',
         }}
       >
         <IconButton

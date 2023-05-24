@@ -71,7 +71,6 @@ CreateClubRoute.post('/', upload.single('image'), async (req: Request, res: Resp
 
   try {
     const image = await uploadToS3(file);
-    console.log('s3FileURL: ', image);
 
     findOrCreateClub(name, description, image, userId)
       .then(async () => {

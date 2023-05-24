@@ -10,6 +10,7 @@ interface Discussion {
   title: string;
 }
 interface DiscussionPost {
+  createdAt: ReactNode;
   id: string;
   body: string;
   userId: string;
@@ -74,6 +75,7 @@ interface User {
   id: string;
   firstName: string;
   userName: string;
+  username: string;
   email: string;
   email: string;
   googleId: string;
