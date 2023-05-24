@@ -75,6 +75,7 @@ interface User {
   id: string;
   firstName: string;
   userName: string;
+  username: string;
   email: string;
   email: string;
   googleId: string;

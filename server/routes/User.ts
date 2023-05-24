@@ -271,8 +271,8 @@ User.get('/id/conversations', async (req, res) => {
 });
 
 async function findRandomRows(limit: number) {
-  const allRows = await prisma.Users.findMany({
-    take: 100,
+  const allRows = await prisma.user.findMany({
+    take: 50,
     select: {
       id: true,
       firstName: true,

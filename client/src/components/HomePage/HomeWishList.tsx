@@ -98,7 +98,6 @@ function HomeWishList({ nearMeBooks }: HomeWishListProps) {
         width: '100%',
         height: '30vh',
         marginTop: '1.5vh',
-        // paddingTop: '2',
         paddingBottom: '0',
       }}
     >

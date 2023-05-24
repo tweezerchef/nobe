@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState, useEffect, ChangeEvent, FormEvent,
+} from 'react';
 import Stack from '@mui/joy/Stack';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
@@ -10,6 +12,7 @@ import TextField from '@mui/material/TextField';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
 import Divider from '@mui/material/Divider';
+import Autocomplete from '@mui/material/Autocomplete';
 import { User } from '../../typings/types';
 import FriendCard from './FriendCard/FriendCard';
 
@@ -18,18 +21,22 @@ function FriendsComponent() {
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [randomUsers, setRandomUsers] = useState<User[]>([]);
   const [searchText, setSearchText] = useState('');
+  const [userArray, setUserArray] = useState<User[]>([]);
 
   const getRandomUsers = () => {
     axios.get('/user/randomUsers').then((res) => {
       setRandomUsers(res.data);
     });
   };
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
+  const getSearchUser = (id: string) => {
+    axios.get(`/user/id?id=${id}`).then((res) => {
+      setRandomUsers((prevUsers) => [...[res.data], ...prevUsers]);
+    });
   };
-
-  const handleSearch = (event: FormEvent) => {
-    event.preventDefault(); // Prevent form submission
+  const getUsersArray = () => {
+    axios.get('/user/allUsers').then((res) => {
+      setUserArray(res.data);
+    });
   };
 
   const randomUsersPerPage = 3;
@@ -46,6 +53,7 @@ function FriendsComponent() {
 
   useEffect(() => {
     getRandomUsers();
+    getUsersArray();
   }, []);
 
   return (
@@ -53,38 +61,56 @@ function FriendsComponent() {
       <Divider textAlign="right">
         <Box
           component="form"
-          onSubmit={handleSearch}
+          onSubmit={(event) => {
+            event.preventDefault(); // Prevent form submission
+          }}
           sx={{
             '& > :not(style)': { m: 1, width: '350px' },
           }}
           noValidate
           autoComplete="off"
         >
-          <TextField
-            id="Search"
-            onChange={handleInputChange}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <IconButton onClick={handleSearch}>
-                    <SearchOutlinedIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
+          <Autocomplete
+            id="combo-box-demo"
+            options={userArray}
+            getOptionLabel={(option: User) => (option.username ? `${option.firstName} ${option.username}` : option.firstName)}
+            sx={{ width: 350 }}
+            disablePortal
+            onChange={(event: any, newValue: User | null) => {
+              if (newValue) {
+                setSearchText(newValue.id);
+                getSearchUser(newValue.id);
+              }
             }}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'black',
-                  borderRadius: 6,
-                  width: '350px',
-                },
-                '& input': {
-                  width: '100%', // Adjust these values as needed
-                  color: 'black',
-                },
-              },
-            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                id="Search"
+                InputProps={{
+                  ...params.InputProps,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <IconButton type="submit">
+                        <SearchOutlinedIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'black',
+                      borderRadius: 6,
+                      width: '350px',
+                    },
+                    '& input': {
+                      width: '100%', // Adjust these values as needed
+                      color: 'black',
+                    },
+                  },
+                }}
+              />
+            )}
           />
         </Box>
       </Divider>
