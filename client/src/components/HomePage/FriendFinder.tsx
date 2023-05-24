@@ -1,36 +1,25 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Stack from '@mui/joy/Stack';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import Slide from '@mui/material/Slide';
+import axios from 'axios';
 import { User } from '../../typings/types';
-import UserContext from '../../hooks/Context';
 import FriendCard from './FriendCard/FriendCard';
-
-type Friendships = {
-  id: string;
-  userId: string;
-  friendId: string;
-  confirmed: boolean;
-  friend?: User
-  user?: User
-
-};
 
 function FriendsComponent() {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
-  const [friends, setFriends] = useState<Friendships[]>([]);
-  const userContext = useContext(UserContext);
-  const user = userContext?.user;
+  const [randomUsers, setRandomUsers] = useState<User[]>([]);
 
-  const getFriends = () => {
-    if (user?.friendships) {
-      setFriends(user?.friendships);
-    }
+  const getRandomUsers = () => {
+    axios.get('/user/randomUsers').then((res) => {
+      setRandomUsers(res.data);
+    });
   };
+
   const friendsPerPage = 3;
 
   const handleNextPage = () => {
@@ -44,7 +33,7 @@ function FriendsComponent() {
   };
 
   useEffect(() => {
-    getFriends();
+    getRandomUsers();
   }, []);
 
   return (
@@ -72,7 +61,7 @@ function FriendsComponent() {
       </IconButton>
 
       <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
-        {friends.map((friend, index) => (
+        {randomUsers.map((friend, index) => (
           <Box
             sx={{
               position: 'absolute',
@@ -92,15 +81,15 @@ function FriendsComponent() {
                 alignContent="center"
                 justifyContent="center"
               >
-                {friends.slice(
+                {randomUsers.slice(
                   index * friendsPerPage,
                   index * friendsPerPage + friendsPerPage,
                 )
                   // eslint-disable-next-line @typescript-eslint/no-shadow
-                  .map((friend) => (
+                  .map((randomUser) => (
                     <Box>
-                      {friend.friend
-                      && <FriendCard userFriend={friend.friend} />}
+                      {randomUser
+                      && <FriendCard userFriend={randomUser} />}
                     </Box>
                   ))}
               </Stack>

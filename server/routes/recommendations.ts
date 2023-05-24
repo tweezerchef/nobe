@@ -22,19 +22,6 @@ Recommendations.get('/random', async (req : Request, res: Response) => {
   try {
     const amazonBooks = await findRandomRows(30);
 
-    // const returnArray = await Promise.all(amazonBooks.map(async (book: any) => {
-    //   // First, find the book in our database
-    //   const existingBook = await findBook(book.ISBN10);
-
-    //   if (existingBook) {
-    //     return existingBook;
-    //   }
-    //   // If not, get data from Google Books API
-    //   const data = await axios.get(`http://localhost:8080/google-books?title=${book.title}`);
-    //   const googleBook = data.data;
-    //   return googleBook;
-    // }));
-
     res.send(amazonBooks);
   } catch (error) {
     // console.error(error);

@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import express from 'express';
 import dotenv from 'dotenv';
+import Activity from './activity';
 
 const { PrismaClient } = require('@prisma/client');
 
@@ -268,6 +269,34 @@ User.get('/id/conversations', async (req, res) => {
     res.status(500).send('Error retrieving conversation data');
   }
 });
+
+async function findRandomRows(limit: number) {
+  const allRows = await prisma.Users.findMany({
+    take: 100,
+    select: {
+      id: true,
+      firstName: true,
+      username: true,
+      picture: true,
+      latitude: true,
+      longitude: true,
+      radius: true,
+      Activity: true,
+      clubMembers: true,
+      Discussions: true,
+      friendships: true,
+      Posts: true,
+      UserBooks: true,
+      User_Places: true,
+      UserGenre: true,
+      UserHobbies: true,
+    },
+  });
+  const shuffledRows = allRows.sort(() => 0.5 - Math.random());
+  const randomRows = shuffledRows.slice(0, limit);
+  return randomRows;
+}
+
 User.get('/allUsers', async (req, res) => {
   try {
     const users = await prisma.user.findMany({
@@ -275,9 +304,18 @@ User.get('/allUsers', async (req, res) => {
         id: true,
         firstName: true,
         username: true,
-        picture: true,
       },
     });
+    res.send(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving conversation data');
+  }
+});
+
+User.get('/randomUsers', async (req, res) => {
+  try {
+    const users = await findRandomRows(10);
     res.send(users);
   } catch (error) {
     console.error(error);
