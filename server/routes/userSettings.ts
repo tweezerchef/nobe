@@ -169,7 +169,7 @@ UserSettings.put('/:id/hobbies', async (req, res) => {
 });
 
 UserSettings.get('/:id/hobbies', async (req, res) => {
-  console.log(req, 106);
+  // console.log(req, 106);
   const { id } = req.params;
   try {
     const userGetHobbies = await prisma.user.findUnique({
@@ -184,7 +184,7 @@ UserSettings.get('/:id/hobbies', async (req, res) => {
         },
       },
     });
-    console.log(userGetHobbies, 187);
+    // console.log(userGetHobbies, 187);
     res.status(200).json(userGetHobbies);
   } catch (e) {
     console.error(e);
