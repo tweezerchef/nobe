@@ -78,7 +78,7 @@ UserSettings.put('/:id/preferences', upload.single('image'), async (req: Request
         radius: radNum,
       },
     });
-    // console.log(userUpdatePreferences, 295);
+    // console.log(userUpdatePreferences, 81);
     res.status(200).json({ userUpdatePreferences });
   } catch (e) {
     console.error(e);
@@ -105,8 +105,34 @@ UserSettings.put('/:id/genres', async (req, res) => {
         },
       },
     });
-    // console.log(userUpdateGenres, 295);
+    // console.log(userUpdateGenres, 108);
     res.status(200).json({ userUpdateGenres });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      error: 'Server error!',
+    });
+  }
+});
+
+UserSettings.get('/:id/genres', async (req, res) => {
+// console.log(req, 106);
+  const { id } = req.params;
+  try {
+    const userGetGenres = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        UserGenre: {
+          select: {
+            genre: true,
+          },
+        },
+      },
+    });
+      //  console.log(userGetGenres, 134);
+    res.status(200).json({ userGetGenres });
   } catch (e) {
     console.error(e);
     res.status(500).json({
@@ -132,8 +158,34 @@ UserSettings.put('/:id/hobbies', async (req, res) => {
         },
       },
     });
-    // console.log(userUpdateHobbies, 295);
+    // console.log(userUpdateHobbies, 161);
     res.status(200).json({ userUpdateHobbies });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      error: 'Server error!',
+    });
+  }
+});
+
+UserSettings.get('/:id/hobbies', async (req, res) => {
+  // console.log(req, 106);
+  const { id } = req.params;
+  try {
+    const userGetHobbies = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        UserHobbies: {
+          select: {
+            hobbies: true,
+          },
+        },
+      },
+    });
+    // console.log(userGetHobbies, 187);
+    res.status(200).json(userGetHobbies);
   } catch (e) {
     console.error(e);
     res.status(500).json({
