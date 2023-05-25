@@ -110,7 +110,7 @@ function HomeNew() {
             <Box
               sx={{
                 width: '100%',
-                height: '25vh',
+                height: '23.48vh',
                 backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -122,7 +122,7 @@ function HomeNew() {
               </Chip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '31vh', maxHeight: '33vh' }}>
-              {/* <HomeWishList nearMeBooks={nearMeBooks} /> */}
+              <HomeWishList nearMeBooks={nearMeBooks} />
             </Box>
             <StyledDivider textAlign="left">
               <FlameStyledChip size="lg">
@@ -176,11 +176,11 @@ function HomeNew() {
                 Friends
               </Chip>
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '39', maxHeight: '43vh' /* adjust this */ }}>
-              {/* <HomeFriends /> */}
+            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '33vh', maxHeight: '37vh' /* adjust this */ }}>
+              <HomeFriends />
             </Box>
-            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '39', maxHeight: '43vh' /* adjust this */ }}>
-              {/* <FriendFinder /> */}
+            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '39vh', maxHeight: '43vh' /* adjust this */ }}>
+              <FriendFinder />
             </Box>
             <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" width="100%" />
           </Stack>
