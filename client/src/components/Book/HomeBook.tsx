@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
+import Box from '@mui/joy/Box';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
+import { padding } from '@mui/system';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
@@ -92,28 +94,43 @@ const Book = React.memo((props: any) => {
       variant="outlined"
       className={classes.card}
       sx={{
-        width: '17vw',
-        height: '28vh',
-        minHeight: '150px',
-        maxHeight: '300px',
+        width: '16vw',
+        height: '27vh',
+        minHeight: '170px',
         margin: '.2vh',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         display: 'flex',
         flexDirection: 'column',
       }}
     >
-      <CardOverflow onClick={handleOnClick}>
-        <AspectRatio ratio="2">
-          {book.image ? (
-            <img src={book.image} loading="lazy" alt="" />
-          ) : (
-            <img src="https://i.imgur.com/XrUd1L2.jpg" loading="lazy" alt="" />
-          )}
-        </AspectRatio>
+      <Box
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '55%', // Adjust as per your requirement
+          overflow: 'hidden',
+          margin: '0',
+          padding: '0',
+        }}
+        onClick={handleOnClick}
+      >
+        <img
+          src={book.image ? book.image : 'https://i.imgur.com/XrUd1L2.jpg'}
+          loading="lazy"
+          alt=""
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center center',
+          }}
+        />
+      </Box>
+      <CardOverflow>
         <NearMeButton book={book} nearMeBooks={nearMeBooks} />
         <LendingLibraryButton book={book} />
         <WishListButton book={book} />
-
       </CardOverflow>
       <Typography
         level="body1"

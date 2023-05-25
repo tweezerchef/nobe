@@ -5,7 +5,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
-import { AspectRatio } from '@mui/joy';
 import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
