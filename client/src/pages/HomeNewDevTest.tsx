@@ -18,6 +18,8 @@ import HomeFriends from '../components/HomePage/Friends';
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 import FriendFinder from '../components/HomePage/FriendFinder';
 
+// this is the home page with most of the components removed for dev testing
+
 function HomeNew() {
   const [nearMeBooks, setNearMeBooks] = useState<any[]>([]);
 
@@ -85,7 +87,8 @@ function HomeNew() {
         >
           <Box sx={{
             width: '100%',
-            height: '25vh',
+            height: '20vh',
+            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -110,7 +113,7 @@ function HomeNew() {
             <Box
               sx={{
                 width: '100%',
-                height: '25vh',
+                height: '20vh',
                 backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
