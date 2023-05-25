@@ -99,18 +99,26 @@ function VerticalTabs() {
           <Tab label="Preferred Places" {...a11yProps(4)} />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
-        <UserInfo />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <FavGenres />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <FavHobbies />
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <FavBooksPlaces />
-      </TabPanel>
+      <Box>
+        <TabPanel value={value} index={0}>
+          <UserInfo />
+        </TabPanel>
+      </Box>
+      <Box>
+        <TabPanel value={value} index={1}>
+          <FavGenres />
+        </TabPanel>
+      </Box>
+      <Box>
+        <TabPanel value={value} index={2}>
+          <FavHobbies />
+        </TabPanel>
+      </Box>
+      <Box>
+        <TabPanel value={value} index={3}>
+          <FavBooksPlaces />
+        </TabPanel>
+      </Box>
       <TabPanel value={value} index={4}>
         {/* <SecuritySettings /> */}
       </TabPanel>

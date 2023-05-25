@@ -23,7 +23,6 @@ const genres = [
   'Science Fiction',
   'Fantasy',
   'Young Adult',
-  'Historical Fiction',
   'Biography',
   'Autobiography',
   'Horror',
@@ -35,12 +34,16 @@ const genres = [
   'Comedy',
   'Adventure',
   'Action',
+  'Historical Fiction',
   'Historical',
   'Science',
   "Children's",
   'Travel',
   'Cooking',
   'Graphic Novel',
+  'Business',
+  'Health',
+  'Sports',
 ];
 
 function FavGenres() {
@@ -76,16 +79,19 @@ function FavGenres() {
   };
 
   return (
-    <div>
+    <Box sx={{
+      height: '100vh', width: '75%', ml: 25,
+    }}
+    >
       <Box>
         <h1> Select Your Favorite Genres! </h1>
       </Box>
-      <Grid container spacing={2} justifyContent="center">
-        {[0, 1, 2, 3, 4].map((column) => (
+      <Grid container spacing={25} justifyContent="center">
+        {[0, 1, 2, 3].map((column) => (
           <Grid key={column} item xs={12} sm={6} md={4} lg={3}>
             <FormControl component="fieldset" variant="standard">
               <FormGroup>
-                {genres.slice(column * 5, column * 5 + 5).map((genre) => (
+                {genres.slice(column * 7, column * 7 + 7).map((genre) => (
                   <FormControlLabel
                     key={genre}
                     control={(
@@ -103,19 +109,19 @@ function FavGenres() {
           </Grid>
         ))}
       </Grid>
-      <Box>
+      <Box sx={{ mt: 5, width: '50%' }}>
         <ReactiveButton
           rounded
           size="medium"
           buttonState={buttonState}
           idleText="Update Your Favorite Genres"
-          loadingText="Loading"
-          successText="Done"
+          loadingText="Updating..."
+          successText="Updated!"
           onClick={updateUserGenres}
           color="blue"
         />
       </Box>
-    </div>
+    </Box>
   );
 }
 

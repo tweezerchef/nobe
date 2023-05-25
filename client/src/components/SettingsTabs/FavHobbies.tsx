@@ -21,6 +21,7 @@ const hobbies = [
   'Cooking',
   'Painting',
   'Gardening',
+  'Playing an instrument',
   'Traveling',
   'Hiking',
   'Music',
@@ -29,6 +30,7 @@ const hobbies = [
   'Yoga',
   'Gaming',
   'Fishing',
+  'Board games',
   'Cycling',
   'Singing',
   'Knitting',
@@ -38,8 +40,9 @@ const hobbies = [
   'Collecting',
   'Chess',
   'Volunteering',
-  'Playing an instrument',
-  'Board games',
+  'Baking',
+  'Drawing',
+  'Golf',
 ];
 
 function FavHobbies() {
@@ -88,36 +91,37 @@ function FavHobbies() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{
+      height: '100vh', width: '75%', ml: 25,
+    }}
+    >
       <Box>
         <h1> Select Your Favorite Hobbies! </h1>
       </Box>
-      <Container>
-        <Grid container spacing={1} justifyContent="center">
-          {[0, 1, 2, 3, 4].map((column) => (
-            <Grid key={column} item xs={12} sm={6} md={4} lg={3}>
-              <FormControl component="fieldset" variant="standard">
-                <FormGroup>
-                  {hobbies.slice(column * 5, column * 5 + 5).map((hobby) => (
-                    <FormControlLabel
-                      key={hobby}
-                      control={(
-                        <Checkbox
-                          checked={checkedHobbies.includes(hobby)}
-                          onChange={handleChange}
-                          name={hobby}
-                        />
+      <Grid container spacing={25} justifyContent="center">
+        {[0, 1, 2, 3].map((column) => (
+          <Grid key={column} item xs={12} sm={6} md={4} lg={3}>
+            <FormControl component="fieldset" variant="standard">
+              <FormGroup>
+                {hobbies.slice(column * 7, column * 7 + 7).map((hobby) => (
+                  <FormControlLabel
+                    key={hobby}
+                    control={(
+                      <Checkbox
+                        checked={checkedHobbies.includes(hobby)}
+                        onChange={handleChange}
+                        name={hobby}
+                      />
                   )}
-                      label={hobby}
-                    />
-                  ))}
-                </FormGroup>
-              </FormControl>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-      <Box>
+                    label={hobby}
+                  />
+                ))}
+              </FormGroup>
+            </FormControl>
+          </Grid>
+        ))}
+      </Grid>
+      <Box sx={{ mt: 5, width: '50%' }}>
         <ReactiveButton
           rounded
           size="medium"
@@ -126,6 +130,7 @@ function FavHobbies() {
           loadingText="Updating..."
           successText="Updated!"
           onClick={updateUserHobbies}
+          color="blue"
         />
       </Box>
     </Box>
