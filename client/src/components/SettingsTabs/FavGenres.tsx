@@ -76,8 +76,10 @@ function FavGenres() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <h1> Select Your Favorite Genres! </h1>
+    <div>
+      <Box>
+        <h1> Select Your Favorite Genres! </h1>
+      </Box>
       <Grid container spacing={2} justifyContent="center">
         {[0, 1, 2, 3, 4].map((column) => (
           <Grid key={column} item xs={12} sm={6} md={4} lg={3}>
@@ -101,17 +103,19 @@ function FavGenres() {
           </Grid>
         ))}
       </Grid>
-      <ReactiveButton
-        rounded
-        size="medium"
-        buttonState={buttonState}
-        idleText="Update Your Favorite Genres"
-        loadingText="Loading"
-        successText="Done"
-        onClick={updateUserGenres}
-        color="blue"
-      />
-    </Box>
+      <Box>
+        <ReactiveButton
+          rounded
+          size="medium"
+          buttonState={buttonState}
+          idleText="Update Your Favorite Genres"
+          loadingText="Loading"
+          successText="Done"
+          onClick={updateUserGenres}
+          color="blue"
+        />
+      </Box>
+    </div>
   );
 }
 

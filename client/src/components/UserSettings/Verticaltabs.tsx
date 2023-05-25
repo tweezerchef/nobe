@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
@@ -51,6 +51,17 @@ function VerticalTabs() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    const storedTab = localStorage.getItem('selectedTab');
+    if (storedTab) {
+      setValue(parseInt(storedTab, 10));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('selectedTab', value.toString());
+  }, [value]);
 
   return (
     <Box
