@@ -8,6 +8,7 @@ import io from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Box from '@mui/material/Box';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -19,6 +20,8 @@ import SendIcon from '@material-ui/icons/Send';
 import moment from 'moment';
 import UserContext from '../../hooks/Context';
 import Emojis from '../Emojis/Emojis';
+import ImageButton from './ImageButton';
+
 // import { useChatContext } from '../../hooks/ChatContext';
 
 const chatStyles = makeStyles({
@@ -421,7 +424,10 @@ function Chat({ chatUser }: { chatUser: any }) {
                       style={{ padding: '0px 5px 0px 0px' }}
                       InputProps={{
                         endAdornment: (
-                          <Emojis onSelect={handleEmojiSelect} />
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Emojis onSelect={handleEmojiSelect} />
+                            <ImageButton />
+                          </Box>
                         ),
                       }}
                     />
