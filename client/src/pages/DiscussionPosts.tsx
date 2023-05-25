@@ -30,6 +30,14 @@ interface Post {
   }
 }
 
+interface Club {
+  clubId: string;
+  name: string;
+  description: string;
+  image: string;
+  clubMembers: string[];
+}
+
 function DiscussionPosts() {
   const { id } = useParams<{ id: string }>();
   const [posts, setPosts] = useState<Post[]>([]);
@@ -45,6 +53,14 @@ function DiscussionPosts() {
   const colWidth = {
     xs: 12, sm: 6, md: 4, lg: 3,
   } as const;
+
+  const member = user?.clubMembers?.reduce((acc: boolean, club: Club) => {
+    if (club.clubId === clubId) {
+      acc = true;
+      return acc;
+    }
+    return acc;
+  }, false);
 
   useEffect(() => {
     async function getPosts() {
@@ -73,6 +89,11 @@ function DiscussionPosts() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (!member) {
+      alert('Not a member of this club');
+      return;
+    }
 
     if (newPost.trim().length === 0) {
       alert('Post cannot be empty!');
