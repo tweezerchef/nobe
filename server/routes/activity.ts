@@ -25,6 +25,7 @@ Activity.get('/', async (req, res) => {
     include: {
       user: true,
       book: true,
+      place: true,
     },
   });
 
