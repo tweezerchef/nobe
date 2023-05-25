@@ -53,21 +53,21 @@ function FavHobbies() {
   const [checkedHobbies, setCheckedHobbies] = useState<string[]>([]);
   const [buttonState, setButtonState] = useState('idle');
 
-  // useEffect(() => {
-  //   const fetchUserHobbies = async () => {
-  //     try {
-  //       const response = await axios.get(`/user-settings/${id}/hobbies`);
-  //       console.log(response, 56);
-  //       const userHobbies = response.data.UserHobbies;
-  //       console.log(userHobbies, 57);
-  //       setCheckedHobbies(userHobbies || []);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   fetchUserHobbies();
-  // }, [id]);
+  useEffect(() => {
+    const fetchUserHobbies = async () => {
+      try {
+        const response = await axios.get(`/user-settings/${id}/hobbies`);
+        // console.log(response, 56);
+        const userHobbies = response.data.UserHobbies;
+        const hobbiesArray = userHobbies.map((obj: { hobbies: any; }) => obj.hobbies);
+        // console.log(hobbiesArray);
+        setCheckedHobbies(hobbiesArray || []);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserHobbies();
+  }, []);
   const updateUserHobbies = async () => {
     setButtonState('loading');
     try {
