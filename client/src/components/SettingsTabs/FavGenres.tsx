@@ -54,6 +54,22 @@ function FavGenres() {
   const [checkedGenres, setCheckedGenres] = useState<string[]>([]);
   const [buttonState, setButtonState] = useState('idle');
 
+  useEffect(() => {
+    const fetchUserGenres = async () => {
+      try {
+        const response = await axios.get(`/user-settings/${id}/genres`);
+        console.log(response, 56);
+        const userGenres = response.data.UserGenre;
+        const genresArray = userGenres.map((obj: { genre: any; }) => obj.genre);
+        console.log(genresArray);
+        setCheckedGenres(genresArray || []);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserGenres();
+  }, []);
+
   const updateUserGenres = async () => {
     setButtonState('loading');
     try {
