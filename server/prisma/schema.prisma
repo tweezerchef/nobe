@@ -21,8 +21,8 @@ model User {
   latitude           Float?
   longitude          Float?
   radius             Int?
-  phoneNumber        String?
   NotificationsCount Int                @default(0)
+  phoneNumber        String?
   Activity           Activity[]
   clubMembers        ClubMembers[]
   DirectMessages     DirectMessages[]
@@ -34,11 +34,11 @@ model User {
   Notifications      Notifications[]
   Posts              Posts[]
   PostsUsers         PostsUsers[]
-  UserPictures       UserPictures[]
   UserBooks          UserBooks[]
-  User_Places        User_Places[]
   UserGenre          UserGenre[]
   UserHobbies        UserHobbies[]
+  UserPictures       UserPictures[]
+  User_Places        User_Places[]
   Conversations      Conversations[]    @relation("conversationMembers")
 }
 
@@ -188,8 +188,8 @@ model Books {
 
 model Genre {
   id      String @id @default(uuid())
-  genre   String
   booksId String
+  genre   String
   Books   Books  @relation(fields: [booksId], references: [id])
 }
 

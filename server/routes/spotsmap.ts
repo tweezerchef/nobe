@@ -69,17 +69,18 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
       }
     }
 
+    const placeId = createdPlace?.id ? createdPlace.id : place.id;
+    const googlePlaceId = createdPlace?.googlePlaceId
+      ? createdPlace.googlePlaceId : place.googlePlaceId;
+
     await prisma.activity.create({
       data: {
         userId: id,
+        placeId,
         type: 'location',
         description: `${name}`,
       },
     });
-
-    const placeId = createdPlace?.id ? createdPlace.id : place.id;
-    const googlePlaceId = createdPlace?.googlePlaceId
-      ? createdPlace.googlePlaceId : place.googlePlaceId;
 
     prisma.user_Places.upsert({
       where: { userId_placeId: { userId: id, placeId } },
