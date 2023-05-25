@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Button from '@mui/material/Button';
@@ -36,6 +36,9 @@ function BookSearchButton(props: any) {
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
+  useEffect(() => {
+    console.log(book);
+  }, [book]);
 
   return (
     <div>
@@ -58,34 +61,40 @@ function BookSearchButton(props: any) {
           }}
           noValidate
           autoComplete="off"
+          onSubmit={handleSubmit}
         >
-          <form onSubmit={handleSubmit}>
-            <TextField
-              autoFocus
-              id="club-name"
-              label="Book Title"
-              variant="outlined"
-              type="string"
-              fullWidth
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-            <TextField
-              id="book-timeline"
-              label="Book Timeline for Readers"
-              variant="outlined"
-              type="string"
-              fullWidth
-              value={timeline}
-              onChange={(e) => setTimeLine(e.target.value)}
-              required
-            />
-            <Button variant="contained" color="primary" type="submit">
-              Create Club
-            </Button>
-          </form>
+          <TextField
+            autoFocus
+            id="club-name"
+            label="Book Title"
+            variant="outlined"
+            type="string"
+            fullWidth
+            value={title}
+            onChange={handleTitleChange}
+            required
+          />
+          <TextField
+            id="book-timeline"
+            label="Book Timeline for Readers"
+            variant="outlined"
+            type="string"
+            fullWidth
+            value={timeline}
+            onChange={(e) => setTimeLine(e.target.value)}
+            required
+          />
+          <Button variant="contained" color="primary" type="submit">
+            Add Book
+          </Button>
         </Box>
+        { book
+        && (
+        <Box mt={2} textAlign="center">
+          <img src={book.image} alt={book.title} height="100px" />
+          {book.title}
+        </Box>
+        )}
       </Dialog>
     </div>
   );
