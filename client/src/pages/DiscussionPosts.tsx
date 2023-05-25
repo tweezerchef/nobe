@@ -45,6 +45,7 @@ function DiscussionPosts() {
   const [discussionTitle, setDiscussionTitle] = useState('');
   const [clubName, setClubName] = useState('');
   const [clubId, setClubId] = useState('');
+  const [isDiscussionCreator, setIsDiscussionCreator] = useState(false);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -74,9 +75,11 @@ function DiscussionPosts() {
     async function getDiscussionTitle() {
       try {
         const { data } = await axios.get(`/api/clubs/discussions/${id}`);
+        console.log(data);
         setDiscussionTitle(data.title);
         setClubName(data.clubs.name);
         setClubId(data.clubsId);
+        setIsDiscussionCreator(data.creator.id === userId);
       } catch (error) {
         console.error(error);
       }

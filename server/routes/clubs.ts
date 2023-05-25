@@ -95,6 +95,11 @@ ClubsRoute.get('/discussions/:id', async (req: Request, res: Response) => {
         clubs: {
           select: { name: true },
         },
+        creator: {
+          select: {
+            id: true, firstName: true, lastName: true, username: true,
+          },
+        },
       },
     });
     res.json(discussion);
