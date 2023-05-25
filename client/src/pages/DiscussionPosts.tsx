@@ -12,6 +12,7 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import Feed from './Feed';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
+import BookSearchButton from '../components/Button/BookSearchButton';
 import UserContext from '../hooks/Context';
 import { ClubHeader, StyledTextarea } from './style';
 import '../styles/discussionPostsStyles.css';
@@ -75,7 +76,6 @@ function DiscussionPosts() {
     async function getDiscussionTitle() {
       try {
         const { data } = await axios.get(`/api/clubs/discussions/${id}`);
-        console.log(data);
         setDiscussionTitle(data.title);
         setClubName(data.clubs.name);
         setClubId(data.clubsId);
@@ -202,6 +202,12 @@ function DiscussionPosts() {
             </ClubHeader>
             )}
             <ClubHeader>{discussionTitle}</ClubHeader>
+            {/* {isDiscussionCreator && (
+            <Button variant="outlined" color="primary" disableElevation>
+              Button for Discussion Creator
+            </Button>
+            )} */}
+            <BookSearchButton isDiscussionCreator={isDiscussionCreator} />
             {posts?.map((post) => (
               <div className="post">
                 <div className="post-content" key={post.id}>
