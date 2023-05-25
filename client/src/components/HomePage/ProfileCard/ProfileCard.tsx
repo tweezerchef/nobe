@@ -5,7 +5,6 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/joy/Stack';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import UserContext from '../../../hooks/Context';
@@ -21,6 +20,7 @@ function ProfileCard() {
       sx={{
         backgroundColor: 'transparent',
         boxShadow: 'none',
+        flexGrow: 1,
       }}
     >
       <Stack direction="row" spacing={1} alignItems="center" padding=".7vh">
