@@ -184,18 +184,6 @@ function HomeNew() {
             <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '39', maxHeight: '43vh' /* adjust this */ }}>
               <FriendFinder />
             </Box>
-
-            {/* <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                vh: '25vh',
-
-              }}
-            > */}
-
             <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" width="100%" />
             {/* </Box> */}
           </Stack>
