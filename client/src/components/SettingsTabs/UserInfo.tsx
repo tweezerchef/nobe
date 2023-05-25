@@ -123,12 +123,23 @@ function UserInfo() {
     }}
     >
       <Container>
-        <ProfileImage
-          alt="User Pic"
-          src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
-          id="profile-image1"
-          height="200"
-        />
+        { user?.picture === undefined ? (
+          <ProfileImage
+            alt="User Pic"
+            src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
+            id="profile-image1"
+            height="250"
+          />
+        )
+          : (
+            <ProfileImage
+              alt="User Pic"
+              src={user?.picture}
+              id="profile-image1"
+              height="250"
+            />
+          )}
+
         <PhotoUpload setClubImage={setUserImage} />
         <UserDetail>
           <form>
