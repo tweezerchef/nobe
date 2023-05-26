@@ -96,7 +96,7 @@ const Book = React.memo(({
       sx={{
         width: '17vw',
         height: '27vh',
-        minHeight: '170px',
+        minHeight: '200px',
         margin: '.2vh',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         display: 'flex',
