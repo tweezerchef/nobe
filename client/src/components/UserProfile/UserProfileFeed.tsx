@@ -8,27 +8,7 @@ import moment from 'moment';
 
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Timeline from '@mui/lab/Timeline';
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
-import TimelineDot from '@mui/lab/TimelineDot';
-import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
-import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
-import StarIcon from '@mui/icons-material/Star';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import IconButton from '@mui/joy/IconButton';
-import LocalMallIcon from '@mui/icons-material/LocalMall';
-import AddLocationIcon from '@mui/icons-material/AddLocation';
-import UserContext from '../hooks/Context';
+import { User } from '../../typings/types';
 
 interface Activity {
   createdAt: string;
@@ -47,13 +27,14 @@ interface Activity {
   }
 }
 
-export default function CustomizedTimeline() {
+interface CustomizedTimelineProps {
+  user: User;
+}
+
+export default function UserProfileFeed({ user }: CustomizedTimelineProps) {
   const [activity, setActivity] = useState<Activity[]>([]);
-
-  const userContext = useContext(UserContext);
-  const user = userContext?.user;
-
   const userId = user?.id;
+
   const getFeed = async () => {
     try {
       const response = await axios.get('/api/activity', {

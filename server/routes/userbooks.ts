@@ -69,6 +69,7 @@ UserBooks.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
 UserBooks.get('/owned/:id', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { id } = req.params;
+    console.log('id', id);
     const userBooks = await prisma.userBooks.findMany({
       where: {
         userId: id,
@@ -111,6 +112,7 @@ UserBooks.get('/owned/:id', async (req: AuthenticatedRequest, res: Response) => 
         User: true,
       },
     });
+    console.log('userBooks', userBooks);
     // const books = userBooks.map((userBook: UserBooks) => userBook.books);
     res.send(userBooks);
   } catch (err) {

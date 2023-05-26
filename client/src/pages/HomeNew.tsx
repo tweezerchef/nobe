@@ -5,8 +5,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
-
-import { set } from 'react-hook-form';
 import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
@@ -19,7 +17,6 @@ import HomeFriends from '../components/HomePage/Friends';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 import FriendFinder from '../components/HomePage/FriendFinder';
-import { Friendships, Book } from '../typings/types';
 
 interface Friendship {
   id: string;
@@ -192,7 +189,7 @@ function HomeNew() {
               </FlameStyledChip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '24vh', maxHeight: '29vh' /* adjust this */ }}>
-              {/* <HomeNearMe /> */}
+              <HomeNearMe />
             </Box>
             <Box
               sx={{
