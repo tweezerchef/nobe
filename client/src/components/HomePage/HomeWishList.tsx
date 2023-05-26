@@ -77,12 +77,14 @@ function HomeWishList({ nearMeBooks }: HomeWishListProps) {
 
     const userBooks = await axios.get(`/user-books/wishlist/${id}`);
     userBooks.data.forEach((book: UserBook) => {
+      console.log(book.Books);
       booksArray.push(book.Books);
     });
     setBooks(booksArray);
   };
 
   useEffect(() => {
+    console.log('useEffect');
     getUserBooks();
   }, []);
 

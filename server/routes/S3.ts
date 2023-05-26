@@ -17,7 +17,6 @@ aws.config.update({
 
 Amazon.put('/club', upload.single('image'), (req: Request, res: Response) => {
   const file = req?.file;
-  console.log(file);
   if (!file) {
     res.status(400).json({ error: true, Message: 'No file uploaded' });
     return;

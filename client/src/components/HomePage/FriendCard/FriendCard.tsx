@@ -1,69 +1,118 @@
 import React from 'react';
 import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/joy/Stack';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
-
-import {
-  ProfileCard, StatusText, StatusValue, Status,
-  Name, ProfileInfo, StatusItem, AvatarWrapper,
-} from './homeStyle';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import { User } from '../../../typings/types';
-import { StyledDivider } from '../PlaceCard/styles';
 
 interface FriendCardProps {
   userFriend: User;
 }
-
 function FriendCard({ userFriend }: FriendCardProps) {
   const user = userFriend;
-  const owned = 10;
-  const wishlist = 10;
-  return (
-  // <Box sx={{ flexGrow: 1 }} maxWidth="100%" maxHeight="100%">
-    <ProfileCard>
-      <AvatarWrapper>
-        <Link to={`/profile/${user?.id}`}>
-          <Avatar
-            src={user?.picture}
-            alt={user?.firstName}
-            style={{
-              width: '5rem', height: '5rem',
-            }}
-          />
-        </Link>
+  const owned = user?.UserBooks?.filter((book) => book.owned === true).length;
+  const wishlist = user?.UserBooks?.filter((book) => book.wishlist === true).length;
 
-      </AvatarWrapper>
-      <ProfileInfo>
-        <StyledDivider />
-        <Name variant="h2">{user?.firstName}</Name>
-        {/* <Desc>{user?.description}</Desc> */}
-        <Status>
-          <StatusItem>
-            <StatusValue>{user?.Activity.length}</StatusValue>
-            <StatusText>Activity</StatusText>
-          </StatusItem>
-          <StatusItem>
-            <StatusValue>{user?.Posts.length}</StatusValue>
-            <StatusText>Posts</StatusText>
-          </StatusItem>
-          <StatusItem>
-            <StatusValue>{user?.clubMembers.length}</StatusValue>
-            <StatusText>Clubs</StatusText>
-          </StatusItem>
-        </Status>
-        <Status>
-          <StatusItem>
-            <StatusValue>{owned}</StatusValue>
-            <StatusText>Inventory</StatusText>
-          </StatusItem>
-          <StatusItem>
-            <StatusValue>{wishlist}</StatusValue>
-            <StatusText>Wish List</StatusText>
-          </StatusItem>
-        </Status>
-      </ProfileInfo>
-    </ProfileCard>
-  // </Box>
+  return (
+
+    <Box
+      sx={{
+        flexGrow: 1,
+        backgroundColor: '#dce9f39b',
+        boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+        minHeight: '29vh',
+        maxHeight: '33vh',
+        marginTop: '1.5vh',
+        width: '20vw',
+        alignContent: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        borderRadius: '3rem',
+      }}
+    >
+      <Grid container spacing={2} direction="column">
+        <Grid>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Link to={`/profile/${user?.id}`}>
+              <Avatar
+                src={user?.picture}
+                alt={user?.firstName}
+                style={{
+                  width: '4rem',
+                  height: '4rem',
+                  margin: '1rem',
+                  marginLeft: '1.5rem',
+                  marginTop: '1.5rem',
+                }}
+              />
+            </Link>
+            <Link to={`/profile/${user?.id}`}>
+              <Typography variant="h5">
+                {user?.firstName}
+              </Typography>
+            </Link>
+          </Stack>
+        </Grid>
+        <Divider sx={{ borderBottomWidth: 6, bgcolor: 'ThreeDDarkShadow' }} variant="middle" />
+        <Box sx={{
+          display: 'flex', flexWrap: 'wrap', alignItems: 'center', alignContent: 'center', paddingLeft: '2rem', width: '100%', marginTop: '1rem', overflowBottom: 'clip',
+        }}
+        >
+          <Grid>
+            <Grid container spacing={2} alignContent="center" justifyContent="center" alignItems="center">
+              <Grid>
+                <Typography variant="body1" align="left" sx={{ margin: '.2rem' }}>
+                  Friends:
+                  {' '}
+                  {user?.friendships?.length}
+                  {'  '}
+
+                </Typography>
+              </Grid>
+              <Grid>
+                <Typography variant="body1" align="left" sx={{ margin: '.2rem' }}>
+                  Lending Library:
+                  {' '}
+                  {owned}
+                  {'  '}
+
+                </Typography>
+              </Grid>
+              <Grid>
+                <Typography variant="body1" align="left" sx={{ margin: '.2rem' }}>
+                  Wish List:
+                  {' '}
+                  {wishlist}
+                  {'  '}
+
+                </Typography>
+              </Grid>
+              <Grid>
+                <Typography variant="body1" align="left" sx={{ margin: '.2rem' }}>
+                  Clubs:
+                  {' '}
+                  {user?.clubMembers?.length}
+                  {'  '}
+
+                </Typography>
+              </Grid>
+              <Grid>
+                <Typography variant="body1" align="left" sx={{ margin: '.2rem' }}>
+                  Posts:
+                  {' '}
+                  {user?.Posts?.length}
+                  {'  '}
+
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
+      </Grid>
+    </Box>
   );
 }
 

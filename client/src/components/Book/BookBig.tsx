@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/react-in-jsx-scope */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '@mui/joy/Modal';
 import Card from '@mui/joy/Card';
 // import CardOverflow from '@mui/joy/CardOverflow';
@@ -12,6 +12,7 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/material/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import axios from 'axios';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserReview from '../UserStarRating/UserReview';
 import Reviews from './Reviews';
@@ -51,6 +52,7 @@ function BigBook(props: any) {
   const classes = useStyles();
   const [reviewOpen, setReviewOpen] = useState(false);
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
+  const [description, setDescription] = useState<string>('');
   // const [open, setOpen] = useState<boolean>(false);
   const {
     book, id, onClose, userRating,
@@ -80,6 +82,23 @@ function BigBook(props: any) {
   const handleCloseDescriptionModal = () => {
     setShowDescriptionModal(false);
   };
+  useEffect(() => {
+    if (book.description) {
+      setDescription(book.description);
+    } else {
+      // correct this axios call
+      axios.get('/google-books/ISBN10/Description', {
+        params: { ISBN10: book.ISBN10 },
+      })
+        .then((response) => {
+          console.log(response.data);
+          setDescription(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, []);
 
   return (
     <Modal
@@ -207,9 +226,9 @@ function BigBook(props: any) {
           }}
           >
             <Typography level="body1">
-              {book.description.length > 150 ? (
+              {description?.length > 150 ? (
                 <>
-                  {`${book.description.slice(0, 150)}... `}
+                  {`${description?.slice(0, 150)}... `}
                   <Typography
                     component="span"
                     level="body1"
@@ -221,7 +240,7 @@ function BigBook(props: any) {
                   </Typography>
                 </>
               ) : (
-                book.description
+                description
               )}
             </Typography>
             <Modal
@@ -230,7 +249,7 @@ function BigBook(props: any) {
               className={classes.modalContainer}
             >
               <Box className={classes.modalContent}>
-                <Typography level="body1">{book.description}</Typography>
+                <Typography level="body1">{description}</Typography>
               </Box>
             </Modal>
             <Box sx={{ my: 2 }} />

@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
+import { cp } from 'fs';
 // import findOrCreateBook from './review'
 
 const { PrismaClient } = require('@prisma/client');
@@ -121,6 +122,50 @@ Recommendations.get('/recommended/10', async (req : Request, res : Response) => 
     })
     .then(() => (res.status(200).send(responseArray)))
     .catch((error) => console.error('Error:', error));
+});
+
+Recommendations.get('/recommended/puto', async (req : Request, res : Response) => {
+  try {
+    const amazonArray = await prisma.bookdata.findMany({
+      take: 1000,
+    });
+
+    amazonArray.forEach(async (book: any) => {
+      const {
+        title, author, description, ISBN10, image_url,
+      } = book;
+      const newBook = await prisma.Books.create({
+        data: {
+          title,
+          author,
+          description,
+          ISBN10,
+          image: image_url,
+        },
+      });
+    });
+
+    //   const data = await axios.get(`http://localhost:8080/google-books/ISBN10?ISBN10=${book.ISBN10}`);
+    //   data.data.forEach(async (book: any) => {
+    //     const {
+    //       title, authors, description, ISBN10, image,
+    //     } = book;
+    //     const newBook = await prisma.Books.create({
+    //       data: {
+    //         title,
+    //         authors,
+    //         description,
+    //         ISBN10,
+    //         image,
+    //       },
+    //     });
+    //   });
+    // });
+
+    res.send(amazonArray);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 export default Recommendations;
