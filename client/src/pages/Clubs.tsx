@@ -4,12 +4,13 @@ import Grid from '@material-ui/core/Grid';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Card from '@mui/material/Card';
-import Button from '@mui/material/Button';
+import Button from '@material-ui/core/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/material/Box';
 import Grid1 from '@mui/material/Unstable_Grid2';
+import DialogActions from '@material-ui/core/DialogActions';
 import axios from 'axios';
 import styled from 'styled-components';
 import Feed from './Feed';
@@ -143,14 +144,22 @@ function Clubs() {
                 <ClubHeader>Book Clubs</ClubHeader>
                 {/* </HeaderBox> */}
                 <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
-                  <Button variant="contained" onClick={handleClickOpen} sx={{ marginBottom: '10px' }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleClickOpen}
+                    style={{ marginBottom: '10px' }}
+                  >
                     Create a Club
                   </Button>
                 </Box>
-                <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-                  <DialogTitle>Create a Club</DialogTitle>
-                  <CreateClubs handleClose={handleClose} setClubs={setClubs} />
-                </Dialog>
+                {/* <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+                  <DialogTitle>Create a Club</DialogTitle> */}
+                  <CreateClubs open={open} handleClose={handleClose} setClubs={setClubs} setOpen={setOpen} />
+                  {/* <DialogActions>
+                    <Button onClick={() => setOpen(false)}>Cancel</Button>
+                  </DialogActions> */}
+                {/* </Dialog> */}
                 <CardContainer>
                   {clubs && clubs.length > 0 && clubs.map((club) => (
                     <StyledCard key={club.id} flexBasis="25%" variant="outlined">

@@ -4,17 +4,20 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import GifSearch from './GifSearch';
 import UserContext from '../../hooks/Context';
 import PhotoUpload from '../Button/ImageUploadButton';
 
-const createClubs = (props: any) => {
+function CreateClubs(props: any) {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
   const [clubImage, setClubImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { setClubs, handleClose } = props;
+  const { setClubs, handleClose, open, setOpen } = props;
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -74,6 +77,8 @@ const createClubs = (props: any) => {
   };
 
   return (
+    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <DialogTitle>Create a Club</DialogTitle>
     <Box
       component="form"
       sx={{
@@ -111,15 +116,19 @@ const createClubs = (props: any) => {
       />
       {/* <GifSearch setClubImage={setClubImage} /> */}
       <PhotoUpload setClubImage={setClubImage} />
+    </Box>
       {loading ? (
         <CircularProgress />
       ) : (
-        <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
-          Create Club
-        </Button>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={() => handleSubmit()}>
+            Create Club
+          </Button>
+        </DialogActions>
       )}
-    </Box>
+    </Dialog>
   );
-};
+}
 
-export default createClubs;
+export default CreateClubs;
