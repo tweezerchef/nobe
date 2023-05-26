@@ -5,8 +5,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
-
-import { set } from 'react-hook-form';
 import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
@@ -19,23 +17,11 @@ import HomeFriends from '../components/HomePage/Friends';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 import FriendFinder from '../components/HomePage/FriendFinder';
-import { Friendships, Book } from '../typings/types';
 
-interface Friendship {
-  id: string;
-  userId: string;
-  friendId: string;
-
-}
-interface ourBooks {
-  id: string;
-  title: string;
-}
+// this is the home page with most of the components removed for dev testing
 
 function HomeNew() {
-  const [nearMeBooks, setNearMeBooks] = useState<string[]>([]);
-  const [friendsArray, setFriendsArray] = useState<Friendship[]>([]);
-  const [ourBooks, setOurBooks] = useState<ourBooks[]>([]);
+  const [nearMeBooks, setNearMeBooks] = useState<any[]>([]);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -56,24 +42,9 @@ function HomeNew() {
 
     setNearMeBooks(response.data);
   };
-  const getOurBooks = async () => {
-    axios.get('/bookdata/titles')
-      .then((response) => {
-        setOurBooks(response.data);
-      });
-  };
-
   useEffect(() => {
     getNearMeBooks();
-    getOurBooks();
-    const friends = user?.friendships?.reduce((acc: Friendship[], friendship: Friendship) => {
-      if (friendship && friendship.friendId && friendship.friendId.length > 0) {
-        acc.push(friendship);
-      }
-      return acc;
-    }, []) || [];
-    setFriendsArray(friends);
-  }, []);
+  }, [user]);
 
   const colWidth = {
     xs: 12, sm: 6, md: 4, lg: 3,
@@ -116,7 +87,8 @@ function HomeNew() {
         >
           <Box sx={{
             width: '100%',
-            height: '25vh',
+            height: '20vh',
+            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -141,7 +113,7 @@ function HomeNew() {
             <Box
               sx={{
                 width: '100%',
-                height: '23.48vh',
+                height: '20vh',
                 backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -153,7 +125,7 @@ function HomeNew() {
               </Chip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '31vh', maxHeight: '33vh' }}>
-              <HomeWishList nearMeBooks={nearMeBooks} />
+              {/* <HomeWishList nearMeBooks={nearMeBooks} /> */}
             </Box>
             <StyledDivider textAlign="left">
               <FlameStyledChip size="lg">
@@ -161,7 +133,7 @@ function HomeNew() {
               </FlameStyledChip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '25vh', maxHeight: '33vh' }}>
-              <HomePlaces />
+              {/* <HomePlaces /> */}
             </Box>
             <Box
               sx={{
@@ -179,7 +151,7 @@ function HomeNew() {
               </Chip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '33vh' /* adjust this */ }}>
-              {/* <HomeRecommendedBooks nearMeBooks={nearMeBooks}/> */}
+              {/* <HomeRecommendedBooks /> */}
             </Box>
             <StyledDivider textAlign="left">
               <FlameStyledChip size="lg">
@@ -199,9 +171,7 @@ function HomeNew() {
               }}
             />
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '39vh', maxHeight: '43vh' /* adjust this */ }}>
-              {ourBooks
-              && <HomeExploreBooks ourBooks={ourBooks} nearMeBooks={nearMeBooks} />}
-
+              {/* <HomeExploreBooks /> */}
             </Box>
             <StyledDivider textAlign="left">
               <Chip size="lg">
@@ -209,11 +179,11 @@ function HomeNew() {
                 Friends
               </Chip>
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '33vh', maxHeight: '37vh' /* adjust this */ }}>
-              <HomeFriends />
+            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '39', maxHeight: '43vh' /* adjust this */ }}>
+              {/* <HomeFriends /> */}
             </Box>
-            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '39vh', maxHeight: '43vh' /* adjust this */ }}>
-              <FriendFinder />
+            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '39', maxHeight: '43vh' /* adjust this */ }}>
+              {/* <FriendFinder /> */}
             </Box>
             <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" width="100%" />
           </Stack>

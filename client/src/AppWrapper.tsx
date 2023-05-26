@@ -34,7 +34,7 @@ const materialTheme = materialExtendTheme({
           main: blue[800],
         },
         background: {
-          default: '#0f228d', // The background color for dark mode
+          default: '#303031', // The background color for dark mode
         },
       },
     },

@@ -12,9 +12,20 @@ import Slide from '@mui/material/Slide';
 import TextField from '@mui/material/TextField';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
+import Autocomplete from '@mui/material/Autocomplete';
+import { set } from 'react-hook-form';
 import Book from '../Book/HomeBook';
 
-function HomeBuildRecomendations() {
+interface ExploreBooksProps {
+  ourBooks: OurBooks[];
+  nearMeBooks: string[];
+}
+interface OurBooks {
+  id: string;
+  title: string;
+}
+
+function ExploreBooks({ ourBooks, nearMeBooks }: ExploreBooksProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [books, setBooks] = useState<Book[]>([]);
@@ -22,6 +33,7 @@ function HomeBuildRecomendations() {
   const [showBigBook, setShowBigBook] = useState(false);
   const [bigBookPosition, setBigBookPosition] = useState({ top: 0, left: 0 });
   const [selectedBook, setSelectedBook] = useState(null);
+  const [inputValue, setInputValue] = useState('');
 
   const handleBookClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, book: any) => {
     const rect = (e.target as Element).getBoundingClientRect();
@@ -57,18 +69,19 @@ function HomeBuildRecomendations() {
     setShowBigBook(false);
   };
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
-  };
-
-  const handleSearch = (event: FormEvent) => {
-    event.preventDefault(); // Prevent form submission
-    axios.get(`/bookdata/title/searchOne?title=${searchText}`).then((res) => {
+  const handleSearch = (id: string) => {
+    axios.get(`/bookdata/id?id=${id}`).then((res) => {
       setBooks((prevBooks) => [...[res.data], ...prevBooks]);
       setCurrentPage(0);
     });
-    // Here you would typically call your search function with `searchText` as argument
-    // performSearch(searchText);
+  };
+
+  const handleSearchOnBlur = () => {
+    if (searchText === '') {
+      axios.get(`/google-books/?title=${inputValue}`).then((res) => {
+        setBooks((prevBooks) => [...res.data, ...prevBooks]);
+      });
+    }
   };
 
   const getRecommendations = () => {
@@ -95,38 +108,62 @@ function HomeBuildRecomendations() {
       <Divider textAlign="right">
         <Box
           component="form"
-          onSubmit={handleSearch}
+          onSubmit={(event) => {
+            event.preventDefault(); // Prevent form submission
+          }}
           sx={{
             '& > :not(style)': { m: 1, width: '350px' },
           }}
           noValidate
           autoComplete="off"
         >
-          <TextField
-            id="Search"
-            onChange={handleInputChange}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <IconButton onClick={handleSearch}>
-                    <SearchOutlinedIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
+          <Autocomplete
+            id="combo-box-demo"
+            options={ourBooks}
+            getOptionLabel={(option: OurBooks) => (option.title)}
+            sx={{ width: 350 }}
+            disablePortal
+            onInputChange={(event, newInputValue) => {
+              setInputValue(newInputValue);
             }}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'black',
-                  borderRadius: 6,
-                  width: '350px',
-                },
-                '& input': {
-                  width: '100%', // Adjust these values as needed
-                  color: 'black',
-                },
-              },
+            onChange={(event: any, newValue: OurBooks | null) => {
+              if (newValue) {
+                setSearchText(newValue.id);
+                handleSearch(newValue.id);
+              } else {
+                setSearchText('');
+              }
             }}
+            onBlur={handleSearchOnBlur}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                id="Search"
+                InputProps={{
+                  ...params.InputProps,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <IconButton type="submit">
+                        <SearchOutlinedIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'black',
+                      borderRadius: 6,
+                      width: '350px',
+                    },
+                    '& input': {
+                      width: '100%', // Adjust these values as needed
+                      color: 'black',
+                    },
+                  },
+                }}
+              />
+            )}
           />
         </Box>
       </Divider>
@@ -189,6 +226,7 @@ function HomeBuildRecomendations() {
                           onClose={handleBigBookClose}
                           showBigBook={showBigBook && book === selectedBook}
                           bigBookPosition={bigBookPosition}
+                          nearMeBooks={nearMeBooks}
                         />
                       </Box>
                     ))}
@@ -212,4 +250,4 @@ function HomeBuildRecomendations() {
     </Box>
   );
 }
-export default HomeBuildRecomendations;
+export default ExploreBooks;
