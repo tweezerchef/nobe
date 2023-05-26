@@ -62,12 +62,6 @@ function BigBook(props: any) {
   const handleOnClick = () => {
     onClose();
   };
-  const truncatedTitle = (title: string, maxLength: number) => {
-    if (title.length > maxLength) {
-      return `${title.substring(0, maxLength)}...`;
-    }
-    return title;
-  };
   const handleClickOpen = () => {
     setReviewOpen(true);
   };
@@ -92,7 +86,6 @@ function BigBook(props: any) {
         params: { ISBN10: book.ISBN10 },
       })
         .then((response) => {
-          console.log(response.data);
           setDescription(response.data);
         })
         .catch((error) => {
