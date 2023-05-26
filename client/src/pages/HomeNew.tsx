@@ -189,7 +189,7 @@ function HomeNew() {
               </FlameStyledChip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '24vh', maxHeight: '29vh' /* adjust this */ }}>
-              {/* <HomeNearMe /> */}
+              <HomeNearMe />
             </Box>
             <Box
               sx={{
