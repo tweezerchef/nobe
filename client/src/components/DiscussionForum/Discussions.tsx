@@ -1,6 +1,4 @@
 /* eslint-disable max-len */
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable react/prop-types */
 import React, { memo } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -46,7 +44,7 @@ const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => {
   });
 
   return (
-    <>
+    <div>
       {sortedDiscussions?.map((discussion) => (
         <Box sx={{ my: 1 }}>
           <Card key={discussion.id} className="club-card" variant="outlined">
@@ -86,7 +84,7 @@ const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => {
           </Card>
         </Box>
       ))}
-    </>
+    </div>
 
   );
 }, deepEqual);
