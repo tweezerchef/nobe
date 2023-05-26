@@ -70,7 +70,7 @@ function DiscussionPosts() {
 
   async function fetchImage() {
     const response = await axios.get(`/api/clubs/discussions/${id}`);
-    console.log(response);
+    // console.log(response);
     setDiscussionImage(response.data.image);
   }
 

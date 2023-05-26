@@ -11,6 +11,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 interface OurBooks {
   id: string;
   title: string;
+  image: string;
 }
 
 function BookSearchButton(props: any) {
@@ -21,6 +22,7 @@ function BookSearchButton(props: any) {
   const [discussion, setDiscussion] = useState<string>('');
   const [ourBooks, setOurBooks] = useState<OurBooks[]>([]);
   const [selectedBook, setSelectedBook] = useState<OurBooks | null>(null);
+  console.log(selectedBook);
   const {
     isDiscussionCreator, discussionId, discussionImage, setDiscussionImage,
   } = props;
@@ -115,6 +117,7 @@ function BookSearchButton(props: any) {
         >
           <Autocomplete
             id="book-title"
+            fullWidth
             options={ourBooks}
             getOptionLabel={(option) => option.title}
             value={selectedBook}
@@ -124,11 +127,12 @@ function BookSearchButton(props: any) {
                 {...params}
                 label="Book Title"
                 variant="outlined"
-                fullWidth
                 required
               />
             )}
           />
+          <div>Image Preview:</div>
+          <img alt="" src={selectedBook?.image} />
           <Button variant="contained" color="primary" type="submit">
             Add Book
           </Button>
