@@ -10,11 +10,11 @@ declare const google: any;
 declare const handleGoogle: string;
 
 function Login() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const userContext = useContext(UserContext);
   const setUser = userContext?.setUser;
+  const navigate = useNavigate();
 
   const loginHandler = () => {
     axios
@@ -25,14 +25,16 @@ function Login() {
       .then((response) => {
         if (response && setUser) {
           let { user } = response.data;
+          console.log(response.data, 28);
           setUser(user);
           user = JSON.stringify(user);
           localStorage.setItem('user', user);
           console.log(user, 30);
-          if (user?.lastName === null && user?.longitude === null) {
-            navigate('/usersettings', { state: user });
-          }
+        }
+        if (response.data.user.radius !== null || response.data.user.lastName !== null) {
           navigate('/home');
+        } else {
+          navigate('/usersettings');
         }
       })
       .catch((error) => {
