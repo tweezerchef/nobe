@@ -81,6 +81,7 @@ BookData.get('/titles', async (req, res) => {
       select: {
         title: true,
         id: true,
+        image: true,
       },
     });
     res.send(titles);
