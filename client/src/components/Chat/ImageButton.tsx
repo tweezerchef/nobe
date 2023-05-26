@@ -10,11 +10,11 @@ function ImageButton(props: any) {
   const [error, setError] = useState('');
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const { setClubImage } = props;
+  const { onImageUpload } = props;
 
   const imageSetter = () => {
     if (selectedImage) {
-      setClubImage(selectedImage);
+      onImageUpload(selectedImage);
       //  setClubImage(URL.createObjectURL(selectedImage));
     }
   };

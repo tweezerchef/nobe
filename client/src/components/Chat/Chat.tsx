@@ -97,11 +97,16 @@ function Chat({ chatUser }: { chatUser: any }) {
   const [user, setUser] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [newChatUser, setNewChatUser] = useState<any>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   // const { chatUser } = useChatContext();
 
   const userContext = useContext(UserContext);
   const userId = userContext?.user.id;
+
+  const handleImageUpload = (file: File) => {
+    setImageFile(file);
+  };
 
   const updateUser = async () => {
     const updatedUser = await axios.get('/user/id/conversations', {
@@ -153,10 +158,22 @@ function Chat({ chatUser }: { chatUser: any }) {
 
   const handleSend = () => {
     // event.preventDefault();
-    if (message.trim() !== '') {
-      sendMessage(message);
-      setMessage('');
+    console.log(imageFile);
+    if (message.trim() === '') return;
+    const newMessage = {
+      text: message.trim(),
+      senderId: user.id,
+      timestamp: new Date().toISOString(),
+    };
+
+    if (imageFile) {
+      newMessage.image = imageFile;
+      setImageFile(null);
     }
+
+    sendMessage(newMessage);
+    setMessage('');
+    setImageFile(null);
   };
 
   const handleSearch = async () => {
@@ -426,7 +443,7 @@ function Chat({ chatUser }: { chatUser: any }) {
                         endAdornment: (
                           <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Emojis onSelect={handleEmojiSelect} />
-                            <ImageButton />
+                            <ImageButton onImageUpload={handleImageUpload} />
                           </Box>
                         ),
                       }}
