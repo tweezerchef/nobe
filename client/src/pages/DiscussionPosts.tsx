@@ -7,6 +7,9 @@ import Button from '@material-ui/core/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Avatar from '@mui/material/Avatar';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
+import AspectRatio from '@mui/joy/AspectRatio';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -47,6 +50,7 @@ function DiscussionPosts() {
   const [clubName, setClubName] = useState('');
   const [clubId, setClubId] = useState('');
   const [isDiscussionCreator, setIsDiscussionCreator] = useState(false);
+  const [discussionImage, setDiscussionImage] = useState('');
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -63,6 +67,12 @@ function DiscussionPosts() {
     }
     return acc;
   }, false);
+
+  async function fetchImage() {
+    const response = await axios.get(`/api/clubs/discussions/${id}`);
+    // console.log(response);
+    setDiscussionImage(response.data.image);
+  }
 
   useEffect(() => {
     async function getPosts() {
@@ -88,6 +98,7 @@ function DiscussionPosts() {
       getPosts();
       getDiscussionTitle();
     }
+    fetchImage();
   }, [id, discussionTitle, newPost]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -207,7 +218,45 @@ function DiscussionPosts() {
               Button for Discussion Creator
             </Button>
             )} */}
-            <BookSearchButton isDiscussionCreator={isDiscussionCreator} discussionId={id} />
+            <div style={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            }}
+            >
+              {discussionImage && (
+              <Card sx={{
+                flexBasis: '33%',
+                borderRadius: '12px',
+                boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
+                maxWidth: '250px',
+              }}
+              >
+                <AspectRatio ratio="1">
+                  <CardMedia
+                    component="img"
+                    alt={`Discussion book image for ${discussionTitle}`}
+                    image={discussionImage}
+                    style={{
+                      objectFit: 'fill',
+                    }}
+                  />
+                </AspectRatio>
+                {/* <img
+                  alt=""
+                  title="ay"
+                  src={discussionImage}
+                  height="100px"
+                /> */}
+                {/* {selectedBook.title} */}
+              </Card>
+              )}
+            </div>
+            <BookSearchButton
+              isDiscussionCreator={isDiscussionCreator}
+              discussionId={id}
+              discussionImage={discussionImage}
+              setDiscussionImage={setDiscussionImage}
+              clubId={clubId}
+            />
             {posts?.map((post) => (
               <div className="post">
                 <div className="post-content" key={post.id}>

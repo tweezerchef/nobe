@@ -4,73 +4,97 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/material/Box';
-import BigBook from '../Book/BookBig';
+import Autocomplete from '@mui/material/Autocomplete';
 import UserContext from '../../hooks/Context';
 
+interface OurBooks {
+  id: string;
+  title: string;
+  image: string;
+}
+
+interface Club {
+  clubId: string;
+  name: string;
+  description: string;
+  image: string;
+  clubMembers: string[];
+}
+
 function BookSearchButton(props: any) {
-  const [book, setBooks] = useState<any | null>(null);
-  const [title, setTitle] = useState<string>('');
   const [open, setOpen] = React.useState(false);
-  const [timeline, setTimeLine] = useState<string>('');
-  const [discussionImage, setDiscussionImage] = useState<string>('');
-  // console.log(discussionImage);
-  const [discussion, setDiscussion] = useState<string>('');
-  const { isDiscussionCreator, discussionId } = props;
+  const [ourBooks, setOurBooks] = useState<OurBooks[]>([]);
+  const [selectedBook, setSelectedBook] = useState<OurBooks | null>(null);
+  const {
+    isDiscussionCreator, discussionId, discussionImage, setDiscussionImage, clubId,
+  } = props;
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const userId = user?.id;
+
+  const member = user?.clubMembers?.reduce((acc: boolean, club: Club) => {
+    if (club.clubId === clubId) {
+      acc = true;
+      return acc;
+    }
+    return acc;
+  }, false);
 
   const handleClickOpen = () => {
     setOpen(true);
+    setSelectedBook(null);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
+  const getOurBooks = async () => {
+    axios.get('/bookdata/titles')
+      .then((response) => {
+        // console.log(response.data);
+        setOurBooks(response.data);
+      });
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const response = await axios.get(`/bookdata/title/searchOne?title=${title}`);
-      const bookData = response.data;
-      setBooks(bookData);
-      const discussionImage = bookData.image;
-      setDiscussionImage(discussionImage);
-      handleClose();
-      const updatedDiscussion = await axios.put(`/api/clubs/discussions/${discussionId}`, {
-        discussionImage,
-      });
-      // console.log(updatedDiscussion);
+      if (selectedBook) {
+        const response = await axios.get(
+          `/bookdata/title/searchOne?title=${selectedBook.title}`,
+        );
+        const bookData = response.data;
+        const updatedDiscussion = await axios.put(
+          `/api/clubs/discussions/${discussionId}`,
+          {
+            discussionImage: bookData[0].image,
+          },
+        );
+        setDiscussionImage(updatedDiscussion.data.image);
+        handleClose();
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
-
-  async function fetchImage() {
-    const response = await axios.get(`/api/clubs/discussions/${discussionId}`);
-    // console.log(response);
-    setDiscussionImage(response.data.image);
-  }
-
   useEffect(() => {
-    // console.log(book);
-    if (discussionId) {
-      fetchImage();
+    if (discussionImage) {
+      setDiscussionImage(discussionImage);
     }
-  }, [book]);
+    getOurBooks();
+  }, [discussionId, discussionImage]);
 
   return (
-    <div>
-      {isDiscussionCreator && (
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+    <div style={{
+      display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '15px', paddingBottom: '40px',
+    }}
+    >
+      {isDiscussionCreator && member && (
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Add a Book
       </Button>
       )}
@@ -90,39 +114,34 @@ function BookSearchButton(props: any) {
           autoComplete="off"
           onSubmit={handleSubmit}
         >
-          <TextField
-            autoFocus
-            id="club-name"
-            label="Book Title"
-            variant="outlined"
-            type="string"
+          <Autocomplete
+            id="book-title"
             fullWidth
-            value={title}
-            onChange={handleTitleChange}
-            required
+            options={ourBooks}
+            getOptionLabel={(option) => option.title}
+            value={selectedBook}
+            onChange={(event, newValue) => setSelectedBook(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Book Title"
+                variant="outlined"
+                required
+              />
+            )}
           />
-          <TextField
-            id="book-timeline"
-            label="Book Timeline for Readers"
-            variant="outlined"
-            type="string"
-            fullWidth
-            value={timeline}
-            onChange={(e) => setTimeLine(e.target.value)}
-            required
-          />
-          <Button variant="contained" color="primary" type="submit">
-            Add Book
-          </Button>
+          {selectedBook && (
+          <>
+            <div>Book Cover:</div>
+            <img alt="" src={selectedBook?.image} />
+            <Button variant="contained" color="primary" type="submit">
+              Add Book
+            </Button>
+
+          </>
+          )}
         </Box>
       </Dialog>
-      { book && discussionImage
-        && (
-        <Box mt={2} textAlign="center">
-          <img src={discussionImage} alt={book.title} height="100px" />
-          {book.title}
-        </Box>
-        )}
     </div>
   );
 }
