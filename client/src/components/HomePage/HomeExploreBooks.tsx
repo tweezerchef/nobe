@@ -12,6 +12,7 @@ import Slide from '@mui/material/Slide';
 import TextField from '@mui/material/TextField';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
+import Autocomplete from '@mui/material/Autocomplete';
 import Book from '../Book/HomeBook';
 
 function HomeBuildRecomendations() {
@@ -64,7 +65,7 @@ function HomeBuildRecomendations() {
   const handleSearch = (event: FormEvent) => {
     event.preventDefault(); // Prevent form submission
     axios.get(`/bookdata/title/searchOne?title=${searchText}`).then((res) => {
-      setBooks((prevBooks) => [...[res.data], ...prevBooks]);
+      setBooks((prevBooks) => [...res.data, ...prevBooks]);
       setCurrentPage(0);
     });
     // Here you would typically call your search function with `searchText` as argument

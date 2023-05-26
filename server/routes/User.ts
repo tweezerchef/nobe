@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import express from 'express';
 import dotenv from 'dotenv';
-import Activity from './activity';
 
 const { PrismaClient } = require('@prisma/client');
 
@@ -13,6 +12,7 @@ const prisma = new PrismaClient();
 
 User.get('/', async (req, res) => {
   const { email } = req.query;
+  console.log('email', email);
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -116,6 +116,7 @@ User.get('/', async (req, res) => {
         },
       },
     });
+    console.log('user', user);
     res.send(user);
   } catch (error) {
     console.error(error);

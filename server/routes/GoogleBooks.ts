@@ -97,5 +97,36 @@ GoogleBooks.get('/ISBN10', async (req: Request, res: Response) => {
     res.status(500).send('An error occurred while fetching the book data.');
   }
 });
+GoogleBooks.get('/ISBN10/Description', async (req: Request, res: Response) => {
+  const ISBN10: string | undefined = req.query.ISBN10 as string | undefined;
+  if (!ISBN10) {
+    return res.status(400).send('Please provide a valid book ISBN10.');
+  }
+
+  try {
+    const bookData = await getGoogleBooksDataISBN10(ISBN10);
+    const transformedData = {
+      title: bookData.title,
+      author: bookData.authors ? bookData.authors[0] : '',
+      image: bookData.imageLinks ? getLargestImage(bookData.imageLinks) : '',
+      description: bookData.description ? bookData.description : '',
+      rating: bookData.averageRating ? bookData.averageRating : null,
+      ISBN10: getISBN(bookData.industryIdentifiers),
+    };
+    const description = await prisma.Books.update({
+      where: {
+        ISBN10,
+      },
+      data: {
+        description: transformedData.description,
+      },
+    });
+
+    res.status(200).send(transformedData.description);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('An error occurred while fetching the book data.');
+  }
+});
 
 export default GoogleBooks;

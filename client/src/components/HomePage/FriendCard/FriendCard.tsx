@@ -20,15 +20,17 @@ function FriendCard({ userFriend }: FriendCardProps) {
 
     <Box
       sx={{
-        boxShadow: 'none',
         flexGrow: 1,
-        backgroundColor: '#dce9f3',
-        minHeight: '37vh',
-        maxHeight: '40vh',
-        width: '100%',
+        backgroundColor: '#dce9f39b',
+        boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+        minHeight: '29vh',
+        maxHeight: '33vh',
+        marginTop: '1.5vh',
+        width: '20vw',
         alignContent: 'center',
         justifyContent: 'center',
         display: 'flex',
+        borderRadius: '3rem',
       }}
     >
       <Grid container spacing={2} direction="column">

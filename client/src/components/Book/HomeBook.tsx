@@ -93,7 +93,7 @@ const Book = React.memo((props: any) => {
       variant="outlined"
       className={classes.card}
       sx={{
-        width: '16vw',
+        width: '17vw',
         height: '27vh',
         minHeight: '170px',
         margin: '.2vh',
