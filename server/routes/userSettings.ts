@@ -45,7 +45,7 @@ const uploadToS3 = (file: Express.Multer.File): Promise<string> => {
 };
 
 UserSettings.put('/:id/preferences', upload.single('image'), async (req: Request, res: Response) => {
-  console.log(req, 48);
+  // console.log(req, 48);
   const { id } = req.params;
   const { file } = req;
 
