@@ -34,17 +34,17 @@ function BookSearchButton(props: any) {
 
     try {
       const response = await axios.get(`/bookdata/title/searchOne?title=${title}`);
-      setBooks(response.data);
-      setDiscussionImage(response.data.image);
+      const bookData = response.data;
+      setBooks(bookData);
+      const discussionImage = bookData.image;
+      setDiscussionImage(discussionImage);
       handleClose();
-
       const updatedDiscussion = await axios.put(`/api/clubs/discussions/${discussionId}`, {
         discussionImage,
       });
       // console.log(updatedDiscussion);
     } catch (error) {
       console.error(error);
-      // Handle the error here
     }
   };
 
