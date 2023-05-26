@@ -3,7 +3,7 @@ import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Avatar from '@mui/material/Avatar';
@@ -12,6 +12,7 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import Feed from './Feed';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
+import BookSearchButton from '../components/Button/BookSearchButton';
 import UserContext from '../hooks/Context';
 import { ClubHeader, StyledTextarea } from './style';
 import '../styles/discussionPostsStyles.css';
@@ -30,6 +31,14 @@ interface Post {
   }
 }
 
+interface Club {
+  clubId: string;
+  name: string;
+  description: string;
+  image: string;
+  clubMembers: string[];
+}
+
 function DiscussionPosts() {
   const { id } = useParams<{ id: string }>();
   const [posts, setPosts] = useState<Post[]>([]);
@@ -37,6 +46,7 @@ function DiscussionPosts() {
   const [discussionTitle, setDiscussionTitle] = useState('');
   const [clubName, setClubName] = useState('');
   const [clubId, setClubId] = useState('');
+  const [isDiscussionCreator, setIsDiscussionCreator] = useState(false);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -45,6 +55,14 @@ function DiscussionPosts() {
   const colWidth = {
     xs: 12, sm: 6, md: 4, lg: 3,
   } as const;
+
+  const member = user?.clubMembers?.reduce((acc: boolean, club: Club) => {
+    if (club.clubId === clubId) {
+      acc = true;
+      return acc;
+    }
+    return acc;
+  }, false);
 
   useEffect(() => {
     async function getPosts() {
@@ -61,6 +79,7 @@ function DiscussionPosts() {
         setDiscussionTitle(data.title);
         setClubName(data.clubs.name);
         setClubId(data.clubsId);
+        setIsDiscussionCreator(data.creator.id === userId);
       } catch (error) {
         console.error(error);
       }
@@ -73,6 +92,11 @@ function DiscussionPosts() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (!member) {
+      alert('Not a member of this club');
+      return;
+    }
 
     if (newPost.trim().length === 0) {
       alert('Post cannot be empty!');
@@ -178,6 +202,12 @@ function DiscussionPosts() {
             </ClubHeader>
             )}
             <ClubHeader>{discussionTitle}</ClubHeader>
+            {/* {isDiscussionCreator && (
+            <Button variant="outlined" color="primary" disableElevation>
+              Button for Discussion Creator
+            </Button>
+            )} */}
+            <BookSearchButton isDiscussionCreator={isDiscussionCreator} discussionId={id} />
             {posts?.map((post) => (
               <div className="post">
                 <div className="post-content" key={post.id}>

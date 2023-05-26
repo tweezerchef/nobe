@@ -45,41 +45,59 @@ const uploadToS3 = (file: Express.Multer.File): Promise<string> => {
 };
 
 UserSettings.put('/:id/preferences', upload.single('image'), async (req: Request, res: Response) => {
-  // console.log(req, 273);
+  console.log(req, 48);
   const { id } = req.params;
   const { file } = req;
-  // console.log(file, 51);
-  if (!file) {
-    res.status(400).json({ error: true, Message: 'No file uploaded' });
-    return;
-  }
+
   const {
     username, firstName, lastName, phoneNumber, longitude,
-    latitude,
-    radius,
+    latitude, radius,
   } = req.body;
+
   const lonNum = Number(longitude);
   const latNum = Number(latitude);
   const radNum = Number(radius);
-  const picture = await uploadToS3(file);
+
+  let picture: string | undefined;
+  if (file) {
+    picture = await uploadToS3(file);
+  }
+
   try {
+    const updateData: any = {};
+
+    if (picture) {
+      updateData.picture = picture;
+    }
+    if (username) {
+      updateData.username = username;
+    }
+    if (firstName) {
+      updateData.firstName = firstName;
+    }
+    if (lastName) {
+      updateData.lastName = lastName;
+    }
+    if (phoneNumber) {
+      updateData.phoneNumber = phoneNumber;
+    }
+    if (longitude) {
+      updateData.longitude = lonNum;
+    }
+    if (latitude) {
+      updateData.latitude = latNum;
+    }
+    if (radius) {
+      updateData.radius = radNum;
+    }
+
     const userUpdatePreferences = await prisma.user.update({
       where: {
         id,
       },
-      data: {
-        picture,
-        username,
-        firstName,
-        lastName,
-        phoneNumber,
-        longitude: lonNum,
-        latitude: latNum,
-        radius: radNum,
-      },
+      data: updateData,
     });
-    // console.log(userUpdatePreferences, 81);
-    res.status(200).json({ userUpdatePreferences });
+    res.status(200).send(userUpdatePreferences);
   } catch (e) {
     console.error(e);
     res.status(500).json({
@@ -132,7 +150,7 @@ UserSettings.get('/:id/genres', async (req, res) => {
       },
     });
       //  console.log(userGetGenres, 134);
-    res.status(200).json({ userGetGenres });
+    res.status(200).send(userGetGenres);
   } catch (e) {
     console.error(e);
     res.status(500).json({
@@ -185,7 +203,7 @@ UserSettings.get('/:id/hobbies', async (req, res) => {
       },
     });
     // console.log(userGetHobbies, 187);
-    res.status(200).json(userGetHobbies);
+    res.status(200).send(userGetHobbies);
   } catch (e) {
     console.error(e);
     res.status(500).json({

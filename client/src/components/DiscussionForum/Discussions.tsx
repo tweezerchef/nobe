@@ -3,10 +3,10 @@
 import React, { memo } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-
-import {
-  Card, CardContent, Typography, Box,
-} from '@mui/material';
+import Card from '@mui/material/Card';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
+import Box from '@mui/material/Box';
 import { Discussion } from '../../typings/types';
 
 type DiscussionListProps = {
@@ -49,12 +49,15 @@ const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => (
               <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }}>
                 {discussion.title}
               </Typography>
-              <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '16px', color: 'gray' }}>
+              <Typography
+                variant="body2"
+                className="club-card-body"
+                style={{
+                  textAlign: 'center', fontSize: '16px', color: 'gray', paddingBottom: '3px',
+                }}
+              >
                 {discussion.Posts && discussion.Posts.length === 1 ? '1 Post' : `${discussion.Posts?.length || 0} Posts`}
               </Typography>
-              {/* <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '15px', color: 'gray' }}>
-                {`Total Posts: ${discussion.Posts?.length || 0}`}
-              </Typography> */}
               <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '12px', color: 'gray' }}>
                 Last post:
                 {' '}
