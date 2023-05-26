@@ -10,7 +10,11 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Box from '@mui/material/Box';
 import Divider from '@material-ui/core/Divider';
+import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import { IconButton } from '@mui/material';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -21,6 +25,7 @@ import moment from 'moment';
 import UserContext from '../../hooks/Context';
 import Emojis from '../Emojis/Emojis';
 import ImageButton from './ImageButton';
+import { User } from '../../typings/types';
 
 // import { useChatContext } from '../../hooks/ChatContext';
 
@@ -50,7 +55,7 @@ const chatStyles = makeStyles({
 const ChatOverlay = styled.div`
   position: absolute;
   right: 0;
-  z-index: 1000;
+  z-index: 9999;
   width: 600px;
   height: '60vh';
 `;
@@ -97,16 +102,18 @@ function Chat({ chatUser }: { chatUser: any }) {
   const [user, setUser] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [newChatUser, setNewChatUser] = useState<any>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [userArray, setUserArray] = useState<User[]>([]);
+
+  // const [imageFile, setImageFile] = useState<File | null>(null);
 
   // const { chatUser } = useChatContext();
 
   const userContext = useContext(UserContext);
   const userId = userContext?.user.id;
 
-  const handleImageUpload = (file: File) => {
-    setImageFile(file);
-  };
+  // const handleImageUpload = (file: File) => {
+  //   setImageFile(file);
+  // };
 
   const updateUser = async () => {
     const updatedUser = await axios.get('/user/id/conversations', {
@@ -156,25 +163,39 @@ function Chat({ chatUser }: { chatUser: any }) {
     }
   };
 
+  const getUsersArray = () => {
+    axios.get('/user/allUsers').then((res) => {
+      setUserArray(res.data);
+    });
+  };
+
   const handleSend = () => {
     // event.preventDefault();
-    console.log(imageFile);
-    if (message.trim() === '') return;
-    const newMessage = {
-      text: message.trim(),
-      senderId: user.id,
-      timestamp: new Date().toISOString(),
-    };
-
-    if (imageFile) {
-      newMessage.image = imageFile;
-      setImageFile(null);
+    if (message.trim() !== '') {
+      sendMessage(message);
+      setMessage('');
     }
-
-    sendMessage(newMessage);
-    setMessage('');
-    setImageFile(null);
   };
+  console.log(conversations);
+
+  // const handleSend = () => {
+  //   // event.preventDefault();
+  //   if (message.trim() === '') return;
+  //   const newMessage = {
+  //     text: message.trim(),
+  //     senderId: user.id,
+  //     timestamp: new Date().toISOString(),
+  //   };
+
+  //   if (imageFile) {
+  //     newMessage.image = imageFile;
+  //     setImageFile(null);
+  //   }
+
+  //   sendMessage(newMessage);
+  //   setMessage('');
+  //   setImageFile(null);
+  // };
 
   const handleSearch = async () => {
     try {
@@ -217,6 +238,22 @@ function Chat({ chatUser }: { chatUser: any }) {
         });
         setCurrentConvo(newConversation);
         setChatMessages(newConversation.messages);
+      } else {
+        console.log('hi');
+        const existingConversation = conversations.find((conversation) => (
+          conversation.members.some((member) => (
+            member.id === chatUser.id
+          ))
+        ));
+        console.log(conversations, 'exist');
+
+        if (existingConversation) {
+          setCurrentConvo(existingConversation);
+          setChatMessages(existingConversation.messages);
+        } else {
+          setCurrentConvo(null);
+          setChatMessages([]);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -288,6 +325,10 @@ function Chat({ chatUser }: { chatUser: any }) {
     }
   }, [currentConvo, conversations, user]);
 
+  useEffect(() => {
+    getUsersArray();
+  }, []);
+
   return (
     <Draggable handle=".header-message">
       <ChatOverlay>
@@ -305,9 +346,45 @@ function Chat({ chatUser }: { chatUser: any }) {
           </Grid>
         </Grid>
         <Grid container component={Paper} className={chatClasses.chatSection} style={{ background: '#fff', borderRadius: '0px 0px 12px 12px' }}>
-          <Grid item xs={3} className={chatClasses.borderRight500}>
+          <Grid item xs={4} className={chatClasses.borderRight500}>
             <Grid item xs={12} style={{ padding: '10px' }}>
-              <TextField value={searchQuery} onKeyDown={(event) => (event.key === 'Enter' ? handleSearch() : null)} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
+              <Autocomplete
+                id="combo-box-demo"
+                options={userArray}
+                getOptionLabel={(option) => (option.username ? `${option.firstName} ${option.username}` : option.firstName)}
+                fullWidth
+                disablePortal
+                onChange={(event, newValue) => {
+                  if (newValue) {
+                    setSearchQuery(newValue.firstName);
+                  }
+                }}
+                onKeyPress={(event) => {
+                  if (event.key === 'Enter') {
+                    handleSearch();
+                    event.preventDefault(); // Prevent form submission
+                  }
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    id="Search"
+                    label="Search Users"
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton type="submit" onClick={handleSearch}>
+                            <SearchOutlinedIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                )}
+              />
             </Grid>
             <Divider />
             <div style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease', paddingTop: '10px' }}>
@@ -338,7 +415,7 @@ function Chat({ chatUser }: { chatUser: any }) {
               </List>
             </div>
           </Grid>
-          <Grid item xs={9} direction="column" style={{ height: '100%' }}>
+          <Grid item xs={8} direction="column" style={{ height: '100%' }}>
             {!currentConvo && (
               <div style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%',
@@ -443,7 +520,7 @@ function Chat({ chatUser }: { chatUser: any }) {
                         endAdornment: (
                           <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Emojis onSelect={handleEmojiSelect} />
-                            <ImageButton onImageUpload={handleImageUpload} />
+                            {/* <ImageButton onImageUpload={handleImageUpload} /> */}
                           </Box>
                         ),
                       }}
