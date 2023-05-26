@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import GifSearch from './GifSearch';
 import UserContext from '../../hooks/Context';
@@ -12,6 +13,7 @@ const createClubs = (props: any) => {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
   const [clubImage, setClubImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { setClubs, handleClose } = props;
 
   const userContext = useContext(UserContext);
@@ -31,7 +33,7 @@ const createClubs = (props: any) => {
       alert('Club name already exists!');
       return;
     }
-
+    setLoading(true);
     // const body = {
     //   name: clubName,
     //   description: clubDescription,
@@ -47,18 +49,24 @@ const createClubs = (props: any) => {
       data.append('email', user?.email);
       data.append('image', clubImage);
       try {
-        axios.post('/api/create-club', data)
+        axios
+          .post('/api/create-club', data)
           .then((response) => {
             setClubs(response.data.clubs);
             setClubName('');
             setClubDescription('');
-            return response;
-          }).then((response) => {
+
             if (setUser && response?.data?.user && response?.data?.user !== undefined) {
               setUser(response?.data?.user);
             }
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+          .finally(() => {
+            setLoading(false);
+            handleClose();
           });
-        handleClose();
       } catch (error) {
         console.error(error);
       }
@@ -103,9 +111,13 @@ const createClubs = (props: any) => {
       />
       {/* <GifSearch setClubImage={setClubImage} /> */}
       <PhotoUpload setClubImage={setClubImage} />
-      <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
-        Create Club
-      </Button>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
+          Create Club
+        </Button>
+      )}
     </Box>
   );
 };
