@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button, Container, Slider, TextField, Grid,
@@ -58,7 +58,7 @@ function UserInfo() {
   const user = userContext?.user;
   const id = user?.id;
 
-  const [userImage, setUserImage] = useState(null);
+  const [userImage, setUserImage] = useState<string | null>(null);
   // console.log('userImage', userImage);
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -70,27 +70,37 @@ function UserInfo() {
   const [buttonState, setButtonState] = useState('idle');
 
   const updateUserInfo = async () => {
-    if (!userImage || !username || !firstName || !lastName
-      || !phoneNumber || !longitude || !latitude || !radius) {
-      alert('Please enter a value for all fields!');
-      return;
-    }
-    if (user && user.id && user.email && userImage) {
+    if (user && user.id) {
       const data = new FormData();
-      data.append('image', userImage);
-      data.append('username', username);
-      data.append('firstName', firstName);
-      data.append('lastName', lastName);
-      data.append('phoneNumber', phoneNumber);
-      data.append('longitude', longitude.toString());
-      data.append('latitude', latitude.toString());
-      data.append('radius', radius.toString());
+      if (userImage) {
+        data.append('image', userImage);
+      }
+      if (username) {
+        data.append('username', username);
+      }
+      if (firstName) {
+        data.append('firstName', firstName);
+      }
+      if (lastName) {
+        data.append('lastName', lastName);
+      }
+      if (phoneNumber) {
+        data.append('phoneNumber', phoneNumber);
+      }
+      if (longitude) {
+        data.append('longitude', longitude.toString());
+      }
+      if (latitude) {
+        data.append('latitude', latitude.toString());
+      }
+      if (radius) {
+        data.append('radius', radius.toString());
+      }
       setButtonState('loading');
       try {
-        axios.put(`/user-settings/${id}/preferences`, data)
-          .then((res) => {
-            // console.log(res);
-          });
+        const res = await axios.put(`/user-settings/${id}/preferences`, data);
+        // console.log(res);
+        const updatedUser = res.data;
         setTimeout(() => {
           setButtonState('success');
         }, 2000);
@@ -99,6 +109,12 @@ function UserInfo() {
       }
     }
   };
+
+  useEffect(() => {
+    if (user?.picture) {
+      setUserImage(user.picture);
+    }
+  }, [user?.picture]);
 
   const onPlaceSelect = (value: any) => {
     // console.log(value);
@@ -123,16 +139,28 @@ function UserInfo() {
     }}
     >
       <Container>
-        <ProfileImage
-          alt="User Pic"
-          src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
-          id="profile-image1"
-          height="200"
-        />
+        { user?.picture === undefined ? (
+          <ProfileImage
+            alt="User Pic"
+            src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
+            id="profile-image1"
+            height="250"
+          />
+        )
+          : (
+            <ProfileImage
+              alt="User Pic"
+              src={user?.picture}
+              id="profile-image1"
+              height="250"
+            />
+          )}
+
         <PhotoUpload setClubImage={setUserImage} />
         <UserDetail>
           <form>
             <TextField
+              defaultValue={user?.username}
               label="Username"
               variant="outlined"
               fullWidth
@@ -140,6 +168,7 @@ function UserInfo() {
               onChange={(event) => setUsername(event.target.value)}
             />
             <TextField
+              defaultValue={user?.firstName}
               label="First Name"
               variant="outlined"
               fullWidth
@@ -147,6 +176,7 @@ function UserInfo() {
               onChange={(event) => setFirstName(event.target.value)}
             />
             <TextField
+              defaultValue={user?.lastName}
               label="Last Name"
               variant="outlined"
               fullWidth
