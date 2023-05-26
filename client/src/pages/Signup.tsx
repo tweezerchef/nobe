@@ -1,8 +1,12 @@
+/* eslint-disable max-len */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useFetch from '../hooks/useFetch';
+import UserContext from '../hooks/Context';
 import { EntryPage, PageHeader } from './style';
 import EntryCard from '../components/EntryCard/EntryCard';
 import InputGroup from '../components/Input Group/InputGroup';
@@ -16,6 +20,8 @@ function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
+  const userContext = useContext(UserContext);
+  const setUser = userContext?.setUser;
 
   const navigate = useNavigate();
 
@@ -29,7 +35,24 @@ function Signup() {
       },
       body: JSON.stringify({ email, password, nickname }),
     });
-    await navigate('/login');
+    await axios.post('/auth/login-email', {
+      email,
+      password,
+    })
+      .then((res) => {
+        if (res && setUser) {
+          let { user } = res.data;
+          // console.log(response.data, 28);
+          setUser(user);
+          user = JSON.stringify(user);
+          localStorage.setItem('user', user);
+        // console.log(user, 30);
+        }
+        navigate('/usersettings');
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const loadGoogleScript = () => new Promise((resolve) => {
@@ -44,10 +67,6 @@ function Signup() {
     };
     document.head.appendChild(script);
   });
-
-  //   const handleSignUpClick = () => {
-  //     navigate('/usersettings', { state: nickname });
-  //   };
 
   useEffect(() => {
     const initGoogleButton = async () => {
@@ -65,7 +84,6 @@ function Signup() {
         });
       }
     };
-
     initGoogleButton();
   }, [handleGoogle]);
 

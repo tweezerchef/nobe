@@ -3,8 +3,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
-  Button, Container, Slider, TextField, Grid,
+  Button, Container, TextField, Grid,
 } from '@material-ui/core';
+import Slider from '@mui/material/Slider';
 import { useLocation } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -149,7 +150,7 @@ function UserInfo() {
     }}
     >
       <Container>
-        { user?.picture === undefined ? (
+        { user?.picture === null ? (
           <ProfileImage
             alt="User Pic"
             src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
