@@ -7,6 +7,7 @@ import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
+import { set } from 'react-hook-form';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
@@ -60,6 +61,7 @@ const Book = React.memo(({
   if (!book) {
     return null;
   }
+  const [userRating, setUserRating] = React.useState<number>(0);
   const maxCharacters = 50;
   const ellipsisCharacters = 10; // Number of characters to show before the ellipsis
 
@@ -71,18 +73,24 @@ const Book = React.memo(({
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     onClick(e, book);
   };
-  let value = 0;
+
   if (book.UserBooks && book.UserBooks.length > 0) {
     book.UserBooks.forEach((entry: any) => {
-      if (entry.userId === id && entry.rating !== 0) {
-        value = entry.rating;
+      if (entry.userId === id && entry.rating !== 0 && userRating === 0) {
+        setUserRating(entry.rating);
       }
     });
   }
   if (showBigBook) {
     return (
       <BigBookOverlay bigBookPosition={bigBookPosition}>
-        <BigBook book={book} id={id} userRating={value} onClose={() => onClose()} />
+        <BigBook
+          book={book}
+          id={id}
+          userRating={userRating}
+          setUserRating={setUserRating}
+          onClose={() => onClose()}
+        />
       </BigBookOverlay>
     );
   }
@@ -174,7 +182,16 @@ const Book = React.memo(({
         }}
       >
         <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }} />
-        <UserStarRating book={book} id={id} value={value} />
+        {book && id
+        && (
+        <UserStarRating
+        // @ts-ignore
+          book={book}
+          id={id}
+          userRating={userRating}
+          setUserRating={setUserRating}
+        />
+        )}
       </CardOverflow>
     </Card>
 

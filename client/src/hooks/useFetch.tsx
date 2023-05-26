@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -32,17 +33,23 @@ const useFetch = (url: string) => {
       const { data } = res;
 
       if (data) {
+        // console.log(data);
         if (setUser) {
           setUser(data.user.userData);
           localStorage.setItem('user', JSON.stringify(data.user.userData));
         }
-        navigate('/home');
+        if (data.user.userData.username !== null || data.user.userData.radius !== null
+          || data.user.userData.longitude !== null) {
+          navigate('/home');
+        } else {
+          navigate('/usersettings');
+        }
       } else {
         throw new Error(data?.message || 'error');
       }
-    } catch (error) {
-      if (error instanceof Error && error.message) {
-        setError(error.message);
+    } catch (err) {
+      if (err instanceof Error && err.message) {
+        setError(err.message);
       } else {
         setError('An unknown error occurred');
       }

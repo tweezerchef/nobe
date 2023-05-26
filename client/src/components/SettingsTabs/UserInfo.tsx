@@ -3,8 +3,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
-  Button, Container, Slider, TextField, Grid,
+  Button, Container, TextField, Grid,
 } from '@material-ui/core';
+import Slider from '@mui/material/Slider';
+import { useLocation } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -68,6 +70,7 @@ function UserInfo() {
   const [latitude, setLatitude] = useState(0);
   const [radius, setRadius] = useState(0);
   const [buttonState, setButtonState] = useState('idle');
+  const location = useLocation();
 
   const updateUserInfo = async () => {
     if (user && user.id) {
@@ -111,6 +114,14 @@ function UserInfo() {
   };
 
   useEffect(() => {
+    if (location.state !== null) {
+      const myData = location.state;
+      console.log(myData, 118);
+      setUsername(myData);
+    }
+  }, [location]);
+
+  useEffect(() => {
     if (user?.picture) {
       setUserImage(user.picture);
     }
@@ -139,7 +150,7 @@ function UserInfo() {
     }}
     >
       <Container>
-        { user?.picture === undefined ? (
+        { user?.picture === null ? (
           <ProfileImage
             alt="User Pic"
             src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
@@ -159,14 +170,25 @@ function UserInfo() {
         <PhotoUpload setClubImage={setUserImage} />
         <UserDetail>
           <form>
-            <TextField
-              defaultValue={user?.username}
-              label="Username"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              onChange={(event) => setUsername(event.target.value)}
-            />
+            { location.state === null ? (
+              <TextField
+                defaultValue={user?.username}
+                label="Username"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                onChange={(event) => setUsername(event.target.value)}
+              />
+            ) : (
+              <TextField
+                defaultValue={username}
+                label="Username"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                onChange={(event) => setUsername(event.target.value)}
+              />
+            )}
             <TextField
               defaultValue={user?.firstName}
               label="First Name"
