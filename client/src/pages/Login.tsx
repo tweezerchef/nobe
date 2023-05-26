@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -27,6 +28,10 @@ function Login() {
           setUser(user);
           user = JSON.stringify(user);
           localStorage.setItem('user', user);
+          console.log(user, 30);
+          if (user?.lastName === null && user?.longitude === null) {
+            navigate('/usersettings', { state: user });
+          }
           navigate('/home');
         }
       })
