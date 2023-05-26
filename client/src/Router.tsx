@@ -15,7 +15,7 @@ import Clubs from './pages/Clubs';
 import ClubDiscussion from './pages/ClubDiscussion';
 import DiscussionPosts from './pages/DiscussionPosts';
 import Locations from './pages/Nearme';
-import Profile from './pages/Profile';
+import Profile from './pages/UserProfileNew';
 import Landing from './pages/Landing';
 import Trending from './pages/Trending';
 import UserRecoInputPage from './pages/UserRecoInput';

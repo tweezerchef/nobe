@@ -18,19 +18,24 @@ type Friendships = {
   user?: User
 
 };
+interface FriendsComponentProps {
+  friendIdArray: string[];
+}
 
-function FriendsComponent() {
+function FriendsComponent({ friendIdArray }: FriendsComponentProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [friends, setFriends] = useState<Friendships[]>([]);
   const userContext = useContext(UserContext);
   const user = userContext?.user;
+  const userId = user?.id;
 
   const getFriends = () => {
     if (user?.friendships) {
       setFriends(user?.friendships);
     }
   };
+
   const friendsPerPage = 3;
 
   const handleNextPage = () => {
@@ -99,8 +104,14 @@ function FriendsComponent() {
                   // eslint-disable-next-line @typescript-eslint/no-shadow
                   .map((friend) => (
                     <Box>
-                      {friend.friend
-                      && <FriendCard userFriend={friend.friend} />}
+                      {friend.friend && userId
+                      && (
+                      <FriendCard
+                        userFriend={friend.friend}
+                        userId={userId}
+                        friendIdArray={friendIdArray}
+                      />
+                      )}
                     </Box>
                   ))}
               </Stack>

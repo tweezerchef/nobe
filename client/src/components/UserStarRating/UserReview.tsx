@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -27,12 +28,13 @@ const UserReview: React.FC<UserReviewProps> = ({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Add this line to prevent default form submission behavior
-    // console.log('review', review);
-    axios.post('/review/WrittenReview', { review, book, id }).then(handleClose);
+    console.log('review', review);
+    axios.post('/review/WrittenReview', { review, book, id });
+    handleClose();
   };
 
   return (
-    <div>
+    <Box>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
         {' '}
         {/* Adjust maxWidth as per need */}
@@ -57,7 +59,7 @@ const UserReview: React.FC<UserReviewProps> = ({
           </DialogActions>
         </form>
       </Dialog>
-    </div>
+    </Box>
   );
 };
 export default UserReview;

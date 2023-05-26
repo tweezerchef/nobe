@@ -1,17 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Button from '@mui/material/Button';
 import axios from 'axios';
-import { set } from 'react-hook-form';
+import UserContext from '../../hooks/Context';
 
 interface FollowButtonProps {
   friendId: string;
-  friendIdArray: string[];
+
+}
+interface Friendship {
+  id: string;
   userId: string;
+  friendId: string;
+
 }
 
-function FollowButton({ friendId, friendIdArray, userId }: FollowButtonProps) {
+function UserProfileFollowButton({ friendId }: FollowButtonProps) {
+  const [friendIdArray, setFriendIdArray] = useState<string[]>([]);
   const [isFriend, setIsFriend] = useState(false);
   const [buttonText, setButtonText] = useState('Follow');
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const userId = user?.id;
+
+  function getFriendIds() {
+    const friendIds = user?.friendships?.reduce((acc: string[], friendship: Friendship) => {
+      if (friendship && friendship.friendId && friendship.friendId.length > 0) {
+        acc.push(friendship.friendId);
+      }
+      return acc;
+    }, []) || [];
+
+    setFriendIdArray(friendIds);
+  }
 
   function isFriendCheck() {
     if (friendIdArray.includes(friendId)) {
@@ -20,8 +40,12 @@ function FollowButton({ friendId, friendIdArray, userId }: FollowButtonProps) {
     }
   }
   useEffect(() => {
-    isFriendCheck();
+    getFriendIds();
   }, []);
+
+  useEffect(() => {
+    isFriendCheck();
+  }, [friendIdArray]);
 
   const follow = async () => {
     try {
@@ -44,7 +68,7 @@ function FollowButton({ friendId, friendIdArray, userId }: FollowButtonProps) {
   );
 }
 
-export default FollowButton;
+export default UserProfileFollowButton;
 
 // try {
 //   if (socketUrl) {

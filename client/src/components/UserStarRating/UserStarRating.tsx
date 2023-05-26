@@ -1,31 +1,37 @@
 import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
 import axios from 'axios';
-import IconButton from '@mui/joy/IconButton';
 import { Tooltip } from '@material-ui/core';
-import { fontSize } from '@mui/system';
 import UserContext from '../../hooks/Context';
 
-function UserStarRating(props: any) {
+interface UserStarRatingProps {
+  book: string;
+  id: string;
+  userRating: number;
+  setUserRating: (value: number) => void;
+}
+
+function UserStarRating({
+  book, id, userRating, setUserRating,
+}: UserStarRatingProps) {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const setUser = userContext?.setUser;
-  const { book, id } = props;
 
   // eslint-disable-next-line react/destructuring-assignment
-  const rating = props.value;
 
-  const [value, setValue] = React.useState<number | null>(rating);
+  const [value, setValue] = React.useState<number | null>(userRating);
 
   const handleRatingChange = (event: React.ChangeEvent<{}>, newValue: number | null) => {
-    axios.post('/review', { rating: newValue, book, id })
-      .catch((error) => {
-        console.error('Failed to update rating:', error);
-      });
-
-    setValue(newValue);
+    if (newValue !== null) {
+      axios.post('/review', { rating: newValue, book, id })
+        .catch((error) => {
+          console.error('Failed to update rating:', error);
+        });
+      setUserRating(newValue);
+      setValue(newValue);
+    }
   };
 
   return (
@@ -42,7 +48,7 @@ function UserStarRating(props: any) {
       >
         <Rating
           name="simple-controlled"
-          value={value}
+          value={userRating}
           onChange={handleRatingChange}
         />
 

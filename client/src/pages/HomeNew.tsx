@@ -5,8 +5,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
-
-import { set } from 'react-hook-form';
 import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
@@ -19,7 +17,6 @@ import HomeFriends from '../components/HomePage/Friends';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 import FriendFinder from '../components/HomePage/FriendFinder';
-import { Friendships, Book } from '../typings/types';
 
 interface Friendship {
   id: string;
@@ -34,11 +31,12 @@ interface ourBooks {
 
 function HomeNew() {
   const [nearMeBooks, setNearMeBooks] = useState<string[]>([]);
-  const [friendsArray, setFriendsArray] = useState<Friendship[]>([]);
+  const [friendIdArray, setFriendIdArray] = useState<string[]>([]);
   const [ourBooks, setOurBooks] = useState<ourBooks[]>([]);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
+  const userId = user?.id;
 
   const getNearMeBooks = async () => {
     // Get user's latitude, longitude, and radius from the user object
@@ -63,16 +61,20 @@ function HomeNew() {
       });
   };
 
-  useEffect(() => {
-    getNearMeBooks();
-    getOurBooks();
-    const friends = user?.friendships?.reduce((acc: Friendship[], friendship: Friendship) => {
+  function getFriendIds() {
+    const friendIds = user?.friendships?.reduce((acc: string[], friendship: Friendship) => {
       if (friendship && friendship.friendId && friendship.friendId.length > 0) {
-        acc.push(friendship);
+        acc.push(friendship.friendId);
       }
       return acc;
     }, []) || [];
-    setFriendsArray(friends);
+
+    setFriendIdArray(friendIds);
+  }
+  useEffect(() => {
+    getNearMeBooks();
+    getFriendIds();
+    getOurBooks();
   }, []);
 
   const colWidth = {
@@ -187,7 +189,7 @@ function HomeNew() {
               </FlameStyledChip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '24vh', maxHeight: '29vh' /* adjust this */ }}>
-              {/* <HomeNearMe /> */}
+              <HomeNearMe />
             </Box>
             <Box
               sx={{
@@ -210,10 +212,11 @@ function HomeNew() {
               </Chip>
             </StyledDivider>
             <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '33vh', maxHeight: '37vh' /* adjust this */ }}>
-              <HomeFriends />
+              <HomeFriends friendIdArray={friendIdArray} />
             </Box>
             <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '39vh', maxHeight: '43vh' /* adjust this */ }}>
-              <FriendFinder />
+              {userId
+              && <FriendFinder friendIdArray={friendIdArray} userId={userId} />}
             </Box>
             <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" width="100%" />
           </Stack>

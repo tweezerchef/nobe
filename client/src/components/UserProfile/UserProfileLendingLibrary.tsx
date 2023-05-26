@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-redeclare */
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import Stack from '@mui/joy/Stack';
@@ -8,23 +7,23 @@ import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import UserContext from '../../hooks/Context';
-import { UserBook } from '../../typings/types';
+import { UserBook, User } from '../../typings/types';
 import Book from '../Book/HomeBook';
+import UserProfile from '../../pages/UserProfileNew';
 
-interface HomeWishListProps {
+interface UserProfileLendingLibraryProps {
   nearMeBooks: string[];
+  user: User
 }
 
-function HomeWishList({ nearMeBooks }: HomeWishListProps) {
-  const userContext = useContext(UserContext);
-  const user = userContext?.user;
-  const id = user?.id;
+function UserProfileLendingLibrary({ nearMeBooks, user }: UserProfileLendingLibraryProps) {
   const [books, setBooks] = useState<Book[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [showBigBook, setShowBigBook] = useState(false);
   const [bigBookPosition, setBigBookPosition] = useState({ top: 0, left: 0 });
   const [selectedBook, setSelectedBook] = useState(null);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
+  const id = user?.id;
 
   const handleBookClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, book: any) => {
     const rect = (e.target as Element).getBoundingClientRect();
@@ -75,7 +74,7 @@ function HomeWishList({ nearMeBooks }: HomeWishListProps) {
   const getUserBooks = async () => {
     const booksArray: Book[] = [];
 
-    const userBooks = await axios.get(`/user-books/wishlist/${id}`);
+    const userBooks = await axios.get(`/user-books/owned/${id}`);
     userBooks.data.forEach((book: UserBook) => {
       booksArray.push(book.Books);
     });
@@ -171,4 +170,4 @@ function HomeWishList({ nearMeBooks }: HomeWishListProps) {
   );
 }
 
-export default HomeWishList;
+export default UserProfileLendingLibrary;
