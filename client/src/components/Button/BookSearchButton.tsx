@@ -15,6 +15,8 @@ function BookSearchButton(props: any) {
   const [open, setOpen] = React.useState(false);
   const [timeline, setTimeLine] = useState<string>('');
   const [discussionImage, setDiscussionImage] = useState<string>('');
+  console.log(discussionImage);
+  const [discussion, setDiscussion] = useState<string>('');
   const { isDiscussionCreator, discussionId } = props;
 
   const userContext = useContext(UserContext);
@@ -52,8 +54,17 @@ function BookSearchButton(props: any) {
     setTitle(event.target.value);
   };
 
+  async function fetchImage() {
+    const response = await axios.get(`/api/clubs/discussions/${discussionId}`);
+    // console.log(response);
+    setDiscussionImage(response.data.image);
+  }
+
   useEffect(() => {
     // console.log(book);
+    if (discussionId) {
+      fetchImage();
+    }
   }, [book]);
 
   return (
@@ -105,10 +116,10 @@ function BookSearchButton(props: any) {
           </Button>
         </Box>
       </Dialog>
-      { book
+      { book && discussionImage
         && (
         <Box mt={2} textAlign="center">
-          <img src={book.image} alt={book.title} height="100px" />
+          <img src={discussionImage} alt={book.title} height="100px" />
           {book.title}
         </Box>
         )}
