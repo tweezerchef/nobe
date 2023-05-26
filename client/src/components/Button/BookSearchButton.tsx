@@ -4,11 +4,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-// import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
 // import BigBook from '../Book/BookBig';
-import UserContext from '../../hooks/Context';
 
 interface OurBooks {
   id: string;
@@ -19,16 +17,14 @@ function BookSearchButton(props: any) {
   const [book, setBooks] = useState<any | null>(null);
   // const [title, setTitle] = useState<string>('');
   const [open, setOpen] = React.useState(false);
-  const [discussionImage, setDiscussionImage] = useState<string>('');
-  console.log(discussionImage);
+  // const [discussionImage, setDiscussionImage] = useState<string>('');
   const [discussion, setDiscussion] = useState<string>('');
   const [ourBooks, setOurBooks] = useState<OurBooks[]>([]);
   const [selectedBook, setSelectedBook] = useState<OurBooks | null>(null);
-  const { isDiscussionCreator, discussionId } = props;
-
-  const userContext = useContext(UserContext);
-  const user = userContext?.user;
-  const userId = user?.id;
+  const {
+    isDiscussionCreator, discussionId, discussionImage, setDiscussionImage,
+  } = props;
+  // console.log(discussionImage);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -77,19 +73,22 @@ function BookSearchButton(props: any) {
   //   setTitle(event.target.value);
   // };
 
-  async function fetchImage() {
-    const response = await axios.get(`/api/clubs/discussions/${discussionId}`);
-    // console.log(response);
-    setDiscussionImage(response.data.image);
-  }
+  // async function fetchImage() {
+  //   const response = await axios.get(`/api/clubs/discussions/${discussionId}`);
+  //   // console.log(response);
+  //   setDiscussionImage(response.data.image);
+  // }
 
   useEffect(() => {
     // console.log(book);
-    if (discussionId) {
-      fetchImage();
+    // if (discussionId) {
+    //   fetchImage();
+    // }
+    if (discussionImage) {
+      setDiscussionImage(discussionImage);
     }
     getOurBooks();
-  }, [discussionId]);
+  }, [discussionId, discussionImage]);
 
   return (
     <div>
@@ -135,7 +134,7 @@ function BookSearchButton(props: any) {
           </Button>
         </Box>
       </Dialog>
-      {selectedBook && discussionImage && (
+      {/* {selectedBook && discussionImage && (
       <Box mt={2} textAlign="center">
         <img
           alt={selectedBook.title}
@@ -145,7 +144,7 @@ function BookSearchButton(props: any) {
         />
         {selectedBook.title}
       </Box>
-      )}
+      )} */}
     </div>
   );
 }
