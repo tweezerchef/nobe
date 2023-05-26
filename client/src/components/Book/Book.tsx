@@ -29,11 +29,20 @@ const useStyles = makeStyles({
 });
 
 const Book = React.memo((props: any) => {
+  const [userRating, setUserRating] = React.useState<number>(0);
   const classes = useStyles();
   const { book } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
+
+  if (book.UserBooks && book.UserBooks.length > 0) {
+    book.UserBooks.forEach((entry: any) => {
+      if (entry.userId === id && entry.rating !== 0 && userRating === 0) {
+        setUserRating(entry.rating);
+      }
+    });
+  }
 
   const BigBookOverlay = styled.div<BigBookOverlayProps>`
       position: static;
@@ -116,7 +125,15 @@ const Book = React.memo((props: any) => {
         }}
       >
         <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }} />
-        <UserStarRating book={book} id={id} value={value} />
+        {id
+        && (
+        <UserStarRating
+          book={book}
+          id={id}
+          userRating={userRating}
+          setUserRating={setUserRating}
+        />
+        )}
       </CardOverflow>
     </Card>
 

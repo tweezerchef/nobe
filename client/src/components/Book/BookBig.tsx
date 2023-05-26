@@ -55,7 +55,7 @@ function BigBook(props: any) {
   const [description, setDescription] = useState<string>('');
   // const [open, setOpen] = useState<boolean>(false);
   const {
-    book, id, onClose, userRating,
+    book, id, onClose, userRating, setUserRating,
   } = props;
   const UserBooks = book?.UserBooks;
   const handleOnClick = () => {
@@ -217,7 +217,12 @@ function BigBook(props: any) {
               }}
             >
               <LendingLibraryButtonBigBook padding="15px" book={book} />
-              <UserStarRating book={book} id={id} value={userRating} />
+              <UserStarRating
+                book={book}
+                id={id}
+                userRating={userRating}
+                setUserRating={setUserRating}
+              />
               <WishListButtonBigBook padding="15px" book={book} />
             </Box>
           </Box>

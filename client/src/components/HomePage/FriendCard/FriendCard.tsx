@@ -112,7 +112,12 @@ function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
                 </Typography>
               </Grid>
             </Grid>
-            <FollowButton userId={userId} friendIdArray={friendIdArray} friendId={user?.id} />
+            <Box sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center', alignContent: 'center', marginTop: '1rem',
+            }}
+            >
+              <FollowButton userId={userId} friendIdArray={friendIdArray} friendId={user?.id} />
+            </Box>
           </Grid>
         </Box>
       </Grid>
