@@ -20,7 +20,7 @@ function BookSearchButton(props: any) {
   // const [title, setTitle] = useState<string>('');
   const [open, setOpen] = React.useState(false);
   const [discussionImage, setDiscussionImage] = useState<string>('');
-  // console.log(discussionImage);
+  console.log(discussionImage);
   const [discussion, setDiscussion] = useState<string>('');
   const [ourBooks, setOurBooks] = useState<OurBooks[]>([]);
   const [selectedBook, setSelectedBook] = useState<OurBooks | null>(null);
@@ -55,16 +55,17 @@ function BookSearchButton(props: any) {
           `/bookdata/title/searchOne?title=${selectedBook.title}`,
         );
         const bookData = response.data;
-        console.log(bookData);
+        // console.log(bookData);
         setBooks(bookData);
-        setDiscussionImage(bookData[0].image);
-
+        // setDiscussionImage(bookData[0].image);
+        // const dImage = (bookData[0].image);
         const updatedDiscussion = await axios.put(
           `/api/clubs/discussions/${discussionId}`,
           {
-            discussionImage,
+            discussionImage: bookData[0].image,
           },
         );
+        setDiscussionImage(updatedDiscussion.data.image);
         handleClose();
       }
     } catch (error) {
@@ -88,7 +89,7 @@ function BookSearchButton(props: any) {
       fetchImage();
     }
     getOurBooks();
-  }, [book]);
+  }, [discussionId]);
 
   return (
     <div>
