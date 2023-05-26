@@ -227,7 +227,7 @@ function DiscussionPosts() {
                 flexBasis: '33%',
                 borderRadius: '12px',
                 boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
-                maxWidth: '20%',
+                maxWidth: '250px',
               }}
               >
                 <AspectRatio ratio="1">
@@ -255,6 +255,7 @@ function DiscussionPosts() {
               discussionId={id}
               discussionImage={discussionImage}
               setDiscussionImage={setDiscussionImage}
+              clubId={clubId}
             />
             {posts?.map((post) => (
               <div className="post">

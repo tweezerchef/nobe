@@ -6,7 +6,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
-// import BigBook from '../Book/BookBig';
+import UserContext from '../../hooks/Context';
 
 interface OurBooks {
   id: string;
@@ -14,15 +14,32 @@ interface OurBooks {
   image: string;
 }
 
+interface Club {
+  clubId: string;
+  name: string;
+  description: string;
+  image: string;
+  clubMembers: string[];
+}
+
 function BookSearchButton(props: any) {
-  const [book, setBooks] = useState<any | null>(null);
-  // const [title, setTitle] = useState<string>('');
   const [open, setOpen] = React.useState(false);
   const [ourBooks, setOurBooks] = useState<OurBooks[]>([]);
   const [selectedBook, setSelectedBook] = useState<OurBooks | null>(null);
   const {
-    isDiscussionCreator, discussionId, discussionImage, setDiscussionImage,
+    isDiscussionCreator, discussionId, discussionImage, setDiscussionImage, clubId,
   } = props;
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+
+  const member = user?.clubMembers?.reduce((acc: boolean, club: Club) => {
+    if (club.clubId === clubId) {
+      acc = true;
+      return acc;
+    }
+    return acc;
+  }, false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,8 +67,6 @@ function BookSearchButton(props: any) {
           `/bookdata/title/searchOne?title=${selectedBook.title}`,
         );
         const bookData = response.data;
-        // console.log(bookData);
-        setBooks(bookData);
         const updatedDiscussion = await axios.put(
           `/api/clubs/discussions/${discussionId}`,
           {
@@ -75,10 +90,10 @@ function BookSearchButton(props: any) {
 
   return (
     <div style={{
-      display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '10px',
+      display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '15px', paddingBottom: '40px',
     }}
     >
-      {isDiscussionCreator && (
+      {isDiscussionCreator && member && (
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Add a Book
       </Button>

@@ -177,7 +177,7 @@ function ClubDiscussion() {
                 flexBasis: '33%',
                 borderRadius: '12px',
                 boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
-                maxWidth: '20%',
+                maxWidth: '300px',
               }}
               >
                 <AspectRatio ratio="1">
