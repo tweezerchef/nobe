@@ -18,18 +18,15 @@ function BookSearchButton(props: any) {
   const [book, setBooks] = useState<any | null>(null);
   // const [title, setTitle] = useState<string>('');
   const [open, setOpen] = React.useState(false);
-  // const [discussionImage, setDiscussionImage] = useState<string>('');
-  const [discussion, setDiscussion] = useState<string>('');
   const [ourBooks, setOurBooks] = useState<OurBooks[]>([]);
   const [selectedBook, setSelectedBook] = useState<OurBooks | null>(null);
-  console.log(selectedBook);
   const {
     isDiscussionCreator, discussionId, discussionImage, setDiscussionImage,
   } = props;
-  // console.log(discussionImage);
 
   const handleClickOpen = () => {
     setOpen(true);
+    setSelectedBook(null);
   };
 
   const handleClose = () => {
@@ -55,8 +52,6 @@ function BookSearchButton(props: any) {
         const bookData = response.data;
         // console.log(bookData);
         setBooks(bookData);
-        // setDiscussionImage(bookData[0].image);
-        // const dImage = (bookData[0].image);
         const updatedDiscussion = await axios.put(
           `/api/clubs/discussions/${discussionId}`,
           {
@@ -71,21 +66,7 @@ function BookSearchButton(props: any) {
     }
   };
 
-  // const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setTitle(event.target.value);
-  // };
-
-  // async function fetchImage() {
-  //   const response = await axios.get(`/api/clubs/discussions/${discussionId}`);
-  //   // console.log(response);
-  //   setDiscussionImage(response.data.image);
-  // }
-
   useEffect(() => {
-    // console.log(book);
-    // if (discussionId) {
-    //   fetchImage();
-    // }
     if (discussionImage) {
       setDiscussionImage(discussionImage);
     }
@@ -131,24 +112,18 @@ function BookSearchButton(props: any) {
               />
             )}
           />
-          <div>Image Preview:</div>
-          <img alt="" src={selectedBook?.image} />
-          <Button variant="contained" color="primary" type="submit">
-            Add Book
-          </Button>
+          {selectedBook && (
+          <>
+            <div>Book Cover:</div>
+            <img alt="" src={selectedBook?.image} />
+            <Button variant="contained" color="primary" type="submit">
+              Add Book
+            </Button>
+
+          </>
+          )}
         </Box>
       </Dialog>
-      {/* {selectedBook && discussionImage && (
-      <Box mt={2} textAlign="center">
-        <img
-          alt={selectedBook.title}
-          title={`Discussion image for ${selectedBook.title}`}
-          src={discussionImage}
-          height="100px"
-        />
-        {selectedBook.title}
-      </Box>
-      )} */}
     </div>
   );
 }

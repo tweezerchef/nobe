@@ -233,7 +233,7 @@ function DiscussionPosts() {
                 <AspectRatio ratio="1">
                   <CardMedia
                     component="img"
-                    alt={`Club image for ${clubName}`}
+                    alt={`Discussion book image for ${discussionTitle}`}
                     image={discussionImage}
                     style={{
                       objectFit: 'fill',
