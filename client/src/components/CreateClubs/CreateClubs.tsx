@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import GifSearch from './GifSearch';
 import UserContext from '../../hooks/Context';
