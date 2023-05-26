@@ -16,7 +16,12 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { User } from '../../typings/types';
 import FriendCard from './FriendCard/FriendCard';
 
-function FriendsComponent() {
+interface FriendsComponentProps {
+  friendIdArray: string[];
+  userId: string;
+}
+
+function FriendsComponent({ friendIdArray, userId }: FriendsComponentProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [randomUsers, setRandomUsers] = useState<User[]>([]);
@@ -166,7 +171,13 @@ function FriendsComponent() {
                     .map((randomUser) => (
                       <Box>
                         {randomUser
-                      && <FriendCard userFriend={randomUser} />}
+                      && (
+                      <FriendCard
+                        userFriend={randomUser}
+                        userId={userId}
+                        friendIdArray={friendIdArray}
+                      />
+                      )}
                       </Box>
                     ))}
                 </Stack>
