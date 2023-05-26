@@ -7,11 +7,14 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import { User } from '../../../typings/types';
+import FollowButton from '../../Button/FollowButton';
 
 interface FriendCardProps {
   userFriend: User;
+  userId: string;
+  friendIdArray: string[];
 }
-function FriendCard({ userFriend }: FriendCardProps) {
+function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
   const user = userFriend;
   const owned = user?.UserBooks?.filter((book) => book.owned === true).length;
   const wishlist = user?.UserBooks?.filter((book) => book.wishlist === true).length;
@@ -109,6 +112,7 @@ function FriendCard({ userFriend }: FriendCardProps) {
                 </Typography>
               </Grid>
             </Grid>
+            <FollowButton userId={userId} friendIdArray={friendIdArray} friendId={user?.id} />
           </Grid>
         </Box>
       </Grid>

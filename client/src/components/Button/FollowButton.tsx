@@ -4,16 +4,16 @@ import axios from 'axios';
 
 interface FollowButtonProps {
   friendId: string;
-  friends: string[];
+  friendIdArray: string[];
   userId: string;
 }
 
-function FollowButton({ friendId, friends, userId }: FollowButtonProps) {
+function FollowButton({ friendId, friendIdArray, userId }: FollowButtonProps) {
   const [isFriend, setIsFriend] = useState(false);
   const [buttonText, setButtonText] = useState('Follow');
 
   function isFriendCheck() {
-    if (friends.includes(friendId)) {
+    if (friendIdArray.includes(friendId)) {
       setIsFriend(true);
       setButtonText('Unfollow');
     }
@@ -21,6 +21,7 @@ function FollowButton({ friendId, friends, userId }: FollowButtonProps) {
   useEffect(() => {
     isFriendCheck();
   }, []);
+
   const follow = async () => {
     try {
       if (buttonText === 'Follow') {
