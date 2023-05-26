@@ -36,18 +36,16 @@ function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
         borderRadius: '3rem',
       }}
     >
-      <Grid container spacing={2} direction="column">
+      <Grid container spacing={1} direction="column">
         <Grid>
-          <Stack direction="row" spacing={2} alignItems="center">
+          <Stack direction="column" spacing={1} alignItems="center">
             <Link to={`/profile/${user?.id}`}>
               <Avatar
                 src={user?.picture}
                 alt={user?.firstName}
                 style={{
-                  width: '4rem',
-                  height: '4rem',
-                  margin: '1rem',
-                  marginLeft: '1.5rem',
+                  width: '5rem',
+                  height: '5rem',
                   marginTop: '1.5rem',
                 }}
               />

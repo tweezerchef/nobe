@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import axios from 'axios';
+import Stack from '@mui/material/Stack';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserReview from '../UserStarRating/UserReview';
 import Reviews from './Reviews';
@@ -115,9 +116,8 @@ function BigBook(props: any) {
           variant="outlined"
           className={classes.card}
           sx={{
-            width: '110%',
-            height: '100%',
-            maxWidth: '600px',
+            height: '60vh',
+            width: '600px',
             boxShadow: '0px 0px 25px rgba(0, 0, 0, 0.6)',
             maxHeight: '1000px',
             '@media (max-width: 768px)': {
@@ -129,45 +129,102 @@ function BigBook(props: any) {
           <Box
             sx={{
               display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              flexDirection: 'column',
               position: 'relative',
-              width: ['100px', '25vw'],
-              height: ['150px', '25vw'],
-              maxWidth: '300px',
-              maxHeight: '400px',
-              minWidth: '50px',
-              minHeight: '75px',
-              margin: '0 auto', // Add this line to center the box horizontally
+              width: '100%',
+              height: 'auto',
             }}
           >
-            {book.image ? (
-              <img
-                src={book.image}
-                loading="lazy"
-                alt=""
-                style={{
-                  objectFit: 'contain',
-                  width: '100%',
-                  height: '100%',
-                  imageRendering: 'crisp-edges',
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Box
+                sx={{
+                  width: '40%', // Adjust the percentage as needed
+                  height: '25vh',
                 }}
-                onClick={handleOnClick}
-              />
-            ) : (
-              <img
-                src="https://i.imgur.com/XrUd1L2.jpg"
-                loading="lazy"
-                alt=""
-                style={{
-                  objectFit: 'contain',
-                  width: '100%',
-                  height: '100%',
-                  imageRendering: 'crisp-edges',
+              >
+                {book.image ? (
+                  <img
+                    src={book.image}
+                    loading="lazy"
+                    alt=""
+                    style={{
+                      objectFit: 'cover', // Change objectFit to 'cover' to ensure all images are the same size
+                      width: '100%',
+                      height: '100%',
+                      imageRendering: 'crisp-edges',
+                    }}
+                    onClick={handleOnClick}
+                  />
+                ) : (
+                  <img
+                    src="https://i.imgur.com/XrUd1L2.jpg"
+                    loading="lazy"
+                    alt=""
+                    style={{
+                      objectFit: 'cover', // Change objectFit to 'cover'
+                      width: '100%',
+                      height: '100%',
+                      imageRendering: 'crisp-edges',
+                    }}
+                    onClick={handleOnClick}
+                  />
+                )}
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '60%',
+                  pl: 1,
                 }}
-                onClick={handleOnClick}
-              />
-            )}
+              >
+                <Typography
+                  level="h4"
+                  style={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    wordWrap: 'break-word',
+                    textAlign: 'center',
+                  }}
+                >
+                  {book.title}
+                </Typography>
+
+                <Box sx={{
+                  mt: 0.5, mb: 2, textAlign: 'center', margin: '8px',
+                }}
+                >
+                  <Typography level="body1">{book.author}</Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <Stack direction="row" spacing={3} alignContent="center" alignItems="center">
+                    <LendingLibraryButtonBigBook padding="15px" margin="10rem" book={book} />
+                    <WishListButtonBigBook padding="15px" margin="10rem" book={book} />
+
+                  </Stack>
+                </Box>
+                <UserStarRating
+                  book={book}
+                  id={id}
+                  userRating={userRating}
+                  setUserRating={setUserRating}
+                />
+              </Box>
+            </Box>
           </Box>
           <ModalClose
             variant="outlined"
@@ -181,53 +238,13 @@ function BigBook(props: any) {
             }}
             onClick={handleOnClick}
           />
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'left',
-              justifyContent: 'center',
-              pl: 1,
-            }}
-          >
-            <Tooltip title={book.title} placement="top">
-              <Typography
-                level="h4"
-                onClick={handleOnClick}
-                style={{
-                  cursor: 'pointer', textDecoration: 'underline', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center',
-                }}
-              >
-                {truncatedTitle(book.title, 25)}
-              </Typography>
-            </Tooltip>
 
-            <Box sx={{
-              mt: 0.5, mb: 2, textAlign: 'center', margin: '8px',
-            }}
-            >
-              <Typography level="body2">{book.author}</Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-evenly', // Add some space between the buttons
-                mt: 1, // Use marginTop to separate the buttons from the above element
-              }}
-            >
-              <LendingLibraryButtonBigBook padding="15px" book={book} />
-              <UserStarRating
-                book={book}
-                id={id}
-                userRating={userRating}
-                setUserRating={setUserRating}
-              />
-              <WishListButtonBigBook padding="15px" book={book} />
-            </Box>
-          </Box>
           <Box sx={{
-            p: 3, flexGrow: 1, overflow: 'auto',
+            p: 3,
+            flexGrow: 1,
+            width: '100%',
+            overflow: 'auto',
+            height: '150px',
           }}
           >
             <Typography level="body1">
@@ -295,3 +312,20 @@ function BigBook(props: any) {
 }
 
 export default BigBook;
+//  {/* {description?.length > 150 ? (
+//             <>
+//               {`${description?.slice(0, 150)}... `}
+//               <Typography
+//                 component="span"
+//                 level="body1"
+//                 color="primary"
+//                 style={{ textDecoration: 'underline', cursor: 'pointer' }}
+//                 onClick={handleExpandDescription}
+//               >
+//                 See More
+//               </Typography>
+//             </>
+//           ) : (
+//             description
+//           )} */}
+// {truncatedTitle(book.title, 25)}
