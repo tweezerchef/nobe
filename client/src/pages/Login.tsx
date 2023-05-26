@@ -25,13 +25,14 @@ function Login() {
       .then((response) => {
         if (response && setUser) {
           let { user } = response.data;
-          console.log(response.data, 28);
+          // console.log(response.data, 28);
           setUser(user);
           user = JSON.stringify(user);
           localStorage.setItem('user', user);
-          console.log(user, 30);
+          // console.log(user, 30);
         }
-        if (response.data.user.radius !== null || response.data.user.lastName !== null) {
+        if (response.data.user.radius !== null || response.data.user.lastName !== null
+          || response.data.user.longitude !== null) {
           navigate('/home');
         } else {
           navigate('/usersettings');
