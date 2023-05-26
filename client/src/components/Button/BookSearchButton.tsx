@@ -14,11 +14,12 @@ function BookSearchButton(props: any) {
   const [title, setTitle] = useState<string>('');
   const [open, setOpen] = React.useState(false);
   const [timeline, setTimeLine] = useState<string>('');
-  const { isDiscussionCreator } = props;
+  const [discussionImage, setDiscussionImage] = useState<string>('');
+  const { isDiscussionCreator, discussionId } = props;
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
-  const id = user?.id;
+  const userId = user?.id;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,16 +29,31 @@ function BookSearchButton(props: any) {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    axios.get(`/bookdata/title/searchOne?title=${title}`).then((response) => { setBooks(response.data); });
+
+    try {
+      const response = await axios.get(`/bookdata/title/searchOne?title=${title}`);
+      setBooks(response.data);
+      setDiscussionImage(response.data.image);
+      handleClose();
+
+      const updatedDiscussion = await axios.put(`/api/clubs/discussions/${discussionId}`, {
+        discussionImage,
+      });
+      // console.log(updatedDiscussion);
+    } catch (error) {
+      console.error(error);
+      // Handle the error here
+    }
   };
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
+
   useEffect(() => {
-    console.log(book);
+    // console.log(book);
   }, [book]);
 
   return (
@@ -88,14 +104,14 @@ function BookSearchButton(props: any) {
             Add Book
           </Button>
         </Box>
-        { book
+      </Dialog>
+      { book
         && (
         <Box mt={2} textAlign="center">
           <img src={book.image} alt={book.title} height="100px" />
           {book.title}
         </Box>
         )}
-      </Dialog>
     </div>
   );
 }

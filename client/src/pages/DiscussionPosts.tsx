@@ -207,7 +207,7 @@ function DiscussionPosts() {
               Button for Discussion Creator
             </Button>
             )} */}
-            <BookSearchButton isDiscussionCreator={isDiscussionCreator} />
+            <BookSearchButton isDiscussionCreator={isDiscussionCreator} discussionId={id} />
             {posts?.map((post) => (
               <div className="post">
                 <div className="post-content" key={post.id}>
