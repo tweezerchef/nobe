@@ -95,11 +95,33 @@ ClubsRoute.get('/discussions/:id', async (req: Request, res: Response) => {
         clubs: {
           select: { name: true },
         },
+        creator: {
+          select: {
+            id: true, firstName: true, lastName: true, username: true,
+          },
+        },
       },
     });
     res.json(discussion);
   } catch (error) {
     console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+ClubsRoute.put('/discussions/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { discussionImage } = req.body;
+  try {
+    const updatedDiscussion = await prisma.discussions.update({
+      where: {
+        id,
+      },
+      data: { image: discussionImage },
+    });
+    res.status(200).json(updatedDiscussion);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Something went wrong' });
   }
 });
