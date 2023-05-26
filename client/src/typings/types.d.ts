@@ -123,6 +123,7 @@ interface Book {
     author: string;
     image: string;
   }
+  author: string;
   UserBooks: UserBook[];
   id: string;
   wishlist: boolean;

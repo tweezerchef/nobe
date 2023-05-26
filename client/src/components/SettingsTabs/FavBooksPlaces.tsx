@@ -11,7 +11,7 @@ function FavBooksPlaces() {
   return (
     <Box>
       <Box justifyContent="right" sx={{ height: '100vh', width: '100vh', ml: 25 }}>
-        <HomeBuildRecomendations />
+        {/* <HomeBuildRecomendations /> */}
       </Box>
     </Box>
   );

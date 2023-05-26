@@ -76,13 +76,18 @@ BookData.get('/', async (req, res) => {
 });
 
 BookData.get('/titles', async (req, res) => {
-  const titles = prisma.books.findMany({
-    select: {
-      title: true,
-      id: true,
-    },
-  });
-  res.send(titles);
+  try {
+    const titles = await prisma.books.findMany({
+      select: {
+        title: true,
+        id: true,
+      },
+    });
+    res.send(titles);
+  } catch (error) {
+    console.error('error geting outBook List', error);
+    res.status(500).send('Error retrieving book data');
+  }
 });
 
 BookData.get('/title/searchOne', async (req, res) => {

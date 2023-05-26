@@ -242,7 +242,6 @@ model Discussions {
   title            String
   clubsId          String
   bookId           String?
-  image            String?
   thumbsDown       Int                @default(0)
   thumbsUp         Int                @default(0)
   createdAt        DateTime           @default(now())

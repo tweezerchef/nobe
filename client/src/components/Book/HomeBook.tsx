@@ -33,6 +33,13 @@ interface HomeBookProps {
   nearMeBooks: string[];
 
 }
+const BigBookOverlay = styled.div<BigBookOverlayProps>`
+position: static;
+z-index: 10;  left: ${(props) => props.bigBookPosition.left}px;
+top: ${(props) => props.bigBookPosition.top}px;
+border-radius: 20px;
+box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.15);
+`;
 
 const useStyles = makeStyles({
   card: {
@@ -42,20 +49,14 @@ const useStyles = makeStyles({
   },
 });
 
-const Book = React.memo((props: any) => {
+const Book = React.memo(({
+  nearMeBooks, book, onClose, onClick, showBigBook, bigBookPosition,
+}: HomeBookProps) => {
   const classes = useStyles();
-  const { book, nearMeBooks } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
 
-  const BigBookOverlay = styled.div<BigBookOverlayProps>`
-      position: static;
-      z-index: 10;  left: ${(props) => props.bigBookPosition.left}px;
-      top: ${(props) => props.bigBookPosition.top}px;
-      border-radius: 20px;
-      box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.15);
-`;
   if (!book) {
     return null;
   }
@@ -68,7 +69,7 @@ const Book = React.memo((props: any) => {
   }
 
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    props.onClick(e, book);
+    onClick(e, book);
   };
   let value = 0;
   if (book.UserBooks && book.UserBooks.length > 0) {
@@ -78,10 +79,10 @@ const Book = React.memo((props: any) => {
       }
     });
   }
-  if (props.showBigBook) {
+  if (showBigBook) {
     return (
-      <BigBookOverlay bigBookPosition={props.bigBookPosition}>
-        <BigBook book={book} id={id} userRating={value} onClose={() => props.onClose()} />
+      <BigBookOverlay bigBookPosition={bigBookPosition}>
+        <BigBook book={book} id={id} userRating={value} onClose={() => onClose()} />
       </BigBookOverlay>
     );
   }
@@ -103,13 +104,14 @@ const Book = React.memo((props: any) => {
       }}
     >
       <Box
-        style={{
+        sx={{
           position: 'relative',
           width: '100%',
-          height: '55%', // Adjust as per your requirement
+          height: '55%',
           overflow: 'hidden',
           margin: '0',
           padding: '0',
+          backgroundColor: 'transparent',
         }}
         onClick={handleOnClick}
       >

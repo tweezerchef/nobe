@@ -21,8 +21,11 @@ import Book from '../Book/HomeBook';
 //   wishlist: boolean;
 //   owned: boolean;
 // }
+interface ExploreBooksProps {
+  nearMeBooks: string[];
+}
 
-function HomeRecommendedBooks() {
+function HomeRecommendedBooks({ nearMeBooks }: ExploreBooksProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [books, setBooks] = useState([]);
@@ -148,6 +151,7 @@ function HomeRecommendedBooks() {
                         onClose={handleBigBookClose}
                         showBigBook={showBigBook && book === selectedBook}
                         bigBookPosition={bigBookPosition}
+                        nearMeBooks={nearMeBooks}
                       />
                     </Box>
                   ))}
