@@ -74,6 +74,228 @@ BookData.get('/', async (req, res) => {
     res.status(500).send('Error retrieving book data');
   }
 });
+
+BookData.get('/titles', async (req, res) => {
+  try {
+    const titles = await prisma.books.findMany({
+      select: {
+        title: true,
+        id: true,
+      },
+    });
+    res.send(titles);
+  } catch (error) {
+    console.error('error geting outBook List', error);
+    res.status(500).send('Error retrieving book data');
+  }
+});
+
+BookData.get('/title/searchOne', async (req, res) => {
+  let book;
+  const { title } = req.query;
+  try {
+    book = await prisma.books.findMany({
+      where: {
+        title: {
+          contains: title,
+        },
+      },
+      select: {
+        // include all columns from the books table
+        id: true,
+        title: true,
+        author: true,
+        ISBN10: true,
+        description: true,
+        image: true,
+        UserBooks: {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            Books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks: {
+                  select: {
+                    id: true,
+                    wishlist: true,
+                    owned: true,
+                    booksId: true,
+                    userId: true,
+                    rating: true,
+                    review: true,
+                    LendingTable: true,
+                    User: true,
+                  },
+                },
+                Discussions: true,
+                Activity: true,
+              },
+            },
+            User: true,
+          },
+        },
+        Discussions: true,
+        Activity: true,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving book data');
+  } finally {
+    if (!book || book === null) {
+      try {
+        const data = await axios.get(`http://localhost:8080/google-books?title=${title}`);
+        book = data.data;
+      } catch (googleBooksError) {
+        console.error(googleBooksError);
+        res.status(500).send('Error retrieving book data from Google Books');
+      }
+    }
+    res.send(book);
+  }
+});
+
+BookData.get('/title', async (req, res) => {
+  const { title } = req.query;
+  try {
+    const book = await prisma.books.findFirst({
+      where: {
+        title: {
+          contains: title,
+        },
+      },
+      select: {
+        // include all columns from the books table
+        id: true,
+        title: true,
+        author: true,
+        ISBN10: true,
+        description: true,
+        image: true,
+        UserBooks: {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            Books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks: {
+                  select: {
+                    id: true,
+                    wishlist: true,
+                    owned: true,
+                    booksId: true,
+                    userId: true,
+                    rating: true,
+                    review: true,
+                    LendingTable: true,
+                    User: true,
+                  },
+                },
+                Discussions: true,
+                Activity: true,
+              },
+            },
+            User: true,
+          },
+        },
+        Discussions: true,
+        Activity: true,
+      },
+    });
+    res.send(book);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving book data');
+  }
+});
+BookData.get('/id', async (req, res) => {
+  const { id } = req.query;
+  try {
+    const book = await prisma.books.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        // include all columns from the books table
+        id: true,
+        title: true,
+        author: true,
+        ISBN10: true,
+        description: true,
+        image: true,
+        UserBooks: {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            Books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks: {
+                  select: {
+                    id: true,
+                    wishlist: true,
+                    owned: true,
+                    booksId: true,
+                    userId: true,
+                    rating: true,
+                    review: true,
+                    LendingTable: true,
+                    User: true,
+                  },
+                },
+                Discussions: true,
+                Activity: true,
+              },
+            },
+            User: true,
+          },
+        },
+        Discussions: true,
+        Activity: true,
+      },
+    });
+    res.send(book);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving book data');
+  }
+});
+
 BookData.post('/title/owned', async (req, res) => {
   const {
     title, ISBN10, author, image, description, owned,
@@ -202,147 +424,6 @@ BookData.post('/title', async (req, res) => {
   });
 
   res.send(newBook);
-});
-BookData.get('/title/searchOne', async (req, res) => {
-  let book;
-  const { title } = req.query;
-  try {
-    book = await prisma.books.findFirst({
-      where: {
-        title: {
-          contains: title,
-        },
-      },
-      select: {
-        // include all columns from the books table
-        id: true,
-        title: true,
-        author: true,
-        ISBN10: true,
-        description: true,
-        image: true,
-        UserBooks: {
-          select: {
-            id: true,
-            wishlist: true,
-            owned: true,
-            booksId: true,
-            userId: true,
-            rating: true,
-            review: true,
-            LendingTable: true,
-            Books: {
-              select: {
-                id: true,
-                title: true,
-                author: true,
-                ISBN10: true,
-                description: true,
-                image: true,
-                UserBooks: {
-                  select: {
-                    id: true,
-                    wishlist: true,
-                    owned: true,
-                    booksId: true,
-                    userId: true,
-                    rating: true,
-                    review: true,
-                    LendingTable: true,
-                    User: true,
-                  },
-                },
-                Discussions: true,
-                Activity: true,
-              },
-            },
-            User: true,
-          },
-        },
-        Discussions: true,
-        Activity: true,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error retrieving book data');
-  } finally {
-    if (!book || book === null) {
-      try {
-        const data = await axios.get(`http://localhost:8080/google-books?title=${title}`);
-        book = data.data;
-      } catch (googleBooksError) {
-        console.error(googleBooksError);
-        res.status(500).send('Error retrieving book data from Google Books');
-      }
-    }
-    res.send(book);
-  }
-});
-BookData.get('/title', async (req, res) => {
-  const { title } = req.query;
-  try {
-    const book = await prisma.books.findFirst({
-      where: {
-        title: {
-          contains: title,
-        },
-      },
-      select: {
-        // include all columns from the books table
-        id: true,
-        title: true,
-        author: true,
-        ISBN10: true,
-        description: true,
-        image: true,
-        UserBooks: {
-          select: {
-            id: true,
-            wishlist: true,
-            owned: true,
-            booksId: true,
-            userId: true,
-            rating: true,
-            review: true,
-            LendingTable: true,
-            Books: {
-              select: {
-                id: true,
-                title: true,
-                author: true,
-                ISBN10: true,
-                description: true,
-                image: true,
-                UserBooks: {
-                  select: {
-                    id: true,
-                    wishlist: true,
-                    owned: true,
-                    booksId: true,
-                    userId: true,
-                    rating: true,
-                    review: true,
-                    LendingTable: true,
-                    User: true,
-                  },
-                },
-                Discussions: true,
-                Activity: true,
-              },
-            },
-            User: true,
-          },
-        },
-        Discussions: true,
-        Activity: true,
-      },
-    });
-    res.send(book);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error retrieving book data');
-  }
 });
 
 export default BookData;

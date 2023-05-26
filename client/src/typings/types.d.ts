@@ -16,6 +16,14 @@ interface DiscussionPost {
   userId: string;
   discussionId: string;
 }
+
+interface Friendships {
+  id: string;
+  userId: string;
+  friendId: string;
+  friend: User
+  user: User
+}
 interface Place {
   location: ReactNode;
   nickName: string;
@@ -115,6 +123,7 @@ interface Book {
     author: string;
     image: string;
   }
+  author: string;
   UserBooks: UserBook[];
   id: string;
   wishlist: boolean;

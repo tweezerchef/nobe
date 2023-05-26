@@ -31,7 +31,9 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography>
+            {children}
+          </Typography>
         </Box>
       )}
     </div>
@@ -89,14 +91,49 @@ function VerticalTabs() {
             borderRight: 1,
             borderColor: 'divider',
             width: 200,
-            bgcolor: '##fff',
+            bgcolor: 'primary.main',
           }}
         >
-          <Tab label="Profile Settings" {...a11yProps(0)} />
-          <Tab label="Favorite Genres" {...a11yProps(1)} />
-          <Tab label="Favorite Hobbies" {...a11yProps(2)} />
-          <Tab label="Preferred Books" {...a11yProps(3)} />
-          <Tab label="Preferred Places" {...a11yProps(4)} />
+          <Tab
+            label="Profile Settings"
+            {...a11yProps(0)}
+            sx={{
+              backgroundColor: value === 0 ? '#ffffff' : 'transparent', // Fill the tab button with white color when selected
+              color: value === 0 ? 'primary.main' : 'inherit',
+            }}
+          />
+          <Tab
+            label="Favorite Genres"
+            {...a11yProps(1)}
+            sx={{
+              backgroundColor: value === 1 ? '#ffffff' : 'transparent',
+              color: value === 1 ? 'primary.main' : 'inherit',
+            }}
+          />
+          <Tab
+            label="Favorite Hobbies"
+            {...a11yProps(2)}
+            sx={{
+              backgroundColor: value === 2 ? '#ffffff' : 'transparent',
+              color: value === 2 ? 'primary.main' : 'inherit',
+            }}
+          />
+          <Tab
+            label="Preferred Books"
+            {...a11yProps(3)}
+            sx={{
+              backgroundColor: value === 3 ? '#ffffff' : 'transparent',
+              color: value === 3 ? 'primary.main' : 'inherit',
+            }}
+          />
+          <Tab
+            label="Preferred Places"
+            {...a11yProps(4)}
+            sx={{
+              backgroundColor: value === 4 ? '#ffffff' : 'transparent',
+              color: value === 4 ? 'primary.main' : 'inherit',
+            }}
+          />
         </Tabs>
       </Box>
       <Box>

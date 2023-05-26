@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
+import Box from '@mui/joy/Box';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
@@ -32,6 +33,13 @@ interface HomeBookProps {
   nearMeBooks: string[];
 
 }
+const BigBookOverlay = styled.div<BigBookOverlayProps>`
+position: static;
+z-index: 10;  left: ${(props) => props.bigBookPosition.left}px;
+top: ${(props) => props.bigBookPosition.top}px;
+border-radius: 20px;
+box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.15);
+`;
 
 const useStyles = makeStyles({
   card: {
@@ -41,20 +49,14 @@ const useStyles = makeStyles({
   },
 });
 
-const Book = React.memo((props: any) => {
+const Book = React.memo(({
+  nearMeBooks, book, onClose, onClick, showBigBook, bigBookPosition,
+}: HomeBookProps) => {
   const classes = useStyles();
-  const { book, nearMeBooks } = props;
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
 
-  const BigBookOverlay = styled.div<BigBookOverlayProps>`
-      position: static;
-      z-index: 10;  left: ${(props) => props.bigBookPosition.left}px;
-      top: ${(props) => props.bigBookPosition.top}px;
-      border-radius: 20px;
-      box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.15);
-`;
   if (!book) {
     return null;
   }
@@ -67,7 +69,7 @@ const Book = React.memo((props: any) => {
   }
 
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    props.onClick(e, book);
+    onClick(e, book);
   };
   let value = 0;
   if (book.UserBooks && book.UserBooks.length > 0) {
@@ -77,10 +79,10 @@ const Book = React.memo((props: any) => {
       }
     });
   }
-  if (props.showBigBook) {
+  if (showBigBook) {
     return (
-      <BigBookOverlay bigBookPosition={props.bigBookPosition}>
-        <BigBook book={book} id={id} userRating={value} onClose={() => props.onClose()} />
+      <BigBookOverlay bigBookPosition={bigBookPosition}>
+        <BigBook book={book} id={id} userRating={value} onClose={() => onClose()} />
       </BigBookOverlay>
     );
   }
@@ -93,27 +95,43 @@ const Book = React.memo((props: any) => {
       className={classes.card}
       sx={{
         width: '17vw',
-        height: '28vh',
-        minHeight: '150px',
-        maxHeight: '300px',
+        height: '27vh',
+        minHeight: '200px',
         margin: '.2vh',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         display: 'flex',
         flexDirection: 'column',
       }}
     >
-      <CardOverflow onClick={handleOnClick}>
-        <AspectRatio ratio="2">
-          {book.image ? (
-            <img src={book.image} loading="lazy" alt="" />
-          ) : (
-            <img src="https://i.imgur.com/XrUd1L2.jpg" loading="lazy" alt="" />
-          )}
-        </AspectRatio>
+      <Box
+        sx={{
+          position: 'relative',
+          width: '100%',
+          height: '55%',
+          overflow: 'hidden',
+          margin: '0',
+          padding: '0',
+          backgroundColor: 'transparent',
+        }}
+        onClick={handleOnClick}
+      >
+        <img
+          src={book.image ? book.image : 'https://i.imgur.com/XrUd1L2.jpg'}
+          loading="lazy"
+          alt=""
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center center',
+          }}
+        />
+      </Box>
+      <CardOverflow>
         <NearMeButton book={book} nearMeBooks={nearMeBooks} />
         <LendingLibraryButton book={book} />
         <WishListButton book={book} />
-
       </CardOverflow>
       <Typography
         level="body1"
