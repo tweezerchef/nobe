@@ -74,9 +74,12 @@ function BookSearchButton(props: any) {
   }, [discussionId, discussionImage]);
 
   return (
-    <div>
+    <div style={{
+      display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '10px',
+    }}
+    >
       {isDiscussionCreator && (
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Add a Book
       </Button>
       )}
