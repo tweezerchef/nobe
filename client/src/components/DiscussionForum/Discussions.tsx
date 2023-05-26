@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/prop-types */
 import React, { memo } from 'react';
@@ -36,49 +37,58 @@ function deepEqual(obj1: any, obj2: any) {
   return true;
 }
 
-const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => (
-  <>
-    {discussions?.map((discussion) => (
-      <Box sx={{ my: 1 }}>
-        <Card key={discussion.id} className="club-card" variant="outlined">
-          <Link
-            to={`/clubs/${clubId}/discussion/${discussion.id}`}
-            style={{ color: 'black', textDecoration: 'none' }}
-          >
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }}>
-                {discussion.title}
-              </Typography>
-              <Typography
-                variant="body2"
-                className="club-card-body"
-                style={{
-                  textAlign: 'center', fontSize: '16px', color: 'gray', paddingBottom: '3px',
-                }}
-              >
-                {discussion.Posts && discussion.Posts.length === 1 ? '1 Post' : `${discussion.Posts?.length || 0} Posts`}
-              </Typography>
-              <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '12px', color: 'gray' }}>
-                Last post:
-                {' '}
-                {discussion.Posts && discussion.Posts.length > 0 ? (
-                  moment(discussion.Posts[discussion.Posts.length - 1].createdAt).calendar(null, {
-                    lastDay: '[Yesterday at] h:mma',
-                    sameDay: '[Today at] h:mma',
-                    lastWeek: 'dddd [at] h:mma',
-                    sameElse: 'MMM D [at] h:mma',
-                  })
-                ) : (
-                  'No posts'
-                )}
-              </Typography>
-            </CardContent>
-          </Link>
-        </Card>
-      </Box>
-    ))}
-  </>
+const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => {
+  // Sort the discussions based on the most recent post
+  const sortedDiscussions = [...discussions].sort((a, b) => {
+    const aLastPostTime = a.Posts?.length ? moment(a.Posts[a.Posts.length - 1].createdAt).valueOf() : 0;
+    const bLastPostTime = b.Posts?.length ? moment(b.Posts[b.Posts.length - 1].createdAt).valueOf() : 0;
+    return bLastPostTime - aLastPostTime;
+  });
 
-), deepEqual);
+  return (
+    <>
+      {sortedDiscussions?.map((discussion) => (
+        <Box sx={{ my: 1 }}>
+          <Card key={discussion.id} className="club-card" variant="outlined">
+            <Link
+              to={`/clubs/${clubId}/discussion/${discussion.id}`}
+              style={{ color: 'black', textDecoration: 'none' }}
+            >
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div" style={{ textAlign: 'center' }}>
+                  {discussion.title}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  className="club-card-body"
+                  style={{
+                    textAlign: 'center', fontSize: '16px', color: 'gray', paddingBottom: '3px',
+                  }}
+                >
+                  {discussion.Posts && discussion.Posts.length === 1 ? '1 Post' : `${discussion.Posts?.length || 0} Posts`}
+                </Typography>
+                <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '12px', color: 'gray' }}>
+                  Last post:
+                  {' '}
+                  {discussion.Posts && discussion.Posts.length > 0 ? (
+                    moment(discussion.Posts[discussion.Posts.length - 1].createdAt).calendar(null, {
+                      lastDay: '[Yesterday at] h:mma',
+                      sameDay: '[Today at] h:mma',
+                      lastWeek: 'dddd [at] h:mma',
+                      sameElse: 'MMM D [at] h:mma',
+                    })
+                  ) : (
+                    'No posts'
+                  )}
+                </Typography>
+              </CardContent>
+            </Link>
+          </Card>
+        </Box>
+      ))}
+    </>
+
+  );
+}, deepEqual);
 
 export default DiscussionList;
