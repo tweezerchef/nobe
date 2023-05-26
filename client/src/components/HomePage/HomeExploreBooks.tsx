@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, ChangeEvent, FormEvent,
+  useState, useEffect,
 } from 'react';
 import axios from 'axios';
 import Stack from '@mui/joy/Stack';
@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
 import Autocomplete from '@mui/material/Autocomplete';
-import { set } from 'react-hook-form';
+import CircularProgress from '@mui/material/CircularProgress';
 import Book from '../Book/HomeBook';
 
 interface ExploreBooksProps {
@@ -34,6 +34,7 @@ function ExploreBooks({ ourBooks, nearMeBooks }: ExploreBooksProps) {
   const [bigBookPosition, setBigBookPosition] = useState({ top: 0, left: 0 });
   const [selectedBook, setSelectedBook] = useState(null);
   const [inputValue, setInputValue] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleBookClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, book: any) => {
     const rect = (e.target as Element).getBoundingClientRect();
@@ -69,18 +70,31 @@ function ExploreBooks({ ourBooks, nearMeBooks }: ExploreBooksProps) {
     setShowBigBook(false);
   };
 
-  const handleSearch = (id: string) => {
-    axios.get(`/bookdata/id?id=${id}`).then((res) => {
+  const handleSearch = async (id: string) => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`/bookdata/id?id=${id}`);
       setBooks((prevBooks) => [...[res.data], ...prevBooks]);
       setCurrentPage(0);
-    });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSearchOnBlur = () => {
-    if (searchText === '') {
-      axios.get(`/google-books/?title=${inputValue}`).then((res) => {
+  const handleSearchOnBlur = async () => {
+    setLoading(true);
+    try {
+      if (searchText === '') {
+        const res = await axios.get(`/google-books/?title=${inputValue}`);
         setBooks((prevBooks) => [...res.data, ...prevBooks]);
-      });
+        setCurrentPage(0);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -127,6 +141,7 @@ function ExploreBooks({ ourBooks, nearMeBooks }: ExploreBooksProps) {
               setInputValue(newInputValue);
             }}
             onChange={(event: any, newValue: OurBooks | null) => {
+              setLoading(true); // set loading before request
               if (newValue) {
                 setSearchText(newValue.id);
                 handleSearch(newValue.id);
@@ -134,7 +149,10 @@ function ExploreBooks({ ourBooks, nearMeBooks }: ExploreBooksProps) {
                 setSearchText('');
               }
             }}
-            onBlur={handleSearchOnBlur}
+            onBlur={() => {
+              setLoading(true); // set loading before request
+              handleSearchOnBlur();
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -143,9 +161,10 @@ function ExploreBooks({ ourBooks, nearMeBooks }: ExploreBooksProps) {
                   ...params.InputProps,
                   startAdornment: (
                     <InputAdornment position="start">
-                      <IconButton type="submit">
-                        <SearchOutlinedIcon />
+                      <IconButton type="submit" onClick={() => setLoading(true)}>
+                        {!loading && <SearchOutlinedIcon />}
                       </IconButton>
+                      {loading && <CircularProgress size={20} />}
                     </InputAdornment>
                   ),
                 }}

@@ -7,11 +7,14 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import { User } from '../../../typings/types';
+import FollowButton from '../../Button/FollowButton';
 
 interface FriendCardProps {
   userFriend: User;
+  userId: string;
+  friendIdArray: string[];
 }
-function FriendCard({ userFriend }: FriendCardProps) {
+function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
   const user = userFriend;
   const owned = user?.UserBooks?.filter((book) => book.owned === true).length;
   const wishlist = user?.UserBooks?.filter((book) => book.wishlist === true).length;
@@ -33,18 +36,16 @@ function FriendCard({ userFriend }: FriendCardProps) {
         borderRadius: '3rem',
       }}
     >
-      <Grid container spacing={2} direction="column">
+      <Grid container spacing={1} direction="column">
         <Grid>
-          <Stack direction="row" spacing={2} alignItems="center">
+          <Stack direction="column" spacing={1} alignItems="center">
             <Link to={`/profile/${user?.id}`}>
               <Avatar
                 src={user?.picture}
                 alt={user?.firstName}
                 style={{
-                  width: '4rem',
-                  height: '4rem',
-                  margin: '1rem',
-                  marginLeft: '1.5rem',
+                  width: '5rem',
+                  height: '5rem',
                   marginTop: '1.5rem',
                 }}
               />
@@ -109,6 +110,12 @@ function FriendCard({ userFriend }: FriendCardProps) {
                 </Typography>
               </Grid>
             </Grid>
+            <Box sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center', alignContent: 'center', marginTop: '1rem',
+            }}
+            >
+              <FollowButton userId={userId} friendIdArray={friendIdArray} friendId={user?.id} />
+            </Box>
           </Grid>
         </Box>
       </Grid>
