@@ -4,19 +4,26 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import AspectRatio from '@mui/joy/AspectRatio';
+// import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/material/Box';
-import BigBook from '../Book/BookBig';
+import Autocomplete from '@mui/material/Autocomplete';
+// import BigBook from '../Book/BookBig';
 import UserContext from '../../hooks/Context';
+
+interface OurBooks {
+  id: string;
+  title: string;
+}
 
 function BookSearchButton(props: any) {
   const [book, setBooks] = useState<any | null>(null);
-  const [title, setTitle] = useState<string>('');
+  // const [title, setTitle] = useState<string>('');
   const [open, setOpen] = React.useState(false);
-  // const [timeline, setTimeLine] = useState<string>('');
   const [discussionImage, setDiscussionImage] = useState<string>('');
-  console.log(discussionImage);
+  // console.log(discussionImage);
   const [discussion, setDiscussion] = useState<string>('');
+  const [ourBooks, setOurBooks] = useState<OurBooks[]>([]);
+  const [selectedBook, setSelectedBook] = useState<OurBooks | null>(null);
   const { isDiscussionCreator, discussionId } = props;
 
   const userContext = useContext(UserContext);
@@ -31,29 +38,43 @@ function BookSearchButton(props: any) {
     setOpen(false);
   };
 
+  const getOurBooks = async () => {
+    axios.get('/bookdata/titles')
+      .then((response) => {
+        // console.log(response.data);
+        setOurBooks(response.data);
+      });
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const response = await axios.get(`/bookdata/title/searchOne?title=${title}`);
-      const bookData = response.data;
-      console.log(bookData);
-      setBooks(bookData);
-      setDiscussionImage(bookData.image);
-      // console.log(discussionImage);
-      const updatedDiscussion = await axios.put(`/api/clubs/discussions/${discussionId}`, {
-        discussionImage,
-      });
-      // console.log(updatedDiscussion);
-      handleClose();
+      if (selectedBook) {
+        const response = await axios.get(
+          `/bookdata/title/searchOne?title=${selectedBook.title}`,
+        );
+        const bookData = response.data;
+        console.log(bookData);
+        setBooks(bookData);
+        setDiscussionImage(bookData[0].image);
+
+        const updatedDiscussion = await axios.put(
+          `/api/clubs/discussions/${discussionId}`,
+          {
+            discussionImage,
+          },
+        );
+        handleClose();
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
+  // const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setTitle(event.target.value);
+  // };
 
   async function fetchImage() {
     const response = await axios.get(`/api/clubs/discussions/${discussionId}`);
@@ -66,6 +87,7 @@ function BookSearchButton(props: any) {
     if (discussionId) {
       fetchImage();
     }
+    getOurBooks();
   }, [book]);
 
   return (
@@ -91,39 +113,38 @@ function BookSearchButton(props: any) {
           autoComplete="off"
           onSubmit={handleSubmit}
         >
-          <TextField
-            autoFocus
-            id="club-name"
-            label="Book Title"
-            variant="outlined"
-            type="string"
-            fullWidth
-            value={title}
-            onChange={handleTitleChange}
-            required
+          <Autocomplete
+            id="book-title"
+            options={ourBooks}
+            getOptionLabel={(option) => option.title}
+            value={selectedBook}
+            onChange={(event, newValue) => setSelectedBook(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Book Title"
+                variant="outlined"
+                fullWidth
+                required
+              />
+            )}
           />
-          {/* <TextField
-            id="book-timeline"
-            label="Book Timeline for Readers"
-            variant="outlined"
-            type="string"
-            fullWidth
-            value={timeline}
-            onChange={(e) => setTimeLine(e.target.value)}
-            required
-          /> */}
           <Button variant="contained" color="primary" type="submit">
             Add Book
           </Button>
         </Box>
       </Dialog>
-      { book && discussionImage
-        && (
-        <Box mt={2} textAlign="center">
-          <img alt={book.title} title={`Discussion image for ${book.title}`} src={discussionImage} height="100px" />
-          {book.title}
-        </Box>
-        )}
+      {selectedBook && discussionImage && (
+      <Box mt={2} textAlign="center">
+        <img
+          alt={selectedBook.title}
+          title={`Discussion image for ${selectedBook.title}`}
+          src={discussionImage}
+          height="100px"
+        />
+        {selectedBook.title}
+      </Box>
+      )}
     </div>
   );
 }
