@@ -19,7 +19,7 @@ import '@geoapify/geocoder-autocomplete/styles/minimal.css';
 import ReactiveButton from 'reactive-button';
 import axios from 'axios';
 import UserContext from '../../hooks/Context';
-import PhotoUpload from '../Button/ImageUploadButton';
+import ProfilePhotoUpload from '../Button/ProfileImageUpload';
 
 const UserDetail = styled.div({
   position: 'relative',
@@ -150,24 +150,7 @@ function UserInfo() {
     }}
     >
       <Container>
-        { user?.picture === null ? (
-          <ProfileImage
-            alt="User Pic"
-            src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
-            id="profile-image1"
-            height="250"
-          />
-        )
-          : (
-            <ProfileImage
-              alt="User Pic"
-              src={user?.picture}
-              id="profile-image1"
-              height="250"
-            />
-          )}
-
-        <PhotoUpload setClubImage={setUserImage} />
+        <ProfilePhotoUpload setProfileImage={setUserImage} />
         <UserDetail>
           <form>
             { location.state === null ? (
