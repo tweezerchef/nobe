@@ -55,14 +55,6 @@ function Clubs() {
     justify-content: center;
   `;
 
-  //   const CardContainer = styled.div`
-  //   width: 16vw;
-  //   height: 100$;
-  //   margin: 8px;
-  //   margin-bottom: 0px;
-  //   box-shadow: 0px 0px 25px rgba(37, 37, 37, 0.6)
-  // `;
-
   const StyledCard = styled(Card) <{ flexBasis?: string }>`
   flex-basis: ${(props) => props.flexBasis || '33%'};
   margin: 10px;
@@ -146,20 +138,6 @@ function Clubs() {
           />
           <div>
             <Grid container spacing={2}>
-              {/* <Grid item xs={12} md={4}> */}
-
-              {/* <HeaderBox> */}
-              {/* <ClubHeader>Create a Club</ClubHeader> */}
-              {/* </HeaderBox> */}
-
-              {/* <Button variant="outlined" onClick={handleClickOpen}>
-                  Create a Club
-                </Button>
-                <Dialog open={open} onClose={handleClose}>
-                  <CreateClubs setClubs={setClubs} />
-                </Dialog>
-              </Grid> */}
-
               <Grid item xs={12} md={12}>
                 {/* <HeaderBox> */}
                 <ClubHeader>Book Clubs</ClubHeader>

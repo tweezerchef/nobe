@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
@@ -13,6 +13,7 @@ import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import AspectRatio from '@mui/joy/AspectRatio';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
 import { ClubHeader, ClubDescription } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
@@ -167,6 +168,7 @@ function ClubDiscussion() {
             }}
           />
           <div>
+            <Button component={Link} to="/clubs" startIcon={<ArrowBackIcon />}>View All Clubs</Button>
             <ClubHeader style={{ textAlign: 'center' }}>{clubName}</ClubHeader>
             <ClubDescription style={{ textAlign: 'center' }}>{thisClub[0]?.description}</ClubDescription>
             <div style={{

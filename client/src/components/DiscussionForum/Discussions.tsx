@@ -36,7 +36,6 @@ function deepEqual(obj1: any, obj2: any) {
 }
 
 const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => {
-  // Sort the discussions based on the most recent post
   const sortedDiscussions = [...discussions].sort((a, b) => {
     const aLastPostTime = a.Posts?.length ? moment(a.Posts[a.Posts.length - 1].createdAt).valueOf() : 0;
     const bLastPostTime = b.Posts?.length ? moment(b.Posts[b.Posts.length - 1].createdAt).valueOf() : 0;
