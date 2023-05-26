@@ -13,9 +13,9 @@ function BookSearchButton(props: any) {
   const [book, setBooks] = useState<any | null>(null);
   const [title, setTitle] = useState<string>('');
   const [open, setOpen] = React.useState(false);
-  const [timeline, setTimeLine] = useState<string>('');
+  // const [timeline, setTimeLine] = useState<string>('');
   const [discussionImage, setDiscussionImage] = useState<string>('');
-  // console.log(discussionImage);
+  console.log(discussionImage);
   const [discussion, setDiscussion] = useState<string>('');
   const { isDiscussionCreator, discussionId } = props;
 
@@ -37,14 +37,15 @@ function BookSearchButton(props: any) {
     try {
       const response = await axios.get(`/bookdata/title/searchOne?title=${title}`);
       const bookData = response.data;
+      console.log(bookData);
       setBooks(bookData);
-      const discussionImage = bookData.image;
-      setDiscussionImage(discussionImage);
-      handleClose();
+      setDiscussionImage(bookData.image);
+      // console.log(discussionImage);
       const updatedDiscussion = await axios.put(`/api/clubs/discussions/${discussionId}`, {
         discussionImage,
       });
       // console.log(updatedDiscussion);
+      handleClose();
     } catch (error) {
       console.error(error);
     }
@@ -101,7 +102,7 @@ function BookSearchButton(props: any) {
             onChange={handleTitleChange}
             required
           />
-          <TextField
+          {/* <TextField
             id="book-timeline"
             label="Book Timeline for Readers"
             variant="outlined"
@@ -110,7 +111,7 @@ function BookSearchButton(props: any) {
             value={timeline}
             onChange={(e) => setTimeLine(e.target.value)}
             required
-          />
+          /> */}
           <Button variant="contained" color="primary" type="submit">
             Add Book
           </Button>
@@ -119,7 +120,7 @@ function BookSearchButton(props: any) {
       { book && discussionImage
         && (
         <Box mt={2} textAlign="center">
-          <img src={discussionImage} alt={book.title} height="100px" />
+          <img alt={book.title} title={`Discussion image for ${book.title}`} src={discussionImage} height="100px" />
           {book.title}
         </Box>
         )}
