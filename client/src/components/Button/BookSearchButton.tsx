@@ -15,7 +15,7 @@ function BookSearchButton(props: any) {
   const [open, setOpen] = React.useState(false);
   const [timeline, setTimeLine] = useState<string>('');
   const [discussionImage, setDiscussionImage] = useState<string>('');
-  console.log(discussionImage);
+  // console.log(discussionImage);
   const [discussion, setDiscussion] = useState<string>('');
   const { isDiscussionCreator, discussionId } = props;
 
