@@ -21,6 +21,7 @@ interface Activity {
     lastName: string;
     picture: string;
     username: string;
+    id: string;
   }
   book: {
     title: string;
@@ -91,7 +92,7 @@ export default function CustomizedTimeline() {
                         )}
                   <div>
                     {data.type.toLowerCase() === 'wishlist' || data.type.toLowerCase() === 'owned' || data.type.toLowerCase() === 'review' ? (
-                      <img style={{ width: "200px" }} src={`${data.book.image}`} />
+                      <img style={{ width: '200px' }} src={`${data.book.image}`} />
                     ) : null}
                   </div>
                 </div>

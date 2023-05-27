@@ -26,7 +26,6 @@ function LendingLibraryButton(props: any) {
   const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     const { title } = book;
     const { isbn10 } = book.isbns[0];
-    console.log(book);
     const type = 'owned';
 
     event.stopPropagation();
