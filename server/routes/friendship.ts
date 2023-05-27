@@ -25,14 +25,13 @@ Friendship.post('/', async (req, res) => {
       where: { id: userId },
     });
     if (sender) {
-      const offline = !connectedUsers.includes(friendId.id);
+      // const offline = !connectedUsers.includes(friendId.id);
       const data = await prisma.notifications.create({
         data: {
           body: `${sender.firstName} is now following you!`,
           type: 'New Friend',
           recipient: friendId,
           createdAt: new Date(), // Update this line to set the userId field
-          offline,
           User: {
             connect: {
               id: sender.id,
@@ -49,9 +48,7 @@ Friendship.post('/', async (req, res) => {
           },
         },
       });
-      if (!offline) {
-        io.to(friendId).emit('new-notification', data);
-      }
+      io.to(friendId).emit('new-notification', data);
     }
   } catch (error) {
     console.error(error);
