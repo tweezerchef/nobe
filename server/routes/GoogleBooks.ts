@@ -54,7 +54,7 @@ async function getGoogleBooksDataISBN10(ISBN10: string) {
 
 GoogleBooks.get('/', async (req: Request, res: Response) => {
   const title: string | undefined = req.query.title as string | undefined;
-  // console.log(title);
+
   if (!title) {
     return res.status(400).send('Please provide a valid book title.');
   }
@@ -82,6 +82,7 @@ GoogleBooks.get('/', async (req: Request, res: Response) => {
 });
 
 GoogleBooks.get('/ISBN10', async (req: Request, res: Response) => {
+  console.log('yes', req.query.ISBN10);
   const ISBN10: string | undefined = req.query.ISBN10 as string | undefined;
   if (!ISBN10) {
     return res.status(400).send('Please provide a valid book ISBN10.');

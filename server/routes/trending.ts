@@ -28,7 +28,7 @@ Trending.post('/inventory', async (req, res) => {
     const googleTitle = req.body.title;
     const { id } = req.body;
     const { color } = req.body;
-    const { type } = req.body;
+    const { type, isbn10 } = req.body;
 
     let wishlist = false;
     let owned = false;
@@ -36,11 +36,12 @@ Trending.post('/inventory', async (req, res) => {
     if (color === 'danger' && type === 'wishlist') wishlist = true;
     if (color === 'danger' && type === 'owned') owned = true;
 
-
-    const response = await axios.get(`http://localhost:8080/google-books?title=${googleTitle}`);
+    const response = await axios.get(`http://localhost:8080/google-books/ISBN10?ISBN10=${isbn10}`);
     const {
       title, ISBN10, author, image, description,
     } = response.data;
+    console.log(response.data);
+    console.log(title, ISBN10, author, image, description);
 
     const newBook = await axios.post('http://localhost:8080/bookdata/title', {
       title,
@@ -51,20 +52,20 @@ Trending.post('/inventory', async (req, res) => {
 
     });
     const bookID = newBook.data.id;
-    const userBook = await prisma.userBooks.upsert({
-      where: {
-        userId_bookId: { userId: id, booksId: bookID },
-      },
-      update: type === 'wishlist' ? { wishlist } : { owned },
-      create: {
-        wishlist: type === 'wishlist',
-        owned: type !== 'wishlist',
-        rating: null,
-        review: null,
-        userId: id,
-        booksId: bookID,
-      },
-    });
+    // const userBook = await prisma.userBooks.upsert({
+    //   where: {
+    //     userId_bookId: { userId: id, booksId: bookID },
+    //   },
+    //   update: type === 'wishlist' ? { wishlist } : { owned },
+    //   create: {
+    //     wishlist: type === 'wishlist',
+    //     owned: type !== 'wishlist',
+    //     rating: null,
+    //     review: null,
+    //     userId: id,
+    //     booksId: bookID,
+    //   },
+    // });
     await prisma.activity.create({
       data: {
         userId: id,
@@ -72,7 +73,7 @@ Trending.post('/inventory', async (req, res) => {
         bookId: bookID,
       },
     });
-    res.send(userBook).status(200);
+    // res.send(userBook).status(200);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Something went wrong' });
