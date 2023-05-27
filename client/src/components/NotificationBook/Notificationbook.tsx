@@ -2,9 +2,10 @@
 /* eslint-disable no-console */
 /* eslint-disable max-len */
 /* eslint-disable react/function-component-definition */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 // import { io, Socket } from 'socket.io-client';
 import ReactiveButton from 'reactive-button';
+import { useNavigate } from 'react-router';
 import {
   SvgIcon, Button, Avatar, Box,
 } from '@material-ui/core';
@@ -16,7 +17,8 @@ import {
   NotificationsItemOption, NotificationsItemMessage, NotificationsItemTitle,
   NotificationsItemContent, NotificationsItem, Wrapper, Counter, NotificationsItemAvatar,
 } from './style';
-import TrashIcon from './trashcan';
+import { useChatContext } from '../../hooks/ChatContext';
+// import TrashIcon from './trashcan';
 
 interface BookIconProps {
   notifications: any;
@@ -37,8 +39,23 @@ const BookIcon: React.FC<BookIconProps> = ({
     marginLeft: '18px',
     // add any other styles you need here
   };
+  const { chatState, setChatState, setChatUser } = useChatContext();
+  const navigate = useNavigate();
 
-  // console.log(notifications, 31);
+  const handleNotificationClick = () => {
+    notifications.forEach((notification: { type: string; User: { id: string, picture: string, firstName: string }; }) => {
+      if (notification.type === 'Direct Message') {
+        const user = notification.User;
+        setChatState(!chatState);
+        setChatUser(user);
+      } else {
+        navigate(`/profile/${notification.User.id}`);
+      }
+      setOpen(false);
+    });
+  };
+
+  // console.log(notifications, 38);
   return (
     <div className="BookIcon" style={{ position: 'relative', marginTop: '4px' }}>
       { notificationCount === 0 ? null : (<Counter />)}
@@ -109,13 +126,12 @@ const BookIcon: React.FC<BookIconProps> = ({
                       <NotificationsItemAvatar>
                         <Avatar src={notification.User.picture} />
                       </NotificationsItemAvatar>
-                      <NotificationsItemContent>
+                      <NotificationsItemContent onClick={handleNotificationClick}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <div style={{ flexGrow: 1 }}>
                             <NotificationsItemTitle>{notification.type}</NotificationsItemTitle>
                             <NotificationsItemMessage className="NotificationsItemMessage">{notification.body}</NotificationsItemMessage>
                           </div>
-                          <TrashIcon />
                         </div>
                       </NotificationsItemContent>
                     </NotificationsItem>
