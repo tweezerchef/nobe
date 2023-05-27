@@ -157,6 +157,7 @@ function ExploreBooks({ ourBooks, nearMeBooks }: ExploreBooksProps) {
               <TextField
                 {...params}
                 id="Search"
+                label="Search for a book"
                 InputProps={{
                   ...params.InputProps,
                   startAdornment: (

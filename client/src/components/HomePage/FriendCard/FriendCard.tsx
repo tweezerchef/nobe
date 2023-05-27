@@ -26,10 +26,12 @@ function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
         flexGrow: 1,
         backgroundColor: '#dce9f39b',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
-        minHeight: '29vh',
-        maxHeight: '33vh',
+        minHeight: '28vh',
+        maxHeight: '250px',
         marginTop: '1.5vh',
         width: '20vw',
+        overflow: 'hidden',
+        flexDirection: 'column',
         alignContent: 'center',
         justifyContent: 'center',
         display: 'flex',
@@ -111,7 +113,7 @@ function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
               </Grid>
             </Grid>
             <Box sx={{
-              display: 'flex', justifyContent: 'center', alignItems: 'center', alignContent: 'center', marginTop: '1rem',
+              display: 'flex', justifyContent: 'center', alignItems: 'center', alignContent: 'center', marginTop: '.5rem', marginBottom: '1rem', flexGrow: 1,
             }}
             >
               <FollowButton userId={userId} friendIdArray={friendIdArray} friendId={user?.id} />

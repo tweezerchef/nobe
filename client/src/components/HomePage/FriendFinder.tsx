@@ -91,6 +91,7 @@ function FriendsComponent({ friendIdArray, userId }: FriendsComponentProps) {
               <TextField
                 {...params}
                 id="Search"
+                label="Search for a user"
                 InputProps={{
                   ...params.InputProps,
                   startAdornment: (
