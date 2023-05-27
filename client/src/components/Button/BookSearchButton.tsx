@@ -139,9 +139,9 @@ function BookSearchButton(props: any) {
           )}
         </Box>
         <DialogActions>
-        <Button type="submit">
-              Add Book
-            </Button>
+          <Button type="submit">
+            Add Book
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
