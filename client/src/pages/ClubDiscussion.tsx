@@ -22,6 +22,7 @@ import '../styles/clubDiscussionStyle.css';
 import DiscussionList from '../components/DiscussionForum/Discussions';
 import UserContext from '../hooks/Context';
 import Feed from './Feed';
+import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import { Discussion } from '../typings/types';
 
@@ -118,7 +119,7 @@ function ClubDiscussion() {
 
   return (
     <Box sx={{
-      flexGrow: 1, overflow: 'auto', height: '100vh',
+      flexGrow: 1, overflow: 'clip', height: '98vh',
     }}
     >
       <Grid
@@ -149,21 +150,23 @@ function ClubDiscussion() {
         <Grid
           xs={2.5}
           sx={{
-            position: 'sticky', top: '0px', height: '98vh', paddingBottom: '8vh',
+            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '8vh',
           }}
         >
           <Box sx={{
             width: '100%',
-            height: '20vh',
-            overflow: 'clip',
-            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
+            height: '23.48vh',
+            maxHeight: '200px',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            overflow: 'clip',
+            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
           }}
           >
-            <HomeUserDisplay />
+            <ProfileCard />
+            {/* <HomeUserDisplay /> */}
           </Box>
-          <Box sx={{ width: '100%', maxHeight: '70vh', overflow: 'auto' }}>
+          <Box sx={{ width: '100%', maxHeight: '80vh', overflow: 'auto' }}>
             <Feed />
           </Box>
         </Grid>
@@ -171,7 +174,8 @@ function ClubDiscussion() {
           <Box
             sx={{
               width: '100%',
-              height: '20vh',
+              height: '23.48vh',
+              maxHeight: '200px',
               backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',

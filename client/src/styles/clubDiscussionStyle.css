@@ -1,10 +1,10 @@
 .club-card {
     border: 1px solid #ffe4c385;
     border-radius: 12px;
-    max-width: 450px;
+    width: 40%;
     margin: 0 auto;
     transition: transform 0.2s ease-in-out;
-    background-color: #f2d4b1d1 !important
+    background-color: #f2d4b1d1 !important;
 }
 
 .club-card:hover {

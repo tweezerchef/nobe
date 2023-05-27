@@ -5,16 +5,16 @@
 
 .post {
     margin: 0px auto;
-    width: 600px;
+    width: 40%;
 }
 
 .brown-box {
     width: 100%;
     background: #f2d4b1d1;
-    font-size: 15px;
-    padding: 5px;
+    /* font-size: 15px; */
+    padding: 10px;
     margin: 0 auto;
-    border-radius: 6px;
+    border-radius: 12px;
 }
 
 .post-info-container {
@@ -24,8 +24,8 @@
 }
 
 .avatar {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 3rem;
+    height: 3rem;
     margin-right: 10px;
 }
 

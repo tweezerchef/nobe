@@ -122,7 +122,7 @@ function Clubs() {
           >
             <ProfileCard />
           </Box>
-          <Box sx={{ width: '100%', maxHeight: '70vh', overflow: 'auto' }}>
+          <Box sx={{ width: '100%', maxHeight: '80vh', overflow: 'auto' }}>
             <Feed />
           </Box>
         </Grid1>
@@ -153,7 +153,12 @@ function Clubs() {
                     Create a Club
                   </Button>
                 </Box>
-                <CreateClubs open={open} handleClose={handleClose} setClubs={setClubs} setOpen={setOpen} />
+                <CreateClubs
+                  open={open}
+                  handleClose={handleClose}
+                  setClubs={setClubs}
+                  setOpen={setOpen}
+                />
                 <CardContainer>
                   {clubs && clubs.length > 0 && clubs.map((club) => (
                     <StyledCard key={club.id} flexBasis="25%" variant="outlined">
