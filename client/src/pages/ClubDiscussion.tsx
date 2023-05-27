@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import AspectRatio from '@mui/joy/AspectRatio';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import { ClubHeader, ClubDescription } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
@@ -39,6 +40,7 @@ function ClubDiscussion() {
   const [newDiscussionTitle, setNewDiscussionTitle] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [clubImage, setClubImage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const searchParams = new URLSearchParams(location.search);
   const clubName = searchParams.get('name');
@@ -60,11 +62,19 @@ function ClubDiscussion() {
     return acc;
   }, false);
 
-  async function fetchClubs() {
-    const response = await axios.get(`/api/clubs/${clubId}`);
-    setClub(response.data);
-    setClubImage(response.data[0]?.image);
-  }
+  const fetchClubs = async () => {
+    setLoading(true);
+
+    try {
+      const response = await axios.get(`/api/clubs/${clubId}`);
+      setClub(response.data);
+      setClubImage(response.data[0]?.image);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     async function fetchDiscussion() {
@@ -183,14 +193,20 @@ function ClubDiscussion() {
               }}
               >
                 <AspectRatio ratio="1">
-                  <CardMedia
-                    component="img"
-                    alt={`Club image for ${clubName}`}
-                    image={clubImage}
-                    style={{
-                      objectFit: 'fill',
-                    }}
-                  />
+                  {loading ? (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      <CircularProgress />
+                    </Box>
+                  ) : (
+                    <CardMedia
+                      component="img"
+                      alt={`Club image for ${clubName}`}
+                      image={clubImage}
+                      style={{
+                        objectFit: 'fill',
+                      }}
+                    />
+                  )}
                 </AspectRatio>
               </Card>
             </div>

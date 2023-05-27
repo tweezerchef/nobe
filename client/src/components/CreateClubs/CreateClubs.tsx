@@ -3,16 +3,21 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import GifSearch from './GifSearch';
 import UserContext from '../../hooks/Context';
 import PhotoUpload from '../Button/ImageUploadButton';
 
-const createClubs = (props: any) => {
+function CreateClubs(props: any) {
   const [clubName, setClubName] = useState('');
   const [clubDescription, setClubDescription] = useState('');
   const [clubImage, setClubImage] = useState(null);
-  const { setClubs, handleClose } = props;
+  const [loading, setLoading] = useState(false);
+  const { setClubs, handleClose, open, setOpen } = props;
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -31,7 +36,7 @@ const createClubs = (props: any) => {
       alert('Club name already exists!');
       return;
     }
-
+    setLoading(true);
     // const body = {
     //   name: clubName,
     //   description: clubDescription,
@@ -47,18 +52,24 @@ const createClubs = (props: any) => {
       data.append('email', user?.email);
       data.append('image', clubImage);
       try {
-        axios.post('/api/create-club', data)
+        axios
+          .post('/api/create-club', data)
           .then((response) => {
             setClubs(response.data.clubs);
             setClubName('');
             setClubDescription('');
-            return response;
-          }).then((response) => {
+
             if (setUser && response?.data?.user && response?.data?.user !== undefined) {
               setUser(response?.data?.user);
             }
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+          .finally(() => {
+            setLoading(false);
+            handleClose();
           });
-        handleClose();
       } catch (error) {
         console.error(error);
       }
@@ -66,6 +77,8 @@ const createClubs = (props: any) => {
   };
 
   return (
+    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <DialogTitle>Create a Club</DialogTitle>
     <Box
       component="form"
       sx={{
@@ -103,11 +116,19 @@ const createClubs = (props: any) => {
       />
       {/* <GifSearch setClubImage={setClubImage} /> */}
       <PhotoUpload setClubImage={setClubImage} />
-      <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
-        Create Club
-      </Button>
     </Box>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={() => handleSubmit()}>
+            Create Club
+          </Button>
+        </DialogActions>
+      )}
+    </Dialog>
   );
-};
+}
 
-export default createClubs;
+export default CreateClubs;

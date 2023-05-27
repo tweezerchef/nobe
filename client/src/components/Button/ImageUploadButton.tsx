@@ -10,15 +10,9 @@ function PhotoUpload(props: any) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { setClubImage } = props;
 
-  //   const handleUpload = (e: any) => {
-  //     const photoFile = e.target.files[0];
-  //     console.log('photoFile', photoFile, 11);
-  //     console.log('event', e, 13);
-  //   };
   const imageSetter = () => {
     if (selectedImage) {
       setClubImage(selectedImage);
-      //  setClubImage(URL.createObjectURL(selectedImage));
     }
   };
 
@@ -33,21 +27,8 @@ function PhotoUpload(props: any) {
     }
   }, [selectedImage]);
 
-  // const handleUpload = () => {
-  //   if (imageUrl) {
-  //     const file = selectedImage;
-  //     const fileName = file?.name;
-  //     const params = {
-  //       Bucket: S3_BUCKET,
-  //       Key: fileName,
-  //       Body: file,
-  //       ACL: 'public-read',
-  //     };
-  //   }
-  // };
-
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" alignItems="center">
       <>
         <label htmlFor="select-image">
           <input
@@ -72,7 +53,7 @@ function PhotoUpload(props: any) {
         {imageUrl && selectedImage && (
         <Box mt={2} textAlign="center">
           <div>Image Preview:</div>
-          <img src={imageUrl} alt={selectedImage.name} height="100px" />
+          <img src={imageUrl} alt={selectedImage.name} height="200px" />
         </Box>
         )}
       </>
