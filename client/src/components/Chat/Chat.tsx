@@ -8,8 +8,13 @@ import io from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Box from '@mui/material/Box';
 import Divider from '@material-ui/core/Divider';
+import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import { IconButton } from '@mui/material';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -19,9 +24,12 @@ import SendIcon from '@material-ui/icons/Send';
 import moment from 'moment';
 import UserContext from '../../hooks/Context';
 import Emojis from '../Emojis/Emojis';
+// import ImageButton from './ImageButton';
+import { User } from '../../typings/types';
+
 // import { useChatContext } from '../../hooks/ChatContext';
 
-const useStyles = makeStyles({
+const chatStyles = makeStyles({
   table: {
     minWidth: 650,
   },
@@ -47,7 +55,7 @@ const useStyles = makeStyles({
 const ChatOverlay = styled.div`
   position: absolute;
   right: 0;
-  z-index: 1000;
+  z-index: 9999;
   width: 600px;
   height: '60vh';
 `;
@@ -83,7 +91,7 @@ type EmojiSelectHandler = (emoji: string) => void;
 const socketUrl = process.env.SOCKET_URL;
 
 function Chat({ chatUser }: { chatUser: any }) {
-  const classes = useStyles();
+  const chatClasses = chatStyles();
 
   const [message, setMessage] = useState<string>('');
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
@@ -94,11 +102,18 @@ function Chat({ chatUser }: { chatUser: any }) {
   const [user, setUser] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [newChatUser, setNewChatUser] = useState<any>(null);
+  const [userArray, setUserArray] = useState<User[]>([]);
+
+  // const [imageFile, setImageFile] = useState<File | null>(null);
 
   // const { chatUser } = useChatContext();
 
   const userContext = useContext(UserContext);
   const userId = userContext?.user.id;
+
+  // const handleImageUpload = (file: File) => {
+  //   setImageFile(file);
+  // };
 
   const updateUser = async () => {
     const updatedUser = await axios.get('/user/id/conversations', {
@@ -148,6 +163,12 @@ function Chat({ chatUser }: { chatUser: any }) {
     }
   };
 
+  const getUsersArray = () => {
+    axios.get('/user/allUsers').then((res) => {
+      setUserArray(res.data);
+    });
+  };
+
   const handleSend = () => {
     // event.preventDefault();
     if (message.trim() !== '') {
@@ -156,6 +177,25 @@ function Chat({ chatUser }: { chatUser: any }) {
     }
   };
 
+  // const handleSend = () => {
+  //   // event.preventDefault();
+  //   if (message.trim() === '') return;
+  //   const newMessage = {
+  //     text: message.trim(),
+  //     senderId: user.id,
+  //     timestamp: new Date().toISOString(),
+  //   };
+
+  //   if (imageFile) {
+  //     newMessage.image = imageFile;
+  //     setImageFile(null);
+  //   }
+
+  //   sendMessage(newMessage);
+  //   setMessage('');
+  //   setImageFile(null);
+  // };
+
   const handleSearch = async () => {
     try {
       const response = await axios.post('/conversations', {
@@ -163,16 +203,16 @@ function Chat({ chatUser }: { chatUser: any }) {
         otherUser: searchQuery,
       });
 
-      const newConversation: any = response.data;
+      const { existingConversation, conversation } = response.data;
 
-      if (newConversation) {
+      if (!existingConversation) {
         setConversations((prevConversations) => {
-          const updatedConversations = [...prevConversations, newConversation];
+          const updatedConversations = [...prevConversations, conversation];
           user.Conversations = updatedConversations;
           return updatedConversations;
         });
-        setCurrentConvo(newConversation);
-        setChatMessages(newConversation.messages);
+        setCurrentConvo(conversation);
+        setChatMessages(conversation.messages);
       }
     } catch (error) {
       console.error(error);
@@ -187,16 +227,19 @@ function Chat({ chatUser }: { chatUser: any }) {
         otherUser: newChatUser,
       });
 
-      const newConversation: any = response.data;
+      const { existingConversation, conversation } = response.data;
 
-      if (newConversation) {
+      if (existingConversation) {
+        setCurrentConvo(conversation);
+        setChatMessages(conversation.messages);
+      } else {
         setConversations((prevConversations) => {
-          const updatedConversations = [...prevConversations, newConversation];
+          const updatedConversations = [...prevConversations, conversation];
           user.Conversations = updatedConversations;
           return updatedConversations;
         });
-        setCurrentConvo(newConversation);
-        setChatMessages(newConversation.messages);
+        setCurrentConvo(conversation);
+        setChatMessages(conversation.messages);
       }
     } catch (error) {
       console.error(error);
@@ -268,6 +311,10 @@ function Chat({ chatUser }: { chatUser: any }) {
     }
   }, [currentConvo, conversations, user]);
 
+  useEffect(() => {
+    getUsersArray();
+  }, []);
+
   return (
     <Draggable handle=".header-message">
       <ChatOverlay>
@@ -284,10 +331,47 @@ function Chat({ chatUser }: { chatUser: any }) {
             </Typography>
           </Grid>
         </Grid>
-        <Grid container component={Paper} className={classes.chatSection} style={{ background: '#fff', borderRadius: '0px 0px 12px 12px' }}>
-          <Grid item xs={3} className={classes.borderRight500}>
+        <Grid container component={Paper} className={chatClasses.chatSection} style={{ background: '#fff', borderRadius: '0px 0px 12px 12px' }}>
+          <Grid item xs={4} className={chatClasses.borderRight500}>
             <Grid item xs={12} style={{ padding: '10px' }}>
-              <TextField value={searchQuery} onKeyDown={(event) => (event.key === 'Enter' ? handleSearch() : null)} onChange={(event) => setSearchQuery(event.target.value)} id="outlined-basic-email" label="Search Users" variant="outlined" fullWidth />
+              <Autocomplete
+                id="combo-box-demo"
+                options={userArray}
+                getOptionLabel={(option) => (option.username ? `${option.firstName} ${option.username}` : option.firstName)}
+                fullWidth
+                disablePortal
+                onChange={(event, newValue) => {
+                  if (newValue) {
+                    setSearchQuery(newValue.firstName);
+                  }
+                }}
+                onKeyPress={(event) => {
+                  if (event.key === 'Enter') {
+                    handleSearch();
+                    event.preventDefault();
+                  }
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    // eslint-disable-next-line react/jsx-props-no-spreading
+                    {...params}
+                    id="Search"
+                    label="Search Users"
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton type="submit" onClick={handleSearch}>
+                            <SearchOutlinedIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                )}
+              />
             </Grid>
             <Divider />
             <div style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease', paddingTop: '10px' }}>
@@ -318,7 +402,7 @@ function Chat({ chatUser }: { chatUser: any }) {
               </List>
             </div>
           </Grid>
-          <Grid item xs={9} direction="column" style={{ height: '100%' }}>
+          <Grid item xs={8} direction="column" style={{ height: '100%' }}>
             {!currentConvo && (
               <div style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%',
@@ -350,7 +434,7 @@ function Chat({ chatUser }: { chatUser: any }) {
                 })()}
                 <Divider />
                 <List
-                  className={classes.messageArea}
+                  className={chatClasses.messageArea}
                   style={{
                     flexGrow: 1,
                     overflowY: 'auto',
@@ -417,11 +501,14 @@ function Chat({ chatUser }: { chatUser: any }) {
                       id="outlined-basic-email"
                       label="Send message..."
                       variant="outlined"
-                      className={classes.textField}
+                      className={chatClasses.textField}
                       style={{ padding: '0px 5px 0px 0px' }}
                       InputProps={{
                         endAdornment: (
-                          <Emojis onSelect={handleEmojiSelect} />
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Emojis onSelect={handleEmojiSelect} />
+                            {/* <ImageButton onImageUpload={handleImageUpload} /> */}
+                          </Box>
                         ),
                       }}
                     />

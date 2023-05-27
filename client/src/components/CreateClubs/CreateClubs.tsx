@@ -17,7 +17,9 @@ function CreateClubs(props: any) {
   const [clubDescription, setClubDescription] = useState('');
   const [clubImage, setClubImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { setClubs, handleClose, open, setOpen } = props;
+  const {
+    setClubs, handleClose, open, setOpen,
+  } = props;
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -78,45 +80,45 @@ function CreateClubs(props: any) {
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-    <DialogTitle>Create a Club</DialogTitle>
-    <Box
-      component="form"
-      sx={{
+      <DialogTitle>Create a Club</DialogTitle>
+      <Box
+        component="form"
+        sx={{
         // maxWidth: '100%',
-        margin: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        '& > :not(style)': { m: 1 },
-        justifyContent: 'center',
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField
-        autoFocus
-        id="club-name"
-        label="Club Name"
-        variant="outlined"
-        type="string"
-        fullWidth
-        value={clubName}
-        onChange={(e) => setClubName(e.target.value)}
-        required
-      />
-      <TextField
-        id="club-description"
-        label="Club Description"
-        variant="outlined"
-        type="string"
-        fullWidth
-        value={clubDescription}
-        onChange={(e) => setClubDescription(e.target.value)}
-        required
-      />
-      {/* <GifSearch setClubImage={setClubImage} /> */}
-      <PhotoUpload setClubImage={setClubImage} />
-    </Box>
+          margin: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          '& > :not(style)': { m: 1 },
+          justifyContent: 'center',
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          autoFocus
+          id="club-name"
+          label="Club Name"
+          variant="outlined"
+          type="string"
+          fullWidth
+          value={clubName}
+          onChange={(e) => setClubName(e.target.value)}
+          required
+        />
+        <TextField
+          id="club-description"
+          label="Club Description"
+          variant="outlined"
+          type="string"
+          fullWidth
+          value={clubDescription}
+          onChange={(e) => setClubDescription(e.target.value)}
+          required
+        />
+        {/* <GifSearch setClubImage={setClubImage} /> */}
+        <PhotoUpload setClubImage={setClubImage} />
+      </Box>
       {loading ? (
         <CircularProgress />
       ) : (

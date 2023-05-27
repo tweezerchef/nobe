@@ -101,48 +101,46 @@ function BookSearchButton(props: any) {
       )}
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>Add a Book</DialogTitle>
-        <Box
-          component="form"
-          sx={{
+        <form onSubmit={handleSubmit}>
+          <div style={{
             margin: '20px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            '& > :not(style)': { m: 1 },
-            justifyContent: 'center',
           }}
-          noValidate
-          autoComplete="off"
-          onSubmit={handleSubmit}
-        >
-          <Autocomplete
-            id="book-title"
-            fullWidth
-            options={ourBooks}
-            getOptionLabel={(option) => option.title}
-            value={selectedBook}
-            onChange={(event, newValue) => setSelectedBook(newValue)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Book Title"
-                variant="outlined"
-                required
-              />
+          >
+            <Autocomplete
+              id="book-title"
+              fullWidth
+              options={ourBooks}
+              getOptionLabel={(option) => option.title}
+              value={selectedBook}
+              onChange={(event, newValue) => setSelectedBook(newValue)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Book Title"
+                  variant="outlined"
+                  required
+                />
+              )}
+            />
+            {selectedBook && (
+            <>
+              <div>Book Cover:</div>
+              <img alt="" src={selectedBook?.image} />
+            </>
             )}
-          />
-          {selectedBook && (
-          <>
-            <div>Book Cover:</div>
-            <img alt="" src={selectedBook?.image} />
-          </>
-          )}
-        </Box>
-        <DialogActions>
-        <Button type="submit">
+          </div>
+          <DialogActions>
+            <Button onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button type="submit">
               Add Book
             </Button>
-        </DialogActions>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );
