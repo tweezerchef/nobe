@@ -11,16 +11,13 @@ import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
 import Button from '@mui/material/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import Tooltip from '@material-ui/core/Tooltip';
 import axios from 'axios';
 import Stack from '@mui/material/Stack';
-import { set } from 'react-hook-form';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserReview from '../UserStarRating/UserReview';
 import Reviews from './Reviews';
 import LendingLibraryButtonBigBook from '../Button/LendingLibraryButtonBigBook';
 import WishListButtonBigBook from '../Button/WishListButtonBigBook';
-import UserBooks from '../../../../server/routes/userbooks';
 
 const useStyles = makeStyles({
   card: {
@@ -66,8 +63,6 @@ function BigBook(props: any) {
   const getBook = () => {
     axios.get(`/bookdata/userbooks?ISBN10=${ISBN10}`)
       .then((response) => {
-        console.log('response.data', response.data.UserBooks);
-
         setUserBooks(response.data.UserBooks);
       })
       .catch((error) => {
@@ -329,20 +324,3 @@ function BigBook(props: any) {
 }
 
 export default BigBook;
-//  {/* {description?.length > 150 ? (
-//             <>
-//               {`${description?.slice(0, 150)}... `}
-//               <Typography
-//                 component="span"
-//                 level="body1"
-//                 color="primary"
-//                 style={{ textDecoration: 'underline', cursor: 'pointer' }}
-//                 onClick={handleExpandDescription}
-//               >
-//                 See More
-//               </Typography>
-//             </>
-//           ) : (
-//             description
-//           )} */}
-// {truncatedTitle(book.title, 25)}
