@@ -8,11 +8,9 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
-import Diversity2Icon from '@mui/icons-material/Diversity2';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import styled from 'styled-components';
 import Slide from '@mui/material/Slide';
 import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
@@ -58,6 +56,7 @@ function UserProfile() {
     axios.get(`/user/id?id=${userId}`)
       .then((response) => {
         setUser(response.data);
+        console.log('response data', response.data);
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         response.data.username ? setUserName(response.data.username)
           : setUserName(response.data.firstName);
@@ -77,6 +76,11 @@ function UserProfile() {
     getUser();
     getNearMeBooks();
   }, [userId]);
+  // useEffect(() => {
+  //   console.log(userId);
+  //   getUser();
+  //   getNearMeBooks();
+  // }, []);
 
   const colWidth = {
     xs: 12, sm: 6, md: 4, lg: 3,
@@ -188,7 +192,13 @@ function UserProfile() {
               </StyledDivider>
               <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '200px', maxHeight: '32vh' }}>
                 { user
-                && <UserProfileLendingLibrary nearMeBooks={nearMeBooks} user={user} />}
+                && (
+                <UserProfileLendingLibrary
+                  nearMeBooks={nearMeBooks}
+                  user={user}
+                  key={user.id}
+                />
+                )}
               </Box>
               <StyledDivider textAlign="left">
                 <FlameStyledChip size="lg">
@@ -198,7 +208,7 @@ function UserProfile() {
               </StyledDivider>
               <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '200px', maxHeight: '32vh' }}>
                 { user
-                && <UserProfileFavoriteBooks nearMeBooks={nearMeBooks} user={user} />}
+                && <UserProfileFavoriteBooks nearMeBooks={nearMeBooks} user={user} key={user.id} />}
               </Box>
               <StyledDivider textAlign="center">
                 <Chip size="lg">
@@ -206,10 +216,10 @@ function UserProfile() {
                   's Feed
                 </Chip>
               </StyledDivider>
-              <Box overflow="auto" alignContent="center" alignItems="center" sx={{ width: '80%', maxHeight: '50vh' }}>
+              <Box overflow="hide" alignContent="center" alignItems="center" sx={{ width: '95%', height: '500px' }}>
 
                 {user
-                    && <UserProfileFeed user={user} />}
+                    && <UserProfileFeed user={user} key={user.id} />}
               </Box>
               <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px', width: '80%' }} />
             </Stack>

@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/joy/Stack';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { IconButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
 import { padding } from '@mui/system';
 import { Place } from '../../typings/types';
