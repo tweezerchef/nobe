@@ -17,8 +17,9 @@ import Feed from './Feed';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import BookSearchButton from '../components/Button/BookSearchButton';
 import UserContext from '../hooks/Context';
-import { ClubHeader, StyledTextarea } from './style';
+import { ClubHeader, StyledTextarea, BookTitle } from './style';
 import '../styles/discussionPostsStyles.css';
+// import BookSearchButtonNew from '../components/Button/BookSearchButtonNew';
 
 interface Post {
   id: string;
@@ -51,6 +52,7 @@ function DiscussionPosts() {
   const [clubId, setClubId] = useState('');
   const [isDiscussionCreator, setIsDiscussionCreator] = useState(false);
   const [discussionImage, setDiscussionImage] = useState('');
+  const [bookTitle, setBookTitle] = useState('');
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -72,6 +74,7 @@ function DiscussionPosts() {
     const response = await axios.get(`/api/clubs/discussions/${id}`);
     // console.log(response);
     setDiscussionImage(response.data.image);
+    setBookTitle(response.data.bookTitle);
   }
 
   useEffect(() => {
@@ -222,7 +225,7 @@ function DiscussionPosts() {
               display: 'flex', justifyContent: 'center', alignItems: 'center',
             }}
             >
-              {discussionImage && (
+              {discussionImage && bookTitle && (
               <Card sx={{
                 flexBasis: '33%',
                 borderRadius: '12px',
@@ -240,6 +243,7 @@ function DiscussionPosts() {
                     }}
                   />
                 </AspectRatio>
+                {/* <BookTitle>{bookTitle}</BookTitle> */}
                 {/* <img
                   alt=""
                   title="ay"
@@ -250,6 +254,13 @@ function DiscussionPosts() {
               </Card>
               )}
             </div>
+            {/* <BookSearchButtonNew
+              isDiscussionCreator={isDiscussionCreator}
+              discussionId={id}
+              discussionImage={discussionImage}
+              setDiscussionImage={setDiscussionImage}
+              clubId={clubId}
+            /> */}
             <BookSearchButton
               isDiscussionCreator={isDiscussionCreator}
               discussionId={id}
