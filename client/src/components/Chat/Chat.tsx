@@ -24,7 +24,7 @@ import SendIcon from '@material-ui/icons/Send';
 import moment from 'moment';
 import UserContext from '../../hooks/Context';
 import Emojis from '../Emojis/Emojis';
-import ImageButton from './ImageButton';
+// import ImageButton from './ImageButton';
 import { User } from '../../typings/types';
 
 // import { useChatContext } from '../../hooks/ChatContext';
@@ -176,7 +176,6 @@ function Chat({ chatUser }: { chatUser: any }) {
       setMessage('');
     }
   };
-  console.log(conversations);
 
   // const handleSend = () => {
   //   // event.preventDefault();
@@ -204,16 +203,16 @@ function Chat({ chatUser }: { chatUser: any }) {
         otherUser: searchQuery,
       });
 
-      const newConversation: any = response.data;
+      const { existingConversation, conversation } = response.data;
 
-      if (newConversation) {
+      if (!existingConversation) {
         setConversations((prevConversations) => {
-          const updatedConversations = [...prevConversations, newConversation];
+          const updatedConversations = [...prevConversations, conversation];
           user.Conversations = updatedConversations;
           return updatedConversations;
         });
-        setCurrentConvo(newConversation);
-        setChatMessages(newConversation.messages);
+        setCurrentConvo(conversation);
+        setChatMessages(conversation.messages);
       }
     } catch (error) {
       console.error(error);
@@ -228,32 +227,19 @@ function Chat({ chatUser }: { chatUser: any }) {
         otherUser: newChatUser,
       });
 
-      const newConversation: any = response.data;
+      const { existingConversation, conversation } = response.data;
 
-      if (newConversation) {
+      if (existingConversation) {
+        setCurrentConvo(conversation);
+        setChatMessages(conversation.messages);
+      } else {
         setConversations((prevConversations) => {
-          const updatedConversations = [...prevConversations, newConversation];
+          const updatedConversations = [...prevConversations, conversation];
           user.Conversations = updatedConversations;
           return updatedConversations;
         });
-        setCurrentConvo(newConversation);
-        setChatMessages(newConversation.messages);
-      } else {
-        console.log('hi');
-        const existingConversation = conversations.find((conversation) => (
-          conversation.members.some((member) => (
-            member.id === chatUser.id
-          ))
-        ));
-        console.log(conversations, 'exist');
-
-        if (existingConversation) {
-          setCurrentConvo(existingConversation);
-          setChatMessages(existingConversation.messages);
-        } else {
-          setCurrentConvo(null);
-          setChatMessages([]);
-        }
+        setCurrentConvo(conversation);
+        setChatMessages(conversation.messages);
       }
     } catch (error) {
       console.error(error);
@@ -362,11 +348,12 @@ function Chat({ chatUser }: { chatUser: any }) {
                 onKeyPress={(event) => {
                   if (event.key === 'Enter') {
                     handleSearch();
-                    event.preventDefault(); // Prevent form submission
+                    event.preventDefault();
                   }
                 }}
                 renderInput={(params) => (
                   <TextField
+                    // eslint-disable-next-line react/jsx-props-no-spreading
                     {...params}
                     id="Search"
                     label="Search Users"

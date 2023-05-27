@@ -34,7 +34,7 @@ Conversations.post('/', async (req: AuthenticatedRequest, res: Response) => {
     });
 
     if (existingConversation) {
-      res.json(null);
+      res.json({ existingConversation: true, conversation: existingConversation });
       return;
     }
 
@@ -54,7 +54,7 @@ Conversations.post('/', async (req: AuthenticatedRequest, res: Response) => {
       },
     });
 
-    res.json(newConversation);
+    res.json({ existingConversation: false, conversation: newConversation });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Could not create conversation' });
