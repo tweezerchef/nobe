@@ -84,7 +84,6 @@ function CreateClubs(props: any) {
       <Box
         component="form"
         sx={{
-        // maxWidth: '100%',
           margin: '20px',
           display: 'flex',
           flexDirection: 'column',
@@ -120,13 +119,13 @@ function CreateClubs(props: any) {
         <PhotoUpload setClubImage={setClubImage} />
       </Box>
       {loading ? (
-        <CircularProgress />
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
+          <CircularProgress />
+        </Box>
       ) : (
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={() => handleSubmit()}>
-            Create Club
-          </Button>
+          <Button onClick={() => handleSubmit()}>Create Club</Button>
         </DialogActions>
       )}
     </Dialog>
