@@ -56,7 +56,6 @@ function UserProfile() {
     axios.get(`/user/id?id=${userId}`)
       .then((response) => {
         setUser(response.data);
-        console.log('response data', response.data);
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         response.data.username ? setUserName(response.data.username)
           : setUserName(response.data.firstName);

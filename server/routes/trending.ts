@@ -40,8 +40,6 @@ Trending.post('/inventory', async (req, res) => {
     const {
       title, ISBN10, author, image, description,
     } = response.data;
-    console.log(response.data);
-    console.log(title, ISBN10, author, image, description);
 
     const newBook = await axios.post('http://localhost:8080/bookdata/title', {
       title,
@@ -52,20 +50,20 @@ Trending.post('/inventory', async (req, res) => {
 
     });
     const bookID = newBook.data.id;
-    // const userBook = await prisma.userBooks.upsert({
-    //   where: {
-    //     userId_bookId: { userId: id, booksId: bookID },
-    //   },
-    //   update: type === 'wishlist' ? { wishlist } : { owned },
-    //   create: {
-    //     wishlist: type === 'wishlist',
-    //     owned: type !== 'wishlist',
-    //     rating: null,
-    //     review: null,
-    //     userId: id,
-    //     booksId: bookID,
-    //   },
-    // });
+    const userBook = await prisma.userBooks.upsert({
+      where: {
+        userId_bookId: { userId: id, booksId: bookID },
+      },
+      update: type === 'wishlist' ? { wishlist } : { owned },
+      create: {
+        wishlist: type === 'wishlist',
+        owned: type !== 'wishlist',
+        rating: null,
+        review: null,
+        userId: id,
+        booksId: bookID,
+      },
+    });
     await prisma.activity.create({
       data: {
         userId: id,
