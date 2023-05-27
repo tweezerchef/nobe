@@ -1,15 +1,14 @@
 import styled from 'styled-components';
 
-const Counter = styled.div`
-width: 10px;
-height: 10px;
-background-color: red;
-border-radius 50%;
-padding: 5px;
-font-size: 12px;
-display: flex;
-align-items: center;
-justify-content: center;
+const ImgButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.3s;
 `;
 
-export default Counter;
+export default ImgButton;
