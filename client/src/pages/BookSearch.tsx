@@ -54,7 +54,6 @@ function BookPage() {
         </div>
       </Box>
     </>
-
   );
 }
 

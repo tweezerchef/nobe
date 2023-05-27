@@ -47,8 +47,8 @@ Trending.post('/inventory', async (req, res) => {
       author,
       image,
       description,
-
     });
+
     const bookID = newBook.data.id;
     const userBook = await prisma.userBooks.upsert({
       where: {
