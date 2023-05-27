@@ -26,7 +26,6 @@ interface ReviewsProps {
 }
 
 function Reviews({ UserBooks }: ReviewsProps) {
-  console.log('UserBooks', UserBooks);
   const filteredUserBooks = UserBooks.filter(
     (userBook) => userBook.review || userBook.User.rating,
   );

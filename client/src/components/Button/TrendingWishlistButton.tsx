@@ -23,6 +23,7 @@ function WishListButton(props: any) {
 
   const addToWishlist = async (event: React.MouseEvent<HTMLButtonElement>) => {
     const { title } = book;
+    const { isbn10 } = book.isbns[0];
     const type = 'wishlist';
 
     event.stopPropagation();
@@ -31,6 +32,7 @@ function WishListButton(props: any) {
       id,
       color,
       type,
+      isbn10,
     })
       .then((response) => {
         // Handle the response data

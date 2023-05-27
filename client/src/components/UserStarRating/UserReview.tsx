@@ -28,14 +28,10 @@ const UserReview: React.FC<UserReviewProps> = ({
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log('review', review);
-    console.log('book', book);
-    console.log('id', id);
     event.preventDefault();
     axios.post('/review/review', { review, book, id })
       .then((res) => {
       // Ensure that res.data is indeed a UserBook
-        console.log('res.data', res.data);
         setUserBooks((prevUserBooks: any[]) => {
           if (prevUserBooks.length === 0) {
             return [res.data];

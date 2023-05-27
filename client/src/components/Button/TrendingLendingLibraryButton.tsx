@@ -25,6 +25,7 @@ function LendingLibraryButton(props: any) {
 
   const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     const { title } = book;
+    const { isbn10 } = book.isbns[0];
     const type = 'owned';
 
     event.stopPropagation();
@@ -33,6 +34,7 @@ function LendingLibraryButton(props: any) {
       id,
       color,
       type,
+      isbn10,
     }).then((data) => console.log(data.data));
     if (color === 'success') {
       setColor('danger' as CustomColor);
