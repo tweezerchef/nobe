@@ -61,8 +61,6 @@ GoogleBooks.get('/', async (req: Request, res: Response) => {
   try {
     const bookData = await getGoogleBooksData(title);
     const booksArray = [];
-    console.log(bookData);
-
     // eslint-disable-next-line no-restricted-syntax
     for (const book of bookData.items) {
       const transformedData = {
@@ -76,7 +74,6 @@ GoogleBooks.get('/', async (req: Request, res: Response) => {
 
       booksArray.push(transformedData);
     }
-    console.log(booksArray);
     res.status(200).send(booksArray);
   } catch (err) {
     console.error(err);

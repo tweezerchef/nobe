@@ -246,8 +246,6 @@ model Discussions {
   thumbsUp         Int                @default(0)
   createdAt        DateTime           @default(now())
   image            String?
-  bookTitle        String?
-  timeline         String?
   books            Books?             @relation(fields: [bookId], references: [id])
   clubs            Clubs              @relation(fields: [clubsId], references: [id])
   creator          User               @relation(fields: [userId], references: [id])

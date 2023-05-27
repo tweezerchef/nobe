@@ -69,7 +69,6 @@ UserBooks.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
 UserBooks.get('/owned/:id', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { id } = req.params;
-    console.log('id', id);
     const userBooks = await prisma.userBooks.findMany({
       where: {
         userId: id,
@@ -112,7 +111,6 @@ UserBooks.get('/owned/:id', async (req: AuthenticatedRequest, res: Response) => 
         User: true,
       },
     });
-    console.log('userBooks', userBooks);
     // const books = userBooks.map((userBook: UserBooks) => userBook.books);
     res.send(userBooks);
   } catch (err) {
@@ -167,6 +165,61 @@ UserBooks.get('/wishlist/:id', async (req: AuthenticatedRequest, res: Response) 
     });
     // const books = userBooks.map((userBook: UserBooks) => userBook.books);
     res.send(userBooks);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+UserBooks.get('/favorites/:id', async (req: AuthenticatedRequest, res: Response) => { // get all books that have been rated 4 or 5 stars
+  try {
+    const { id } = req.params;
+    const userBooks = await prisma.userBooks.findMany({
+      where: {
+        userId: id,
+        rating: {
+          gte: 4,
+        },
+      },
+      select: {
+        id: true,
+        wishlist: true,
+        owned: true,
+        booksId: true,
+        userId: true,
+        rating: true,
+        review: true,
+        LendingTable: true,
+        Books: {
+          select: {
+            id: true,
+            title: true,
+            author: true,
+            ISBN10: true,
+            description: true,
+            image: true,
+            UserBooks: {
+              select: {
+                id: true,
+                wishlist: true,
+                owned: true,
+                booksId: true,
+                userId: true,
+                rating: true,
+                review: true,
+                LendingTable: true,
+                User: true,
+              },
+            },
+            Discussions: true,
+            Activity: true,
+          },
+        },
+        User: true,
+      },
+    });
+    const books = userBooks.map((userBook: typeof UserBooks) => userBook.Books);
+    res.send(books);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Something went wrong' });
