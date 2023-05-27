@@ -166,7 +166,7 @@ function ClubDiscussion() {
             <ProfileCard />
             {/* <HomeUserDisplay /> */}
           </Box>
-          <Box sx={{ width: '100%', maxHeight: '70vh', overflow: 'auto' }}>
+          <Box sx={{ width: '100%', maxHeight: '80vh', overflow: 'auto' }}>
             <Feed />
           </Box>
         </Grid>
