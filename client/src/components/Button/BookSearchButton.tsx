@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
-import Button from '@mui/material/Button';
+import Button from '@material-ui/core/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
 import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
 import UserContext from '../../hooks/Context';
@@ -134,13 +135,14 @@ function BookSearchButton(props: any) {
           <>
             <div>Book Cover:</div>
             <img alt="" src={selectedBook?.image} />
-            <Button variant="contained" color="primary" type="submit">
-              Add Book
-            </Button>
-
           </>
           )}
         </Box>
+        <DialogActions>
+        <Button type="submit">
+              Add Book
+            </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );
