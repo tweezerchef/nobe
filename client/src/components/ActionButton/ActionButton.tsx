@@ -82,10 +82,10 @@ const NotificationIcon: React.FC = () => {
     }
   }, [id, socketUrl]);
 
-  return (
-    // eslint-disable-next-line max-len
-    <BookIcon notificationCount={notificationCount} notifications={notifications} markAsRead={markAsRead} buttonState={buttonState} />
+  // return (
+  //   // eslint-disable-next-line max-len
+  //   <BookIcon notificationCount={notificationCount} notifications={notifications} markAsRead={markAsRead} buttonState={buttonState} />
 
-  );
+  // );
 };
 export default NotificationIcon;

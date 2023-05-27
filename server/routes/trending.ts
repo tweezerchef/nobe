@@ -36,7 +36,6 @@ Trending.post('/inventory', async (req, res) => {
     if (color === 'danger' && type === 'wishlist') wishlist = true;
     if (color === 'danger' && type === 'owned') owned = true;
 
-
     const response = await axios.get(`http://localhost:8080/google-books?title=${googleTitle}`);
     const {
       title, ISBN10, author, image, description,
@@ -48,8 +47,8 @@ Trending.post('/inventory', async (req, res) => {
       author,
       image,
       description,
-
     });
+
     const bookID = newBook.data.id;
     const userBook = await prisma.userBooks.upsert({
       where: {
