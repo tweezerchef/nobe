@@ -23,7 +23,7 @@ function ProfileCard() {
       sx={{
         boxShadow: 'none',
         flexGrow: 1,
-        backgroundColor: '#dce9f3',
+        backgroundColor: 'transparent',
         height: '100%',
         width: '100%',
         alignContent: 'center',
@@ -56,11 +56,11 @@ function ProfileCard() {
         </Grid>
         <Divider sx={{ borderBottomWidth: 6, bgcolor: 'ThreeDDarkShadow' }} />
         <Box sx={{
-          display: 'flex', flexWrap: 'wrap', alignItems: 'center', alignContent: 'center', paddingLeft: '2rem', width: '100%', marginTop: '1rem', overflowBottom: 'clip',
+          display: 'flex', flexWrap: 'wrap', alignItems: 'center', alignContent: 'center', paddingLeft: '2rem', width: '100%', marginTop: '2rem', overflowBottom: 'clip',
         }}
         >
           <Grid>
-            <Grid container spacing={2} alignContent="center" justifyContent="center" alignItems="center">
+            <Grid container spacing={3} alignContent="center" justifyContent="center" alignItems="center">
               <Grid>
                 <Typography variant="body1" align="left" sx={{ margin: '.2rem' }}>
                   Friends:

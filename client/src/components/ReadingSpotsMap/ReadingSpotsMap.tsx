@@ -29,9 +29,6 @@ interface ReadingSpotsProps {
 
 function ReadingSpotsMap(props: ReadingSpotsProps) {
   const { linkPlaceId } = props;
-  console.log(props);
-  console.log('poop');
-  console.log(linkPlaceId);
   const [latlng, setLatLng] = useState<LatLngLiteral>();
   const [location, setLocation] = useState<string>('');
   const [showInfoWindow, setShowInfoWindow] = useState(false);

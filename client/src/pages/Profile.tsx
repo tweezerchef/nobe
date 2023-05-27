@@ -94,7 +94,7 @@ function Profile() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-console, no-sequences
-    axios.get(`/bookdata/title/searchOne?title=${title}`).then((response) => { setBooks([response.data]), console.log(response.data); });
+    axios.get(`/bookdata/title/searchOne?title=${title}`).then((response) => { setBooks([response.data]); });
   };
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);

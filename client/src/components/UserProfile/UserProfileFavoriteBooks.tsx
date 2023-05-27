@@ -1,30 +1,28 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import Box from '@mui/material/Box';
 import Stack from '@mui/joy/Stack';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import UserContext from '../../hooks/Context';
-import { UserBook } from '../../typings/types';
-import NearMeUserBook from './NearMeUserBook/NearMeUserBook';
+import { UserBook, User } from '../../typings/types';
+import Book from '../Book/HomeBook';
 
-function HomeNearMe() {
-  const userContext = useContext(UserContext);
-  const user = userContext?.user;
-  const id = user?.id;
-  const lat = user?.latitude || 29.9584;
-  const lon = user?.longitude || -90.0651;
-  const radius = user?.radius || 10;
+interface UserProfileFavoriteBooksProps {
+  nearMeBooks: string[];
+  user: User
+}
 
+function UserProfileFavoriteBooks({ nearMeBooks, user }: UserProfileFavoriteBooksProps) {
+  const [books, setBooks] = useState<Book[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
-  const [userBooks, setUserBooks] = useState([]);
   const [showBigBook, setShowBigBook] = useState(false);
   const [bigBookPosition, setBigBookPosition] = useState({ top: 0, left: 0 });
   const [selectedBook, setSelectedBook] = useState(null);
-  const userBooksPerPage = 2;
+  const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
+  const id = user?.id;
 
   const handleBookClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, book: any) => {
     const rect = (e.target as Element).getBoundingClientRect();
@@ -60,22 +58,7 @@ function HomeNearMe() {
     setShowBigBook(false);
   };
 
-  const getBooks = () => {
-    axios.get('/location/locations/home', {
-      params: {
-        lat,
-        lon,
-        radius,
-        id,
-      },
-    })
-      .then((response) => {
-        setUserBooks(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  const booksPerPage = 4;
 
   const handleNextPage = () => {
     setSlideDirection('left');
@@ -87,34 +70,43 @@ function HomeNearMe() {
     setCurrentPage((prevPage) => prevPage - 1);
   };
 
+  const getUserBooks = async () => {
+    const favBooks = await axios.get(`/user-books/favorites/${id}`);
+    setBooks(favBooks.data);
+  };
+
   useEffect(() => {
-    getBooks();
+    getUserBooks();
   }, []);
+
   return (
     <Box
       sx={{
+
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '200px',
+        height: '30vh',
+        marginTop: '1.5vh',
         paddingBottom: '0',
-        marginTop: '4px',
       }}
     >
       <IconButton
         onClick={handlePrevPage}
         sx={{
-          margin: 5, padding: 0, alignSelf: 'center', justifySelf: 'start',
+          marginRight: 10, padding: 0, alignSelf: 'center', justifySelf: 'start',
+
         }}
         disabled={currentPage === 0}
       >
         <NavigateBeforeIcon />
       </IconButton>
+
       <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
-        {userBooks.map((userBook, index) => (
+        {books.map((book, index) => (
           <Box
             sx={{
               position: 'absolute',
@@ -133,21 +125,22 @@ function HomeNearMe() {
                 spacing={2}
                 direction="row"
                 maxWidth="100%"
-                maxHeight="95%"
+                maxHeight="100%"
                 alignContent="center"
                 justifyContent="center"
               >
-                {userBooks
-                  .slice(index * userBooksPerPage, index * userBooksPerPage + userBooksPerPage)
+                {books
+                  .slice(index * booksPerPage, index * booksPerPage + booksPerPage)
                   // eslint-disable-next-line @typescript-eslint/no-shadow
-                  .map((userBook: UserBook) => (
-                    <Box key={userBook.id}>
-                      <NearMeUserBook
-                        userBook={userBook}
+                  .map((book: Book) => (
+                    <Box key={book.title}>
+                      <Book
+                        book={book}
                         onClick={handleBookClick}
                         onClose={handleBigBookClose}
-                        showBigBook={showBigBook && userBook.Books === selectedBook}
+                        showBigBook={showBigBook && book === selectedBook}
                         bigBookPosition={bigBookPosition}
+                        nearMeBooks={nearMeBooks}
                       />
                     </Box>
                   ))}
@@ -160,13 +153,15 @@ function HomeNearMe() {
       <IconButton
         onClick={handleNextPage}
         sx={{
-          margin: 5, padding: 0, alignSelf: 'center', justifySelf: 'end',
+          marginLeft: 10, marginRight: 1, padding: 0, alignSelf: 'center', justifySelf: 'end',
         }}
-        disabled={currentPage >= Math.ceil((userBooks.length || 0) / userBooksPerPage) - 1}
+        disabled={currentPage >= Math.ceil((books.length || 0) / booksPerPage) - 1}
       >
         <NavigateNextIcon />
       </IconButton>
     </Box>
+
   );
 }
-export default HomeNearMe;
+
+export default UserProfileFavoriteBooks;

@@ -118,9 +118,12 @@ function HomeNew() {
         >
           <Box sx={{
             width: '100%',
-            height: '25vh',
+            height: '23.48vh',
+            maxHeight: '200px',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            overflow: 'clip',
+            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
           }}
           >
             <ProfileCard />
@@ -132,7 +135,7 @@ function HomeNew() {
             <Feed />
           </Box>
         </Grid>
-        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
+        <Grid xs={9.5} sx={{ height: '98vh', overflow: 'auto', paddingBottom: '9vh' }}>
           <Stack
             direction="column"
             justifyContent="center"
@@ -144,6 +147,7 @@ function HomeNew() {
               sx={{
                 width: '100%',
                 height: '23.48vh',
+                maxHeight: '200px',
                 backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -168,7 +172,7 @@ function HomeNew() {
             <Box
               sx={{
                 width: '100%',
-                height: '30vh',
+                height: '25vh',
                 backgroundImage: 'url(https://i.imgur.com/lAKiMMj.jpg',
                 backgroundSize: 'cover',
                 backgroundPosition: 'bottom',
@@ -211,14 +215,14 @@ function HomeNew() {
                 Friends
               </Chip>
             </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '33vh', maxHeight: '37vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '31vh', maxHeight: '275vh' /* adjust this */ }}>
               <HomeFriends friendIdArray={friendIdArray} />
             </Box>
-            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '39vh', maxHeight: '43vh' /* adjust this */ }}>
+            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '38vh', maxHeight: '375px' /* adjust this */ }}>
               {userId
               && <FriendFinder friendIdArray={friendIdArray} userId={userId} />}
             </Box>
-            <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" width="100%" />
+            <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px', width: '80%' }} />
           </Stack>
         </Grid>
       </Grid>

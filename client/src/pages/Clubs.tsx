@@ -11,6 +11,7 @@ import Grid1 from '@mui/material/Unstable_Grid2';
 import axios from 'axios';
 import styled from 'styled-components';
 import Feed from './Feed';
+import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import CreateClubs from '../components/CreateClubs/CreateClubs';
 import { ClubHeader } from './style';
@@ -22,6 +23,24 @@ export interface Club {
   image: string;
   clubMembers: string[];
 }
+
+const CardContainer = styled.div`
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+`;
+
+const StyledCard = styled(Card) <{ flexBasis?: string }>`
+flex-basis: ${(props) => props.flexBasis || '33%'};
+margin: 10px;
+border-radius: 12px;
+box-shadow: 0px 0px 15px  rgba(37, 37, 37, 0.5);
+transition: transform 0.2s ease-in-out;
+
+&:hover {
+transform: scale(1.01);
+}
+`;
 
 function Clubs() {
   const [clubs, setClubs] = useState<Club[]>([]);
@@ -47,24 +66,6 @@ function Clubs() {
     fetchClubs();
   }, []);
 
-  const CardContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  `;
-
-  const StyledCard = styled(Card) <{ flexBasis?: string }>`
-  flex-basis: ${(props) => props.flexBasis || '33%'};
-  margin: 10px;
-  border-radius: 12px;
-  box-shadow: 0px 0px 15px  rgba(37, 37, 37, 0.5);
-  transition: transform 0.2s ease-in-out;
-
-  &:hover {
-    transform: scale(1.01);
-  }
-`;
-
   // const HeaderBox = styled.div`
   //   background-color: #e0d0c2;
   //   padding: 7px 0;
@@ -75,7 +76,7 @@ function Clubs() {
   // `;
   return (
     <Box sx={{
-      flexGrow: 1, overflow: 'auto', height: '100vh',
+      flexGrow: 1, overflow: 'clip', height: '98vh',
     }}
     >
       <Grid1
@@ -106,19 +107,20 @@ function Clubs() {
         <Grid1
           xs={2.5}
           sx={{
-            position: 'sticky', top: '0px', height: '98vh', paddingBottom: '8vh',
+            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '8vh',
           }}
         >
           <Box sx={{
             width: '100%',
-            height: '20vh',
-            overflow: 'clip',
-            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
+            height: '23.48vh',
+            maxHeight: '200px',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            overflow: 'clip',
+            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
           }}
           >
-            <HomeUserDisplay />
+            <ProfileCard />
           </Box>
           <Box sx={{ width: '100%', maxHeight: '70vh', overflow: 'auto' }}>
             <Feed />
@@ -128,7 +130,8 @@ function Clubs() {
           <Box
             sx={{
               width: '100%',
-              height: '20vh',
+              height: '23.48vh',
+              maxHeight: '200px',
               backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
@@ -150,7 +153,7 @@ function Clubs() {
                     Create a Club
                   </Button>
                 </Box>
-                  <CreateClubs open={open} handleClose={handleClose} setClubs={setClubs} setOpen={setOpen} />
+                <CreateClubs open={open} handleClose={handleClose} setClubs={setClubs} setOpen={setOpen} />
                 <CardContainer>
                   {clubs && clubs.length > 0 && clubs.map((club) => (
                     <StyledCard key={club.id} flexBasis="25%" variant="outlined">

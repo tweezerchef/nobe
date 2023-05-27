@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, {
   useState, useContext, useEffect,
 } from 'react';
@@ -10,7 +11,6 @@ import Chip from '@mui/joy/Chip';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { func } from 'prop-types';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import Slide from '@mui/material/Slide';
@@ -24,6 +24,7 @@ import { useChatContext } from '../hooks/ChatContext';
 // eslint-disable-next-line import/no-cycle
 import UserProfileLendingLibrary from '../components/UserProfile/UserProfileLendingLibrary';
 import UserProfileFeed from '../components/UserProfile/UserProfileFeed';
+import UserProfileFavoriteBooks from '../components/UserProfile/UserProfileFavoriteBooks';
 
 const MessageButton = styled(Button)({
 //   backgroundColor: '#1976d2',
@@ -128,9 +129,11 @@ function UserProfile() {
         >
           <Box sx={{
             width: '100%',
-            height: '25vh',
+            height: '225px',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            overflow: 'clip',
+            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
           }}
           >
             <ProfileCard />
@@ -154,7 +157,7 @@ function UserProfile() {
               <Box
                 sx={{
                   width: '100%',
-                  height: '28',
+                  height: '225px',
                   backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
@@ -193,9 +196,19 @@ function UserProfile() {
                   's Lending Library
                 </Chip>
               </StyledDivider>
-              <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '31vh', maxHeight: '33vh' }}>
+              <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '200px', maxHeight: '32vh' }}>
                 { user
                 && <UserProfileLendingLibrary nearMeBooks={nearMeBooks} user={user} />}
+              </Box>
+              <StyledDivider textAlign="left">
+                <FlameStyledChip size="lg">
+                  {userName}
+                  's Favorite Books
+                </FlameStyledChip>
+              </StyledDivider>
+              <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '200px', maxHeight: '32vh' }}>
+                { user
+                && <UserProfileFavoriteBooks nearMeBooks={nearMeBooks} user={user} />}
               </Box>
               <StyledDivider textAlign="center">
                 <Chip size="lg">

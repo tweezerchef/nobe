@@ -7,7 +7,6 @@ import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
-import { set } from 'react-hook-form';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
@@ -120,6 +119,7 @@ const Book = React.memo(({
           margin: '0',
           padding: '0',
           backgroundColor: 'transparent',
+          cursor: 'pointer',
         }}
         onClick={handleOnClick}
       >
