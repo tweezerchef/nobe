@@ -26,16 +26,6 @@ import UserProfileLendingLibrary from '../components/UserProfile/UserProfileLend
 import UserProfileFeed from '../components/UserProfile/UserProfileFeed';
 import UserProfileFavoriteBooks from '../components/UserProfile/UserProfileFavoriteBooks';
 
-const MessageButton = styled(Button)({
-//   backgroundColor: '#1976d2',
-//   color: 'white',
-//   borderRadius: '0.35rem',
-//   fontWeight: 'bold',
-//   padding: '0.8em 1.9em',
-//   cursor: 'pointer',
-//   marginRight: '10px',
-});
-
 function UserProfile() {
   const [user, setUser] = useState<User | null>(null);
   const [userName, setUserName] = useState<string>('');
@@ -183,7 +173,7 @@ function UserProfile() {
                       margin: '1rem',
                     }}
                   />
-                  <MessageButton variant="contained" onClick={handleChatButtonClick}>Message</MessageButton>
+                  <Button variant="contained" onClick={handleChatButtonClick}>Message</Button>
                 </Stack>
                 <Typography variant="h3" align="center">
                   {userName}
@@ -216,12 +206,12 @@ function UserProfile() {
                   's Feed
                 </Chip>
               </StyledDivider>
-              <Box overflow="auto" alignContent="center" alignItems="center" sx={{ width: '70%', maxHeight: '50vh' }}>
+              <Box overflow="auto" alignContent="center" alignItems="center" sx={{ width: '80%', maxHeight: '50vh' }}>
 
                 {user
                     && <UserProfileFeed user={user} />}
               </Box>
-              <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" width="100%" />
+              <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px', width: '80%' }} />
             </Stack>
           </Grid>
         </Slide>

@@ -25,7 +25,7 @@ function UserStarRating({
 
   const handleRatingChange = (event: React.ChangeEvent<{}>, newValue: number | null) => {
     if (newValue !== null) {
-      axios.post('/review', { rating: newValue, book, id })
+      axios.post('/review/starReview', { rating: newValue, book, id })
         .catch((error) => {
           console.error('Failed to update rating:', error);
         });

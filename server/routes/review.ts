@@ -18,22 +18,6 @@ async function getUserBooks(userId: string) {
   return userBooks;
 }
 
-// async function findOrCreateBook(
-//   ISBN10: string,
-//   title: string,
-//   author: string,
-//   image: string,
-//   description: string,
-// ) {
-//   const newbook = await prisma.Books.upsert({
-//     where: { ISBN10 },
-//     update: {},
-//     create: {
-//       ISBN10, title, author, image, description,
-//     },
-//   });
-//   return newbook;
-// }
 async function findOrCreateUserBook(booksId: string, userId: string, rating: number) {
   const NewUserBook = await prisma.UserBooks.upsert({
     where: { userId_bookId: { userId, booksId } },
@@ -44,7 +28,7 @@ async function findOrCreateUserBook(booksId: string, userId: string, rating: num
   return NewUserBook;
 }
 
-Review.post('/', async (req: Request, res: Response) => {
+Review.post('/starReview', async (req: Request, res: Response) => {
   const { book, rating, id } = req.body;
 
   // const googleTitle = book.title;
@@ -81,39 +65,39 @@ Review.post('/', async (req: Request, res: Response) => {
       console.error(error),
       res.sendStatus(500);
     });
-  Review.post('/WrittenReview', async (req: Request, res: Response) => {
-    const { book, review, id } = req.body;
+});
 
-    const {
-      ISBN10, title, author, image, description,
-    } = book;
+Review.post('/review', async (req: Request, res: Response) => {
+  const { book, review, id } = req.body;
 
-    axios.post('http://localhost:8080/bookdata/title', {
-      title,
-      ISBN10,
-      author,
-      image,
-      description,
+  const {
+    ISBN10, title, author, image, description,
+  } = book;
 
-    }).then(async (newbook) => {
-      const booksId = newbook.data.id;
-      const userId = id;
-      await prisma.UserBooks.upsert({
-        where: { userId_bookId: { userId, booksId } },
-        update: { review },
-        create: { booksId, userId, review },
+  axios.post('http://localhost:8080/bookdata/title', {
+    title,
+    ISBN10,
+    author,
+    image,
+    description,
 
-      });
-    }).then(() => {
-      getUserBooks(id).then((userBooks) => {
-        res.send(userBooks).status(201);
-      });
-    }).catch((error) => {
+  }).then(async (newbook) => {
+    const booksId = newbook.data.id;
+    const userId = id;
+    const userBook = await prisma.UserBooks.upsert({
+      where: { userId_bookId: { userId, booksId } },
+      update: { review },
+      create: { booksId, userId, review },
+
+    });
+    return userBook;
+  })
+    .then((userBook) => (res.send(userBook).status(201)))
+    .catch((error) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       console.error(error),
       res.sendStatus(500);
     });
-  });
 });
 
 export default Review;

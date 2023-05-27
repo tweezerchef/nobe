@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import axios from 'axios';
 import Stack from '@mui/material/Stack';
+import { set } from 'react-hook-form';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserReview from '../UserStarRating/UserReview';
 import Reviews from './Reviews';
@@ -54,6 +55,7 @@ function BigBook(props: any) {
   const [reviewOpen, setReviewOpen] = useState(false);
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   const [description, setDescription] = useState<string>('');
+  const [userBooks, setUserBooks] = useState<any[]>([]);
   // const [open, setOpen] = useState<boolean>(false);
   const {
     book, id, onClose, userRating, setUserRating,
@@ -78,6 +80,7 @@ function BigBook(props: any) {
     setShowDescriptionModal(false);
   };
   useEffect(() => {
+    setUserBooks(UserBooks);
     if (book.description) {
       setDescription(book.description);
     } else {
@@ -275,7 +278,13 @@ function BigBook(props: any) {
                 Add Written Review
               </Button>
             </Box>
-            <UserReview book={book} id={id} open={reviewOpen} handleClose={handleClose} />
+            <UserReview
+              book={book}
+              id={id}
+              open={reviewOpen}
+              handleClose={handleClose}
+              setUserBooks={setUserBooks}
+            />
             <Box
               sx={{
                 display: 'flex',
@@ -289,7 +298,7 @@ function BigBook(props: any) {
               <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
                 {UserBooks && (
                   <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
-                    <Reviews UserBooks={UserBooks} />
+                    <Reviews UserBooks={userBooks} />
                   </Typography>
                 )}
               </Typography>

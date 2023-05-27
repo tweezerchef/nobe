@@ -13,11 +13,12 @@ interface UserReviewProps {
   handleClose: () => void;
   book: any;
   id: any;
+  setUserBooks: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 // eslint-disable-next-line react/function-component-definition
 const UserReview: React.FC<UserReviewProps> = ({
-  open, handleClose, book, id,
+  open, handleClose, book, id, setUserBooks,
 }) => {
   const [review, setReview] = useState('');
 
@@ -27,10 +28,18 @@ const UserReview: React.FC<UserReviewProps> = ({
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Add this line to prevent default form submission behavior
     console.log('review', review);
-    axios.post('/review/WrittenReview', { review, book, id });
-    handleClose();
+    console.log('book', book);
+    console.log('id', id);
+    event.preventDefault();
+    axios.post('/review/review', { review, book, id })
+      .then((res) => {
+      // Ensure that res.data is indeed a UserBook
+        console.log('res.data', res.data);
+
+        setUserBooks((prevUserBooks: any[]) => [res.data, ...prevUserBooks]);
+      })
+      .then(handleClose);
   };
 
   return (
