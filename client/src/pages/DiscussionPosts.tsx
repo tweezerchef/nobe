@@ -15,10 +15,12 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import Feed from './Feed';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
+import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
 import BookSearchButton from '../components/Button/BookSearchButton';
 import UserContext from '../hooks/Context';
-import { ClubHeader, StyledTextarea } from './style';
+import { ClubHeader, StyledTextarea, BookTitle } from './style';
 import '../styles/discussionPostsStyles.css';
+// import BookSearchButtonNew from '../components/Button/BookSearchButtonNew';
 
 interface Post {
   id: string;
@@ -51,6 +53,7 @@ function DiscussionPosts() {
   const [clubId, setClubId] = useState('');
   const [isDiscussionCreator, setIsDiscussionCreator] = useState(false);
   const [discussionImage, setDiscussionImage] = useState('');
+  const [bookTitle, setBookTitle] = useState('');
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -72,6 +75,7 @@ function DiscussionPosts() {
     const response = await axios.get(`/api/clubs/discussions/${id}`);
     // console.log(response);
     setDiscussionImage(response.data.image);
+    setBookTitle(response.data.bookTitle);
   }
 
   useEffect(() => {
@@ -139,7 +143,7 @@ function DiscussionPosts() {
 
   return (
     <Box sx={{
-      flexGrow: 1, overflow: 'auto', height: '100vh',
+      flexGrow: 1, overflow: 'clip', height: '98vh',
     }}
     >
       <Grid
@@ -170,21 +174,23 @@ function DiscussionPosts() {
         <Grid
           xs={2.5}
           sx={{
-            position: 'sticky', top: '0px', height: '98vh', paddingBottom: '8vh',
+            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '8vh',
           }}
         >
           <Box sx={{
             width: '100%',
-            height: '20vh',
-            overflow: 'clip',
-            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
+            height: '23.48vh',
+            maxHeight: '200px',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            overflow: 'clip',
+            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
           }}
           >
-            <HomeUserDisplay />
+            <ProfileCard />
+            {/* <HomeUserDisplay /> */}
           </Box>
-          <Box sx={{ width: '100%', maxHeight: '70vh', overflow: 'auto' }}>
+          <Box sx={{ width: '100%', maxHeight: '80vh', overflow: 'auto' }}>
             <Feed />
           </Box>
         </Grid>
@@ -192,7 +198,8 @@ function DiscussionPosts() {
           <Box
             sx={{
               width: '100%',
-              height: '20vh',
+              height: '23.48vh',
+              maxHeight: '200px',
               backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
@@ -222,7 +229,7 @@ function DiscussionPosts() {
               display: 'flex', justifyContent: 'center', alignItems: 'center',
             }}
             >
-              {discussionImage && (
+              {discussionImage && bookTitle && (
               <Card sx={{
                 flexBasis: '33%',
                 borderRadius: '12px',
@@ -240,6 +247,7 @@ function DiscussionPosts() {
                     }}
                   />
                 </AspectRatio>
+                {/* <BookTitle>{bookTitle}</BookTitle> */}
                 {/* <img
                   alt=""
                   title="ay"
@@ -250,6 +258,13 @@ function DiscussionPosts() {
               </Card>
               )}
             </div>
+            {/* <BookSearchButtonNew
+              isDiscussionCreator={isDiscussionCreator}
+              discussionId={id}
+              discussionImage={discussionImage}
+              setDiscussionImage={setDiscussionImage}
+              clubId={clubId}
+            /> */}
             <BookSearchButton
               isDiscussionCreator={isDiscussionCreator}
               discussionId={id}

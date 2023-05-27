@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
-import Box from '@mui/material/Box';
+// import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
 import UserContext from '../../hooks/Context';
 
@@ -68,10 +68,12 @@ function BookSearchButton(props: any) {
           `/bookdata/title/searchOne?title=${selectedBook.title}`,
         );
         const bookData = response.data;
+        const bookTitle = selectedBook.title;
         const updatedDiscussion = await axios.put(
           `/api/clubs/discussions/${discussionId}`,
           {
-            discussionImage: bookData[0].image,
+            image: bookData[0].image,
+            bookTitle,
           },
         );
         setDiscussionImage(updatedDiscussion.data.image);

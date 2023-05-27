@@ -59,12 +59,12 @@ const DiscussionList = memo(({ discussions, clubId }: DiscussionListProps) => {
                   variant="body2"
                   className="club-card-body"
                   style={{
-                    textAlign: 'center', fontSize: '16px', color: 'gray', paddingBottom: '3px',
+                    textAlign: 'center', fontSize: '18px', color: 'gray', paddingBottom: '3px',
                   }}
                 >
                   {discussion.Posts && discussion.Posts.length === 1 ? '1 Post' : `${discussion.Posts?.length || 0} Posts`}
                 </Typography>
-                <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '12px', color: 'gray' }}>
+                <Typography variant="body2" className="club-card-body" style={{ textAlign: 'center', fontSize: '14px', color: 'gray' }}>
                   Last post:
                   {' '}
                   {discussion.Posts && discussion.Posts.length > 0 ? (
