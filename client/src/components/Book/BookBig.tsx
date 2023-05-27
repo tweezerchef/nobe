@@ -20,6 +20,7 @@ import UserReview from '../UserStarRating/UserReview';
 import Reviews from './Reviews';
 import LendingLibraryButtonBigBook from '../Button/LendingLibraryButtonBigBook';
 import WishListButtonBigBook from '../Button/WishListButtonBigBook';
+import UserBooks from '../../../../server/routes/userbooks';
 
 const useStyles = makeStyles({
   card: {
@@ -60,7 +61,20 @@ function BigBook(props: any) {
   const {
     book, id, onClose, userRating, setUserRating,
   } = props;
-  const UserBooks = book?.UserBooks;
+  const { ISBN10 } = book;
+
+  const getBook = () => {
+    axios.get(`/bookdata/userbooks?ISBN10=${ISBN10}`)
+      .then((response) => {
+        console.log('response.data', response.data.UserBooks);
+
+        setUserBooks(response.data.UserBooks);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const handleOnClick = () => {
     onClose();
   };
@@ -80,7 +94,7 @@ function BigBook(props: any) {
     setShowDescriptionModal(false);
   };
   useEffect(() => {
-    setUserBooks(UserBooks);
+    getBook();
     if (book.description) {
       setDescription(book.description);
     } else {
@@ -189,6 +203,7 @@ function BigBook(props: any) {
                     textOverflow: 'ellipsis',
                     wordWrap: 'break-word',
                     textAlign: 'center',
+                    marginTop: '1rem',
                   }}
                 >
                   {book.title}
@@ -296,7 +311,7 @@ function BigBook(props: any) {
               }}
             >
               <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
-                {UserBooks && (
+                {userBooks && (
                   <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
                     <Reviews UserBooks={userBooks} />
                   </Typography>

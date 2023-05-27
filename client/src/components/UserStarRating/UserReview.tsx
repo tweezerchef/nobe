@@ -36,8 +36,12 @@ const UserReview: React.FC<UserReviewProps> = ({
       .then((res) => {
       // Ensure that res.data is indeed a UserBook
         console.log('res.data', res.data);
-
-        setUserBooks((prevUserBooks: any[]) => [res.data, ...prevUserBooks]);
+        setUserBooks((prevUserBooks: any[]) => {
+          if (prevUserBooks.length === 0) {
+            return [res.data];
+          }
+          return [res.data, ...prevUserBooks];
+        });
       })
       .then(handleClose);
   };

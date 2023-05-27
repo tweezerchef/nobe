@@ -296,6 +296,62 @@ BookData.get('/id', async (req, res) => {
     res.status(500).send('Error retrieving book data');
   }
 });
+BookData.get('/userbooks', async (req, res) => {
+  const { ISBN10 } = req.query;
+  try {
+    const userbooks = await prisma.books.findUnique({
+      where: {
+        ISBN10,
+      },
+      select: {
+        // include all columns from the books table
+        UserBooks: {
+          select: {
+            id: true,
+            wishlist: true,
+            owned: true,
+            booksId: true,
+            userId: true,
+            rating: true,
+            review: true,
+            LendingTable: true,
+            Books: {
+              select: {
+                id: true,
+                title: true,
+                author: true,
+                ISBN10: true,
+                description: true,
+                image: true,
+                UserBooks: {
+                  select: {
+                    id: true,
+                    wishlist: true,
+                    owned: true,
+                    booksId: true,
+                    userId: true,
+                    rating: true,
+                    review: true,
+                    LendingTable: true,
+                    User: true,
+                  },
+                },
+                Discussions: true,
+                Activity: true,
+              },
+            },
+            User: true,
+          },
+        },
+      },
+    });
+    //   console.log(book)
+    res.send(userbooks);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving book data');
+  }
+});
 
 BookData.post('/title/owned', async (req, res) => {
   const {
