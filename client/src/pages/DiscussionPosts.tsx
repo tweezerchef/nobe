@@ -20,6 +20,7 @@ import BookSearchButton from '../components/Button/BookSearchButton';
 import UserContext from '../hooks/Context';
 import { ClubHeader, StyledTextarea, BookTitle } from './style';
 import '../styles/discussionPostsStyles.css';
+import { url } from 'inspector';
 // import BookSearchButtonNew from '../components/Button/BookSearchButtonNew';
 
 interface Post {
@@ -220,42 +221,40 @@ function DiscussionPosts() {
             </ClubHeader>
             )}
             <ClubHeader>{discussionTitle}</ClubHeader>
-            {/* {isDiscussionCreator && (
-            <Button variant="outlined" color="primary" disableElevation>
-              Button for Discussion Creator
-            </Button>
-            )} */}
             <div style={{
               display: 'flex', justifyContent: 'center', alignItems: 'center',
             }}
             >
               {discussionImage && bookTitle && (
-              <Card sx={{
-                flexBasis: '33%',
-                borderRadius: '12px',
-                boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
-                maxWidth: '250px',
-              }}
-              >
-                <AspectRatio ratio="1">
-                  <CardMedia
-                    component="img"
-                    alt={`Discussion book image for ${discussionTitle}`}
-                    image={discussionImage}
-                    style={{
-                      objectFit: 'fill',
-                    }}
-                  />
-                </AspectRatio>
-                {/* <BookTitle>{bookTitle}</BookTitle> */}
-                {/* <img
+                <div>
+                  <BookTitle>Currently Reading:</BookTitle>
+                  <Card sx={{
+                    flexBasis: '33%',
+                    borderRadius: '12px',
+                    boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
+                    maxWidth: '300px',
+                    backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
+                  }}
+                  >
+                    <AspectRatio ratio="1">
+                      <CardMedia
+                        component="img"
+                        alt={`Discussion book image for ${discussionTitle}`}
+                        image={discussionImage}
+                        style={{
+                          objectFit: 'fill',
+                        }}
+                      />
+                    </AspectRatio>
+                    <BookTitle>{bookTitle}</BookTitle>
+                    {/* <img
                   alt=""
                   title="ay"
                   src={discussionImage}
                   height="100px"
                 /> */}
-                {/* {selectedBook.title} */}
-              </Card>
+                  </Card>
+                </div>
               )}
             </div>
             {/* <BookSearchButtonNew

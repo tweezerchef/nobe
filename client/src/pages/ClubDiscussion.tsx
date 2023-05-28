@@ -207,7 +207,7 @@ function ClubDiscussion() {
                       alt={`Club image for ${clubName}`}
                       image={clubImage}
                       style={{
-                        objectFit: 'fill',
+                        objectFit: 'cover',
                       }}
                     />
                   )}

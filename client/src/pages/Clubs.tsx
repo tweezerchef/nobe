@@ -34,6 +34,7 @@ const StyledCard = styled(Card) <{ flexBasis?: string }>`
 flex-basis: ${(props) => props.flexBasis || '33%'};
 margin: 10px;
 border-radius: 12px;
+background-image: url('https://i.imgur.com/Mjey231.jpg');
 box-shadow: 0px 0px 15px  rgba(37, 37, 37, 0.5);
 transition: transform 0.2s ease-in-out;
 
