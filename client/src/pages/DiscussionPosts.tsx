@@ -270,6 +270,7 @@ function DiscussionPosts() {
               discussionImage={discussionImage}
               setDiscussionImage={setDiscussionImage}
               clubId={clubId}
+              setBookTitle={setBookTitle}
             />
             {posts?.map((post) => (
               <div className="post">
