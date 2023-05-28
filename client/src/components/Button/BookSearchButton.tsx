@@ -28,7 +28,7 @@ function BookSearchButton(props: any) {
   const [ourBooks, setOurBooks] = useState<OurBooks[]>([]);
   const [selectedBook, setSelectedBook] = useState<OurBooks | null>(null);
   const {
-    isDiscussionCreator, discussionId, discussionImage, setDiscussionImage, clubId,
+    isDiscussionCreator, discussionId, discussionImage, setDiscussionImage, clubId, setBookTitle,
   } = props;
 
   const userContext = useContext(UserContext);
@@ -77,6 +77,7 @@ function BookSearchButton(props: any) {
           },
         );
         setDiscussionImage(updatedDiscussion.data.image);
+        setBookTitle(bookTitle);
         handleClose();
       }
     } catch (error) {

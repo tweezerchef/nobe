@@ -75,3 +75,16 @@
 .input-container label {
     margin-bottom: 2px;
 }
+
+.icons-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 8px;
+    /* Adjust the margin as needed */
+}
+
+.thumb-icon {
+    font-size: 24px;
+    /* Adjust the font size as needed */
+}
