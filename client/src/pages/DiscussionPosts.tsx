@@ -18,7 +18,9 @@ import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
 import BookSearchButton from '../components/Button/BookSearchButton';
 import UserContext from '../hooks/Context';
-import { ClubHeader, StyledTextarea, BookTitle } from './style';
+import {
+  ClubHeader, StyledTextarea, BookTitle, BookHeader,
+} from './style';
 import '../styles/discussionPostsStyles.css';
 import { url } from 'inspector';
 // import BookSearchButtonNew from '../components/Button/BookSearchButtonNew';
@@ -227,12 +229,13 @@ function DiscussionPosts() {
             >
               {discussionImage && bookTitle && (
                 <div>
-                  <BookTitle>Currently Reading:</BookTitle>
+                  <BookHeader>Currently Reading:</BookHeader>
                   <Card sx={{
                     flexBasis: '33%',
                     borderRadius: '12px',
                     boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
-                    maxWidth: '300px',
+                    width: '300px',
+                    // padding: '1rem',
                     backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
                   }}
                   >

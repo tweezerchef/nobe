@@ -19,8 +19,13 @@ export const ClubHeader = styled.h1`
 text-align: center;
 `;
 
+export const BookHeader = styled.h3`
+text-align: center;
+`;
+
 export const BookTitle = styled.h3`
 text-align: center;
+padding: 0.5rem
 `;
 
 export const ClubDescription = styled.h2`
