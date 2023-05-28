@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
 import axios from 'axios';
-import { set } from 'react-hook-form';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+
+import IconButton from '@mui/joy/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 
 interface FollowButtonProps {
   friendId: string;
@@ -12,9 +15,11 @@ interface FollowButtonProps {
 function FollowButton({ friendId, friendIdArray, userId }: FollowButtonProps) {
   const [isFriend, setIsFriend] = useState(false);
   const [buttonText, setButtonText] = useState('Follow');
+  const [button, setButton] = useState(<PersonAddIcon />);
 
   function isFriendCheck() {
     if (friendIdArray.includes(friendId)) {
+      setButton(<PersonRemoveIcon />);
       setButtonText('Unfollow');
       setIsFriend(true);
     }
@@ -26,11 +31,13 @@ function FollowButton({ friendId, friendIdArray, userId }: FollowButtonProps) {
   const follow = async () => {
     try {
       if (buttonText === 'Follow') {
-        axios.post('/api/friendship', { userId, friendId });
+        setButton(<PersonRemoveIcon />);
         setButtonText('Unfollow');
+        axios.post('/api/friendship', { userId, friendId });
       } else {
-        axios.delete('/api/friendship', { data: { userId, friendId } });
+        setButton(<PersonAddIcon />);
         setButtonText('Follow');
+        axios.delete('/api/friendship', { data: { userId, friendId } });
       }
     } catch (error) {
       console.error(error);
@@ -38,9 +45,23 @@ function FollowButton({ friendId, friendIdArray, userId }: FollowButtonProps) {
   };
 
   return (
-    <Button variant="contained" onClick={follow}>
-      {buttonText}
-    </Button>
+    <Tooltip title={buttonText} placement="top-end">
+      <IconButton
+        aria-label="Lending Library"
+        size="sm"
+        variant="solid"
+        sx={{
+          position: 'absolute',
+          zIndex: 2,
+          borderRadius: '50%',
+          right: '4rem', // Set right and top values
+          top: '-.2rem',
+        }}
+        onClick={follow}
+      >
+        {button}
+      </IconButton>
+    </Tooltip>
   );
 }
 

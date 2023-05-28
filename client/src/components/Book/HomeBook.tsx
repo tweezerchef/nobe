@@ -7,6 +7,8 @@ import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
@@ -52,6 +54,8 @@ const useStyles = makeStyles({
 const Book = React.memo(({
   nearMeBooks, book, onClose, onClick, showBigBook, bigBookPosition,
 }: HomeBookProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -61,7 +65,7 @@ const Book = React.memo(({
     return null;
   }
   const [userRating, setUserRating] = React.useState<number>(0);
-  const maxCharacters = 50;
+  const maxCharacters = 45;
   const ellipsisCharacters = 10; // Number of characters to show before the ellipsis
 
   let displayedTitle = book.title;
@@ -101,10 +105,9 @@ const Book = React.memo(({
       variant="outlined"
       className={classes.card}
       sx={{
-        width: '17vw',
-        height: '27vh',
-        minHeight: '200px',
-        margin: '.2vh',
+        width: isMobile ? '70vw' : '17vw',
+        height: isMobile ? '62vw' : '18vw',
+        minHeight: isMobile ? '62vw' : '200px',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         display: 'flex',
         flexDirection: 'column',
@@ -147,7 +150,7 @@ const Book = React.memo(({
         sx={{
           mt: 2.4,
           overflow: 'hidden',
-          whiteSpace: 'normal',
+          whiteSpace: isMobile ? 'wrap' : 'normal',
           flexWrap: 'wrap',
           textAlign: 'center',
         }}
@@ -160,7 +163,7 @@ const Book = React.memo(({
         sx={{
           mt: 'auto',
           mb: 'auto',
-          whiteSpace: 'nowrap',
+          whiteSpace: isMobile ? 'wrap' : 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           textAlign: 'center',

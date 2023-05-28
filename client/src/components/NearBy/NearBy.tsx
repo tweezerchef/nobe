@@ -130,7 +130,6 @@ function NearBy() {
   const handleOpen = () => setOpen(true);
 
   const valuetext = (value: number) => `${value}Â°C`;
-  // console.log(displayBooks, 154);
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',

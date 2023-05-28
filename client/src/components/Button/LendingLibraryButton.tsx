@@ -2,9 +2,8 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import IconButton from '@mui/joy/IconButton';
-import { Tooltip } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 import UserContext from '../../hooks/Context';
-import User from '../../../../server/routes/User';
 
 type CustomColor = 'success' | 'danger';
 function LendingLibraryButton(props: any) {
@@ -13,6 +12,7 @@ function LendingLibraryButton(props: any) {
   const user = userContext?.user;
   const id = user?.id;
   const [color, setColor] = useState<CustomColor>('danger');
+  // eslint-disable-next-line max-len
   const [toolTip, setToolTip] = useState<NonNullable<React.ReactNode>>(<h1>Add to Lending Library</h1>);
 
   const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {

@@ -43,6 +43,7 @@ const useStyles = makeStyles({
     backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
+    cursor: 'pointer',
   },
 });
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -58,7 +59,7 @@ const NearMeUserBook: React.FC<NearMeUserBookProps> = ({
   const user = userContext?.user;
   const id = user?.id;
   const [userRating, setUserRating] = React.useState<number>(0);
-
+  const username = user?.username ? user.username : user?.firstName;
   const classes = useStyles();
 
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -107,19 +108,24 @@ const NearMeUserBook: React.FC<NearMeUserBookProps> = ({
               src={User?.picture}
               alt={User?.firstName}
               style={{
-                width: '4rem',
-                height: '4rem',
+                width: '4.75rem',
+                height: '4.75rem',
                 margin: '0 auto',
               }}
             />
             <Typography level="h5">
-              {User?.firstName}
+              {username}
             </Typography>
           </Link>
         </Grid>
         <Divider orientation="vertical" flexItem />
         <Grid item xs={4}>
-          <Box onClick={handleOnClick} className={classes.card}>
+          <Box
+            onClick={handleOnClick}
+            className={classes.card}
+            height="80%"
+            overflow="hidden"
+          >
             <AspectRatio ratio="2">
               <img src={bookcover} alt="Book Cover" />
             </AspectRatio>
