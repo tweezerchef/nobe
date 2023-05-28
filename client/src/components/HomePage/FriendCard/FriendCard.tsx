@@ -48,7 +48,7 @@ function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
               <Avatar
                 src={user?.picture}
                 alt={user?.firstName}
-                style={{
+                sx={{
                   width: '4.8rem',
                   height: '4.8rem',
                 }}

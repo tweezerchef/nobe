@@ -18,6 +18,7 @@ import UserReview from '../UserStarRating/UserReview';
 import Reviews from './Reviews';
 import LendingLibraryButtonBigBook from '../Button/LendingLibraryButtonBigBook';
 import WishListButtonBigBook from '../Button/WishListButtonBigBook';
+import BookOwnerNearMe from '../HomePage/NearMeUserBook/BookOwnerNearMe';
 
 const useStyles = makeStyles({
   card: {
@@ -280,10 +281,17 @@ function BigBook(props: any) {
                 <Typography level="body1">{description}</Typography>
               </Box>
             </Modal>
-            <Box sx={{ my: 2 }} />
             <Divider inset="context" />
-            <Box sx={{ my: 2 }} />
-            <Box sx={{ my: 2, display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '1rem',
+            }}
+            >
+              <Typography level="body2" sx={{ align: 'center' }}>
+                Owners Near You
+              </Typography>
+            </Box>
+            <BookOwnerNearMe bookId={book.id} />
+            <Box sx={{ my: 4, display: 'flex', justifyContent: 'center' }}>
               <Button variant="outlined" onClick={handleClickOpen}>
                 Add Written Review
               </Button>
@@ -305,6 +313,8 @@ function BigBook(props: any) {
                 marginTop: '10px',
               }}
             >
+              {' '}
+
               <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
                 {userBooks && (
                   <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
