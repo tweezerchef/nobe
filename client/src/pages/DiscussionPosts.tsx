@@ -10,11 +10,13 @@ import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import AspectRatio from '@mui/joy/AspectRatio';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import Feed from './Feed';
-import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
+// import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
 import BookSearchButton from '../components/Button/BookSearchButton';
 import UserContext from '../hooks/Context';
@@ -22,7 +24,6 @@ import {
   ClubHeader, StyledTextarea, BookTitle, BookHeader,
 } from './style';
 import '../styles/discussionPostsStyles.css';
-import { url } from 'inspector';
 // import BookSearchButtonNew from '../components/Button/BookSearchButtonNew';
 
 interface Post {
@@ -278,6 +279,10 @@ function DiscussionPosts() {
             {posts?.map((post) => (
               <div className="post">
                 <div className="post-content" key={post.id}>
+                  {/* <div className="icons-wrapper">
+                    <ThumbUpAltIcon className="thumb-icon" />
+                    <ThumbDownAltIcon className="thumb-icon" />
+                  </div> */}
                   <div className="brown-box">
                     <div className="post-info-container">
                       <Link to={`/profile/${post.userId}`}>
