@@ -229,7 +229,16 @@ function HomeNew() {
                   Books You Want In Your Hood
                 </FlameStyledChip>
               </StyledDivider>
-              <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '22vw', maxHeight: '24vw' /* adjust this */ }}>
+              <Box
+                overflow="clip"
+                alignContent="center"
+                alignItems="center"
+                sx={{
+                  width: '100%',
+                  minHeight: isMobile ? '90vw' : '280px',
+                  maxHeight: isMobile ? '95vw' : '350px',
+                }}
+              >
                 <HomeNearMe />
               </Box>
               <Box
@@ -261,10 +270,32 @@ function HomeNew() {
                   Friends
                 </Chip>
               </StyledDivider>
-              <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '23vw', maxHeight: '25vw' /* adjust this */ }}>
+              <Box
+                overflow="clip"
+                alignContent="center"
+                alignItems="center"
+                justifyContent="center"
+                justifyItems="center"
+                sx={{
+                  width: '100%',
+                  minHeight: isMobile ? '90vw' : '280px',
+                  maxHeight: isMobile ? '95vw' : '350px',
+                }}
+              >
                 <HomeFriends friendIdArray={friendIdArray} />
               </Box>
-              <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '25vw', maxHeight: '27vw' /* adjust this */ }}>
+              <Box
+                overflow="clip"
+                alignContent="center"
+                alignItems="center"
+                justifyContent="center"
+                justifyItems="center"
+                sx={{
+                  width: '100%',
+                  minHeight: isMobile ? '90vw' : '280px',
+                  maxHeight: isMobile ? '95vw' : '350px',
+                }}
+              >
                 {userId
               && <FriendFinder friendIdArray={friendIdArray} userId={userId} />}
               </Box>

@@ -32,6 +32,7 @@ import Chat from '../Chat/Chat';
 // import StyledBox from './style';
 import NearBy from '../NearBy/NearBy';
 import { useChatContext } from '../../hooks/ChatContext';
+import MaxWidthDiv from '../../hooks/MaxWidth';
 
 const StyledLink = styled(Link)`
   color: white !important;
@@ -127,346 +128,348 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
   };
 
   return (
-    <AppBar position="static" sx={{ bgcolor: '#1976d2 !important' }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <AutoStoriesIcon sx={{ display: { xs: 'none !important', md: 'flex !important', color: 'white !important' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/home"
-            sx={{
-              mr: '2 !important',
-              display: { xs: 'none !important', md: 'flex !important' },
-              fontFamily: 'monospace !important',
-              fontWeight: '700 !important',
-              letterSpacing: '.3rem !important',
-              color: 'white !important',
-              textDecoration: 'none !important',
-            }}
-          >
-            Nobe
-          </Typography>
-
-          <Box sx={{ flexGrow: '1 !important', display: { xs: 'flex !important', md: 'none !important', color: 'white !important' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+    <MaxWidthDiv>
+      <AppBar position="static" sx={{ bgcolor: '#1976d2 !important' }}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <AutoStoriesIcon sx={{ display: { xs: 'none !important', md: 'flex !important', color: 'white !important' }, mr: 1 }} />
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="/home"
               sx={{
-                display: { xs: 'block !important', md: 'none !important' },
+                mr: '2 !important',
+                display: { xs: 'none !important', md: 'flex !important' },
+                fontFamily: 'monospace !important',
+                fontWeight: '700 !important',
+                letterSpacing: '.3rem !important',
+                color: 'white !important',
+                textDecoration: 'none !important',
               }}
             >
-              <MenuItem
-                onClick={handleCloseNavMenu}
-                sx={{
-                  display: 'block !important', padding: '8px !important',
-                }}
-              >
-                <Typography>
-                  <Link to="/booksearch">
-                    BookSearch
+              Nobe
+            </Typography>
 
-                  </Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem
-                onClick={handleCloseNavMenu}
-                sx={{
-                  display: 'block !important', padding: '8px !important',
-                }}
+            <Box sx={{ flexGrow: '1 !important', display: { xs: 'flex !important', md: 'none !important', color: 'white !important' } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
               >
-                <Typography>
-                  <Link to="/trending">
-                    Trending
-
-                  </Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem
-                onClick={handleCloseNavMenu}
-                sx={{
-                  display: 'block !important', padding: '8px !important',
-                }}
-              >
-                <Typography>
-                  <Link to="/clubs">
-                    Clubs
-
-                  </Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem
-                onClick={handleCloseNavMenu}
-                sx={{
-                  display: 'block !important', padding: '8px !important',
-                }}
-              >
-                <Typography>
-                  <Link to="/locations">
-                    Books Near Me
-
-                  </Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem
-                onClick={handleCloseNavMenu}
-                sx={{
-                  display: 'block !important', padding: '8px !important',
-                }}
-              >
-                <Typography>
-                  <Link to="/reading-spots">
-                    Top Reading Spots
-
-                  </Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem
-                onClick={handleCloseNavMenu}
-                sx={{
-                  display: 'block !important', padding: '8px !important',
-                }}
-              >
-                <Typography>
-                  <Link to="/user-reco-input">
-                    Build Recomendations
-
-                  </Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem
-                onClick={handleCloseNavMenu}
-                sx={{
-                  display: 'block !important', padding: '8px !important',
-                }}
-              >
-                <Typography>
-                  <Link to="/recommended">
-                    Get Recomendations
-
-                  </Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem
-                onClick={handleCloseNavMenu}
-                sx={{
-                  display: 'block !important', padding: '8px !important',
-                }}
-              >
-                <Typography>
-                  <Link to="/feed">
-                    Feed
-
-                  </Link>
-                </Typography>
-              </MenuItem>
-              <MenuItem
-                onClick={handleCloseNavMenu}
-                sx={{
-                  display: 'block !important', padding: '8px !important',
-                }}
-              >
-                <Typography>
-                  Notifications
-                </Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-          <AutoStoriesIcon sx={{ display: { xs: 'flex !important', md: 'none !important', color: 'white !important' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="/home"
-            sx={{
-              mr: '2 !important',
-              display: { xs: 'flex !important', md: 'none !important' },
-              flexGrow: '1 !important',
-              fontFamily: 'monospace !important',
-              fontWeight: '700 !important',
-              letterSpacing: '.3rem !important',
-              color: 'white !important',
-              textDecoration: 'none !important',
-            }}
-          >
-            Nobe
-          </Typography>
-          <Box sx={{ flexGrow: '1 !important', display: { xs: 'none !important', md: 'flex !important' } }}>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
-            >
-              <StyledLink to="/trending">Trending</StyledLink>
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
-            >
-              <StyledLink to="/clubs">Clubs</StyledLink>
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
-            >
-              {user?.radius && user?.latitude && user?.latitude > 0 && user?.radius > 0
-                ? <StyledButton onClick={handleLookForBooksClick}>Books Near Me</StyledButton>
-                : (<StyledButton onClick={handleOpen}>Books Near Me</StyledButton>)}
-            </Button>
-            <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-              <Box sx={style}>
-                <ModalClose
-                  variant="outlined"
-                  sx={{
-                    position: 'absolute',
-                    top: '16px',
-                    right: '16px',
-                    boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',
-                    borderRadius: '50%',
-                    bgcolor: 'background.body',
-                  }}
-                  onClick={() => handleClose()}
-                />
-                <NearBy />
-              </Box>
-            </Modal>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
-            >
-              <StyledLink to="/reading-spots">Top Reading Spots</StyledLink>
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
-            >
-              <StyledLink to="/user-reco-input">Build Recomendations</StyledLink>
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
-            >
-              <StyledLink to="/recommended">Get Recommendations</StyledLink>
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
-            >
-              <StyledLink to="/feed">Feed</StyledLink>
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
-            >
-              <StyledLink to="/booksearch">Book Search</StyledLink>
-            </Button>
-            <div style={{ position: 'relative' }}>
-              <IconButton style={{ width: '32px', margin: '10px' }} onClick={handleChatButtonClick}>
-                <ChatIcon />
+                <MenuIcon />
               </IconButton>
-              {chatState && (
-                <Chat chatUser={chatUser} />
-              )}
-            </div>
-          </Box>
-          <Box sx={{ flexGrow: '0 !important', display: 'block !important' }}>
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: '0 !important' }}>
-              <Avatar alt="pfp" src={loggedIn ? user?.picture : ''} />
-            </IconButton>
-            <Menu
-              sx={{ mt: '45px !important', display: 'block !important' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem
-                onClick={handleCloseUserMenu}
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
                 sx={{
-                  display: 'block !important', padding: '8px !important',
+                  display: { xs: 'block !important', md: 'none !important' },
                 }}
               >
-                <Typography textAlign="center">
-                  <Link to="/usersprofile">Profile</Link>
-                </Typography>
-              </MenuItem>
-              {loggedIn ? (
-                <>
-                  <MenuItem
-                    onClick={logout}
-                    sx={{
-                      display: 'block !important', padding: '8px !important',
-                    }}
-                  >
-                    <Typography textAlign="center">
-                      Logout
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem
-                    sx={{
-                      display: 'block !important', padding: '8px !important',
-                    }}
-                  >
-                    <Typography textAlign="center">
-                      <Link to="/usersettings">Settings</Link>
-                    </Typography>
-                  </MenuItem>
-
-                </>
-              ) : (
-                <MenuItem sx={{
-                  display: 'block !important', padding: '8px !important',
-                }}
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
                 >
-                  <Typography textAlign="center">
-                    <Link to="/login">
-                      Login
+                  <Typography>
+                    <Link to="/booksearch">
+                      BookSearch
 
                     </Link>
                   </Typography>
                 </MenuItem>
-              )}
-            </Menu>
-            <ModeToggle setMode={setMode} setJoyMode={setJoyMode} />
-          </Box>
-          <Box sx={{ flexGrow: '0 !important', display: 'block !important' }}>
-            <div style={{ position: 'relative' }}>
-              <NotificationIcon />
-            </div>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
+                    <Link to="/trending">
+                      Trending
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
+                    <Link to="/clubs">
+                      Clubs
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
+                    <Link to="/locations">
+                      Books Near Me
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
+                    <Link to="/reading-spots">
+                      Top Reading Spots
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
+                    <Link to="/user-reco-input">
+                      Build Recomendations
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
+                    <Link to="/recommended">
+                      Get Recomendations
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
+                    <Link to="/feed">
+                      Feed
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
+                    Notifications
+                  </Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+            <AutoStoriesIcon sx={{ display: { xs: 'flex !important', md: 'none !important', color: 'white !important' }, mr: 1 }} />
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              href="/home"
+              sx={{
+                mr: '2 !important',
+                display: { xs: 'flex !important', md: 'none !important' },
+                flexGrow: '1 !important',
+                fontFamily: 'monospace !important',
+                fontWeight: '700 !important',
+                letterSpacing: '.3rem !important',
+                color: 'white !important',
+                textDecoration: 'none !important',
+              }}
+            >
+              Nobe
+            </Typography>
+            <Box sx={{ flexGrow: '1 !important', display: { xs: 'none !important', md: 'flex !important' } }}>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                <StyledLink to="/trending">Trending</StyledLink>
+              </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                <StyledLink to="/clubs">Clubs</StyledLink>
+              </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                {user?.radius && user?.latitude && user?.latitude > 0 && user?.radius > 0
+                  ? <StyledButton onClick={handleLookForBooksClick}>Books Near Me</StyledButton>
+                  : (<StyledButton onClick={handleOpen}>Books Near Me</StyledButton>)}
+              </Button>
+              <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+                <Box sx={style}>
+                  <ModalClose
+                    variant="outlined"
+                    sx={{
+                      position: 'absolute',
+                      top: '16px',
+                      right: '16px',
+                      boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',
+                      borderRadius: '50%',
+                      bgcolor: 'background.body',
+                    }}
+                    onClick={() => handleClose()}
+                  />
+                  <NearBy />
+                </Box>
+              </Modal>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                <StyledLink to="/reading-spots">Top Reading Spots</StyledLink>
+              </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                <StyledLink to="/user-reco-input">Build Recomendations</StyledLink>
+              </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                <StyledLink to="/recommended">Get Recommendations</StyledLink>
+              </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                <StyledLink to="/feed">Feed</StyledLink>
+              </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                <StyledLink to="/booksearch">Book Search</StyledLink>
+              </Button>
+              <div style={{ position: 'relative' }}>
+                <IconButton style={{ width: '32px', margin: '10px' }} onClick={handleChatButtonClick}>
+                  <ChatIcon />
+                </IconButton>
+                {chatState && (
+                <Chat chatUser={chatUser} />
+                )}
+              </div>
+            </Box>
+            <Box sx={{ flexGrow: '0 !important', display: 'block !important' }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: '0 !important' }}>
+                <Avatar alt="pfp" src={loggedIn ? user?.picture : ''} />
+              </IconButton>
+              <Menu
+                sx={{ mt: '45px !important', display: 'block !important' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem
+                  onClick={handleCloseUserMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography textAlign="center">
+                    <Link to="/usersprofile">Profile</Link>
+                  </Typography>
+                </MenuItem>
+                {loggedIn ? (
+                  <>
+                    <MenuItem
+                      onClick={logout}
+                      sx={{
+                        display: 'block !important', padding: '8px !important',
+                      }}
+                    >
+                      <Typography textAlign="center">
+                        Logout
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem
+                      sx={{
+                        display: 'block !important', padding: '8px !important',
+                      }}
+                    >
+                      <Typography textAlign="center">
+                        <Link to="/usersettings">Settings</Link>
+                      </Typography>
+                    </MenuItem>
+
+                  </>
+                ) : (
+                  <MenuItem sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                  >
+                    <Typography textAlign="center">
+                      <Link to="/login">
+                        Login
+
+                    </Link>
+                    </Typography>
+                  </MenuItem>
+                )}
+              </Menu>
+              <ModeToggle setMode={setMode} setJoyMode={setJoyMode} />
+            </Box>
+            <Box sx={{ flexGrow: '0 !important', display: 'block !important' }}>
+              <div style={{ position: 'relative' }}>
+                <NotificationIcon />
+              </div>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </MaxWidthDiv>
   );
 }
 export default ResponsiveAppBar;

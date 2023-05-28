@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import Box from '@mui/joy/Box';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -9,7 +8,6 @@ import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { maxWidth } from '@mui/system';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
@@ -17,7 +15,6 @@ import BigBook from './BookBig';
 import LendingLibraryButton from '../Button/LendingLibraryButton';
 import NearMeButton from '../Button/NearMeButton';
 import { Book } from '../../typings/types';
-import MaxWidthDiv from '../../hooks/MaxWidth';
 
 interface BigBookOverlayProps {
   bigBookPosition: {
