@@ -238,11 +238,13 @@ function ClubDiscussion() {
             <Dialog
               open={dialogOpen}
               onClose={() => setDialogOpen(false)}
+              maxWidth="sm"
+              fullWidth
             >
               <DialogTitle>Create a Thread</DialogTitle>
               <DialogContent>
                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-                  <FormControl>
+                  <FormControl style={{ width: '100%' }}>
                     <TextField
                       autoFocus
                       margin="dense"
