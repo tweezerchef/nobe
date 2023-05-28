@@ -126,6 +126,85 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
     res.status(500).json({ error: 'Server error' });
   }
 });
+LocationRoute.get('/locations/book', async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const {
+      lon, lat, radius, bookId,
+    } = req.query;
+
+    //  coordinates are sent in the request body
+    if (!lat || !lon || !radius || Array.isArray(bookId) || typeof bookId !== 'string') {
+      return res.status(400).json({ error: 'Missing coordinates or radius' });
+    }
+    // Cast lat, lon, and radius to numbers
+
+    const latNum = Number(lat);
+    const lonNum = Number(lon);
+    const radiusNum = Number(radius);
+
+    const users = await prisma.user.findMany({
+      where: {
+        AND: [
+          {
+            latitude: {
+              gte: latNum - radiusNum / 69.0,
+              lte: latNum + radiusNum / 69.0,
+            },
+          },
+          {
+            longitude: {
+              gte: lonNum - radiusNum / (69.0 * Math.cos(latNum * Math.PI / 180.0)),
+              lte: lonNum + radiusNum / (69.0 * Math.cos(latNum * Math.PI / 180.0)),
+            },
+          },
+          {
+            UserBooks: {
+              some: {
+                booksId: bookId,
+                owned: true,
+              },
+            },
+          },
+        ],
+      },
+      select: {
+        // include all columns from the books table
+        id: true,
+        firstName: true,
+        username: true,
+        email: true,
+        googleId: true,
+        lastName: true,
+        picture: true,
+        UserBooks: true,
+      },
+    });
+
+    // filter out users the users that don't have any userbooks
+    const usersWithBooks = users.filter((user: any) => user.UserBooks.length > 0);
+
+    // const userBooksArray = usersWithBooks.map((user: any) => {
+    //   // remove any userbooks array that is the own user
+    //   if (user.id !== id) {
+    //     const userBooks = user.UserBooks;
+    //     return userBooks;
+    //   }
+    // });
+    // flatten array so that it is an array of userbooks w/o the user object
+    // const flatUserBooksArray = userBooksArray.flat();
+    // filter out any userbooks that in the flatUserBooksArray that have the same book.id as the numbers in the bookIds array
+    // const filteredUserBooksArray = flatUserBooksArray.filter((userBook: any) => {
+    //   if (userBook && userBook.booksId) {
+    //     return wishlistBookIds.includes(userBook.booksId);
+    //   }
+    //   return false;
+    // });
+
+    res.status(200).send(usersWithBooks);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 LocationRoute.get('/locations/login', async (req: AuthenticatedRequest, res: Response) => {
   // console.log(req, 21);
   // console.log(req, 26);
