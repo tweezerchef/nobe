@@ -14,7 +14,10 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Book from '../Book/HomeBook';
+import MaxWidthDiv from '../../hooks/MaxWidth';
 
 interface ExploreBooksProps {
   ourBooks: OurBooks[];
@@ -26,6 +29,8 @@ interface OurBooks {
 }
 
 function ExploreBooks({ ourBooks, nearMeBooks }: ExploreBooksProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [books, setBooks] = useState<Book[]>([]);
@@ -118,156 +123,160 @@ function ExploreBooks({ ourBooks, nearMeBooks }: ExploreBooksProps) {
   }, []);
 
   return (
-    <Box>
-      <Divider textAlign="right">
-        <Box
-          component="form"
-          onSubmit={(event) => {
-            event.preventDefault(); // Prevent form submission
-          }}
-          sx={{
-            '& > :not(style)': { m: 1, width: '350px' },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <Autocomplete
-            id="combo-box-demo"
-            options={ourBooks}
-            getOptionLabel={(option: OurBooks) => (option.title)}
-            sx={{ width: 350 }}
-            disablePortal
-            onInputChange={(event, newInputValue) => {
-              setInputValue(newInputValue);
+    <MaxWidthDiv>
+      <Box>
+        <Divider textAlign="right">
+          <Box
+            component="form"
+            onSubmit={(event) => {
+              event.preventDefault(); // Prevent form submission
             }}
-            onChange={(event: any, newValue: OurBooks | null) => {
-              setLoading(true); // set loading before request
-              if (newValue) {
-                setSearchText(newValue.id);
-                handleSearch(newValue.id);
-              } else {
-                setSearchText('');
-              }
+            sx={{
+              '& > :not(style)': { m: 1, width: '350px' },
             }}
-            onBlur={() => {
-              setLoading(true); // set loading before request
-              handleSearchOnBlur();
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                id="Search"
-                label="Search for a book"
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <IconButton type="submit" onClick={() => setLoading(true)}>
-                        {!loading && <SearchOutlinedIcon />}
-                      </IconButton>
-                      {loading && <CircularProgress size={20} />}
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      borderColor: 'black',
-                      borderRadius: 6,
-                      width: '350px',
-                    },
-                    '& input': {
-                      width: '100%', // Adjust these values as needed
-                      color: 'black',
-                    },
-                  },
-                }}
-              />
-            )}
-          />
-        </Box>
-      </Divider>
-
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          alignContent: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          height: '30vh',
-          marginTop: '1.5vh',
-        }}
-      >
-        <IconButton
-          onClick={handlePrevPage}
-          sx={{
-            marginRight: 10, padding: 0, alignSelf: 'center', justifySelf: 'start',
-
-          }}
-          disabled={currentPage === 0}
-        >
-          <NavigateBeforeIcon />
-        </IconButton>
-
-        <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
-          {books.map((book, index) => (
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                display: currentPage === index ? 'block' : 'none',
+            noValidate
+            autoComplete="off"
+          >
+            <Autocomplete
+              id="combo-box-demo"
+              options={ourBooks}
+              getOptionLabel={(option: OurBooks) => (option.title)}
+              sx={{ width: 350 }}
+              disablePortal
+              onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue);
               }}
-            >
-              <Slide direction={slideDirection} in={currentPage === index}>
-                <Stack
-                  spacing={2}
-                  direction="row"
-                  maxWidth="100%"
-                  maxHeight="100%"
-                  alignContent="center"
-                  justifyContent="center"
-                >
-                  {books
-                    .slice(
-                      index * booksPerPage,
-                      index * booksPerPage + booksPerPage,
-                    )
-                  // eslint-disable-next-line @typescript-eslint/no-shadow
-                    .map((book: Book) => (
-                      <Box>
-                        <Book
-                          book={book}
-                          onClick={handleBookClick}
-                          onClose={handleBigBookClose}
-                          showBigBook={showBigBook && book === selectedBook}
-                          bigBookPosition={bigBookPosition}
-                          nearMeBooks={nearMeBooks}
-                        />
-                      </Box>
-                    ))}
-                </Stack>
-              </Slide>
-            </Box>
-          ))}
+              onChange={(event: any, newValue: OurBooks | null) => {
+                setLoading(true); // set loading before request
+                if (newValue) {
+                  setSearchText(newValue.id);
+                  handleSearch(newValue.id);
+                } else {
+                  setSearchText('');
+                }
+              }}
+              onBlur={() => {
+                setLoading(true); // set loading before request
+                handleSearchOnBlur();
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  id="Search"
+                  label="Search for a book"
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <IconButton type="submit" onClick={() => setLoading(true)}>
+                          {!loading && <SearchOutlinedIcon />}
+                        </IconButton>
+                        {loading && <CircularProgress size={20} />}
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'black',
+                        borderRadius: 6,
+                        width: '350px',
+                      },
+                      '& input': {
+                        width: '100%', // Adjust these values as needed
+                        color: 'black',
+                      },
+                    },
+                  }}
+                />
+              )}
+            />
+          </Box>
+        </Divider>
 
-        </Box>
-
-        <IconButton
-          onClick={handleNextPage}
+        <Box
           sx={{
-            marginLeft: 10, marginRight: 1, padding: 0, alignSelf: 'center', justifySelf: 'end',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            alignContent: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: isMobile ? '80vw' : '20vw',
+            maxHeight: isMobile ? '80vw' : '370px',
+            marginTop: isMobile ? '.2vh' : '1.5vh',
+            paddingBottom: '0',
           }}
-          disabled={currentPage >= Math.ceil((books.length || 0) / booksPerPage) - 1}
         >
-          <NavigateNextIcon />
-        </IconButton>
+          <IconButton
+            onClick={handlePrevPage}
+            sx={{
+              marginRight: 10, padding: 0, alignSelf: 'center', justifySelf: 'start',
+
+            }}
+            disabled={currentPage === 0}
+          >
+            <NavigateBeforeIcon />
+          </IconButton>
+
+          <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
+            {books.map((book, index) => (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  display: currentPage === index ? 'block' : 'none',
+                }}
+              >
+                <Slide direction={slideDirection} in={currentPage === index}>
+                  <Stack
+                    spacing={2}
+                    direction="row"
+                    maxWidth="100%"
+                    maxHeight="100%"
+                    alignContent="center"
+                    justifyContent="center"
+                  >
+                    {books
+                      .slice(
+                        index * booksPerPage,
+                        index * booksPerPage + booksPerPage,
+                      )
+                    // eslint-disable-next-line @typescript-eslint/no-shadow
+                      .map((book: Book) => (
+                        <Box>
+                          <Book
+                            book={book}
+                            onClick={handleBookClick}
+                            onClose={handleBigBookClose}
+                            showBigBook={showBigBook && book === selectedBook}
+                            bigBookPosition={bigBookPosition}
+                            nearMeBooks={nearMeBooks}
+                          />
+                        </Box>
+                      ))}
+                  </Stack>
+                </Slide>
+              </Box>
+            ))}
+
+          </Box>
+
+          <IconButton
+            onClick={handleNextPage}
+            sx={{
+              marginLeft: 10, marginRight: 1, padding: 0, alignSelf: 'center', justifySelf: 'end',
+            }}
+            disabled={currentPage >= Math.ceil((books.length || 0) / booksPerPage) - 1}
+          >
+            <NavigateNextIcon />
+          </IconButton>
+        </Box>
       </Box>
-    </Box>
+    </MaxWidthDiv>
   );
 }
 export default ExploreBooks;

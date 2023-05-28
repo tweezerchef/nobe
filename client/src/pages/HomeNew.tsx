@@ -1,10 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import Hidden from '@mui/material/Hidden';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
@@ -17,6 +20,7 @@ import HomeFriends from '../components/HomePage/Friends';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 import FriendFinder from '../components/HomePage/FriendFinder';
+import MaxWidthDiv from '../hooks/MaxWidth';
 
 interface Friendship {
   id: string;
@@ -24,12 +28,15 @@ interface Friendship {
   friendId: string;
 
 }
+
 interface ourBooks {
   id: string;
   title: string;
 }
 
 function HomeNew() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [nearMeBooks, setNearMeBooks] = useState<string[]>([]);
   const [friendIdArray, setFriendIdArray] = useState<string[]>([]);
   const [ourBooks, setOurBooks] = useState<ourBooks[]>([]);
@@ -81,152 +88,192 @@ function HomeNew() {
     xs: 12, sm: 6, md: 4, lg: 3,
   } as const;
   return (
-    <Box sx={{
-      flexGrow: 1, overflow: 'clip', height: '98vh',
-    }}
-    >
-      <Grid
-        container
-        spacing={0}
-        sx={(theme) => ({
-          '--Grid-borderWidth': '1px',
-          borderTop: 'var(--Grid-borderWidth) solid',
-          borderColor: 'divider',
-          '& > div': {
-            borderRight: 'var(--Grid-borderWidth) solid',
-            borderBottom: 'var(--Grid-borderWidth) solid',
-            borderColor: 'divider',
-            ...(Object.keys(colWidth) as Array<keyof typeof colWidth>).reduce(
-              (result, key) => ({
-                ...result,
-                [`&:nth-of-type(${12 / colWidth[key]}n)`]: {
-                  [theme.breakpoints.only(key)]: {
-                    borderRight: 'none',
-                  },
-                },
-              }),
-              {},
-            ),
-          },
-        })}
+    <MaxWidthDiv>
+      <Box sx={{
+        flexGrow: 1, overflow: 'clip', height: '98vh', width: '100%',
+      }}
       >
         <Grid
-          xs={2.5}
-          sx={{
-            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '8vh',
-          }}
+          container
+          spacing={0}
+          sx={(theme) => ({
+            '--Grid-borderWidth': '1px',
+            borderTop: 'var(--Grid-borderWidth) solid',
+            borderColor: 'divider',
+            '& > div': {
+              borderRight: { xs: 'var(--Grid-borderWidth) solid', sm: 'none' },
+              borderBottom: 'var(--Grid-borderWidth) solid',
+              borderColor: 'divider',
+              ...(Object.keys(colWidth) as Array<keyof typeof colWidth>).reduce(
+                (result, key) => ({
+                  ...result,
+                  [`&:nth-of-type(${12 / colWidth[key]}n)`]: {
+                    [theme.breakpoints.only(key)]: {
+                      borderRight: 'none',
+                    },
+                  },
+                }),
+                {},
+              ),
+            },
+          })}
         >
-          <Box sx={{
-            width: '100%',
-            height: '23.48vh',
-            maxHeight: '200px',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            overflow: 'clip',
-            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
-          }}
+          <Grid
+            xs={2.5}
+            sx={{
+              position: 'sticky',
+              top: '0px',
+              height: '100vh',
+              paddingBottom: '8vh',
+              display: { xs: 'none', sm: 'block' },
+            }}
           >
-            <ProfileCard />
-          </Box>
-          <Box sx={{
-            width: '100%', maxHeight: '70vh', overflowY: 'auto', overflowX: 'clip',
-          }}
-          >
-            <Feed />
-          </Box>
-        </Grid>
-        <Grid xs={9.5} sx={{ height: '98vh', overflow: 'auto', paddingBottom: '9vh' }}>
-          <Stack
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            spacing={1}
+            <Box sx={{
+              width: '100%',
+              height: '23.48vh',
+              maxHeight: '215px',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              overflow: 'clip',
+              backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
+            }}
+            >
+              <ProfileCard />
+            </Box>
+            <Box sx={{
+              width: '100%', maxHeight: '70vh', overflowY: 'auto', overflowX: 'clip',
+            }}
+            >
+              <Feed />
+            </Box>
+          </Grid>
+          <Grid
+            xs={12}
+            sm={9.5}
             width="100%"
+            sx={{
+              height: '98vh', overflow: 'auto', paddingBottom: '9vh',
+            }}
           >
-            <Box
-              sx={{
-                width: '100%',
-                height: '23.48vh',
-                maxHeight: '200px',
-                backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <StyledDivider textAlign="right">
-              <Chip size="lg">
-                Your Wish List
-              </Chip>
-            </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '31vh', maxHeight: '33vh' }}>
-              <HomeWishList nearMeBooks={nearMeBooks} />
-            </Box>
-            <StyledDivider textAlign="left">
-              <FlameStyledChip size="lg">
-                Hot Places To Read
-              </FlameStyledChip>
-            </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '25vh', maxHeight: '33vh' }}>
-              <HomePlaces />
-            </Box>
-            <Box
-              sx={{
-                width: '100%',
-                height: '25vh',
-                backgroundImage: 'url(https://i.imgur.com/lAKiMMj.jpg',
-                backgroundSize: 'cover',
-                backgroundPosition: 'bottom',
-              }}
-            />
+            <Stack
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              spacing={1}
+              width="100%"
+            >
+              <Box
+                sx={{
+                  width: '100%',
+                  height: '23.48vh',
+                  maxHeight: '200px',
+                  backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              />
+              <StyledDivider textAlign="right">
+                <Chip size="lg">
+                  Your Wish List
+                </Chip>
+              </StyledDivider>
+              <Box
+                overflow="clip"
+                alignContent="center"
+                alignItems="center"
+                sx={{
+                  width: '100%',
+                  minHeight: isMobile ? '90vw' : '280px',
+                  maxHeight: isMobile ? '95vw' : '350px',
+                }}
+              >
+                <HomeWishList nearMeBooks={nearMeBooks} />
+              </Box>
+              <StyledDivider textAlign="left">
+                <FlameStyledChip size="lg">
+                  Hot Places To Read
+                </FlameStyledChip>
+              </StyledDivider>
+              <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '25vh', maxHeight: '33vh' }}>
+                <HomePlaces />
+              </Box>
+              <Box
+                sx={{
+                  width: '100%',
+                  height: '25vh',
+                  backgroundImage: 'url(https://i.imgur.com/lAKiMMj.jpg',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'bottom',
+                }}
+              />
 
-            <StyledDivider textAlign="right">
-              <Chip size="lg">
-                Let Us Guide You
-              </Chip>
-            </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '19vh', maxHeight: '33vh' /* adjust this */ }}>
-              {/* <HomeRecommendedBooks nearMeBooks={nearMeBooks}/> */}
-            </Box>
-            <StyledDivider textAlign="left">
-              <FlameStyledChip size="lg">
-                Books You Want In Your Hood
-              </FlameStyledChip>
-            </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '24vh', maxHeight: '29vh' /* adjust this */ }}>
-              <HomeNearMe />
-            </Box>
-            <Box
-              sx={{
-                width: '100%',
-                height: '25vh',
-                backgroundImage: 'url(https://i.imgur.com/3IgzOa8.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'top',
-              }}
-            />
-            <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '39vh', maxHeight: '43vh' /* adjust this */ }}>
-              {ourBooks
+              <StyledDivider textAlign="right">
+                <Chip size="lg">
+                  Let Us Guide You
+                </Chip>
+              </StyledDivider>
+              <Box
+                overflow="clip"
+                alignContent="center"
+                alignItems="center"
+                sx={{
+                  width: '100%',
+                  minHeight: isMobile ? '90vw' : '280px',
+                  maxHeight: isMobile ? '95vw' : '350px',
+                }}
+              >
+                {/* <HomeRecommendedBooks nearMeBooks={nearMeBooks}/> */}
+              </Box>
+              <StyledDivider textAlign="left">
+                <FlameStyledChip size="lg">
+                  Books You Want In Your Hood
+                </FlameStyledChip>
+              </StyledDivider>
+              <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '22vw', maxHeight: '24vw' /* adjust this */ }}>
+                <HomeNearMe />
+              </Box>
+              <Box
+                sx={{
+                  width: '100%',
+                  height: '25vh',
+                  backgroundImage: 'url(https://i.imgur.com/3IgzOa8.jpg)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'top',
+                }}
+              />
+              <Box
+                overflow="clip"
+                alignContent="center"
+                alignItems="center"
+                sx={{
+                  width: '100%',
+                  minHeight: isMobile ? '90vw' : '335px',
+                  maxHeight: isMobile ? '95vw' : '450px',
+                }}
+              >
+                {ourBooks
               && <HomeExploreBooks ourBooks={ourBooks} nearMeBooks={nearMeBooks} />}
 
-            </Box>
-            <StyledDivider textAlign="left">
-              <Chip size="lg">
-                <Diversity2Icon />
-                Friends
-              </Chip>
-            </StyledDivider>
-            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '31vh', maxHeight: '275vh' /* adjust this */ }}>
-              <HomeFriends friendIdArray={friendIdArray} />
-            </Box>
-            <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '38vh', maxHeight: '375px' /* adjust this */ }}>
-              {userId
+              </Box>
+              <StyledDivider textAlign="left">
+                <Chip size="lg">
+                  <Diversity2Icon />
+                  Friends
+                </Chip>
+              </StyledDivider>
+              <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '23vw', maxHeight: '25vw' /* adjust this */ }}>
+                <HomeFriends friendIdArray={friendIdArray} />
+              </Box>
+              <Box overflow="clip" alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" sx={{ width: '100%', minHeight: '25vw', maxHeight: '27vw' /* adjust this */ }}>
+                {userId
               && <FriendFinder friendIdArray={friendIdArray} userId={userId} />}
-            </Box>
-            <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px', width: '80%' }} />
-          </Stack>
+              </Box>
+              <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px' }} />
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </MaxWidthDiv>
   );
 }
 

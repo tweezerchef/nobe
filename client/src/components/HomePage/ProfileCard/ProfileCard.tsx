@@ -16,6 +16,7 @@ function ProfileCard() {
   const user = userContext?.user;
   const owned = user?.UserBooks?.filter((book) => book.owned === true).length;
   const wishlist = user?.UserBooks?.filter((book) => book.wishlist === true).length;
+  const username = user?.username ? user.username : user?.firstName;
 
   return (
 
@@ -28,7 +29,6 @@ function ProfileCard() {
         width: '100%',
         alignContent: 'center',
         justifyContent: 'center',
-        display: 'flex',
       }}
     >
       <Grid container spacing={2} direction="column">
@@ -49,20 +49,20 @@ function ProfileCard() {
             </Link>
             <Link to={`/profile/${user?.id}`}>
               <Typography variant="h5">
-                {user?.firstName}
+                {username}
               </Typography>
             </Link>
           </Stack>
         </Grid>
         <Divider sx={{ borderBottomWidth: 6, bgcolor: 'ThreeDDarkShadow' }} />
         <Box sx={{
-          display: 'flex', flexWrap: 'wrap', alignItems: 'center', alignContent: 'center', paddingLeft: '2rem', width: '100%', marginTop: '2rem', overflowBottom: 'clip',
+          alignItems: 'center', alignContent: 'center', paddingLeft: '3rem', width: '90%', marginTop: '2rem', overflowBottom: 'clip',
         }}
         >
           <Grid>
-            <Grid container spacing={3} alignContent="center" justifyContent="center" alignItems="center">
+            <Grid container spacing={4} alignContent="center" justifyContent="center" alignItems="center">
               <Grid>
-                <Typography variant="body1" align="left" sx={{ margin: '.2rem' }}>
+                <Typography variant="body1" align="center" sx={{ margin: '.1rem' }}>
                   Friends:
                   {' '}
                   {user?.friendships?.length}
@@ -71,7 +71,7 @@ function ProfileCard() {
                 </Typography>
               </Grid>
               <Grid>
-                <Typography variant="body1" align="left" sx={{ margin: '.2rem' }}>
+                <Typography variant="body1" align="center" sx={{ margin: '.1rem' }}>
                   Lending Library:
                   {' '}
                   {owned}
@@ -80,7 +80,7 @@ function ProfileCard() {
                 </Typography>
               </Grid>
               <Grid>
-                <Typography variant="body1" align="left" sx={{ margin: '.2rem' }}>
+                <Typography variant="body1" align="center" sx={{ margin: '.1rem' }}>
                   Wish List:
                   {' '}
                   {wishlist}
@@ -89,7 +89,7 @@ function ProfileCard() {
                 </Typography>
               </Grid>
               <Grid>
-                <Typography variant="body1" align="left" sx={{ margin: '.2rem' }}>
+                <Typography variant="body1" align="center" sx={{ margin: '.1rem' }}>
                   Clubs:
                   {' '}
                   {user?.clubMembers?.length}
@@ -98,7 +98,7 @@ function ProfileCard() {
                 </Typography>
               </Grid>
               <Grid>
-                <Typography variant="body1" align="left" sx={{ margin: '.2rem' }}>
+                <Typography variant="body1" align="center" sx={{ margin: '.1rem' }}>
                   Posts:
                   {' '}
                   {user?.Posts?.length}
