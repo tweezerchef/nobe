@@ -6,6 +6,7 @@ import {
   Experimental_CssVarsProvider as MaterialCssVarsProvider, useTheme as useMaterialTheme,
   THEME_ID,
 } from '@mui/material/styles';
+import styled from '@mui/system/styled';
 import Router from './Router';
 import ResponsiveAppBar from './components/Navbar/ResponsiveAppBar';
 import UserContext, { UserContextType } from './hooks/Context';
@@ -15,6 +16,14 @@ interface AppProps {
   setMaterialMode: () => void;
   setJoyMode: () => void;
 }
+const Container = styled('div')(({ theme }) => ({
+  maxWidth: '2000px', // or whatever max-width you want
+  margin: '0 auto', // centers your content
+  width: '100%',
+  [theme.breakpoints.down('md')]: {
+    padding: theme.spacing(0, 2), // Add some horizontal padding on smaller screens
+  },
+}));
 
 const materialTheme = materialExtendTheme();
 function App({ setMaterialMode, setJoyMode }: AppProps) {
@@ -66,14 +75,14 @@ function App({ setMaterialMode, setJoyMode }: AppProps) {
 
   return (
 
-    <div className="App">
+    <Container>
       <UserContext.Provider value={userContextValue}>
         <ChatContext.Provider value={chatContextValue}>
           <ResponsiveAppBar setMode={setMaterialMode} setJoyMode={setJoyMode} />
           {isLoading ? null : <Router />}
         </ChatContext.Provider>
       </UserContext.Provider>
-    </div>
+    </Container>
 
   );
 }

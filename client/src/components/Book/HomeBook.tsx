@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { maxWidth } from '@mui/system';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
@@ -16,6 +17,7 @@ import BigBook from './BookBig';
 import LendingLibraryButton from '../Button/LendingLibraryButton';
 import NearMeButton from '../Button/NearMeButton';
 import { Book } from '../../typings/types';
+import MaxWidthDiv from '../../hooks/MaxWidth';
 
 interface BigBookOverlayProps {
   bigBookPosition: {
@@ -107,7 +109,9 @@ const Book = React.memo(({
       sx={{
         width: isMobile ? '70vw' : '17vw',
         height: isMobile ? '62vw' : '18vw',
-        minHeight: isMobile ? '62vw' : '200px',
+        minHeight: isMobile ? '62vw' : '250px',
+        maxHeight: isMobile ? '62vw' : '325px',
+        maxWidth: isMobile ? '70vw' : '325px',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         display: 'flex',
         flexDirection: 'column',
@@ -197,7 +201,6 @@ const Book = React.memo(({
         )}
       </CardOverflow>
     </Card>
-
   );
 });
 
