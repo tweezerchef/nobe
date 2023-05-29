@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
 import UserContext from '../hooks/Context';
+import BigBook from '../components/Book/BookBig';
 
 interface Activity {
   createdAt: string;
@@ -31,6 +32,9 @@ interface Activity {
 
 export default function CustomizedTimeline() {
   const [activity, setActivity] = useState<Activity[]>([]);
+  const [showBigBook, setShowBigBook] = useState<any>(false);
+  const [book, setBook] = useState<any>(null);
+  // let book: any;
 
   const navigate = useNavigate();
 
@@ -46,14 +50,26 @@ export default function CustomizedTimeline() {
         },
       });
       setActivity(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const openBigBook = (obj: any) => {
+    setShowBigBook(true);
+    setBook(obj);
+  };
+
   useEffect(() => {
     getFeed();
   }, []);
+
+  if (showBigBook) {
+    return (
+      <BigBook book={book} id={userId} />
+    );
+  }
 
   return (
     <>
@@ -66,43 +82,46 @@ export default function CustomizedTimeline() {
             return -1;
           }
           return 0;
-        }).map((data: Activity) => (
-          <div className="container">
-            <div style={{ display: 'flex' }}>
-              <div style={{ margin: '3%' }}>
-                <Avatar onClick={() => navigate(`/profile/${data.user?.id}`)} src={data.user?.picture} />
-              </div>
-              <div style={{ marginTop: '3%', marginRight: '3%' }}>
-                <span style={{ fontWeight: 'bold' }} onClick={() => navigate(`/profile/${data.user?.id}`)}>
-                  {`${data.user.firstName}`}
-                </span>
-                <span style={{ marginLeft: '3%', color: 'grey' }}>
-                  {`${moment(data.createdAt).startOf('hour').fromNow()}`}
-                </span>
-                <div>
-                  {data.type.toLowerCase() === 'wishlist' ? (`Added ${data.book.title} to their wishlist`)
-                    : data.type.toLowerCase() === 'review' ? (
-                      (`Rated ${data.book.title} ${data.description} stars`)
-                    )
-                      : data.type.toLowerCase() === 'location' ? (
-                        (`Added ${data.description} as a reading spot`)
-                      )
-                        : (
-                          `Added ${data.book.title} to their owned books`
-                        )}
+        }).map((data: Activity) => {
+          
+          return (
+            <div className="container">
+              <div style={{ display: 'flex' }}>
+                <div style={{ margin: '3%' }}>
+                  <Avatar onClick={() => navigate(`/profile/${data.user?.id}`)} src={data.user?.picture} />
+                </div>
+                <div style={{ marginTop: '3%', marginRight: '3%' }}>
+                  <span style={{ fontWeight: 'bold' }} onClick={() => navigate(`/profile/${data.user?.id}`)}>
+                    {`${data.user.firstName}`}
+                  </span>
+                  <span style={{ marginLeft: '3%', color: 'grey' }}>
+                    {`${moment(data.createdAt).startOf('hour').fromNow()}`}
+                  </span>
                   <div>
-                    {data.type.toLowerCase() === 'wishlist' || data.type.toLowerCase() === 'owned' || data.type.toLowerCase() === 'review' ? (
-                      <img style={{ width: '200px' }} src={`${data.book.image}`} />
-                    ) : null}
+                    {data.type.toLowerCase() === 'wishlist' ? (`Added ${data.book.title} to their wishlist`)
+                      : data.type.toLowerCase() === 'review' ? (
+                        (`Rated ${data.book.title} ${data.description} stars`)
+                      )
+                        : data.type.toLowerCase() === 'location' ? (
+                          (`Added ${data.description} as a reading spot`)
+                        )
+                          : (
+                            `Added ${data.book.title} to their owned books`
+                          )}
+                    <div>
+                      {data.type.toLowerCase() === 'wishlist' || data.type.toLowerCase() === 'owned' || data.type.toLowerCase() === 'review' ? (
+                        <img style={{ width: '200px' }} src={`${data.book.image}`} onClick={() => openBigBook(data.book)} />
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <Divider />
-            {/* </CardContent>
+              <Divider />
+              {/* </CardContent>
           </Card> */}
-          </div>
-        ))
+            </div>
+          );
+        })
       )}
     </>
   );
