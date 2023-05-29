@@ -247,7 +247,7 @@ function HomeNew() {
                   </Chip>
                 </StyledDivider>
                 <Box
-                  overflow="clip"
+                  overflow="hidden"
                   alignContent="center"
                   alignItems="center"
                   sx={{
@@ -263,7 +263,16 @@ function HomeNew() {
                     Hot Places To Read
                   </FlameStyledChip>
                 </StyledDivider>
-                <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '25vh', maxHeight: '33vh' }}>
+                <Box
+                  overflow="clip"
+                  alignContent="center"
+                  alignItems="center"
+                  sx={{
+                    width: '100%',
+                    minHeight: isMobile ? '90vw' : '280px',
+                    maxHeight: isMobile ? '95vw' : '350px',
+                  }}
+                >
                   <HomePlaces />
                 </Box>
                 <Box

@@ -6,6 +6,8 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 import { Place } from '../../typings/types';
 import PlaceCard from './PlaceCard/PlaceCard';
 
@@ -21,6 +23,9 @@ function HomePlaces() {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [places, setPlaces] = useState([]);
+  const theme = useTheme();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const getPlaces = () => {
     axios.get('/places')
@@ -52,7 +57,9 @@ function HomePlaces() {
         alignContent: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '300px',
+        height: isMobile ? '80vw' : '20vw',
+        maxHeight: isMobile ? '80vw' : '370px',
+        marginTop: isMobile ? '.2vh' : '1.5vh',
         paddingBottom: '0',
       }}
     >

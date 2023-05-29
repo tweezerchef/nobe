@@ -6,10 +6,11 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import Slide from '@mui/material/Slide';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import UserContext from '../../hooks/Context';
 import { UserBook, User } from '../../typings/types';
 import Book from '../Book/HomeBook';
-import UserProfile from '../../pages/UserProfileNew';
 
 interface UserProfileLendingLibraryProps {
   nearMeBooks: string[];
@@ -24,6 +25,8 @@ function UserProfileLendingLibrary({ nearMeBooks, user }: UserProfileLendingLibr
   const [selectedBook, setSelectedBook] = useState(null);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const id = user?.id;
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleBookClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, book: any) => {
     const rect = (e.target as Element).getBoundingClientRect();
@@ -88,15 +91,15 @@ function UserProfileLendingLibrary({ nearMeBooks, user }: UserProfileLendingLibr
   return (
     <Box
       sx={{
-
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '30vh',
-        marginTop: '1.5vh',
+        height: isMobile ? '80vw' : '20vw',
+        maxHeight: isMobile ? '80vw' : '370px',
+        marginTop: isMobile ? '.2vh' : '1.5vh',
         paddingBottom: '0',
       }}
     >
