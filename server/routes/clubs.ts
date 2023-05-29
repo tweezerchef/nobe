@@ -118,7 +118,7 @@ ClubsRoute.put('/discussions/:id', async (req: Request, res: Response) => {
       where: {
         id,
       },
-      data: { image, title: bookTitle },
+      data: { image, bookTitle },
     });
     res.status(200).json(updatedDiscussion);
   } catch (err) {

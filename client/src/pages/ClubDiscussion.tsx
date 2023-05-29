@@ -145,6 +145,7 @@ function ClubDiscussion() {
         title: newDiscussionTitle,
         userId,
       });
+      console.log(response);
       setDiscussionList((discussions) => [...discussions, response.data]);
       setNewDiscussionTitle('');
       setDialogOpen(false);
@@ -191,11 +192,10 @@ function ClubDiscussion() {
         >
           <Box sx={{
             width: '100%',
-            height: '23.48vh',
-            maxHeight: '200px',
+            height: '200px',
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            overflow: 'clip',
+            backgroundPosition: 'right 40% bottom 69%',
+            overflow: 'hidden',
             backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
           }}
           >
@@ -220,7 +220,7 @@ function ClubDiscussion() {
             <Feed />
           </ScrollBar>
         </Grid>
-        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
+        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '6vh' }}>
           <ScrollBar
             style={{ overflow: 'hide' }}
             noScrollX
