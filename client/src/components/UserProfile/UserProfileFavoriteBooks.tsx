@@ -6,7 +6,8 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import Slide from '@mui/material/Slide';
-import UserContext from '../../hooks/Context';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { UserBook, User } from '../../typings/types';
 import Book from '../Book/HomeBook';
 
@@ -16,6 +17,8 @@ interface UserProfileFavoriteBooksProps {
 }
 
 function UserProfileFavoriteBooks({ nearMeBooks, user }: UserProfileFavoriteBooksProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [books, setBooks] = useState<Book[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [showBigBook, setShowBigBook] = useState(false);
@@ -82,15 +85,15 @@ function UserProfileFavoriteBooks({ nearMeBooks, user }: UserProfileFavoriteBook
   return (
     <Box
       sx={{
-
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '30vh',
-        marginTop: '1.5vh',
+        height: isMobile ? '80vw' : '20vw',
+        maxHeight: isMobile ? '80vw' : '370px',
+        marginTop: isMobile ? '.2vh' : '1.5vh',
         paddingBottom: '0',
       }}
     >

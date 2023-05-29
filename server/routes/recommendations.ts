@@ -19,6 +19,20 @@ async function findRandomRows(limit: number) {
   return randomRows;
 }
 
+function cleanAndRemoveDuplicates(data: string[]): string[] {
+  const cleanedArray: string[] = [];
+
+  data.forEach((element) => {
+    const cleanedElement = element.replace(/^["\n\s]+|["\n\s]+$/g, '').trim();
+
+    if (!cleanedArray.includes(cleanedElement)) {
+      cleanedArray.push(cleanedElement);
+    }
+  });
+
+  return cleanedArray;
+}
+
 Recommendations.get('/random', async (req : Request, res: Response) => {
   try {
     const amazonBooks = await findRandomRows(30);
@@ -99,14 +113,16 @@ Recommendations.get('/recommended/10', async (req : Request, res : Response) => 
     return acc;
   }, []).join(', ');
 
-  const content:string = `Please respond with 25 unique book titles in quotes with each separated by commas with no additional characters or information besides the title, as recommendations for somebody that likes these books ${topTitles} and dislikes these ${lowTitles} please try to create unique suggestions ones, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books`;
+  const content:string = `Please respond with 20 unique book titles in quotes with each separated by commas with no additional characters or information besides the title, as recommendations for somebody that likes these books ${topTitles} and dislikes these ${lowTitles} please try to create unique suggestions ones, find correlations that are drawn from what other people like the user like , and themes, but not necessarily genres and try to include a mix of 1/4 well know books and 3/4 lesser known books`;
 
   axios
     .get(`http://localhost:8080/openai?content=${content}`)
     .then((response) => response.data.split(','))
     .then(async (data) => {
-      const promises = data.map(async (book: any) => {
-        const data20 = await axios.get(`http://localhost:8080/google-books?title=${book}`);
+      const cleanData = await cleanAndRemoveDuplicates(data);
+      console.log('cleanData: ', cleanData);
+      const promises = cleanData.map(async (book: any) => {
+        const data20 = await axios.get(`http://localhost:8080/google-books/firstTitle?title=${book}`);
         const transFormedData = data20.data;
         //  console.log('TransFormedData: ', transFormedData)
         const { title } = transFormedData;
@@ -120,7 +136,9 @@ Recommendations.get('/recommended/10', async (req : Request, res : Response) => 
       });
       return Promise.all(promises);
     })
-    .then(() => (res.status(200).send(responseArray)))
+    .then(() => (
+      res.status(200).send(responseArray)
+    ))
     .catch((error) => console.error('Error:', error));
 });
 
@@ -144,23 +162,6 @@ Recommendations.get('/recommended/puto', async (req : Request, res : Response) =
         },
       });
     });
-
-    //   const data = await axios.get(`http://localhost:8080/google-books/ISBN10?ISBN10=${book.ISBN10}`);
-    //   data.data.forEach(async (book: any) => {
-    //     const {
-    //       title, authors, description, ISBN10, image,
-    //     } = book;
-    //     const newBook = await prisma.Books.create({
-    //       data: {
-    //         title,
-    //         authors,
-    //         description,
-    //         ISBN10,
-    //         image,
-    //       },
-    //     });
-    //   });
-    // });
 
     res.send(amazonArray);
   } catch (error) {

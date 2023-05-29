@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
 import Avatar from '@mui/material/Avatar';
@@ -57,6 +59,8 @@ function UserProfile() {
   const { chatState, setChatState, setChatUser } = useChatContext();
   const [loaded, setLoaded] = useState(false);
   const [nearMeBooks, setNearMeBooks] = useState<string[]>([]);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const userId: string = useParams().id || '';
   const userContext = useContext(UserContext);
@@ -262,7 +266,16 @@ function UserProfile() {
                       's Lending Library
                     </Chip>
                   </StyledDivider>
-                  <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '200px', maxHeight: '32vh' }}>
+                  <Box
+                    overflow="hidden"
+                    alignContent="center"
+                    alignItems="center"
+                    sx={{
+                      width: '100%',
+                      minHeight: isMobile ? '90vw' : '280px',
+                      maxHeight: isMobile ? '95vw' : '350px',
+                    }}
+                  >
                     { user
                 && (
                 <UserProfileLendingLibrary
@@ -278,7 +291,16 @@ function UserProfile() {
                       's Favorite Books
                     </FlameStyledChip>
                   </StyledDivider>
-                  <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '200px', maxHeight: '32vh' }}>
+                  <Box
+                    overflow="clip"
+                    alignContent="center"
+                    alignItems="center"
+                    sx={{
+                      width: '100%',
+                      minHeight: isMobile ? '90vw' : '280px',
+                      maxHeight: isMobile ? '95vw' : '350px',
+                    }}
+                  >
                     { user
                 && <UserProfileFavoriteBooks nearMeBooks={nearMeBooks} user={user} key={user.id} />}
                   </Box>

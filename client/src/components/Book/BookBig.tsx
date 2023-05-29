@@ -55,9 +55,15 @@ function BigBook(props: any) {
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   const [description, setDescription] = useState<string>('');
   const [userBooks, setUserBooks] = useState<any[]>([]);
-  // const [open, setOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const {
-    book, id, onClose, userRating, setUserRating,
+    book, id, onClose, userRating,
+    setUserRating,
+    isWishListed,
+    setIsWishListed,
+    isLendingLibrary,
+    setIsLendingLibrary,
   } = props;
   const { ISBN10 } = book;
 
@@ -105,6 +111,7 @@ function BigBook(props: any) {
           console.error(error);
         });
     }
+    setIsLoading(false);
   }, []);
 
   return (
@@ -113,6 +120,8 @@ function BigBook(props: any) {
       aria-describedby="modal-desc"
       // @ts-ignore
       open={open}
+      onClose={onClose}
+      transitionDuration={700}
       // onClose={() => setOpen(false)}
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
@@ -122,14 +131,16 @@ function BigBook(props: any) {
           variant="outlined"
           className={classes.card}
           sx={{
-            height: '60vh',
+            height: '67vh',
             width: '600px',
             boxShadow: '0px 0px 25px rgba(0, 0, 0, 0.6)',
-            maxHeight: '1000px',
+            maxHeight: '1500px',
             '@media (max-width: 768px)': {
               width: '80vw',
               height: '80vh',
             },
+            opacity: isLoading ? 0 : 1,
+            transition: 'opacity 0.25s ease-in-out',
           }}
         >
           <Box
@@ -165,7 +176,6 @@ function BigBook(props: any) {
                       height: '100%',
                       imageRendering: 'crisp-edges',
                     }}
-                    onClick={handleOnClick}
                   />
                 ) : (
                   <img
@@ -178,7 +188,6 @@ function BigBook(props: any) {
                       height: '100%',
                       imageRendering: 'crisp-edges',
                     }}
-                    onClick={handleOnClick}
                   />
                 )}
               </Box>
@@ -219,8 +228,20 @@ function BigBook(props: any) {
                   }}
                 >
                   <Stack direction="row" spacing={3} alignContent="center" alignItems="center">
-                    <LendingLibraryButtonBigBook padding="15px" margin="10rem" book={book} />
-                    <WishListButtonBigBook padding="15px" margin="10rem" book={book} />
+                    <LendingLibraryButtonBigBook
+                      padding="15px"
+                      margin="10rem"
+                      book={book}
+                      isLendingLibrary={isLendingLibrary}
+                      setIsLendingLibrary={setIsLendingLibrary}
+                    />
+                    <WishListButtonBigBook
+                      padding="15px"
+                      margin="10rem"
+                      book={book}
+                      isWishlisted={isWishListed}
+                      setIsWishlisted={setIsWishListed}
+                    />
 
                   </Stack>
                 </Box>
@@ -251,7 +272,7 @@ function BigBook(props: any) {
             flexGrow: 1,
             width: '100%',
             overflow: 'auto',
-            height: '150px',
+            maxHeight: '100%',
           }}
           >
             <Typography level="body1">
