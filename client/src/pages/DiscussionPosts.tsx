@@ -116,7 +116,6 @@ function DiscussionPosts() {
     // console.log(response);
     if (response.data && response.data.image) {
       setDiscussionImage(response.data.image);
-      console.l?og(response.data.image);
     }
     setBookTitle(response.data.bookTitle);
   }
