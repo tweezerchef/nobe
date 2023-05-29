@@ -16,6 +16,7 @@ import AspectRatio from '@mui/joy/AspectRatio';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
+import ScrollBar from 'react-scrollbars-custom';
 import { ClubHeader, ClubDescription } from './style';
 import JoinClubButton from '../components/Button/JoinClubButton';
 import '../styles/clubDiscussionStyle.css';
@@ -24,6 +25,7 @@ import UserContext from '../hooks/Context';
 import Feed from './Feed';
 import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
+import styled from 'styled-components';
 import { Discussion } from '../typings/types';
 
 interface Club {
@@ -33,6 +35,30 @@ interface Club {
   image: string;
   clubMembers: string[];
 }
+
+const StyledTrack = styled.div`
+    background-color: #f1f1f1;
+    left: 2px !important;
+`;
+const StyledTrackHome = styled.div`
+    background-color: #f1f1f1;
+    height: 100%;
+`;
+
+const StyledThumb = styled.div`
+    background-color: #888;
+    border-radius: 3px;
+`;
+const TrackYHome = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledTrackHome {...props} ref={ref} />,
+);
+
+const TrackY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledTrack {...props} ref={ref} />,
+);
+const ThumbY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledThumb {...props} ref={ref} />,
+);
 
 function ClubDiscussion() {
   const [thisClub, setClub] = useState<Club[]>([]);
@@ -166,9 +192,23 @@ function ClubDiscussion() {
             <ProfileCard />
             {/* <HomeUserDisplay /> */}
           </Box>
-          <Box sx={{ width: '100%', maxHeight: '80vh', overflow: 'auto' }}>
+          <ScrollBar
+            style={{ width: '100%', height: '100%' }}
+            trackYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <TrackY {...restProps} ref={elementRef} />;
+              },
+            }}
+            thumbYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <ThumbY {...restProps} ref={elementRef} />;
+              },
+            }}
+          >
             <Feed />
-          </Box>
+          </ScrollBar>
         </Grid>
         <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
           <Box

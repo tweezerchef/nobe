@@ -15,6 +15,8 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
+import ScrollBar from 'react-scrollbars-custom';
+import styled from 'styled-components';
 import Feed from './Feed';
 // import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
@@ -47,6 +49,30 @@ interface Club {
   image: string;
   clubMembers: string[];
 }
+
+const StyledTrack = styled.div`
+    background-color: #f1f1f1;
+    left: 2px !important;
+`;
+const StyledTrackHome = styled.div`
+    background-color: #f1f1f1;
+    height: 100%;
+`;
+
+const StyledThumb = styled.div`
+    background-color: #888;
+    border-radius: 3px;
+`;
+const TrackYHome = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledTrackHome {...props} ref={ref} />,
+);
+
+const TrackY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledTrack {...props} ref={ref} />,
+);
+const ThumbY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledThumb {...props} ref={ref} />,
+);
 
 function DiscussionPosts() {
   const { id } = useParams<{ id: string }>();
@@ -194,9 +220,23 @@ function DiscussionPosts() {
             <ProfileCard />
             {/* <HomeUserDisplay /> */}
           </Box>
-          <Box sx={{ width: '100%', maxHeight: '80vh', overflow: 'auto' }}>
+          <ScrollBar
+            style={{ width: '100%', height: '100%' }}
+            trackYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <TrackY {...restProps} ref={elementRef} />;
+              },
+            }}
+            thumbYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <ThumbY {...restProps} ref={elementRef} />;
+              },
+            }}
+          >
             <Feed />
-          </Box>
+          </ScrollBar>
         </Grid>
         <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
           <Box
