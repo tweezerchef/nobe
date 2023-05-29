@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
+import React, { useContext, useEffect, useState } from 'react';
 import Card from '@mui/joy/Card';
 import Box from '@mui/joy/Box';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -9,7 +8,6 @@ import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { maxWidth } from '@mui/system';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
@@ -17,7 +15,6 @@ import BigBook from './BookBig';
 import LendingLibraryButton from '../Button/LendingLibraryButton';
 import NearMeButton from '../Button/NearMeButton';
 import { Book } from '../../typings/types';
-import MaxWidthDiv from '../../hooks/MaxWidth';
 
 interface BigBookOverlayProps {
   bigBookPosition: {
@@ -47,9 +44,9 @@ box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.15);
 
 const useStyles = makeStyles({
   card: {
-    backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
+    transition: 'background-image 0.3s ease-in-out',
   },
 });
 
@@ -62,10 +59,14 @@ const Book = React.memo(({
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
+  const [bottomColor, setBottomColor] = useState<string>('');
+  const storedMode = localStorage.getItem('mode');
 
   if (!book) {
     return null;
   }
+
   const [userRating, setUserRating] = React.useState<number>(0);
   const maxCharacters = 45;
   const ellipsisCharacters = 10; // Number of characters to show before the ellipsis
@@ -74,6 +75,15 @@ const Book = React.memo(({
   if (book.title.length > maxCharacters) {
     displayedTitle = `${book.title.substring(0, maxCharacters - ellipsisCharacters)}...`;
   }
+
+  useEffect(() => {
+    const newBackgroundImageUrl = storedMode === 'dark'
+      ? 'url("https://nobe.s3.us-east-2.amazonaws.com/blackBook.jpg")'
+      : 'url("https://i.imgur.com/Mjey231.jpg")';
+    const newBottomColor = storedMode === 'dark' ? 'rgba(37, 37, 37, 0.6)' : 'rgba(236, 216, 198, 0.582)';
+    setBottomColor(newBottomColor);
+    setBackgroundImageUrl(newBackgroundImageUrl);
+  }, [storedMode]);
 
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     onClick(e, book);
@@ -115,6 +125,7 @@ const Book = React.memo(({
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         display: 'flex',
         flexDirection: 'column',
+        backgroundImage: backgroundImageUrl,
       }}
     >
       <Box
@@ -183,7 +194,7 @@ const Book = React.memo(({
           gap: 1.5,
           py: 1.5,
           px: 'var(--Card-padding)',
-          bgcolor: '#ecd8c6',
+          bgcolor: bottomColor,
           justifyContent: 'center',
           alignItems: 'center',
         }}
