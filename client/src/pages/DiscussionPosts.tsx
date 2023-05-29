@@ -112,12 +112,14 @@ function DiscussionPosts() {
   }, false);
 
   async function fetchImage() {
-    const response = await axios.get(`/api/clubs/discussions/${id}`);
-    // console.log(response);
-    if (response.data && response.data.image) {
-      setDiscussionImage(response.data.image);
+    try {
+      const response = await axios.get(`/api/clubs/discussions/${id}`);
+      if (response.data && response.data.image) {
+        setDiscussionImage(response.data.image);
+      }
+    } catch (error) {
+      console.error(error);
     }
-    setBookTitle(response.data.bookTitle);
   }
 
   useEffect(() => {
