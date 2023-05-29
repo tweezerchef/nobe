@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
+import React, { useContext, useEffect, useState } from 'react';
 import Card from '@mui/joy/Card';
 import Box from '@mui/joy/Box';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -7,6 +6,8 @@ import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import WishListButton from '../Button/WishListButton';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserContext from '../../hooks/Context';
@@ -43,31 +44,46 @@ box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.15);
 
 const useStyles = makeStyles({
   card: {
-    backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
+    transition: 'background-image 0.3s ease-in-out',
   },
 });
 
 const Book = React.memo(({
   nearMeBooks, book, onClose, onClick, showBigBook, bigBookPosition,
 }: HomeBookProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
+  const [bottomColor, setBottomColor] = useState<string>('');
+  const storedMode = localStorage.getItem('mode');
 
   if (!book) {
     return null;
   }
+
   const [userRating, setUserRating] = React.useState<number>(0);
-  const maxCharacters = 50;
+  const maxCharacters = 45;
   const ellipsisCharacters = 10; // Number of characters to show before the ellipsis
 
   let displayedTitle = book.title;
   if (book.title.length > maxCharacters) {
     displayedTitle = `${book.title.substring(0, maxCharacters - ellipsisCharacters)}...`;
   }
+
+  useEffect(() => {
+    const newBackgroundImageUrl = storedMode === 'dark'
+      ? 'url("https://nobe.s3.us-east-2.amazonaws.com/blackBook.jpg")'
+      : 'url("https://i.imgur.com/Mjey231.jpg")';
+    const newBottomColor = storedMode === 'dark' ? 'rgba(37, 37, 37, 0.6)' : 'rgba(236, 216, 198, 0.582)';
+    setBottomColor(newBottomColor);
+    setBackgroundImageUrl(newBackgroundImageUrl);
+  }, [storedMode]);
 
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     onClick(e, book);
@@ -101,13 +117,15 @@ const Book = React.memo(({
       variant="outlined"
       className={classes.card}
       sx={{
-        width: '17vw',
-        height: '27vh',
-        minHeight: '200px',
-        margin: '.2vh',
+        width: isMobile ? '70vw' : '17vw',
+        height: isMobile ? '62vw' : '18vw',
+        minHeight: isMobile ? '62vw' : '250px',
+        maxHeight: isMobile ? '62vw' : '325px',
+        maxWidth: isMobile ? '70vw' : '325px',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         display: 'flex',
         flexDirection: 'column',
+        backgroundImage: backgroundImageUrl,
       }}
     >
       <Box
@@ -147,7 +165,7 @@ const Book = React.memo(({
         sx={{
           mt: 2.4,
           overflow: 'hidden',
-          whiteSpace: 'normal',
+          whiteSpace: isMobile ? 'wrap' : 'normal',
           flexWrap: 'wrap',
           textAlign: 'center',
         }}
@@ -160,7 +178,7 @@ const Book = React.memo(({
         sx={{
           mt: 'auto',
           mb: 'auto',
-          whiteSpace: 'nowrap',
+          whiteSpace: isMobile ? 'wrap' : 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           textAlign: 'center',
@@ -176,7 +194,7 @@ const Book = React.memo(({
           gap: 1.5,
           py: 1.5,
           px: 'var(--Card-padding)',
-          bgcolor: '#ecd8c6',
+          bgcolor: bottomColor,
           justifyContent: 'center',
           alignItems: 'center',
         }}
@@ -194,7 +212,6 @@ const Book = React.memo(({
         )}
       </CardOverflow>
     </Card>
-
   );
 });
 

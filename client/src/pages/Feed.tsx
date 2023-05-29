@@ -5,7 +5,7 @@ import {
 } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-
+import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
@@ -56,7 +56,7 @@ export default function CustomizedTimeline() {
   }, []);
 
   return (
-    <>
+    <Box ml={2} mr={2}>
       {activity.length === 0 && <div>loading</div>}
       {activity.length > 0 && (
         activity.sort((a, b) => {
@@ -104,6 +104,6 @@ export default function CustomizedTimeline() {
           </div>
         ))
       )}
-    </>
+    </Box>
   );
 }

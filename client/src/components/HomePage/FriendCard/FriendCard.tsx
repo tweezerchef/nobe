@@ -6,6 +6,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { makeStyles } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import { User } from '../../../typings/types';
 import FollowButton from '../../Button/FollowButton';
 
@@ -18,6 +21,10 @@ function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
   const user = userFriend;
   const owned = user?.UserBooks?.filter((book) => book.owned === true).length;
   const wishlist = user?.UserBooks?.filter((book) => book.wishlist === true).length;
+  const username = user?.username ? user.username : user?.firstName;
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
 
@@ -26,10 +33,13 @@ function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
         flexGrow: 1,
         backgroundColor: '#dce9f39b',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
-        minHeight: '28vh',
-        maxHeight: '250px',
+        width: isMobile ? '70vw' : '18vw',
+        height: isMobile ? '55vw' : '16vw',
+        minHeight: isMobile ? '55vw' : '220px',
+        maxHeight: isMobile ? '55vw' : '270px',
+        minWidth: isMobile ? '70vw' : '250px',
+        maxWidth: isMobile ? '70vw' : '300px',
         marginTop: '1.5vh',
-        width: '20vw',
         overflow: 'hidden',
         flexDirection: 'column',
         alignContent: 'center',
@@ -38,23 +48,24 @@ function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
         borderRadius: '3rem',
       }}
     >
-      <Grid container spacing={1} direction="column">
+
+      <Grid container spacing={1} direction="column" sx={{ position: 'relative' }}>
+        <FollowButton userId={userId} friendIdArray={friendIdArray} friendId={user?.id} />
         <Grid>
           <Stack direction="column" spacing={1} alignItems="center">
             <Link to={`/profile/${user?.id}`}>
               <Avatar
                 src={user?.picture}
                 alt={user?.firstName}
-                style={{
-                  width: '5rem',
-                  height: '5rem',
-                  marginTop: '1.5rem',
+                sx={{
+                  width: '4.8rem',
+                  height: '4.8rem',
                 }}
               />
             </Link>
             <Link to={`/profile/${user?.id}`}>
               <Typography variant="h5">
-                {user?.firstName}
+                {username}
               </Typography>
             </Link>
           </Stack>
@@ -112,12 +123,6 @@ function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
                 </Typography>
               </Grid>
             </Grid>
-            <Box sx={{
-              display: 'flex', justifyContent: 'center', alignItems: 'center', alignContent: 'center', marginTop: '.5rem', marginBottom: '1rem', flexGrow: 1,
-            }}
-            >
-              <FollowButton userId={userId} friendIdArray={friendIdArray} friendId={user?.id} />
-            </Box>
           </Grid>
         </Box>
       </Grid>

@@ -1,5 +1,4 @@
-import * as React from 'react';
-import type { } from '@mui/material/themeCssVarsAugmentation';
+import React from 'react';
 import {
   useColorScheme as useMaterialColorScheme,
   Experimental_CssVarsProvider as MaterialCssVarsProvider,
@@ -27,17 +26,19 @@ function ModeToggle({ setMode, setJoyMode }: ModeToggleProps) {
     setMounted(true);
   }, []);
 
+  const handleModeChange = () => {
+    const newMode = mode === 'dark' ? 'light' : 'dark';
+    setMode(newMode);
+    setJoyMode(newMode);
+    localStorage.setItem('mode', newMode);
+  };
+
   if (!mounted) {
     return null;
   }
 
   return (
-    <IconButton
-      onClick={() => {
-        setMode(mode === 'dark' ? 'light' : 'dark');
-        setJoyMode(mode === 'dark' ? 'light' : 'dark');
-      }}
-    >
+    <IconButton onClick={handleModeChange}>
       {mode === 'dark' ? <DarkMode /> : <LightMode />}
     </IconButton>
   );
