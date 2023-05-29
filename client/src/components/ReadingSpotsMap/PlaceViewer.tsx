@@ -99,13 +99,13 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
         userId,
         Review: userReview,
         googlePlaceId,
-      }).then((response) => { console.log(response.data); });
-      // Clear the input field after submission
+      });
       setUserReview('');
     } catch (error) {
       console.error('Error submitting review:', error);
     }
   };
+
   const handleNextPage = () => {
     if (
       currentPage
@@ -137,7 +137,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                   image={image || undefined}
                   title={place?.name}
                 />
-                <CardContent sx={{ padding: 0, margin: 0 }}>
+                <CardContent sx={{ padding: 0, ml: 3 }}>
                   <Typography variant="h5">
                     {place?.name}
                     {appFavorite && (
@@ -163,39 +163,41 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
                   </Typography>
                   <Rating name="read-only" value={Number(place?.rating)} readOnly />
                   <Box display="flex" alignItems="flex-start">
-                    <Box display="flex" flexDirection="column" alignItems="center">
-
-                      <Box>
-                        {place && reviews && reviews.length ? (
-                          <>
-                            <IconButton onClick={handlePrevPage} disabled={currentPage === 0}>
-                              <KeyboardArrowUpIcon />
-                            </IconButton>
-                            {reviews
-                              .slice(
-                                currentPage * reviewsPerPage,
-                                currentPage * reviewsPerPage + reviewsPerPage,
-                              )
-                              .map((review, index) => (
-                                <React.Fragment key={index}>
-                                  <ReviewPopOver review={review} />
-                                  <Divider />
-                                </React.Fragment>
-                              ))}
-                            <IconButton
-                              onClick={handleNextPage}
-                              disabled={
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                      sx={{ cursor: 'pointer' }}
+                    >
+                      {place && reviews && reviews.length ? (
+                        <>
+                          <IconButton onClick={handlePrevPage} disabled={currentPage === 0}>
+                            <KeyboardArrowUpIcon />
+                          </IconButton>
+                          {reviews
+                            .slice(
+                              currentPage * reviewsPerPage,
+                              currentPage * reviewsPerPage + reviewsPerPage,
+                            )
+                            .map((review, index) => (
+                              <React.Fragment key={index}>
+                                <ReviewPopOver review={review} />
+                                <Divider />
+                              </React.Fragment>
+                            ))}
+                          <IconButton
+                            onClick={handleNextPage}
+                            disabled={
         currentPage
         >= Math.ceil((reviews.length || 0) / reviewsPerPage) - 1
       }
-                            >
-                              <KeyboardArrowDownIcon />
-                            </IconButton>
-                          </>
-                        ) : (
-                          <Typography>Loading reviews...</Typography>
-                        )}
-                      </Box>
+                          >
+                            <KeyboardArrowDownIcon />
+                          </IconButton>
+                        </>
+                      ) : (
+                        <Typography>Loading reviews...</Typography>
+                      )}
                     </Box>
                     <Box sx={{ marginLeft: 2, display: 'flex', flexDirection: 'column' }}>
                       <TextField

@@ -33,13 +33,16 @@ const UserReview: React.FC<UserReviewProps> = ({
       .then((res) => {
       // Ensure that res.data is indeed a UserBook
         setUserBooks((prevUserBooks: any[]) => {
-          if (prevUserBooks.length === 0) {
+          if (!prevUserBooks || prevUserBooks.length === 0) {
             return [res.data];
           }
           return [res.data, ...prevUserBooks];
         });
       })
-      .then(handleClose);
+      .then(handleClose)
+      .catch((error) => {
+        console.error('Failed to add review:', error);
+      });
   };
 
   return (

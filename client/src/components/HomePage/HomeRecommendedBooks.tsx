@@ -66,8 +66,33 @@ function HomeRecommendedBooks({ nearMeBooks }: ExploreBooksProps) {
   };
 
   const getRecommendations = () => {
-    axios.get(`/recommendations/recommended/10/?id=${id}`).then((res) => setBooks(res.data)).then(() => setLoading(false));
+    const localStorageData = localStorage.getItem('recommendationsData');
+    const localStorageTimestamp = localStorage.getItem('recommendationsTimestamp');
+    const currentTime = new Date().getTime();
+
+    if (
+      localStorageData
+      && localStorageTimestamp
+      && currentTime - parseInt(localStorageTimestamp, 10) < 10 * 60 * 60 * 1000
+    ) {
+      // Data exists in local storage and it's within the 10-minute threshold
+      setBooks(JSON.parse(localStorageData));
+      setLoading(false);
+    } else {
+      axios.get(`/recommendations/recommended/10/?id=${id}`)
+        .then((res) => {
+          setBooks(res.data);
+          setLoading(false);
+          localStorage.setItem('recommendationsData', JSON.stringify(res.data));
+          localStorage.setItem('recommendationsTimestamp', currentTime.toString());
+        })
+        .catch((error) => {
+          console.error('Error fetching recommendations:', error);
+          setLoading(false);
+        });
+    }
   };
+
   const booksPerPage = 4;
 
   const handleNextPage = () => {

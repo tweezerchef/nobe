@@ -148,10 +148,11 @@ const Book = React.memo(({
       variant="outlined"
       className={classes.card}
       sx={{
-        width: isMobile ? '70vw' : '17vw',
-        height: isMobile ? '62vw' : '18vw',
+        width: isMobile ? '70vw' : '18vw',
+        height: isMobile ? '62vw' : '19.5vw',
         minHeight: isMobile ? '62vw' : '250px',
         maxHeight: isMobile ? '62vw' : '325px',
+        minWidth: isMobile ? '70vw' : '200px',
         maxWidth: isMobile ? '70vw' : '325px',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         display: 'flex',
@@ -201,7 +202,6 @@ const Book = React.memo(({
         />
       </CardOverflow>
       <Typography
-        level="body1"
         onClick={handleOnClick}
         sx={{
           mt: 2.4,
@@ -209,13 +209,17 @@ const Book = React.memo(({
           whiteSpace: isMobile ? 'wrap' : 'normal',
           flexWrap: 'wrap',
           textAlign: 'center',
+          textOverflow: 'ellipsis',
+          fontSize: isMobile ? '1.5rem' : '1.3rem',
+          fontWeight: '500',
+          lineHeight: '1.4rem',
         }}
       >
         {displayedTitle}
       </Typography>
 
       <Typography
-        level="body2"
+        level="h6"
         sx={{
           mt: 'auto',
           mb: 'auto',

@@ -19,6 +19,7 @@ Places.get('/', async (req: Request, res: Response) => {
         phone: true,
         website: true,
         types: true,
+        placeEditorial: true,
         googlePlaceId: true,
         LendingTableIn: true,
         LendingTableOut: true,
