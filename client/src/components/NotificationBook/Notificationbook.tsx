@@ -44,12 +44,12 @@ const BookIcon: React.FC<BookIconProps> = ({
 
   const handleNotificationClick = () => {
     notifications.forEach((notification: { type: string; User: { id: string, picture: string, firstName: string }; }) => {
+      const user = notification.User;
       if (notification.type === 'Direct Message') {
-        const user = notification.User;
         setChatState(!chatState);
         setChatUser(user);
       } else {
-        navigate(`/profile/${notification.User.id}`);
+        navigate(`/profile/${user.id}`);
       }
       setOpen(false);
     });

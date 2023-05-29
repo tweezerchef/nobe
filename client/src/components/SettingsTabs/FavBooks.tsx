@@ -10,7 +10,11 @@ import ExploreBooks from '../HomePage/HomeExploreBooks';
 function FavBooks() {
   return (
     <Box>
-      <Box justifyContent="right" sx={{ height: '100vh', width: '100vh', ml: 25 }}>
+      <Box
+        alignContent="right"
+        alignItems="right"
+        sx={{ height: '100vh', width: '100vh', ml: 30 }}
+      >
         <ExploreBooks ourBooks={[]} nearMeBooks={[]} />
       </Box>
     </Box>
