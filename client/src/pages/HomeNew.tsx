@@ -300,7 +300,7 @@ function HomeNew() {
                     maxHeight: isMobile ? '95vw' : '350px',
                   }}
                 >
-                  {/* <HomeRecommendedBooks nearMeBooks={nearMeBooks} /> */}
+                  <HomeRecommendedBooks nearMeBooks={nearMeBooks} />
                 </Box>
                 <StyledDivider textAlign="left">
                   <FlameStyledChip size="lg">

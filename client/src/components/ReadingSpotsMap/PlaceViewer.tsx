@@ -92,6 +92,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
   const handleSubmitReview = async () => {
     const userId = user?.id;
     const googlePlaceId = placeId;
+    setReviews([...reviews, { text: userReview }]);
     try {
       await axios.post('/api/places-to-read/writtenReview', {
         userId,
