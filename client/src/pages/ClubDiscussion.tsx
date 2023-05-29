@@ -145,6 +145,7 @@ function ClubDiscussion() {
         title: newDiscussionTitle,
         userId,
       });
+      console.log(response);
       setDiscussionList((discussions) => [...discussions, response.data]);
       setNewDiscussionTitle('');
       setDialogOpen(false);

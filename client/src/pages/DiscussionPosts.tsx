@@ -252,7 +252,7 @@ function DiscussionPosts() {
             <Feed />
           </ScrollBar>
         </Grid>
-        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '5vh' }}>
+        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
           <ScrollBar
             style={{ overflow: 'hide' }}
             noScrollX
