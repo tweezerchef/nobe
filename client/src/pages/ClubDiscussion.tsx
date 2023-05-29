@@ -145,6 +145,7 @@ function ClubDiscussion() {
         title: newDiscussionTitle,
         userId,
       });
+      console.log(response);
       setDiscussionList((discussions) => [...discussions, response.data]);
       setNewDiscussionTitle('');
       setDialogOpen(false);
@@ -219,7 +220,7 @@ function ClubDiscussion() {
             <Feed />
           </ScrollBar>
         </Grid>
-        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
+        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '6vh' }}>
           <ScrollBar
             style={{ overflow: 'hide' }}
             noScrollX
