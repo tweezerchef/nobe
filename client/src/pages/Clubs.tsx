@@ -146,13 +146,12 @@ function Clubs() {
           }}
         >
           <Box sx={{
-            width: '100%',
-            height: '23.48vh',
-            maxHeight: '200px',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            overflow: 'clip',
-            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
+            width: '100% !important',
+            height: '200px !important',
+            backgroundSize: 'cover !important',
+            backgroundPosition: 'right 40% bottom 69% !important',
+            overflow: 'hidden !important',
+            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png) !important',
           }}
           >
             <ProfileCard />
