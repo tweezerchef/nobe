@@ -187,6 +187,19 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
                   }}
                 >
                   <Typography>
+                    <Link to="/booksearch">
+                      BookSearch
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
                     <Link to="/trending">
                       Trending
 
@@ -213,8 +226,60 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
                   }}
                 >
                   <Typography>
+                    <Link to="/locations">
+                      Books Near Me
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
                     <Link to="/reading-spots">
                       Top Reading Spots
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
+                    <Link to="/user-reco-input">
+                      Build Recomendations
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
+                    <Link to="/recommended">
+                      Get Recomendations
+
+                    </Link>
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: 'block !important', padding: '8px !important',
+                  }}
+                >
+                  <Typography>
+                    <Link to="/feed">
+                      Feed
 
                     </Link>
                   </Typography>
@@ -263,6 +328,14 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
               >
                 <StyledLink to="/clubs">Clubs</StyledLink>
               </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                {user?.radius && user?.latitude && user?.latitude > 0 && user?.radius > 0
+                  ? <StyledButton onClick={handleLookForBooksClick}>Books Near Me</StyledButton>
+                  : (<StyledButton onClick={handleOpen}>Books Near Me</StyledButton>)}
+              </Button>
               <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                 <Box sx={style}>
                   <ModalClose
@@ -285,6 +358,30 @@ function ResponsiveAppBar({ setMode, setJoyMode }: ResponsiveAppBarProps) {
                 sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
               >
                 <StyledLink to="/reading-spots">Top Reading Spots</StyledLink>
+              </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                <StyledLink to="/user-reco-input">Build Recomendations</StyledLink>
+              </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                <StyledLink to="/recommended">Get Recommendations</StyledLink>
+              </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                <StyledLink to="/feed">Feed</StyledLink>
+              </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: '2 !important', color: 'white !important', display: 'block !important' }}
+              >
+                <StyledLink to="/booksearch">Book Search</StyledLink>
               </Button>
               <div style={{ position: 'relative' }}>
                 <IconButton style={{ width: '32px', margin: '10px' }} onClick={handleChatButtonClick}>
