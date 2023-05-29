@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { title } from 'process';
 
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
@@ -117,7 +118,7 @@ ClubsRoute.put('/discussions/:id', async (req: Request, res: Response) => {
       where: {
         id,
       },
-      data: { image, bookTitle },
+      data: { image, title: bookTitle },
     });
     res.status(200).json(updatedDiscussion);
   } catch (err) {
