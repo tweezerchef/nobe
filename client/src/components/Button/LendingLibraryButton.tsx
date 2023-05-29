@@ -4,10 +4,18 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import IconButton from '@mui/joy/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import UserContext from '../../hooks/Context';
+import { Book } from '../../typings/types';
 
 type CustomColor = 'success' | 'danger';
-function LendingLibraryButton(props: any) {
-  const { book } = props;
+
+interface LendingLibraryButtonProps {
+  book: Book
+  isLendingLibrary: boolean
+  setIsLendingLibrary: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function LendingLibraryButton({ book, isLendingLibrary, setIsLendingLibrary }:
+LendingLibraryButtonProps) {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
@@ -24,23 +32,24 @@ function LendingLibraryButton(props: any) {
     // eslint-disable-next-line no-return-assign
     }).then((data) => (user?.UserBooks ? data.data : null));
     if (color === 'success') {
+      setIsLendingLibrary(false);
       setColor('danger' as CustomColor);
       setToolTip(<h1>Add to Lending Library</h1>);
     } else {
+      setIsLendingLibrary(true);
       setColor('success' as CustomColor);
       setToolTip(<h1>Remove from Lending Library</h1>);
     }
   };
   useEffect(() => {
-    if (book.UserBooks && book.UserBooks.length > 0) {
-      book.UserBooks.forEach((entry: any) => {
-        if (entry.userId === id && entry.owned === true) {
-          setColor('success' as CustomColor);
-          setToolTip(<h1>Remove from Lending Library</h1>);
-        }
-      });
+    if (isLendingLibrary) {
+      setColor('success' as CustomColor);
+      setToolTip(<h1>Remove from Lending Library</h1>);
+    } else {
+      setColor('danger' as CustomColor);
+      setToolTip(<h1>Add to Lending Library</h1>);
     }
-  }, [book, id]);
+  }, [book, isLendingLibrary]);
 
   return (
 

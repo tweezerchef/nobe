@@ -5,11 +5,15 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import Slide from '@mui/material/Slide';
 import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function QuoteDisplay() {
   const [quote, setQuote] = useState('');
   const [author, setAuthor] = useState('');
   const [checked, setChecked] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const getQuote = () => {
     axios
@@ -31,24 +35,41 @@ function QuoteDisplay() {
     getQuote();
     const interval = setInterval(() => {
       getQuote();
-    }, 7000); // Adjust the interval time according to your desired interval
+    }, 7000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <Box display="flex" justifyContent="center" alignItems="flex-start" minHeight="100vh">
       <Slide direction="right" in={checked} mountOnEnter unmountOnExit>
-        <Card variant="outlined" sx={{ width: '60vh', height: '20vh', margin: '10px' }}>
+        <Card
+          variant="outlined"
+          sx={{
+            width: isMobile ? '70vw' : '40vw',
+            height: isMobile ? '62vw' : '18vw',
+            minHeight: isMobile ? '62vw' : '250px',
+            maxHeight: isMobile ? '62vw' : '300px',
+            maxWidth: isMobile ? '70vw' : '500px',
+            boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignContent: 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+            justifyItems: 'center',
+            borderRadius: '10px',
+          }}
+        >
           <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-              Quotes As The Algorithm Works Its Magic
+            <Typography variant="h5" mt=".5rem">
+              Quotes As The Algorithm Works Its Magic To Find You A Book
             </Typography>
-            <Typography variant="h5" component="div" />
+            <Typography variant="h6" mt="1rem" />
             Author:
             {' '}
             {author}
-            <Typography variant="body1">
-              <br />
+            <Typography variant="h6" mt="1rem">
               "
               {quote}
               "

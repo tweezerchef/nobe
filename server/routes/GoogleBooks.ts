@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import express, { Request, Response } from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
@@ -39,7 +40,15 @@ async function getGoogleBooksData(title: string) {
   if (response.data.items && response.data.items.length > 0) {
     return response.data;
   }
-  console.warn(`No items found in Google Books response for title: ${title}`);
+  console.warn(`No items found in Google Books response for title: ${response.data}`);
+  return {}; // or return an empty object: {}
+}
+async function getGoogleBooksDataOne(title: string) {
+  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=title:${title}&key=${process.env.GOOGLE_BOOKS}`);
+  if (response.data.items && response.data.items.length > 0) {
+    return response.data.items[0].volumeInfo;
+  }
+  console.warn(`No items found in Google Books response for title: ${response.data}}`);
   return {}; // or return an empty object: {}
 }
 
@@ -80,14 +89,16 @@ GoogleBooks.get('/', async (req: Request, res: Response) => {
     res.status(500).send('An error occurred while fetching the book data.');
   }
 });
+GoogleBooks.get('/firstTitle', async (req: Request, res: Response) => {
+  const title: string | undefined = req.query.title as string | undefined;
 
-GoogleBooks.get('/ISBN10', async (req: Request, res: Response) => {
-  const ISBN10: string | undefined = req.query.ISBN10 as string | undefined;
-  if (!ISBN10) {
-    return res.status(400).send('Please provide a valid book ISBN10.');
+  if (!title) {
+    return res.status(400).send('Please provide a valid book title.');
   }
+  console.log(title);
   try {
-    const bookData = await getGoogleBooksDataISBN10(ISBN10);
+    const bookData = await getGoogleBooksDataOne(title);
+
     const transformedData = {
       title: bookData.title,
       author: bookData.authors ? bookData.authors[0] : '',
@@ -96,6 +107,31 @@ GoogleBooks.get('/ISBN10', async (req: Request, res: Response) => {
       rating: bookData.averageRating ? bookData.averageRating : null,
       ISBN10: getISBN(bookData.industryIdentifiers),
     };
+
+    res.status(200).send(transformedData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('An error occurred while fetching the book data.');
+  }
+});
+
+GoogleBooks.get('/ISBN10', async (req: Request, res: Response) => {
+  const ISBN10: string | undefined = req.query.ISBN10 as string | undefined;
+  if (!ISBN10) {
+    return res.status(400).send('Please provide a valid book ISBN10.');
+  }
+  try {
+    const bookData = await getGoogleBooksDataISBN10(ISBN10);
+
+    const transformedData = {
+      title: bookData.title,
+      author: bookData.authors ? bookData.authors[0] : '',
+      image: bookData.imageLinks ? getLargestImage(bookData.imageLinks) : '',
+      description: bookData.description ? bookData.description : '',
+      rating: bookData.averageRating ? bookData.averageRating : null,
+      ISBN10: getISBN(bookData.industryIdentifiers),
+    };
+
     res.status(200).send(transformedData);
   } catch (err) {
     console.error(err);

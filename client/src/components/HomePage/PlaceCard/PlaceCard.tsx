@@ -12,8 +12,10 @@ import { Rating, Tooltip } from '@mui/material';
 import RecommendIcon from '@mui/icons-material/Recommend';
 import WhatshotTwoToneIcon from '@mui/icons-material/WhatshotTwoTone';
 import Box from '@mui/material/Box';
+import { makeStyles } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { Place } from '../../../typings/types';
-import { PlaceCard1, StyledBigTypog } from './styles';
 
 interface PlaceCardProps {
   place: Place;
@@ -23,6 +25,8 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
   const { Places_Pictures, name } = place;
   const [image, setImage] = useState<string | null>(null);
   const to = place.googlePlaceId ? `/reading-spots/${place.googlePlaceId}` : '/reading-spots';
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -36,7 +40,19 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
 
   return (
     <Link to={to}>
-      <PlaceCard1 variant="outlined">
+      <Card
+        variant="outlined"
+        sx={{
+          width: isMobile ? '70vw' : '25vw',
+          height: isMobile ? '62vw' : '22vw',
+          minHeight: isMobile ? '62vw' : '250px',
+          maxHeight: isMobile ? '62vw' : '325px',
+          maxWidth: isMobile ? '70vw' : '375px',
+          boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
 
         <AspectRatio ratio="2">
           {image ? (
@@ -46,7 +62,18 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
           )}
         </AspectRatio>
         {name && (
-        <StyledBigTypog level="h5">
+        <Typography
+          level="h5"
+          sx={{
+            mt: 2,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            '-webkit-line-clamp': 2,
+            '-webkit-box-orient': 'vertical',
+          }}
+        >
           {name}
           <Tooltip title="One of our favorite places to read">
             <RecommendIcon sx={{ color: 'green' }} />
@@ -54,7 +81,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
           <Tooltip title="This Place Is HOT">
             <WhatshotTwoToneIcon color="warning" />
           </Tooltip>
-        </StyledBigTypog>
+        </Typography>
         )}
         <CardOverflow
           variant="soft"
@@ -72,7 +99,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
           <Rating name="read-only" value={Number(place?.rating)} readOnly />
         </CardOverflow>
 
-      </PlaceCard1>
+      </Card>
     </Link>
   );
 };
