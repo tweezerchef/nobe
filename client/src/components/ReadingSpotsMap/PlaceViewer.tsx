@@ -14,6 +14,7 @@ import {
   Tooltip,
   IconButton,
   TextField,
+  Stack,
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -118,108 +119,108 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
     }
   };
   return (
-    <Grid container sx={{ boxSizing: 'content-box', overflow: 'auto' }}>
-      <Grid item xs={12}>
-        <Card
-          elevation={6}
-          sx={{
-            height: '100%', width: '100%', display: 'flex', flexDirection: 'column', padding: 0, margin: 0,
-          }}
-        >
-          <Grid container>
-            <Grid item xs={12} sm={12} sx={{ display: 'flex', alignItems: 'flex-start' }}>
-              <CardMedia
-                sx={{ height: { sm: '270px' }, width: '25%', objectFit: 'cover' }}
-                image={image || undefined}
-                title={place?.name}
-              />
-              <CardContent sx={{ padding: 0, margin: 0 }}>
-                <Typography variant="h5">
-                  {place?.name}
-                  {appFavorite && (
+    <Box sx={{ width: '100%', height: '100%', minHeight: '290px' }} bgcolor="#D8D8DF">
+      <Grid container sx={{ boxSizing: 'content-box', overflow: 'auto' }}>
+        <Grid item xs={12}>
+          <Card
+            elevation={6}
+            sx={{
+              height: '100%', width: '100%', display: 'flex', flexDirection: 'column', padding: 0, margin: 0,
+            }}
+          >
+            <Grid container>
+              <Grid item xs={12} sm={12} sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                <CardMedia
+                  sx={{ height: { sm: '270px' }, width: '25%', objectFit: 'cover' }}
+                  image={image || undefined}
+                  title={place?.name}
+                />
+                <CardContent sx={{ padding: 0, margin: 0 }}>
+                  <Typography variant="h5">
+                    {place?.name}
+                    {appFavorite && (
                     <Tooltip title="One of your favorite places to read">
                       <RecommendIcon sx={{ color: 'green' }} />
                     </Tooltip>
-                  )}
-                  {place && (
+                    )}
+                    {place && (
                     <ReadingSpotsAdd
                       place={place}
                       favorite={favorite}
                       google={google}
                     />
-                  )}
-                  {place?.types.map((name: any) => (
-                    <Chip key={name} size="small" label={name} sx={{ marginLeft: 1 }} />
-                  ))}
-                  {place?.website && (
-                  <Button size="small" color="primary" onClick={() => window.open(place?.website, '_blank')}>
-                    Website
-                  </Button>
-                  )}
-                </Typography>
-                <Rating name="read-only" value={Number(place?.rating)} readOnly />
-                <Box display="flex" alignItems="flex-start">
-                  <Box display="flex" flexDirection="column" alignItems="center">
+                    )}
+                    {place?.types.map((name: any) => (
+                      <Chip key={name} size="small" label={name} sx={{ marginLeft: 1 }} />
+                    ))}
+                    {place?.website && (
+                    <Button size="small" color="primary" onClick={() => window.open(place?.website, '_blank')}>
+                      Website
+                    </Button>
+                    )}
+                  </Typography>
+                  <Rating name="read-only" value={Number(place?.rating)} readOnly />
+                  <Box display="flex" alignItems="flex-start">
+                    <Box display="flex" flexDirection="column" alignItems="center">
 
-                    <Box>
-                      {place && reviews && reviews.length ? (
-                        <>
-                          <IconButton onClick={handlePrevPage} disabled={currentPage === 0}>
-                            <KeyboardArrowUpIcon />
-                          </IconButton>
-                          {reviews
-                            .slice(
-                              currentPage * reviewsPerPage,
-                              currentPage * reviewsPerPage + reviewsPerPage,
-                            )
-                            .map((review, index) => (
-                              <React.Fragment key={index}>
-                                <ReviewPopOver review={review} />
-                                <Divider />
-                              </React.Fragment>
-                            ))}
-                          <IconButton
-                            onClick={handleNextPage}
-                            disabled={
+                      <Box>
+                        {place && reviews && reviews.length ? (
+                          <>
+                            <IconButton onClick={handlePrevPage} disabled={currentPage === 0}>
+                              <KeyboardArrowUpIcon />
+                            </IconButton>
+                            {reviews
+                              .slice(
+                                currentPage * reviewsPerPage,
+                                currentPage * reviewsPerPage + reviewsPerPage,
+                              )
+                              .map((review, index) => (
+                                <React.Fragment key={index}>
+                                  <ReviewPopOver review={review} />
+                                  <Divider />
+                                </React.Fragment>
+                              ))}
+                            <IconButton
+                              onClick={handleNextPage}
+                              disabled={
         currentPage
         >= Math.ceil((reviews.length || 0) / reviewsPerPage) - 1
       }
-                          >
-                            <KeyboardArrowDownIcon />
-                          </IconButton>
-                        </>
-                      ) : (
-                        <Typography>Loading reviews...</Typography>
-                      )}
+                            >
+                              <KeyboardArrowDownIcon />
+                            </IconButton>
+                          </>
+                        ) : (
+                          <Typography>Loading reviews...</Typography>
+                        )}
+                      </Box>
+                    </Box>
+                    <Box sx={{ marginLeft: 2, display: 'flex', flexDirection: 'column' }}>
+                      <TextField
+                        label="review"
+                        multiline
+                        rows={4}
+                        variant="outlined"
+                        value={userReview}
+                        onChange={(event) => setUserReview(event.target.value)}
+                        sx={{ marginBottom: 0 }}
+                      />
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmitReview}
+                      >
+                        Submit
+                      </Button>
                     </Box>
                   </Box>
-
-                  {/* TextField container */}
-                  <Box sx={{ marginLeft: 2, display: 'flex', flexDirection: 'column' }}>
-                    <TextField
-                      label="review"
-                      multiline
-                      rows={4}
-                      variant="outlined"
-                      value={userReview}
-                      onChange={(event) => setUserReview(event.target.value)}
-                      sx={{ marginBottom: 0 }}
-                    />
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleSubmitReview}
-                    >
-                      Submit
-                    </Button>
-                  </Box>
-                </Box>
-              </CardContent>
+                </CardContent>
+              </Grid>
             </Grid>
-          </Grid>
-        </Card>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 }
 
