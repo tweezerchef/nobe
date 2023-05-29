@@ -42,7 +42,6 @@ function PlaceCard({ place } : PlaceCardProps) {
   useEffect(() => {
     const fetchImage = async () => {
       const photo = Places_Pictures[currentPicIndex].url;
-      console.log('photo', photo);
       const imageUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
       setImage(imageUrl);
     };
@@ -55,11 +54,11 @@ function PlaceCard({ place } : PlaceCardProps) {
     <Card
       variant="outlined"
       sx={{
-        width: isMobile ? '70vw' : '25vw',
+        width: isMobile ? '70vw' : '22vw',
         height: isMobile ? '62vw' : '17vw',
         minHeight: isMobile ? '62vw' : '250px',
-        maxHeight: isMobile ? '62vw' : '325px',
-        maxWidth: isMobile ? '70vw' : '375px',
+        maxHeight: isMobile ? '62vw' : '290px',
+        maxWidth: isMobile ? '70vw' : '350px',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         display: 'flex',
         flexDirection: 'column',
