@@ -2,6 +2,7 @@
 import React, {
   useState, useContext, useEffect,
 } from 'react';
+import ScrollBar from 'react-scrollbars-custom';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Box from '@mui/material/Box';
@@ -12,6 +13,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
+import styled from 'styled-components';
 import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
@@ -23,6 +25,31 @@ import { useChatContext } from '../hooks/ChatContext';
 import UserProfileLendingLibrary from '../components/UserProfile/UserProfileLendingLibrary';
 import UserProfileFeed from '../components/UserProfile/UserProfileFeed';
 import UserProfileFavoriteBooks from '../components/UserProfile/UserProfileFavoriteBooks';
+import MaxWidthDiv from '../hooks/MaxWidth';
+
+const StyledTrack = styled.div`
+    background-color: #f1f1f1;
+    left: 2px !important;
+`;
+const StyledTrackHome = styled.div`
+    background-color: #f1f1f1;
+    height: 100%;
+`;
+
+const StyledThumb = styled.div`
+    background-color: #888;
+    border-radius: 3px;
+`;
+const TrackYHome = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledTrackHome {...props} ref={ref} />,
+);
+
+const TrackY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledTrack {...props} ref={ref} />,
+);
+const ThumbY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledThumb {...props} ref={ref} />,
+);
 
 function UserProfile() {
   const [user, setUser] = useState<User | null>(null);
@@ -85,112 +112,158 @@ function UserProfile() {
     xs: 12, sm: 6, md: 4, lg: 3,
   } as const;
   return (
-    <Box sx={{
-      flexGrow: 1, overflow: 'clip', height: '98vh',
-    }}
-    >
-      <Grid
-        container
-        spacing={0}
-        sx={(theme) => ({
-          '--Grid-borderWidth': '1px',
-          borderTop: 'var(--Grid-borderWidth) solid',
-          borderColor: 'divider',
-          '& > div': {
-            borderRight: 'var(--Grid-borderWidth) solid',
-            borderBottom: 'var(--Grid-borderWidth) solid',
-            borderColor: 'divider',
-            ...(Object.keys(colWidth) as Array<keyof typeof colWidth>).reduce(
-              (result, key) => ({
-                ...result,
-                [`&:nth-of-type(${12 / colWidth[key]}n)`]: {
-                  [theme.breakpoints.only(key)]: {
-                    borderRight: 'none',
-                  },
-                },
-              }),
-              {},
-            ),
-          },
-        })}
+    <MaxWidthDiv>
+      <Box sx={{
+        flexGrow: 1, overflow: 'clip', height: '98vh', width: '100%',
+      }}
       >
         <Grid
-          xs={2.5}
-          sx={{
-            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '8vh',
-          }}
+          container
+          spacing={0}
+          sx={(theme) => ({
+            '--Grid-borderWidth': '1px',
+            borderTop: 'var(--Grid-borderWidth) solid',
+            borderColor: 'divider',
+            '& > div': {
+              borderRight: { xs: 'var(--Grid-borderWidth) solid', sm: 'none' },
+              borderBottom: 'var(--Grid-borderWidth) solid',
+              borderColor: 'divider',
+              ...(Object.keys(colWidth) as Array<keyof typeof colWidth>).reduce(
+                (result, key) => ({
+                  ...result,
+                  [`&:nth-of-type(${12 / colWidth[key]}n)`]: {
+                    [theme.breakpoints.only(key)]: {
+                      borderRight: 'none',
+                    },
+                  },
+                }),
+                {},
+              ),
+            },
+          })}
         >
-          <Box sx={{
-            width: '100%',
-            height: '225px',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            overflow: 'clip',
-            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
-          }}
+          <Grid
+            xs={2.5}
+            sx={{
+              position: 'sticky',
+              top: '0px',
+              height: '100vh',
+              paddingBottom: '8vh',
+              display: { xs: 'none', sm: 'block' },
+            }}
           >
-            <ProfileCard />
-          </Box>
-          <Box sx={{
-            width: '100%', maxHeight: '70vh', overflowY: 'auto', overflowX: 'clip',
-          }}
-          >
-            <Feed />
-          </Box>
-        </Grid>
-        <Slide direction="up" in={loaded} mountOnEnter unmountOnExit>
-          <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              spacing={2}
-              width="100%"
+            <Box sx={{
+              width: '100%',
+              height: '225px',
+              backgroundSize: 'cover',
+              backgroundPosition: 'right 70% bottom 78%',
+              overflow: 'clip',
+              backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
+            }}
             >
-              <Box
-                sx={{
-                  width: '100%',
-                  height: '225px',
-                  backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  flexDirection: 'column',
-                  overflow: 'hidden',
+              <ProfileCard />
+            </Box>
+            <div
+              style={{
+                width: '100%',
+                height: '70vh',
+                overflow: 'hidden',
+              }}
+            >
+              <ScrollBar
+                style={{ width: '100%', height: '100%' }}
+                trackYProps={{
+                  renderer: (props) => {
+                    const { elementRef, ...restProps } = props;
+                    return <TrackY {...restProps} ref={elementRef} />;
+                  },
+                }}
+                thumbYProps={{
+                  renderer: (props) => {
+                    const { elementRef, ...restProps } = props;
+                    return <ThumbY {...restProps} ref={elementRef} />;
+                  },
+                }}
+              >
+                <Feed />
+              </ScrollBar>
+            </div>
+          </Grid>
+          <Slide direction="up" in={loaded} mountOnEnter unmountOnExit>
+            <Grid
+              xs={12}
+              sm={9.5}
+              width="100%"
+              sx={{
+                height: '98vh', overflow: 'auto', paddingBottom: '9vh',
+              }}
+            >
+
+              <ScrollBar
+                trackYProps={{
+                  renderer: (props) => {
+                    const { elementRef, ...restProps } = props;
+                    return <TrackYHome {...restProps} ref={elementRef} />;
+                  },
+                }}
+                thumbYProps={{
+                  renderer: (props) => {
+                    const { elementRef, ...restProps } = props;
+                    return <ThumbY {...restProps} ref={elementRef} />;
+                  },
                 }}
               >
                 <Stack
-                  direction="row"
+                  direction="column"
                   justifyContent="center"
                   alignItems="center"
-                  spacing={3}
+                  spacing={1}
                   width="100%"
-                  sx={{ paddingTop: '2vh' }}
                 >
-                  <UserProfileFollowButton friendId={userId} />
-                  <Avatar
-                    src={user?.picture}
-                    alt={user?.firstName}
-                    style={{
-                      width: '6rem',
-                      height: '6rem',
-                      margin: '1rem',
+                  <Box
+                    sx={{
+                      width: '100%',
+                      height: '210px',
+                      backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      flexDirection: 'column',
+                      overflow: 'hidden',
                     }}
-                  />
-                  <Button variant="contained" onClick={handleChatButtonClick}>Message</Button>
-                </Stack>
-                <Typography variant="h3" align="center">
-                  {userName}
-                  's Profile
-                </Typography>
-              </Box>
-              <StyledDivider textAlign="right">
-                <Chip size="lg">
-                  {userName}
-                  's Lending Library
-                </Chip>
-              </StyledDivider>
-              <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '200px', maxHeight: '32vh' }}>
-                { user
+                  >
+                    <Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing={3}
+                      width="100%"
+                      sx={{ paddingTop: '.5rem' }}
+                    >
+                      <UserProfileFollowButton friendId={userId} />
+                      <Avatar
+                        src={user?.picture}
+                        alt={user?.firstName}
+                        style={{
+                          width: '6rem',
+                          height: '6rem',
+                          margin: '1rem',
+                        }}
+                      />
+                      <Button variant="contained" onClick={handleChatButtonClick}>Message</Button>
+                    </Stack>
+                    <Typography variant="h3" align="center">
+                      {userName}
+                      's Profile
+                    </Typography>
+                  </Box>
+                  <StyledDivider textAlign="right">
+                    <Chip size="lg">
+                      {userName}
+                      's Lending Library
+                    </Chip>
+                  </StyledDivider>
+                  <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '200px', maxHeight: '32vh' }}>
+                    { user
                 && (
                 <UserProfileLendingLibrary
                   nearMeBooks={nearMeBooks}
@@ -198,34 +271,36 @@ function UserProfile() {
                   key={user.id}
                 />
                 )}
-              </Box>
-              <StyledDivider textAlign="left">
-                <FlameStyledChip size="lg">
-                  {userName}
-                  's Favorite Books
-                </FlameStyledChip>
-              </StyledDivider>
-              <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '200px', maxHeight: '32vh' }}>
-                { user
+                  </Box>
+                  <StyledDivider textAlign="left">
+                    <FlameStyledChip size="lg">
+                      {userName}
+                      's Favorite Books
+                    </FlameStyledChip>
+                  </StyledDivider>
+                  <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '200px', maxHeight: '32vh' }}>
+                    { user
                 && <UserProfileFavoriteBooks nearMeBooks={nearMeBooks} user={user} key={user.id} />}
-              </Box>
-              <StyledDivider textAlign="center">
-                <Chip size="lg">
-                  {userName}
-                  's Feed
-                </Chip>
-              </StyledDivider>
-              <Box overflow="hide" alignContent="center" alignItems="center" sx={{ width: '95%', height: '500px' }}>
+                  </Box>
+                  <StyledDivider textAlign="center">
+                    <Chip size="lg">
+                      {userName}
+                      's Feed
+                    </Chip>
+                  </StyledDivider>
+                  <Box overflow="hide" alignContent="center" alignItems="center" sx={{ width: '95%', height: '500px' }}>
 
-                {user
+                    {user
                     && <UserProfileFeed user={user} key={user.id} />}
-              </Box>
-              <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px', width: '80%' }} />
-            </Stack>
-          </Grid>
-        </Slide>
-      </Grid>
-    </Box>
+                  </Box>
+                  <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px', width: '80%' }} />
+                </Stack>
+              </ScrollBar>
+            </Grid>
+          </Slide>
+        </Grid>
+      </Box>
+    </MaxWidthDiv>
   );
 }
 
