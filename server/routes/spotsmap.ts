@@ -8,6 +8,9 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 const SpotsMapRoute = express.Router();
+interface EditorialSummary {
+  editorial_summary: string;
+}
 
 SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   const {
@@ -17,7 +20,14 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
     formatted_address, geometry, name, photos,
     place_id, reviews, types, website, rating, formatted_phone_number, editorial_summary,
   } = place;
-  const { overview } = editorial_summary;
+  let overview: string | undefined = editorial_summary?.editorial_summary;
+  // @ts-ignore
+  if (overview && overview?.editorial_summary) {
+    overview = editorial_summary.editorial_summary;
+  } else {
+    overview = 'Great Place To Read';
+  }
+
   let myFav = false;
   if (color === 'danger') {
     myFav = true;
