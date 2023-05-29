@@ -114,8 +114,9 @@ function DiscussionPosts() {
   async function fetchImage() {
     try {
       const response = await axios.get(`/api/clubs/discussions/${id}`);
-      if (response.data && response.data.image) {
+      if (response.data) {
         setDiscussionImage(response.data.image);
+        setBookTitle(response.data.bookTitle);
       }
     } catch (error) {
       console.error(error);
