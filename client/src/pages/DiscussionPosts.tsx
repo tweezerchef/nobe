@@ -10,15 +10,19 @@ import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import AspectRatio from '@mui/joy/AspectRatio';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import Feed from './Feed';
-import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
+// import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
 import BookSearchButton from '../components/Button/BookSearchButton';
 import UserContext from '../hooks/Context';
-import { ClubHeader, StyledTextarea, BookTitle } from './style';
+import {
+  ClubHeader, StyledTextarea, BookTitle, BookHeader,
+} from './style';
 import '../styles/discussionPostsStyles.css';
 // import BookSearchButtonNew from '../components/Button/BookSearchButtonNew';
 
@@ -220,42 +224,41 @@ function DiscussionPosts() {
             </ClubHeader>
             )}
             <ClubHeader>{discussionTitle}</ClubHeader>
-            {/* {isDiscussionCreator && (
-            <Button variant="outlined" color="primary" disableElevation>
-              Button for Discussion Creator
-            </Button>
-            )} */}
             <div style={{
               display: 'flex', justifyContent: 'center', alignItems: 'center',
             }}
             >
               {discussionImage && bookTitle && (
-              <Card sx={{
-                flexBasis: '33%',
-                borderRadius: '12px',
-                boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
-                maxWidth: '250px',
-              }}
-              >
-                <AspectRatio ratio="1">
-                  <CardMedia
-                    component="img"
-                    alt={`Discussion book image for ${discussionTitle}`}
-                    image={discussionImage}
-                    style={{
-                      objectFit: 'fill',
-                    }}
-                  />
-                </AspectRatio>
-                {/* <BookTitle>{bookTitle}</BookTitle> */}
-                {/* <img
+                <div>
+                  <BookHeader>Currently Reading:</BookHeader>
+                  <Card sx={{
+                    flexBasis: '33%',
+                    borderRadius: '12px',
+                    boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
+                    width: '300px',
+                    // padding: '1rem',
+                    backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
+                  }}
+                  >
+                    <AspectRatio ratio="1">
+                      <CardMedia
+                        component="img"
+                        alt={`Discussion book image for ${discussionTitle}`}
+                        image={discussionImage}
+                        style={{
+                          objectFit: 'fill',
+                        }}
+                      />
+                    </AspectRatio>
+                    <BookTitle>{bookTitle}</BookTitle>
+                    {/* <img
                   alt=""
                   title="ay"
                   src={discussionImage}
                   height="100px"
                 /> */}
-                {/* {selectedBook.title} */}
-              </Card>
+                  </Card>
+                </div>
               )}
             </div>
             {/* <BookSearchButtonNew
@@ -271,10 +274,15 @@ function DiscussionPosts() {
               discussionImage={discussionImage}
               setDiscussionImage={setDiscussionImage}
               clubId={clubId}
+              setBookTitle={setBookTitle}
             />
             {posts?.map((post) => (
               <div className="post">
                 <div className="post-content" key={post.id}>
+                  {/* <div className="icons-wrapper">
+                    <ThumbUpAltIcon className="thumb-icon" />
+                    <ThumbDownAltIcon className="thumb-icon" />
+                  </div> */}
                   <div className="brown-box">
                     <div className="post-info-container">
                       <Link to={`/profile/${post.userId}`}>
