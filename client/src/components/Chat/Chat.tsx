@@ -54,7 +54,7 @@ const chatStyles = makeStyles({
 
 const ChatOverlay = styled.div`
   position: absolute;
-  right: 0;
+  left: 0;
   z-index: 9999;
   width: 600px;
   height: '60vh';
