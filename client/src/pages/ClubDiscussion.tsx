@@ -49,8 +49,18 @@ const StyledThumb = styled.div`
     background-color: #888;
     border-radius: 3px;
 `;
+
+const StyledThumbHome = styled.div`
+    background-color: #888;
+    border-radius: 3px;
+
+`;
 const TrackYHome = React.forwardRef<HTMLDivElement>(
   (props, ref) => <StyledTrackHome {...props} ref={ref} />,
+);
+
+const ThumbYHome = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledThumbHome {...props} ref={ref} />,
 );
 
 const TrackY = React.forwardRef<HTMLDivElement>(
@@ -211,107 +221,124 @@ function ClubDiscussion() {
           </ScrollBar>
         </Grid>
         <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
-          <Box
-            sx={{
-              width: '100%',
-              height: '23.48vh',
-              maxHeight: '200px',
-              backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
+          <ScrollBar
+            style={{ overflow: 'hide' }}
+            noScrollX
+            trackYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <TrackYHome {...restProps} ref={elementRef} />;
+              },
             }}
-          />
-          <div>
-            <Button component={Link} to="/clubs" startIcon={<ArrowBackIcon />}>View All Clubs</Button>
-            <ClubHeader style={{ textAlign: 'center' }}>{clubName}</ClubHeader>
-            <ClubDescription style={{ textAlign: 'center' }}>{thisClub[0]?.description}</ClubDescription>
-            <div style={{
-              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            thumbYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <ThumbYHome {...restProps} ref={elementRef} />;
+              },
             }}
-            >
-              <Card sx={{
-                flexBasis: '33%',
-                borderRadius: '12px',
-                boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
-                maxWidth: '300px',
+          >
+            <Box
+              sx={{
+                width: '100%',
+                height: '23.48vh',
+                maxHeight: '200px',
+                backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <div>
+              <Button component={Link} to="/clubs" startIcon={<ArrowBackIcon />}>View All Clubs</Button>
+              <ClubHeader style={{ textAlign: 'center' }}>{clubName}</ClubHeader>
+              <ClubDescription style={{ textAlign: 'center' }}>{thisClub[0]?.description}</ClubDescription>
+              <div style={{
+                display: 'flex', justifyContent: 'center', alignItems: 'center',
               }}
               >
-                <AspectRatio ratio="1">
-                  {loading ? (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                      <CircularProgress />
-                    </Box>
-                  ) : (
-                    <CardMedia
-                      component="img"
-                      alt={`Club image for ${clubName}`}
-                      image={clubImage}
-                      style={{
-                        objectFit: 'cover',
-                      }}
-                    />
-                  )}
-                </AspectRatio>
-              </Card>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Stack
-                spacing={2}
-                direction="row"
-                sx={{
-                  paddingTop: '25px',
-                  paddingBottom: '10px',
+                <Card sx={{
+                  flexBasis: '33%',
+                  borderRadius: '12px',
+                  boxShadow: '0px 0px 12px  rgba(37, 37, 37, 0.4)',
+                  maxWidth: '300px',
                 }}
-              >
-                <JoinClubButton clubId={clubId} member={member} />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => setDialogOpen(!dialogOpen)}
-                  disabled={!member}
                 >
-                  Create a Thread
-                </Button>
-              </Stack>
+                  <AspectRatio ratio="1">
+                    {loading ? (
+                      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <CircularProgress />
+                      </Box>
+                    ) : (
+                      <CardMedia
+                        component="img"
+                        alt={`Club image for ${clubName}`}
+                        image={clubImage}
+                        style={{
+                          objectFit: 'cover',
+                        }}
+                      />
+                    )}
+                  </AspectRatio>
+                </Card>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Stack
+                  spacing={2}
+                  direction="row"
+                  sx={{
+                    paddingTop: '25px',
+                    paddingBottom: '10px',
+                  }}
+                >
+                  <JoinClubButton clubId={clubId} member={member} />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setDialogOpen(!dialogOpen)}
+                    disabled={!member}
+                  >
+                    Create a Thread
+                  </Button>
+                </Stack>
+              </div>
+              {dialogOpen && (
+              <Dialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+                maxWidth="sm"
+                fullWidth
+              >
+                <DialogTitle>Create a Thread</DialogTitle>
+                <DialogContent>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+                    <FormControl style={{ width: '100%' }}>
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Thread Title"
+                        fullWidth
+                        variant="outlined"
+                        name="title"
+                        value={newDiscussionTitle}
+                        onChange={(event) => setNewDiscussionTitle(event.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+                  <Button type="submit" onClick={handleSubmit}>Submit</Button>
+                </DialogActions>
+              </Dialog>
+              )}
+              {clubId && (
+              <DiscussionList
+                discussions={discussionList}
+                clubId={clubId}
+                key={discussionList.length}
+              />
+              )}
             </div>
-            {dialogOpen && (
-            <Dialog
-              open={dialogOpen}
-              onClose={() => setDialogOpen(false)}
-              maxWidth="sm"
-              fullWidth
-            >
-              <DialogTitle>Create a Thread</DialogTitle>
-              <DialogContent>
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-                  <FormControl style={{ width: '100%' }}>
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      label="Thread Title"
-                      fullWidth
-                      variant="outlined"
-                      name="title"
-                      value={newDiscussionTitle}
-                      onChange={(event) => setNewDiscussionTitle(event.target.value)}
-                    />
-                  </FormControl>
-                </div>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-                <Button type="submit" onClick={handleSubmit}>Submit</Button>
-              </DialogActions>
-            </Dialog>
-            )}
-            {clubId && (
-            <DiscussionList
-              discussions={discussionList}
-              clubId={clubId}
-              key={discussionList.length}
-            />
-            )}
-          </div>
+          </ScrollBar>
         </Grid>
       </Grid>
     </Box>
