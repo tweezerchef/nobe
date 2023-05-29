@@ -40,17 +40,18 @@ const BookIcon: React.FC<BookIconProps> = ({
     // add any other styles you need here
   };
   const { chatState, setChatState, setChatUser } = useChatContext();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleNotificationClick = () => {
     notifications.forEach((notification: { type: string; User: { id: string, picture: string, firstName: string }; }) => {
+      const user = notification.User;
       if (notification.type === 'Direct Message') {
-        const user = notification.User;
         setChatState(!chatState);
         setChatUser(user);
-      } else {
-        navigate(`/profile/${notification.User.id}`);
       }
+      // else {
+      //   navigate(`/profile/${user.id}`);
+      // }
       setOpen(false);
     });
   };

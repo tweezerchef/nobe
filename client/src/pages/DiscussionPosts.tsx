@@ -15,6 +15,8 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
+import ScrollBar from 'react-scrollbars-custom';
+import styled from 'styled-components';
 import Feed from './Feed';
 // import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
 import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
@@ -47,6 +49,40 @@ interface Club {
   image: string;
   clubMembers: string[];
 }
+
+const StyledTrack = styled.div`
+    background-color: #f1f1f1;
+    left: 2px !important;
+`;
+const StyledTrackHome = styled.div`
+    background-color: #f1f1f1;
+    height: 100%;
+`;
+
+const StyledThumb = styled.div`
+    background-color: #888;
+    border-radius: 3px;
+`;
+
+const StyledThumbHome = styled.div`
+    background-color: #888;
+    border-radius: 3px;
+
+`;
+const TrackYHome = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledTrackHome {...props} ref={ref} />,
+);
+
+const ThumbYHome = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledThumbHome {...props} ref={ref} />,
+);
+
+const TrackY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledTrack {...props} ref={ref} />,
+);
+const ThumbY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledThumb {...props} ref={ref} />,
+);
 
 function DiscussionPosts() {
   const { id } = useParams<{ id: string }>();
@@ -194,41 +230,71 @@ function DiscussionPosts() {
             <ProfileCard />
             {/* <HomeUserDisplay /> */}
           </Box>
-          <Box sx={{ width: '100%', maxHeight: '80vh', overflow: 'auto' }}>
+          <ScrollBar
+            style={{ width: '100%', height: '100%' }}
+            trackYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <TrackY {...restProps} ref={elementRef} />;
+              },
+            }}
+            thumbYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <ThumbY {...restProps} ref={elementRef} />;
+              },
+            }}
+          >
             <Feed />
-          </Box>
+          </ScrollBar>
         </Grid>
         <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
-          <Box
-            sx={{
-              width: '100%',
-              height: '23.48vh',
-              maxHeight: '200px',
-              backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
+          <ScrollBar
+            style={{ overflow: 'hide' }}
+            noScrollX
+            trackYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <TrackYHome {...restProps} ref={elementRef} />;
+              },
             }}
-          />
-          <div className="posts-page">
-            {clubName && (
-            <ClubHeader>
-              <Link
-                to={`/clubs/${clubId}?name=${encodeURIComponent(clubName)}`}
-                style={{ color: 'black' }}
-                className="link"
+            thumbYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <ThumbYHome {...restProps} ref={elementRef} />;
+              },
+            }}
+          >
+            <Box
+              sx={{
+                width: '100%',
+                height: '23.48vh',
+                maxHeight: '200px',
+                backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <div className="posts-page">
+              {clubName && (
+              <ClubHeader>
+                <Link
+                  to={`/clubs/${clubId}?name=${encodeURIComponent(clubName)}`}
+                  style={{ color: 'black' }}
+                  className="link"
+                >
+                  {clubName}
+                </Link>
+                {' '}
+                Thread
+              </ClubHeader>
+              )}
+              <ClubHeader>{discussionTitle}</ClubHeader>
+              <div style={{
+                display: 'flex', justifyContent: 'center', alignItems: 'center',
+              }}
               >
-                {clubName}
-              </Link>
-              {' '}
-              Thread
-            </ClubHeader>
-            )}
-            <ClubHeader>{discussionTitle}</ClubHeader>
-            <div style={{
-              display: 'flex', justifyContent: 'center', alignItems: 'center',
-            }}
-            >
-              {discussionImage && bookTitle && (
+                {discussionImage && bookTitle && (
                 <div>
                   <BookHeader>Currently Reading:</BookHeader>
                   <Card sx={{
@@ -259,78 +325,79 @@ function DiscussionPosts() {
                 /> */}
                   </Card>
                 </div>
-              )}
-            </div>
-            {/* <BookSearchButtonNew
+                )}
+              </div>
+              {/* <BookSearchButtonNew
               isDiscussionCreator={isDiscussionCreator}
               discussionId={id}
               discussionImage={discussionImage}
               setDiscussionImage={setDiscussionImage}
               clubId={clubId}
             /> */}
-            <BookSearchButton
-              isDiscussionCreator={isDiscussionCreator}
-              discussionId={id}
-              discussionImage={discussionImage}
-              setDiscussionImage={setDiscussionImage}
-              clubId={clubId}
-              setBookTitle={setBookTitle}
-            />
-            {posts?.map((post) => (
-              <div className="post">
-                <div className="post-content" key={post.id}>
-                  {/* <div className="icons-wrapper">
+              <BookSearchButton
+                isDiscussionCreator={isDiscussionCreator}
+                discussionId={id}
+                discussionImage={discussionImage}
+                setDiscussionImage={setDiscussionImage}
+                clubId={clubId}
+                setBookTitle={setBookTitle}
+              />
+              {posts?.map((post) => (
+                <div className="post">
+                  <div className="post-content" key={post.id}>
+                    {/* <div className="icons-wrapper">
                     <ThumbUpAltIcon className="thumb-icon" />
                     <ThumbDownAltIcon className="thumb-icon" />
                   </div> */}
-                  <div className="brown-box">
-                    <div className="post-info-container">
-                      <Link to={`/profile/${post.userId}`}>
-                        <Avatar
-                          src={post.user?.picture}
-                          alt={post.user?.username}
-                          className="avatar"
-                        />
-                      </Link>
-                      <Link to={`/profile/${post.userId}`} className="username-link">
-                        {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
-                      </Link>
-                      <div className="date-time">
-                        {moment(post.createdAt).format('h:mm a MM/DD/YY')}
+                    <div className="brown-box">
+                      <div className="post-info-container">
+                        <Link to={`/profile/${post.userId}`}>
+                          <Avatar
+                            src={post.user?.picture}
+                            alt={post.user?.username}
+                            className="avatar"
+                          />
+                        </Link>
+                        <Link to={`/profile/${post.userId}`} className="username-link">
+                          {post.user?.username || `${post.user?.firstName} ${post.user?.lastName || ''}`}
+                        </Link>
+                        <div className="date-time">
+                          {moment(post.createdAt).format('h:mm a MM/DD/YY')}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="post-body">
-                    {post.body}
-                    {post.userId === userId && (
-                    <Stack direction="row" spacing={1} className="delete-icon">
-                      <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </Stack>
-                    )}
+                    <div className="post-body">
+                      {post.body}
+                      {post.userId === userId && (
+                      <Stack direction="row" spacing={1} className="delete-icon">
+                        <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Stack>
+                      )}
+                    </div>
                   </div>
                 </div>
+              ))}
+              <div className="form-div">
+                <form onSubmit={handleSubmit}>
+                  <div className="input-container">
+                    Comment:
+                    <StyledTextarea
+                      minRows={8}
+                      className="text-area"
+                      value={newPost}
+                      onChange={(event) => setNewPost(event.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Button className="post-button" type="submit" variant="contained" size="small" style={{ marginTop: 5 }}>Post</Button>
+                  </div>
+                </form>
               </div>
-            ))}
-            <div className="form-div">
-              <form onSubmit={handleSubmit}>
-                <div className="input-container">
-                  Comment:
-                  <StyledTextarea
-                    minRows={8}
-                    className="text-area"
-                    value={newPost}
-                    onChange={(event) => setNewPost(event.target.value)}
-                  />
-                </div>
-                <div>
-                  <Button className="post-button" type="submit" variant="contained" size="small" style={{ marginTop: 5 }}>Post</Button>
-                </div>
-              </form>
             </div>
-          </div>
+          </ScrollBar>
         </Grid>
       </Grid>
     </Box>

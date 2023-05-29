@@ -5,15 +5,19 @@ import {
   Button, Container, FormControl, FormHelperText, Grid,
   InputAdornment, OutlinedInput, Slider, TextField,
 } from '@material-ui/core';
-import HomeBuildRecomendations from '../HomePage/HomeExploreBooks';
+import ExploreBooks from '../HomePage/HomeExploreBooks';
 
-function FavBooksPlaces() {
+function FavBooks() {
   return (
     <Box>
-      <Box justifyContent="right" sx={{ height: '100vh', width: '100vh', ml: 25 }}>
-        {/* <HomeBuildRecomendations /> */}
+      <Box
+        alignContent="right"
+        alignItems="right"
+        sx={{ height: '100vh', width: '100vh', ml: 30 }}
+      >
+        <ExploreBooks ourBooks={[]} nearMeBooks={[]} />
       </Box>
     </Box>
   );
 }
-export default FavBooksPlaces;
+export default FavBooks;
