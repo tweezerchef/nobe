@@ -117,7 +117,7 @@ const BookIcon: React.FC<BookIconProps> = ({
               style={{ margin: '10px' }}
             />
           </Typography>
-          { notificationCount === 0 ? (<Box sx={{ marginTop: 30 }}><h1> Sorry you have no notfications at the moment, please check back later!</h1></Box>)
+          { notificationCount === 0 ? (<Box sx={{ marginTop: 30 }}><h1> You have zero notifications at the moment, please check back later!</h1></Box>)
             : (
               <Typography id="modal-desc" textColor="text.tertiary">
                 { notifications.map((notification: any) => (
