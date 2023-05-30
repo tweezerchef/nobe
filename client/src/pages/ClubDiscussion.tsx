@@ -187,7 +187,11 @@ function ClubDiscussion() {
         <Grid
           xs={2.5}
           sx={{
-            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '20vh',
+            position: 'sticky',
+            top: '0px',
+            height: '100vh',
+            paddingBottom: '8vh',
+            display: { xs: 'none', sm: 'block' },
           }}
         >
           <Box sx={{
@@ -202,25 +206,33 @@ function ClubDiscussion() {
             <ProfileCard />
             {/* <HomeUserDisplay /> */}
           </Box>
-          <ScrollBar
-            style={{ width: '100%', height: '100%' }}
-            trackYProps={{
-              renderer: (props) => {
-                const { elementRef, ...restProps } = props;
-                return <TrackY {...restProps} ref={elementRef} />;
-              },
-            }}
-            thumbYProps={{
-              renderer: (props) => {
-                const { elementRef, ...restProps } = props;
-                return <ThumbY {...restProps} ref={elementRef} />;
-              },
+          <div
+            style={{
+              width: '100%',
+              height: '70vh',
+              overflow: 'hidden',
             }}
           >
-            <Feed />
-          </ScrollBar>
+            <ScrollBar
+              style={{ width: '100%', height: '100%' }}
+              trackYProps={{
+                renderer: (props) => {
+                  const { elementRef, ...restProps } = props;
+                  return <TrackY {...restProps} ref={elementRef} />;
+                },
+              }}
+              thumbYProps={{
+                renderer: (props) => {
+                  const { elementRef, ...restProps } = props;
+                  return <ThumbY {...restProps} ref={elementRef} />;
+                },
+              }}
+            >
+              <Feed />
+            </ScrollBar>
+          </div>
         </Grid>
-        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '4vh' }}>
+        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '6vh' }}>
           <ScrollBar
             style={{ overflow: 'hide' }}
             noScrollX
