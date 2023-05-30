@@ -72,4 +72,22 @@ Friendship.delete('/', async (req, res) => {
   }
 });
 
+// Friendship.delete('/', async (req, res) => {
+//   const { userId, friendId } = req.body;
+//   try {
+//     const friendship = await prisma.friendship.delete({
+//       where: {
+//         userId_friendId: {
+//           userId,
+//           friendId,
+//         },
+//       },
+//     });
+//     res.sendStatus(200); // Sending a success status code
+//   } catch (error) {
+//     console.error(error);
+//     res.sendStatus(500); // Sending an error status code
+//   }
+// });
+
 export default Friendship;

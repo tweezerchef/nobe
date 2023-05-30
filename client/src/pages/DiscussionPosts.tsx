@@ -114,9 +114,10 @@ function DiscussionPosts() {
   async function fetchImage() {
     try {
       const response = await axios.get(`/api/clubs/discussions/${id}`);
+      console.log(response);
       if (response.data) {
-        setDiscussionImage(response.data.image);
-        setBookTitle(response.data.bookTitle);
+        setDiscussionImage(response.data.books.image);
+        setBookTitle(response.data.books.title);
       }
     } catch (error) {
       console.error(error);
@@ -219,7 +220,7 @@ function DiscussionPosts() {
         <Grid
           xs={2.5}
           sx={{
-            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '8vh',
+            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '20vh',
           }}
         >
           <Box sx={{
@@ -252,7 +253,7 @@ function DiscussionPosts() {
             <Feed />
           </ScrollBar>
         </Grid>
-        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '5vh' }}>
+        <Grid xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '4vh' }}>
           <ScrollBar
             style={{ overflow: 'hide' }}
             noScrollX
