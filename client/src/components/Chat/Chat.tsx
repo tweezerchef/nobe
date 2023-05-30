@@ -409,7 +409,7 @@ function Chat({ chatUser }: { chatUser: any }) {
               }}
               >
                 <Typography variant="h6" className="header-message">
-                  Select a conversation or start a new one.
+                {(isLoaded && chatUser) ? 'Loading Convo...' : 'Select a conversation or start a new one.'}
                 </Typography>
               </div>
             )}
