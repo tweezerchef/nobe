@@ -142,7 +142,7 @@ function Clubs() {
         <Grid1
           xs={2.5}
           sx={{
-            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '8vh',
+            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '20vh',
           }}
         >
           <Box sx={{
@@ -174,7 +174,7 @@ function Clubs() {
             <Feed />
           </ScrollBar>
         </Grid1>
-        <Grid1 xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '5vh' }}>
+        <Grid1 xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '4vh' }}>
           <ScrollBar
             style={{ overflow: 'hide' }}
             noScrollX
