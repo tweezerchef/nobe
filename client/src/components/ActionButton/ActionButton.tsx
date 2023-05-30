@@ -82,14 +82,14 @@ const NotificationIcon: React.FC = () => {
     }
   }, [id, socketUrl]);
 
-  return (
-    <BookIcon
-      notificationCount={notificationCount}
-      notifications={notifications}
-      markAsRead={markAsRead}
-      buttonState={buttonState}
-    />
+  // return (
+  //   <BookIcon
+  //     notificationCount={notificationCount}
+  //     notifications={notifications}
+  //     markAsRead={markAsRead}
+  //     buttonState={buttonState}
+  //   />
 
-  );
+  // );
 };
 export default NotificationIcon;
