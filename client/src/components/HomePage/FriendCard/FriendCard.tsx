@@ -16,8 +16,11 @@ interface FriendCardProps {
   userFriend: User;
   userId: string;
   friendIdArray: string[];
+  setFriendIdArray: React.Dispatch<React.SetStateAction<string[]>>;
 }
-function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
+function FriendCard({
+  userFriend, friendIdArray, userId, setFriendIdArray,
+}: FriendCardProps) {
   const user = userFriend;
   const owned = user?.UserBooks?.filter((book) => book.owned === true).length;
   const wishlist = user?.UserBooks?.filter((book) => book.wishlist === true).length;
@@ -50,7 +53,12 @@ function FriendCard({ userFriend, friendIdArray, userId }: FriendCardProps) {
     >
 
       <Grid container spacing={1} direction="column" sx={{ position: 'relative' }}>
-        <FollowButton userId={userId} friendIdArray={friendIdArray} friendId={user?.id} />
+        <FollowButton
+          userId={userId}
+          friendIdArray={friendIdArray}
+          setFriendIdArray={setFriendIdArray}
+          friendId={user?.id}
+        />
         <Grid>
           <Stack direction="column" spacing={1} alignItems="center">
             <Link to={`/profile/${user?.id}`}>

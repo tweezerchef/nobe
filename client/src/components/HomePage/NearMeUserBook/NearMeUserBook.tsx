@@ -40,7 +40,7 @@ box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.15);
 
 const useStyles = makeStyles({
   card: {
-    backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
+    // backgroundImage: 'url("https://i.imgur.com/Mjey231.jpg")',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     cursor: 'pointer',
@@ -59,7 +59,7 @@ const NearMeUserBook: React.FC<NearMeUserBookProps> = ({
   const user = userContext?.user;
   const id = user?.id;
   const [userRating, setUserRating] = React.useState<number>(0);
-  const username = user?.username ? user.username : user?.firstName;
+  const username = User?.username ? User.username : User?.firstName;
   const classes = useStyles();
 
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -92,13 +92,13 @@ const NearMeUserBook: React.FC<NearMeUserBookProps> = ({
     <Card
       variant="outlined"
       sx={{
-        width: '28vw',
+        width: '34vw',
         height: '100%',
-        margin: '10px',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         alignContent: 'center',
         justifyContent: 'center',
         backgroundColor: '#ececec',
+        overflow: 'hidden',
       }}
     >
       <Grid container spacing={0} alignItems="center" justifyContent="space-evenly">
@@ -123,13 +123,12 @@ const NearMeUserBook: React.FC<NearMeUserBookProps> = ({
           <Box
             onClick={handleOnClick}
             className={classes.card}
-            height="80%"
             overflow="hidden"
           >
             <AspectRatio ratio="2">
               <img src={bookcover} alt="Book Cover" />
             </AspectRatio>
-            <Typography level="h5" sx={{ textAlign: 'center' }}>
+            <Typography level="h6" sx={{ textAlign: 'center' }}>
               {Books.title}
             </Typography>
           </Box>

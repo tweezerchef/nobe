@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, ChangeEvent, FormEvent,
+  useState, useEffect,
 } from 'react';
 import Stack from '@mui/joy/Stack';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -19,9 +19,10 @@ import FriendCard from './FriendCard/FriendCard';
 interface FriendsComponentProps {
   friendIdArray: string[];
   userId: string;
+  setFriendIdArray: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-function FriendsComponent({ friendIdArray, userId }: FriendsComponentProps) {
+function FriendsComponent({ friendIdArray, userId, setFriendIdArray }: FriendsComponentProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [randomUsers, setRandomUsers] = useState<User[]>([]);
@@ -177,6 +178,7 @@ function FriendsComponent({ friendIdArray, userId }: FriendsComponentProps) {
                         userFriend={randomUser}
                         userId={userId}
                         friendIdArray={friendIdArray}
+                        setFriendIdArray={setFriendIdArray}
                       />
                       )}
                       </Box>

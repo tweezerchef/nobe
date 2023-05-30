@@ -7,7 +7,6 @@ import Slide from '@mui/material/Slide';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Avatar from '@mui/material/Avatar';
-import { get } from 'http';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -28,7 +27,6 @@ function BookOwnerNearMe({ bookId }: BookOwnerNearMeProps) {
   const { latitude, longitude, radius } = user;
   const lat = latitude;
   const lon = longitude;
-  const rad = radius;
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [usersArray, setUsersArray] = useState<User[]>([]);
@@ -36,16 +34,17 @@ function BookOwnerNearMe({ bookId }: BookOwnerNearMeProps) {
   const usersPerPage = 6;
 
   const getBookOwners = async () => {
+    const userId = user?.id;
     try {
       const res = await axios.get('/location/locations/book', {
         params: {
+          userId,
           bookId,
           radius,
           lat,
           lon,
         },
       });
-      console.log(res.data);
       setUsersArray(res.data);
     } catch (error) {
       console.error(error);
