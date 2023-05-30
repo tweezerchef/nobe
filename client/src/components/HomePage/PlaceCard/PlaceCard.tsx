@@ -4,7 +4,9 @@ import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Typography from '@mui/joy/Typography';
-import { Rating, Tooltip, IconButton } from '@mui/material';
+import {
+  Rating, Tooltip, IconButton,
+} from '@mui/material';
 import RecommendIcon from '@mui/icons-material/Recommend';
 import WhatshotTwoToneIcon from '@mui/icons-material/WhatshotTwoTone';
 import Box from '@mui/material/Box';
@@ -12,11 +14,17 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { makeStyles } from '@mui/styles';
 import { Place } from '../../../typings/types';
 
 interface PlaceCardProps {
   place: Place;
 }
+const useStyles = makeStyles((theme) => ({
+  customTooltip: {
+    backgroundColor: '#fdfdfd45',
+  },
+}));
 
 function PlaceCard({ place } : PlaceCardProps) {
   const { Places_Pictures, name } = place;
@@ -26,6 +34,7 @@ function PlaceCard({ place } : PlaceCardProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const editorial = place.placeEditorial ? place.placeEditorial : 'a place to read';
+  const classes = useStyles();
 
   const handleNextImage = () => {
     if (currentPicIndex < Places_Pictures.length - 1) {
@@ -65,7 +74,10 @@ function PlaceCard({ place } : PlaceCardProps) {
       }}
     >
       {' '}
-      <Tooltip title={editorial} placement="top">
+      <Tooltip
+        title={<h1>{editorial}</h1>}
+        placement="top"
+      >
         <Box sx={{ position: 'relative' }}>
 
           <AspectRatio ratio="2">
@@ -83,7 +95,7 @@ function PlaceCard({ place } : PlaceCardProps) {
               left: '5px',
               top: '50%',
               transform: 'translateY(-50%)',
-              backgroundColor: 'rgba(255, 255, 255, 0.7)', // semi-transparent white background
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
             }}
           >
             <NavigateBeforeIcon />
@@ -97,7 +109,7 @@ function PlaceCard({ place } : PlaceCardProps) {
               right: '5px',
               top: '50%',
               transform: 'translateY(-50%)',
-              backgroundColor: 'rgba(255, 255, 255, 0.7)', // semi-transparent white background
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
             }}
           >
             <NavigateNextIcon />

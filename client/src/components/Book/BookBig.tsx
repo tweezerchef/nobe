@@ -131,9 +131,9 @@ function BigBook(props: any) {
           variant="outlined"
           className={classes.card}
           sx={{
-            height: '67vh',
-            width: '600px',
             boxShadow: '0px 0px 25px rgba(0, 0, 0, 0.6)',
+            width: '600px',
+            minHeight: '60vh',
             maxHeight: '1500px',
             '@media (max-width: 768px)': {
               width: '80vw',
@@ -275,24 +275,26 @@ function BigBook(props: any) {
             maxHeight: '100%',
           }}
           >
-            <Typography level="body1">
-              {description?.length > 150 ? (
-                <>
-                  {`${description?.slice(0, 150)}... `}
-                  <Typography
-                    component="span"
-                    level="body1"
-                    color="primary"
-                    style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                    onClick={handleExpandDescription}
-                  >
-                    See More
-                  </Typography>
-                </>
-              ) : (
-                description
-              )}
-            </Typography>
+            <Box height="5rem">
+              <Typography level="body1">
+                {description?.length > 150 ? (
+                  <>
+                    {`${description?.slice(0, 150)}... `}
+                    <Typography
+                      component="span"
+                      level="body1"
+                      color="primary"
+                      style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                      onClick={handleExpandDescription}
+                    >
+                      See More
+                    </Typography>
+                  </>
+                ) : (
+                  description
+                )}
+              </Typography>
+            </Box>
             <Modal
               open={showDescriptionModal}
               onClose={handleCloseDescriptionModal}
