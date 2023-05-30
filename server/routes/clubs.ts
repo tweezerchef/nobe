@@ -112,13 +112,13 @@ ClubsRoute.get('/discussions/:id', async (req: Request, res: Response) => {
 
 ClubsRoute.put('/discussions/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { image, bookTitle } = req.body;
+  const { image, bookId } = req.body;
   try {
     const updatedDiscussion = await prisma.discussions.update({
       where: {
         id,
       },
-      data: { image, bookTitle },
+      data: { image, bookId },
     });
     res.status(200).json(updatedDiscussion);
   } catch (err) {
