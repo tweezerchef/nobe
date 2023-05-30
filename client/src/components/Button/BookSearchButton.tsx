@@ -64,16 +64,13 @@ function BookSearchButton(props: any) {
 
     try {
       if (selectedBook) {
-        const response = await axios.get(
-          `/bookdata/title/searchOne?title=${selectedBook.title}`,
-        );
-        const bookData = response.data;
         const bookTitle = selectedBook.title;
+        const bookId = selectedBook.id;
         const updatedDiscussion = await axios.put(
           `/api/clubs/discussions/${discussionId}`,
           {
-            image: bookData[0].image,
-            bookTitle,
+            image: selectedBook.image,
+            bookId,
           },
         );
         setDiscussionImage(updatedDiscussion.data.image);

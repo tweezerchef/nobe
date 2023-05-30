@@ -93,6 +93,12 @@ ClubsRoute.get('/discussions/:id', async (req: Request, res: Response) => {
         id,
       },
       include: {
+        books: {
+          select: {
+            title: true,
+            image: true,
+          },
+        },
         clubs: {
           select: { name: true },
         },
@@ -112,13 +118,14 @@ ClubsRoute.get('/discussions/:id', async (req: Request, res: Response) => {
 
 ClubsRoute.put('/discussions/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { image, bookTitle } = req.body;
+  const { image, bookId } = req.body;
+  console.log(image, bookId);
   try {
     const updatedDiscussion = await prisma.discussions.update({
       where: {
         id,
       },
-      data: { image, bookTitle },
+      data: { image, bookId },
     });
     res.status(200).json(updatedDiscussion);
   } catch (err) {
