@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Button, Container, FormControl, FormHelperText, Grid,
   InputAdornment, OutlinedInput, Slider, TextField,
 } from '@material-ui/core';
-import ExploreBooks from '../HomePage/HomeExploreBooks';
+import axios from 'axios';
+import UserContext from '../../hooks/Context';
+import SettingsExploreBooks from './SettingsExploreBooks';
 
 function FavBooks() {
   return (
@@ -13,9 +15,9 @@ function FavBooks() {
       <Box
         alignContent="right"
         alignItems="right"
-        sx={{ height: '100vh', width: '100vh', ml: 30 }}
+        sx={{ height: '100vh', width: 1500 }}
       >
-        <ExploreBooks ourBooks={[]} nearMeBooks={[]} />
+        <SettingsExploreBooks />
       </Box>
     </Box>
   );
