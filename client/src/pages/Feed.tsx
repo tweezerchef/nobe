@@ -5,7 +5,7 @@ import {
 } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-
+import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
@@ -67,12 +67,12 @@ export default function CustomizedTimeline() {
 
   if (showBigBook) {
     return (
-      <BigBook book={book} id={userId} />
+      <BigBook book={book} id={userId} onClose={() => setShowBigBook(false)} />
     );
   }
 
   return (
-    <>
+    <Box ml={2} mr={2}>
       {activity.length === 0 && <div>loading</div>}
       {activity.length > 0 && (
         activity.sort((a, b) => {
@@ -82,47 +82,44 @@ export default function CustomizedTimeline() {
             return -1;
           }
           return 0;
-        }).map((data: Activity) => {
-          
-          return (
-            <div className="container">
-              <div style={{ display: 'flex' }}>
-                <div style={{ margin: '3%' }}>
-                  <Avatar onClick={() => navigate(`/profile/${data.user?.id}`)} src={data.user?.picture} />
-                </div>
-                <div style={{ marginTop: '3%', marginRight: '3%' }}>
-                  <span style={{ fontWeight: 'bold' }} onClick={() => navigate(`/profile/${data.user?.id}`)}>
-                    {`${data.user.firstName}`}
-                  </span>
-                  <span style={{ marginLeft: '3%', color: 'grey' }}>
-                    {`${moment(data.createdAt).startOf('hour').fromNow()}`}
-                  </span>
-                  <div>
-                    {data.type.toLowerCase() === 'wishlist' ? (`Added ${data.book.title} to their wishlist`)
-                      : data.type.toLowerCase() === 'review' ? (
-                        (`Rated ${data.book.title} ${data.description} stars`)
+        }).map((data: Activity) => (
+          <div className="container">
+            <div style={{ display: 'flex' }}>
+              <div style={{ margin: '3%' }}>
+                <Avatar onClick={() => navigate(`/profile/${data.user?.id}`)} src={data.user?.picture} />
+              </div>
+              <div style={{ marginTop: '3%', marginRight: '3%' }}>
+                <span style={{ fontWeight: 'bold' }} onClick={() => navigate(`/profile/${data.user?.id}`)}>
+                  {`${data.user.firstName}`}
+                </span>
+                <span style={{ marginLeft: '3%', color: 'grey' }}>
+                  {`${moment(data.createdAt).startOf('hour').fromNow()}`}
+                </span>
+                <div>
+                  {data.type.toLowerCase() === 'wishlist' ? (`Added ${data.book.title} to their wishlist`)
+                    : data.type.toLowerCase() === 'review' ? (
+                      (`Rated ${data.book.title} ${data.description} stars`)
+                    )
+                      : data.type.toLowerCase() === 'location' ? (
+                        (`Added ${data.description} as a reading spot`)
                       )
-                        : data.type.toLowerCase() === 'location' ? (
-                          (`Added ${data.description} as a reading spot`)
-                        )
-                          : (
-                            `Added ${data.book.title} to their owned books`
-                          )}
-                    <div>
-                      {data.type.toLowerCase() === 'wishlist' || data.type.toLowerCase() === 'owned' || data.type.toLowerCase() === 'review' ? (
-                        <img style={{ width: '200px' }} src={`${data.book.image}`} onClick={() => openBigBook(data.book)} />
-                      ) : null}
-                    </div>
+                        : (
+                          `Added ${data.book.title} to their owned books`
+                        )}
+                  <div>
+                    {data.type.toLowerCase() === 'wishlist' || data.type.toLowerCase() === 'owned' || data.type.toLowerCase() === 'review' ? (
+                      <img style={{ width: '200px' }} src={`${data.book.image}`} onClick={() => openBigBook(data.book)} />
+                    ) : null}
                   </div>
                 </div>
               </div>
-              <Divider />
-              {/* </CardContent>
-          </Card> */}
             </div>
-          );
-        })
+            <Divider />
+            {/* </CardContent>
+          </Card> */}
+          </div>
+        ))
       )}
-    </>
+    </Box>
   );
 }
