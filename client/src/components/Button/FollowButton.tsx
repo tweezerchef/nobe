@@ -10,9 +10,12 @@ interface FollowButtonProps {
   friendId: string;
   friendIdArray: string[];
   userId: string;
+  setFriendIdArray: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-function FollowButton({ friendId, friendIdArray, userId }: FollowButtonProps) {
+function FollowButton({
+  friendId, friendIdArray, userId, setFriendIdArray,
+}: FollowButtonProps) {
   const [isFriend, setIsFriend] = useState(false);
   const [buttonText, setButtonText] = useState('Follow');
   const [button, setButton] = useState(<PersonAddIcon />);
@@ -31,10 +34,12 @@ function FollowButton({ friendId, friendIdArray, userId }: FollowButtonProps) {
   const follow = async () => {
     try {
       if (buttonText === 'Follow') {
+        setFriendIdArray([friendId, ...friendIdArray]);
         setButton(<PersonRemoveIcon />);
         setButtonText('Unfollow');
         axios.post('/api/friendship', { userId, friendId });
       } else {
+        setFriendIdArray?.(friendIdArray.filter((id) => id !== friendId));
         setButton(<PersonAddIcon />);
         setButtonText('Follow');
         axios.delete('/api/friendship', { data: { userId, friendId } });

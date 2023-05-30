@@ -20,9 +20,10 @@ type Friendships = {
 };
 interface FriendsComponentProps {
   friendIdArray: string[];
+  setFriendIdArray: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-function FriendsComponent({ friendIdArray }: FriendsComponentProps) {
+function FriendsComponent({ friendIdArray, setFriendIdArray }: FriendsComponentProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [friends, setFriends] = useState<Friendships[]>([]);
@@ -110,6 +111,7 @@ function FriendsComponent({ friendIdArray }: FriendsComponentProps) {
                         userFriend={friend.friend}
                         userId={userId}
                         friendIdArray={friendIdArray}
+                        setFriendIdArray={setFriendIdArray}
                       />
                       )}
                     </Box>

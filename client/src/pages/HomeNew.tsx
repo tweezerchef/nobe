@@ -120,6 +120,20 @@ function HomeNew() {
     getOurBooks();
   }, []);
 
+  useEffect(() => {
+    axios.get('/user/id', {
+      params: {
+        id: userId,
+      },
+    }).then((response) => {
+      console.log('response.data', response.data);
+      userContext?.setUser(response.data);
+    }).then(() => getFriendIds)
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [friendIdArray]);
+
   const colWidth = {
     xs: 12, sm: 6, md: 4, lg: 3,
   } as const;
@@ -360,7 +374,10 @@ function HomeNew() {
                     maxHeight: isMobile ? '95vw' : '350px',
                   }}
                 >
-                  <HomeFriends friendIdArray={friendIdArray} />
+                  <HomeFriends
+                    friendIdArray={friendIdArray}
+                    setFriendIdArray={setFriendIdArray}
+                  />
                 </Box>
                 <Box
                   overflow="clip"
@@ -375,7 +392,13 @@ function HomeNew() {
                   }}
                 >
                   {userId
-              && <FriendFinder friendIdArray={friendIdArray} userId={userId} />}
+              && (
+              <FriendFinder
+                friendIdArray={friendIdArray}
+                userId={userId}
+                setFriendIdArray={setFriendIdArray}
+              />
+              )}
                 </Box>
                 <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px' }} />
               </Stack>
