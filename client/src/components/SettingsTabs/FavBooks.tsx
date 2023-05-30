@@ -15,7 +15,7 @@ function FavBooks() {
       <Box
         alignContent="right"
         alignItems="right"
-        sx={{ height: '100vh', width: '100vh', ml: 30 }}
+        sx={{ height: '100vh', width: 1500 }}
       >
         <SettingsExploreBooks />
       </Box>

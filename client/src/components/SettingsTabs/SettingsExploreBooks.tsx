@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {
   useState, useEffect, useContext,
 } from 'react';
@@ -42,7 +44,7 @@ function SettingsExploreBooks() {
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [nearMeBooks, setNearMeBooks] = useState<string[]>([]);
-  const [ourBooks, setOurBooks] = useState<ourBooks[]>([]);
+  const [ourBooks, setOurBooks] = useState<OurBooks[]>([]);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -303,7 +305,7 @@ function SettingsExploreBooks() {
           <IconButton
             onClick={handleNextPage}
             sx={{
-              marginLeft: 10, marginRight: 1, padding: 0, alignSelf: 'center', justifySelf: 'end',
+              padding: 0, alignSelf: 'center', justifyContent: 'flex-end',
             }}
             disabled={currentPage >= Math.ceil((books.length || 0) / booksPerPage) - 1}
           >
