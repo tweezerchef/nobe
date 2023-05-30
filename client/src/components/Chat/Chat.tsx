@@ -503,6 +503,7 @@ function Chat({ chatUser }: { chatUser: any }) {
                       variant="outlined"
                       className={chatClasses.textField}
                       style={{ padding: '0px 5px 0px 0px' }}
+                      autoComplete="off"
                       InputProps={{
                         endAdornment: (
                           <Box sx={{ display: 'flex', alignItems: 'center' }}>
