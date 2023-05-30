@@ -61,7 +61,7 @@ const UserReview: React.FC<UserReviewProps> = ({
               variant="standard"
               onChange={handleReviewChange}
               fullWidth
-              multiline // allows multiple lines of input
+              multiline
               rows={5}
             />
           </DialogContent>
