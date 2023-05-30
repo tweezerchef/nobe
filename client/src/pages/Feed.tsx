@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
 import UserContext from '../hooks/Context';
+import BigBook from '../components/Book/BookBig';
 
 interface Activity {
   createdAt: string;
@@ -31,6 +32,9 @@ interface Activity {
 
 export default function CustomizedTimeline() {
   const [activity, setActivity] = useState<Activity[]>([]);
+  const [showBigBook, setShowBigBook] = useState<any>(false);
+  const [book, setBook] = useState<any>(null);
+  // let book: any;
 
   const navigate = useNavigate();
 
@@ -46,14 +50,26 @@ export default function CustomizedTimeline() {
         },
       });
       setActivity(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const openBigBook = (obj: any) => {
+    setShowBigBook(true);
+    setBook(obj);
+  };
+
   useEffect(() => {
     getFeed();
   }, []);
+
+  if (showBigBook) {
+    return (
+      <BigBook book={book} id={userId} onClose={() => setShowBigBook(false)} />
+    );
+  }
 
   return (
     <Box ml={2} mr={2}>
@@ -92,7 +108,7 @@ export default function CustomizedTimeline() {
                         )}
                   <div>
                     {data.type.toLowerCase() === 'wishlist' || data.type.toLowerCase() === 'owned' || data.type.toLowerCase() === 'review' ? (
-                      <img style={{ width: '200px' }} src={`${data.book.image}`} />
+                      <img style={{ width: '200px' }} src={`${data.book.image}`} onClick={() => openBigBook(data.book)} />
                     ) : null}
                   </div>
                 </div>
