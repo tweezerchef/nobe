@@ -38,7 +38,7 @@ function ModeToggle({ setMode, setJoyMode }: ModeToggleProps) {
   }
 
   return (
-    <IconButton onClick={handleModeChange}>
+    <IconButton onClick={handleModeChange} sx={{ marginLeft: '15px !important' }}>
       {mode === 'dark' ? <DarkMode /> : <LightMode />}
     </IconButton>
   );
