@@ -8,6 +8,9 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 const SpotsMapRoute = express.Router();
+interface EditorialSummary {
+  editorial_summary: string;
+}
 
 SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   const {
@@ -15,8 +18,15 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
   } = req.body;
   const {
     formatted_address, geometry, name, photos,
-    place_id, reviews, types, website, rating, formatted_phone_number,
+    place_id, reviews, types, website, rating, formatted_phone_number, editorial_summary,
   } = place;
+  let overview: string | undefined = editorial_summary?.editorial_summary;
+  // @ts-ignore
+  if (overview && overview?.editorial_summary) {
+    overview = editorial_summary.editorial_summary;
+  } else {
+    overview = 'Great Place To Read';
+  }
 
   let myFav = false;
   if (color === 'danger') {
@@ -35,6 +45,7 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
           googlePlaceId: place_id,
           name,
           website,
+          placeEditorial: overview,
           rating,
           types,
           phone: formatted_phone_number,
@@ -103,6 +114,7 @@ SpotsMapRoute.post('/place', async (req: Request, res: Response) => {
 
 SpotsMapRoute.get('/getplace', async (req: Request, res: Response) => {
   const { placeId } = req.query;
+
   let place;
   let google = false;
   try {
@@ -119,7 +131,7 @@ SpotsMapRoute.get('/getplace', async (req: Request, res: Response) => {
       });
       if (!place) {
         google = true;
-        place = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews,formatted_address,geometry,website,rating,name,photo,place_id,formatted_phone_number,type&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+        place = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews,formatted_address,geometry,website,rating,name,photo,editorial_summary,place_id,formatted_phone_number,type&key=${process.env.GOOGLE_MAPS_API_KEY}`);
         place = place.data;
       }
       res.send({ place, google }).status(200);

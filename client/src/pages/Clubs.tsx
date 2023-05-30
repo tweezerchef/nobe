@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import Grid1 from '@mui/material/Unstable_Grid2';
 import axios from 'axios';
 import styled from 'styled-components';
+import ScrollBar from 'react-scrollbars-custom';
 import Feed from './Feed';
 import ProfileCard from '../components/HomePage/ProfileCard/ProfileCard';
 import HomeUserDisplay from '../components/UserDisplay/HomeUserdisplay.';
@@ -42,6 +43,39 @@ transition: transform 0.2s ease-in-out;
 transform: scale(1.01);
 }
 `;
+
+const StyledTrack = styled.div`
+    background-color: #f1f1f1;
+    left: 2px !important;
+`;
+const StyledTrackHome = styled.div`
+    background-color: #f1f1f1;
+    height: 100%;
+`;
+
+const StyledThumb = styled.div`
+    background-color: #888;
+    border-radius: 3px;
+`;
+const StyledThumbHome = styled.div`
+    background-color: #888;
+    border-radius: 3px;
+
+`;
+const TrackYHome = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledTrackHome {...props} ref={ref} />,
+);
+
+const ThumbYHome = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledThumbHome {...props} ref={ref} />,
+);
+
+const TrackY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledTrack {...props} ref={ref} />,
+);
+const ThumbY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledThumb {...props} ref={ref} />,
+);
 
 function Clubs() {
   const [clubs, setClubs] = useState<Club[]>([]);
@@ -77,7 +111,9 @@ function Clubs() {
   // `;
   return (
     <Box sx={{
-      flexGrow: 1, overflow: 'clip', height: '98vh',
+      flexGrow: 1,
+      overflow: 'clip',
+      height: '98vh',
     }}
     >
       <Grid1
@@ -108,104 +144,153 @@ function Clubs() {
         <Grid1
           xs={2.5}
           sx={{
-            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '8vh',
+            position: 'sticky',
+            top: '0px',
+            height: '100vh',
+            paddingBottom: '8vh',
+            display: { xs: 'none', sm: 'block' },
           }}
         >
           <Box sx={{
             width: '100%',
-            height: '23.48vh',
-            maxHeight: '200px',
+            height: '200px',
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            overflow: 'clip',
+            backgroundPosition: 'right 40% bottom 69%',
+            overflow: 'hidden',
             backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
           }}
           >
             <ProfileCard />
           </Box>
-          <Box sx={{ width: '100%', maxHeight: '80vh', overflow: 'auto' }}>
-            <Feed />
-          </Box>
-        </Grid1>
-        <Grid1 xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '9vh' }}>
-          <Box
-            sx={{
+          <div
+            style={{
               width: '100%',
-              height: '23.48vh',
-              maxHeight: '200px',
-              backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              height: '70vh',
+              overflow: 'hidden',
             }}
-          />
-          <div>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={12}>
-                {/* <HeaderBox> */}
-                <ClubHeader>Book Clubs</ClubHeader>
-                {/* </HeaderBox> */}
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleClickOpen}
-                    style={{ marginBottom: '10px' }}
-                  >
-                    Create a Club
-                  </Button>
-                </Box>
-                <CreateClubs
-                  open={open}
-                  handleClose={handleClose}
-                  setClubs={setClubs}
-                  setOpen={setOpen}
-                />
-                <CardContainer>
-                  {clubs && clubs.length > 0 && clubs.map((club) => (
-                    <StyledCard key={club.id} flexBasis="25%" variant="outlined">
-                      <Link
-                        to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
-                        style={{
-                          color: 'black', textDecoration: 'none', fontSize: '24px', fontWeight: 600, display: 'block', width: '100%',
-                        }}
-                      >
-                        <AspectRatio ratio="2">
-                          <img
-                            alt=""
-                            title={`Club image for ${club.name}`}
-                            src={club.image}
-                            style={{
-                              pointerEvents: 'none', display: 'block', margin: '0 auto', border: 'none', width: '100%',
-                            }}
-                          />
-                        </AspectRatio>
-                        <CardContent style={{
-                          display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative',
-                        }}
-                        >
-                          <Typography variant="h5" component="h2" style={{ textAlign: 'center', marginBottom: '10px' }}>
-                            {club.name}
-                          </Typography>
-                          <Typography variant="body1" component="p" style={{ fontSize: '18px', color: 'gray' }}>
-                            {club.description}
-                          </Typography>
-                          <Typography
-                            variant="body1"
-                            component="p"
-                            style={{
-                              fontSize: '13px', color: 'gray', position: 'absolute', bottom: 5, right: 5,
-                            }}
-                          >
-                            {club.clubMembers && club.clubMembers.length === 1 ? '1 Member' : `${club.clubMembers?.length || 0} Members`}
-                          </Typography>
-                        </CardContent>
-                      </Link>
-                    </StyledCard>
-                  ))}
-                </CardContainer>
-              </Grid>
-            </Grid>
+          >
+            <ScrollBar
+              style={{ width: '100%', height: '100%' }}
+              trackYProps={{
+                renderer: (props) => {
+                  const { elementRef, ...restProps } = props;
+                  return <TrackY {...restProps} ref={elementRef} />;
+                },
+              }}
+              thumbYProps={{
+                renderer: (props) => {
+                  const { elementRef, ...restProps } = props;
+                  return <ThumbY {...restProps} ref={elementRef} />;
+                },
+              }}
+            >
+              <Feed />
+            </ScrollBar>
           </div>
+        </Grid1>
+        <Grid1
+          xs={9.5}
+          sx={{
+            height: '99vh',
+            overflow: 'auto',
+            paddingBottom: '6vh',
+          }}
+        >
+          <ScrollBar
+            style={{ overflow: 'hide' }}
+            noScrollX
+            trackYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <TrackYHome {...restProps} ref={elementRef} />;
+              },
+            }}
+            thumbYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return <ThumbYHome {...restProps} ref={elementRef} />;
+              },
+            }}
+          >
+            <Box
+              sx={{
+                width: '100%',
+                height: '23.48vh',
+                maxHeight: '200px',
+                backgroundImage: 'url(https://i.imgur.com/oB9cYCo.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <div>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={12}>
+                  {/* <HeaderBox> */}
+                  <ClubHeader>Book Clubs</ClubHeader>
+                  {/* </HeaderBox> */}
+                  <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleClickOpen}
+                      style={{ marginBottom: '10px' }}
+                    >
+                      Create a Club
+                    </Button>
+                  </Box>
+                  <CreateClubs
+                    open={open}
+                    handleClose={handleClose}
+                    setClubs={setClubs}
+                    setOpen={setOpen}
+                  />
+                  <CardContainer>
+                    {clubs && clubs.length > 0 && clubs.map((club) => (
+                      <StyledCard key={club.id} flexBasis="25%" variant="outlined">
+                        <Link
+                          to={`/clubs/${club.id}?name=${encodeURIComponent(club.name)}`}
+                          style={{
+                            color: 'black', textDecoration: 'none', fontSize: '24px', fontWeight: 600, display: 'block', width: '100%',
+                          }}
+                        >
+                          <AspectRatio ratio="2">
+                            <img
+                              alt=""
+                              title={`Club image for ${club.name}`}
+                              src={club.image}
+                              style={{
+                                pointerEvents: 'none', display: 'block', margin: '0 auto', border: 'none', width: '100%',
+                              }}
+                            />
+                          </AspectRatio>
+                          <CardContent style={{
+                            display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative',
+                          }}
+                          >
+                            <Typography variant="h5" component="h2" style={{ textAlign: 'center', marginBottom: '10px' }}>
+                              {club.name}
+                            </Typography>
+                            <Typography variant="body1" component="p" style={{ fontSize: '18px', color: 'gray' }}>
+                              {club.description}
+                            </Typography>
+                            <Typography
+                              variant="body1"
+                              component="p"
+                              style={{
+                                fontSize: '13px', color: 'gray', position: 'absolute', bottom: 5, right: 5,
+                              }}
+                            >
+                              {club.clubMembers && club.clubMembers.length === 1 ? '1 Member' : `${club.clubMembers?.length || 0} Members`}
+                            </Typography>
+                          </CardContent>
+                        </Link>
+                      </StyledCard>
+                    ))}
+                  </CardContainer>
+                </Grid>
+              </Grid>
+            </div>
+          </ScrollBar>
         </Grid1>
       </Grid1>
     </Box>

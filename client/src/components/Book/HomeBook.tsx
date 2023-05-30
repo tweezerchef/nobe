@@ -46,7 +46,7 @@ const useStyles = makeStyles({
   card: {
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
-    transition: 'background-image 0.3s ease-in-out',
+    transition: 'background-image 0.06s ease-in-out',
   },
 });
 
@@ -62,6 +62,8 @@ const Book = React.memo(({
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
   const [bottomColor, setBottomColor] = useState<string>('');
   const storedMode = localStorage.getItem('mode');
+  const [isWishListed, setIsWishListed] = useState<boolean>(false);
+  const [isLendinglibrary, setIsLendingLibrary] = useState<boolean>(false);
 
   if (!book) {
     return null;
@@ -70,20 +72,45 @@ const Book = React.memo(({
   const [userRating, setUserRating] = React.useState<number>(0);
   const maxCharacters = 45;
   const ellipsisCharacters = 10; // Number of characters to show before the ellipsis
-
+  if (!book.title) return null;
   let displayedTitle = book.title;
   if (book.title.length > maxCharacters) {
     displayedTitle = `${book.title.substring(0, maxCharacters - ellipsisCharacters)}...`;
   }
 
+  const findLending = () => {
+    if (book.UserBooks && book.UserBooks.length > 0) {
+      book.UserBooks.forEach((entry: any) => {
+        if (entry.userId === id && entry.owned === true) {
+          setIsLendingLibrary(true);
+        }
+      });
+    }
+  };
+
+  const findWishList = () => {
+    if (book.UserBooks && book.UserBooks.length > 0) {
+      book.UserBooks.forEach((entry: any) => {
+        if (entry.userId === id && entry.wishList === true) {
+          setIsWishListed(true);
+        }
+      });
+    }
+  };
+
   useEffect(() => {
     const newBackgroundImageUrl = storedMode === 'dark'
       ? 'url("https://nobe.s3.us-east-2.amazonaws.com/blackBook.jpg")'
-      : 'url("https://i.imgur.com/Mjey231.jpg")';
-    const newBottomColor = storedMode === 'dark' ? 'rgba(37, 37, 37, 0.6)' : 'rgba(236, 216, 198, 0.582)';
+      : 'url("https://nobe.s3.us-east-2.amazonaws.com/light-brown-leather-textured-background_53876-108003.jpg")';
+    const newBottomColor = storedMode === 'dark' ? 'rgba(37, 37, 37, 0.6)' : 'rgba(122, 64, 14, 0.199)';
     setBottomColor(newBottomColor);
     setBackgroundImageUrl(newBackgroundImageUrl);
   }, [storedMode]);
+
+  useEffect(() => {
+    findLending();
+    findWishList();
+  }, [book]);
 
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     onClick(e, book);
@@ -105,6 +132,10 @@ const Book = React.memo(({
           userRating={userRating}
           setUserRating={setUserRating}
           onClose={() => onClose()}
+          isWishlisted={isWishListed}
+          setIsWishlisted={setIsWishListed}
+          isLendingLibrary={isLendinglibrary}
+          setIsLendingLibrary={setIsLendingLibrary}
         />
       </BigBookOverlay>
     );
@@ -117,10 +148,11 @@ const Book = React.memo(({
       variant="outlined"
       className={classes.card}
       sx={{
-        width: isMobile ? '70vw' : '17vw',
-        height: isMobile ? '62vw' : '18vw',
+        width: isMobile ? '70vw' : '18vw',
+        height: isMobile ? '62vw' : '19.5vw',
         minHeight: isMobile ? '62vw' : '250px',
         maxHeight: isMobile ? '62vw' : '325px',
+        minWidth: isMobile ? '70vw' : '200px',
         maxWidth: isMobile ? '70vw' : '325px',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         display: 'flex',
@@ -150,17 +182,26 @@ const Book = React.memo(({
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            objectPosition: 'center center',
+            objectPosition: 'center top',
           }}
         />
       </Box>
       <CardOverflow>
-        <NearMeButton book={book} nearMeBooks={nearMeBooks} />
-        <LendingLibraryButton book={book} />
-        <WishListButton book={book} />
+        <Box onClick={handleOnClick}>
+          <NearMeButton book={book} nearMeBooks={nearMeBooks} />
+        </Box>
+        <LendingLibraryButton
+          book={book}
+          isLendingLibrary={isLendinglibrary}
+          setIsLendingLibrary={setIsLendingLibrary}
+        />
+        <WishListButton
+          book={book}
+          isWishListed={isWishListed}
+          setIsWishListed={setIsWishListed}
+        />
       </CardOverflow>
       <Typography
-        level="body1"
         onClick={handleOnClick}
         sx={{
           mt: 2.4,
@@ -168,13 +209,17 @@ const Book = React.memo(({
           whiteSpace: isMobile ? 'wrap' : 'normal',
           flexWrap: 'wrap',
           textAlign: 'center',
+          textOverflow: 'ellipsis',
+          fontSize: isMobile ? '1.5rem' : '1.27rem',
+          fontWeight: '500',
+          lineHeight: '1.4rem',
         }}
       >
         {displayedTitle}
       </Typography>
 
       <Typography
-        level="body2"
+        level="h6"
         sx={{
           mt: 'auto',
           mb: 'auto',

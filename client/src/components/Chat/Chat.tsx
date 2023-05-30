@@ -54,7 +54,7 @@ const chatStyles = makeStyles({
 
 const ChatOverlay = styled.div`
   position: absolute;
-  right: 0;
+  left: 0;
   z-index: 9999;
   width: 600px;
   height: '60vh';
@@ -409,7 +409,7 @@ function Chat({ chatUser }: { chatUser: any }) {
               }}
               >
                 <Typography variant="h6" className="header-message">
-                  Select a conversation or start a new one.
+                {(isLoaded && chatUser) ? 'Loading Convo...' : 'Select a conversation or start a new one.'}
                 </Typography>
               </div>
             )}
@@ -503,6 +503,7 @@ function Chat({ chatUser }: { chatUser: any }) {
                       variant="outlined"
                       className={chatClasses.textField}
                       style={{ padding: '0px 5px 0px 0px' }}
+                      autoComplete="off"
                       InputProps={{
                         endAdornment: (
                           <Box sx={{ display: 'flex', alignItems: 'center' }}>

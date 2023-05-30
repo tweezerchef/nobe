@@ -30,6 +30,7 @@ interface Place {
   userPlaces: any;
   User_Places: any;
   place_id: any;
+  placeEditorial: string
   googlePlaceId: string;
   formatted_address: string;
   adr_address: string;

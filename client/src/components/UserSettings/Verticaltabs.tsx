@@ -5,9 +5,10 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import UserInfo from '../SettingsTabs/UserInfo';
-import FavBooksPlaces from '../SettingsTabs/FavBooksPlaces';
 import FavGenres from '../SettingsTabs/FavGenres';
 import FavHobbies from '../SettingsTabs/FavHobbies';
+import FavBooks from '../SettingsTabs/FavBooks';
+import FavPlaces from '../SettingsTabs/FavPlaces';
 
 interface TabPanelProps {
   // eslint-disable-next-line react/require-default-props
@@ -153,11 +154,11 @@ function VerticalTabs() {
       </Box>
       <Box>
         <TabPanel value={value} index={3}>
-          <FavBooksPlaces />
+          <FavBooks />
         </TabPanel>
       </Box>
       <TabPanel value={value} index={4}>
-        {/* <SecuritySettings /> */}
+        <FavPlaces />
       </TabPanel>
     </Box>
   );

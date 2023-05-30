@@ -89,8 +89,8 @@ const Book = React.memo((props: any) => {
           )}
         </AspectRatio>
 
-        <LendingLibraryButton book={book} />
-        <WishListButton book={book} />
+        {/* <LendingLibraryButton book={book} /> */}
+        {/* <WishListButton book={book} /> */}
 
       </CardOverflow>
       <Typography

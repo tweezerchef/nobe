@@ -1,5 +1,5 @@
 import React, {
-  useState, useContext, useEffect, useRef, createRef,
+  useState, useContext, useEffect,
 } from 'react';
 import axios from 'axios';
 import Box from '@mui/material/Box';
@@ -75,8 +75,6 @@ function HomeNew() {
   const [nearMeBooks, setNearMeBooks] = useState<string[]>([]);
   const [friendIdArray, setFriendIdArray] = useState<string[]>([]);
   const [ourBooks, setOurBooks] = useState<ourBooks[]>([]);
-  const [bgImage, setBgImage] = useState('url(https://i.imgur.com/ZmgMDQ2.png)');
-  const [reloadKey, setReloadKey] = useState(0); // Add a reloadKey state
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -115,43 +113,26 @@ function HomeNew() {
 
     setFriendIdArray(friendIds);
   }
-  // const handleReload = () => {
-  //   setReloadKey((prevKey) => prevKey + 1);
-  // };
 
   useEffect(() => {
     getNearMeBooks();
     getFriendIds();
     getOurBooks();
   }, []);
-  const scrollRef = createRef<HTMLDivElement>();
 
-  // useEffect(() => {
-  //   console.log('scrollRef.current', scrollRef.current);
-  //   const handleScroll = () => {
-  //     if (scrollRef.current) {
-  //       const scrollPos = scrollRef.current.scrollTop;
-  //       if (scrollPos > 100) {
-  //         setBgImage('transparent');
-  //         handleReload();
-  //       } else {
-  //         setBgImage('url(https://i.imgur.com/ZmgMDQ2.png)');
-  //       }
-  //     }
-  //   };
-
-  //   if (scrollRef.current) {
-  //     scrollRef.current.addEventListener('scroll', handleScroll);
-  //   }
-
-  //   return () => {
-  //     if (scrollRef.current) {
-  //       scrollRef.current.removeEventListener('scroll', handleScroll);
-  //     }
-  //   };
-  // }, [reloadKey]);
-
-  // Call setReloadKey with a new value to trigger a reload
+  useEffect(() => {
+    axios.get('/user/id', {
+      params: {
+        id: userId,
+      },
+    }).then((response) => {
+      console.log('response.data', response.data);
+      userContext?.setUser(response.data);
+    }).then(() => getFriendIds)
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [friendIdArray]);
 
   const colWidth = {
     xs: 12, sm: 6, md: 4, lg: 3,
@@ -198,13 +179,12 @@ function HomeNew() {
             }}
           >
             <Box sx={{
-              transition: 'background-image 0.5s ease',
               width: '100%',
-              height: '215px',
+              height: '200px',
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              overflow: 'clip',
-              backgroundImage: bgImage,
+              backgroundPosition: 'right 40% bottom 69%',
+              overflow: 'hidden',
+              backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
             }}
             >
               <ProfileCard />
@@ -281,7 +261,7 @@ function HomeNew() {
                   </Chip>
                 </StyledDivider>
                 <Box
-                  overflow="clip"
+                  overflow="hidden"
                   alignContent="center"
                   alignItems="center"
                   sx={{
@@ -297,7 +277,16 @@ function HomeNew() {
                     Hot Places To Read
                   </FlameStyledChip>
                 </StyledDivider>
-                <Box overflow="clip" alignContent="center" alignItems="center" sx={{ width: '100%', minHeight: '25vh', maxHeight: '33vh' }}>
+                <Box
+                  overflow="clip"
+                  alignContent="center"
+                  alignItems="center"
+                  sx={{
+                    width: '100%',
+                    minHeight: isMobile ? '90vw' : '280px',
+                    maxHeight: isMobile ? '95vw' : '350px',
+                  }}
+                >
                   <HomePlaces />
                 </Box>
                 <Box
@@ -325,7 +314,7 @@ function HomeNew() {
                     maxHeight: isMobile ? '95vw' : '350px',
                   }}
                 >
-                  {/* <HomeRecommendedBooks nearMeBooks={nearMeBooks}/> */}
+                  <HomeRecommendedBooks nearMeBooks={nearMeBooks} />
                 </Box>
                 <StyledDivider textAlign="left">
                   <FlameStyledChip size="lg">
@@ -385,7 +374,10 @@ function HomeNew() {
                     maxHeight: isMobile ? '95vw' : '350px',
                   }}
                 >
-                  <HomeFriends friendIdArray={friendIdArray} />
+                  <HomeFriends
+                    friendIdArray={friendIdArray}
+                    setFriendIdArray={setFriendIdArray}
+                  />
                 </Box>
                 <Box
                   overflow="clip"
@@ -396,11 +388,17 @@ function HomeNew() {
                   sx={{
                     width: '100%',
                     minHeight: isMobile ? '90vw' : '280px',
-                    maxHeight: isMobile ? '95vw' : '350px',
+                    maxHeight: isMobile ? '95vw' : '370px',
                   }}
                 >
                   {userId
-              && <FriendFinder friendIdArray={friendIdArray} userId={userId} />}
+              && (
+              <FriendFinder
+                friendIdArray={friendIdArray}
+                userId={userId}
+                setFriendIdArray={setFriendIdArray}
+              />
+              )}
                 </Box>
                 <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px' }} />
               </Stack>

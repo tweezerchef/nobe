@@ -81,7 +81,7 @@ function Login() {
   }, [handleGoogle]);
   return (
     <EntryPage>
-      <PageHeader to="/">AWESOME LOGO</PageHeader>
+      <PageHeader to="/">NOBE</PageHeader>
       <EntryCard>
         <h2>Log in</h2>
         <form onSubmit={(e) => e.preventDefault()}>
