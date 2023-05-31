@@ -121,7 +121,7 @@ function PlaceDetails({ placeId, savedPlaces }: PlaceViewerProps) {
     }
   };
   return (
-    <Box sx={{ width: '100%', height: '100%', minHeight: '290px' }} bgcolor="#D8D8DF">
+    <Box sx={{ width: '100%', height: '100%', minHeight: '290px' }} bgcolor="#d6d6d6">
       <Grid container sx={{ boxSizing: 'content-box', overflow: 'auto' }}>
         <Grid item xs={12}>
           <Card

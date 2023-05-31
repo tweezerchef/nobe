@@ -91,7 +91,7 @@ const Book = React.memo(({
   const findWishList = () => {
     if (book.UserBooks && book.UserBooks.length > 0) {
       book.UserBooks.forEach((entry: any) => {
-        if (entry.userId === id && entry.wishList === true) {
+        if (entry.userId === id && entry.wishlist === true) {
           setIsWishListed(true);
         }
       });
@@ -132,8 +132,8 @@ const Book = React.memo(({
           userRating={userRating}
           setUserRating={setUserRating}
           onClose={() => onClose()}
-          isWishlisted={isWishListed}
-          setIsWishlisted={setIsWishListed}
+          isWishListed={isWishListed}
+          setIsWishListed={setIsWishListed}
           isLendingLibrary={isLendinglibrary}
           setIsLendingLibrary={setIsLendingLibrary}
         />
@@ -210,7 +210,7 @@ const Book = React.memo(({
           flexWrap: 'wrap',
           textAlign: 'center',
           textOverflow: 'ellipsis',
-          fontSize: isMobile ? '1.5rem' : '1.3rem',
+          fontSize: isMobile ? '1.5rem' : '1.27rem',
           fontWeight: '500',
           lineHeight: '1.4rem',
         }}

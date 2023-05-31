@@ -43,6 +43,10 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
     const users = await prisma.user.findMany({
       where: {
         AND: [
+
+          {
+            id: { not: id as string }, // Exclude the user with the given userId
+          },
           {
             latitude: {
               gte: latNum - radiusNum / 69.0,
@@ -105,11 +109,8 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
     const usersWithBooks = users.filter((user: any) => user.UserBooks.length > 0);
 
     const userBooksArray = usersWithBooks.map((user: any) => {
-      // remove any userbooks array that is the own user
-      if (user.id !== id) {
-        const userBooks = user.UserBooks;
-        return userBooks;
-      }
+      const userBooks = user.UserBooks;
+      return userBooks;
     });
     // flatten array so that it is an array of userbooks w/o the user object
     const flatUserBooksArray = userBooksArray.flat();
@@ -129,7 +130,7 @@ LocationRoute.get('/locations/home', async (req: AuthenticatedRequest, res: Resp
 LocationRoute.get('/locations/book', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const {
-      lon, lat, radius, bookId,
+      lon, lat, radius, bookId, userId,
     } = req.query;
 
     //  coordinates are sent in the request body
@@ -145,6 +146,9 @@ LocationRoute.get('/locations/book', async (req: AuthenticatedRequest, res: Resp
     const users = await prisma.user.findMany({
       where: {
         AND: [
+          {
+            id: { not: userId as string }, // Exclude the user with the given userId
+          },
           {
             latitude: {
               gte: latNum - radiusNum / 69.0,
@@ -179,27 +183,7 @@ LocationRoute.get('/locations/book', async (req: AuthenticatedRequest, res: Resp
         UserBooks: true,
       },
     });
-
-    // filter out users the users that don't have any userbooks
     const usersWithBooks = users.filter((user: any) => user.UserBooks.length > 0);
-
-    // const userBooksArray = usersWithBooks.map((user: any) => {
-    //   // remove any userbooks array that is the own user
-    //   if (user.id !== id) {
-    //     const userBooks = user.UserBooks;
-    //     return userBooks;
-    //   }
-    // });
-    // flatten array so that it is an array of userbooks w/o the user object
-    // const flatUserBooksArray = userBooksArray.flat();
-    // filter out any userbooks that in the flatUserBooksArray that have the same book.id as the numbers in the bookIds array
-    // const filteredUserBooksArray = flatUserBooksArray.filter((userBook: any) => {
-    //   if (userBook && userBook.booksId) {
-    //     return wishlistBookIds.includes(userBook.booksId);
-    //   }
-    //   return false;
-    // });
-
     res.status(200).send(usersWithBooks);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });

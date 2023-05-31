@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, {
+  useState, useEffect, useRef, useContext,
+} from 'react';
+import axios from 'axios';
 
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
@@ -13,11 +16,20 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
+import BigBook from '../components/Book/BookBig';
+import UserContext from '../hooks/Context';
 import TrendingWishlistButton from '../components/Button/TrendingWishlistButton';
 import TrendingLendingLibraryButton from '../components/Button/TrendingLendingLibraryButton';
 
 function Trending() {
   const [trending, setTrending] = useState<any[]>([]);
+  const [showBigBook, setShowBigBook] = useState<any>(false);
+  const [book1, setBook1] = useState<any>(null);
+
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+
+  const userId = user?.id;
 
   async function fetchTrending(category: string) {
     const response = await fetch(`/api/trending?category=${category}`);
@@ -27,6 +39,37 @@ function Trending() {
 
   function handleSelect(event: SelectChangeEvent<string>) {
     fetchTrending(event.target.value);
+  }
+
+  const openBigBook = (obj: any) => {
+    // setShowBigBook(true);
+    // setBook1(obj);
+    const { isbn10 } = obj.isbns[0];
+    axios.post('/api/trending/inventory', {
+      title: obj.title,
+      id: userId,
+      color: 'black',
+      type: 'added to db',
+      isbn10,
+    }).then((response) => {
+      console.log('response1', response.data);
+      axios.get(`/bookdata/?ISBN10=${response.data}`)
+        .then((response2) => {
+          console.log('response2', response2.data);
+          setBook1(response2.data);
+          setShowBigBook(true);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+  };
+
+  if (showBigBook) {
+    console.log(book1);
+    return (
+      <BigBook book={book1} id={userId} onClose={() => setShowBigBook(false)} />
+    );
   }
 
   return (
@@ -79,6 +122,7 @@ function Trending() {
                 <TrendingWishlistButton book={book} />
               </CardOverflow>
               <Typography
+                onClick={() => openBigBook(book)}
                 level="h2"
                 sx={{
                   fontSize: 'md', mt: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', '-webkit-line-clamp': 2, '-webkit-box-orient': 'vertical',

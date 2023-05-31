@@ -125,7 +125,7 @@ function ExploreBooks({ ourBooks, nearMeBooks }: ExploreBooksProps) {
   return (
     <MaxWidthDiv>
       <Box>
-        <Divider textAlign="right">
+        <Divider textAlign="left">
           <Box
             component="form"
             onSubmit={(event) => {

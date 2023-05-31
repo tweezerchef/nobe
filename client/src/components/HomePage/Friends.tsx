@@ -5,6 +5,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import Slide from '@mui/material/Slide';
+import axios from 'axios';
 import { User } from '../../typings/types';
 import UserContext from '../../hooks/Context';
 import FriendCard from './FriendCard/FriendCard';
@@ -20,9 +21,10 @@ type Friendships = {
 };
 interface FriendsComponentProps {
   friendIdArray: string[];
+  setFriendIdArray: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-function FriendsComponent({ friendIdArray }: FriendsComponentProps) {
+function FriendsComponent({ friendIdArray, setFriendIdArray }: FriendsComponentProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [friends, setFriends] = useState<Friendships[]>([]);
@@ -31,9 +33,15 @@ function FriendsComponent({ friendIdArray }: FriendsComponentProps) {
   const userId = user?.id;
 
   const getFriends = () => {
-    if (user?.friendships) {
-      setFriends(user?.friendships);
-    }
+    axios.get('/api/friendship/userFriend', {
+      params: {
+        userId,
+      },
+    }).then((res) => {
+      setFriends(res.data);
+    }).catch((err) => {
+      console.error(err);
+    });
   };
 
   const friendsPerPage = 3;
@@ -50,7 +58,7 @@ function FriendsComponent({ friendIdArray }: FriendsComponentProps) {
 
   useEffect(() => {
     getFriends();
-  }, []);
+  }, [friendIdArray]);
 
   return (
     <Box
@@ -77,7 +85,7 @@ function FriendsComponent({ friendIdArray }: FriendsComponentProps) {
       </IconButton>
 
       <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
-        {friends.map((friend, index) => (
+        {friends && friends.length && (friends.map((friend, index) => (
           <Box
             sx={{
               position: 'absolute',
@@ -97,11 +105,12 @@ function FriendsComponent({ friendIdArray }: FriendsComponentProps) {
                 alignContent="center"
                 justifyContent="center"
               >
+
                 {friends.slice(
                   index * friendsPerPage,
                   index * friendsPerPage + friendsPerPage,
                 )
-                  // eslint-disable-next-line @typescript-eslint/no-shadow
+                // eslint-disable-next-line @typescript-eslint/no-shadow
                   .map((friend) => (
                     <Box>
                       {friend.friend && userId
@@ -110,6 +119,7 @@ function FriendsComponent({ friendIdArray }: FriendsComponentProps) {
                         userFriend={friend.friend}
                         userId={userId}
                         friendIdArray={friendIdArray}
+                        setFriendIdArray={setFriendIdArray}
                       />
                       )}
                     </Box>
@@ -118,7 +128,7 @@ function FriendsComponent({ friendIdArray }: FriendsComponentProps) {
             </Slide>
 
           </Box>
-        ))}
+        )))}
       </Box>
 
       <IconButton

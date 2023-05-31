@@ -111,7 +111,9 @@ function Clubs() {
   // `;
   return (
     <Box sx={{
-      flexGrow: 1, overflow: 'clip', height: '98vh',
+      flexGrow: 1,
+      overflow: 'clip',
+      height: '98vh',
     }}
     >
       <Grid1
@@ -142,39 +144,58 @@ function Clubs() {
         <Grid1
           xs={2.5}
           sx={{
-            position: 'sticky', top: '0px', height: '100vh', paddingBottom: '8vh',
+            position: 'sticky',
+            top: '0px',
+            height: '100vh',
+            paddingBottom: '8vh',
+            display: { xs: 'none', sm: 'block' },
           }}
         >
           <Box sx={{
-            width: '100% !important',
-            height: '200px !important',
-            backgroundSize: 'cover !important',
-            backgroundPosition: 'right 40% bottom 69% !important',
-            overflow: 'hidden !important',
-            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png) !important',
+            width: '100%',
+            height: '200px',
+            backgroundSize: 'cover',
+            backgroundPosition: 'right 40% bottom 69%',
+            overflow: 'hidden',
+            backgroundImage: 'url(https://i.imgur.com/ZmgMDQ2.png)',
           }}
           >
             <ProfileCard />
           </Box>
-          <ScrollBar
-            style={{ width: '100%', height: '100%' }}
-            trackYProps={{
-              renderer: (props) => {
-                const { elementRef, ...restProps } = props;
-                return <TrackY {...restProps} ref={elementRef} />;
-              },
-            }}
-            thumbYProps={{
-              renderer: (props) => {
-                const { elementRef, ...restProps } = props;
-                return <ThumbY {...restProps} ref={elementRef} />;
-              },
+          <div
+            style={{
+              width: '100%',
+              height: '70vh',
+              overflow: 'hidden',
             }}
           >
-            <Feed />
-          </ScrollBar>
+            <ScrollBar
+              style={{ width: '100%', height: '100%' }}
+              trackYProps={{
+                renderer: (props) => {
+                  const { elementRef, ...restProps } = props;
+                  return <TrackY {...restProps} ref={elementRef} />;
+                },
+              }}
+              thumbYProps={{
+                renderer: (props) => {
+                  const { elementRef, ...restProps } = props;
+                  return <ThumbY {...restProps} ref={elementRef} />;
+                },
+              }}
+            >
+              <Feed />
+            </ScrollBar>
+          </div>
         </Grid1>
-        <Grid1 xs={9.5} sx={{ height: '99vh', overflow: 'auto', paddingBottom: '5vh' }}>
+        <Grid1
+          xs={9.5}
+          sx={{
+            height: '99vh',
+            overflow: 'auto',
+            paddingBottom: '6vh',
+          }}
+        >
           <ScrollBar
             style={{ overflow: 'hide' }}
             noScrollX

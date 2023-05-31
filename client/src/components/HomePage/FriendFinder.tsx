@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, ChangeEvent, FormEvent,
+  useState, useEffect,
 } from 'react';
 import Stack from '@mui/joy/Stack';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -19,9 +19,10 @@ import FriendCard from './FriendCard/FriendCard';
 interface FriendsComponentProps {
   friendIdArray: string[];
   userId: string;
+  setFriendIdArray: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-function FriendsComponent({ friendIdArray, userId }: FriendsComponentProps) {
+function FriendsComponent({ friendIdArray, userId, setFriendIdArray }: FriendsComponentProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
   const [randomUsers, setRandomUsers] = useState<User[]>([]);
@@ -63,13 +64,14 @@ function FriendsComponent({ friendIdArray, userId }: FriendsComponentProps) {
 
   return (
     <Box>
-      <Divider textAlign="right">
+      <Divider textAlign="left">
         <Box
           component="form"
           onSubmit={(event) => {
             event.preventDefault(); // Prevent form submission
           }}
           sx={{
+            mt: 4,
             '& > :not(style)': { m: 1, width: '350px' },
           }}
           noValidate
@@ -129,7 +131,7 @@ function FriendsComponent({ friendIdArray, userId }: FriendsComponentProps) {
           justifyContent: 'center',
           justifyItems: 'center',
           width: '100%',
-          height: '300px',
+          height: '320px',
         }}
       >
         <IconButton
@@ -177,6 +179,7 @@ function FriendsComponent({ friendIdArray, userId }: FriendsComponentProps) {
                         userFriend={randomUser}
                         userId={userId}
                         friendIdArray={friendIdArray}
+                        setFriendIdArray={setFriendIdArray}
                       />
                       )}
                       </Box>

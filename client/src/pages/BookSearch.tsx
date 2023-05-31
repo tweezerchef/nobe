@@ -48,7 +48,7 @@ function BookPage() {
         minHeight="70vh"
       >
         <div>
-          {book && <BigBook book={book} id={id} />}
+          {/* {book && <BigBook book={book} id={id} />} */}
           {/* {books.length > 0 && <BigBook book={books[0]} id={id} />} */}
           {/* <QuoteDisplay /> */}
         </div>
