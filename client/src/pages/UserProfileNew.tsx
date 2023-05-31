@@ -16,6 +16,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
 import styled from 'styled-components';
+import { Friendship } from '@prisma/client';
+import { get } from 'http';
 import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
@@ -28,6 +30,7 @@ import UserProfileLendingLibrary from '../components/UserProfile/UserProfileLend
 import UserProfileFeed from '../components/UserProfile/UserProfileFeed';
 import UserProfileFavoriteBooks from '../components/UserProfile/UserProfileFavoriteBooks';
 import MaxWidthDiv from '../hooks/MaxWidth';
+import UserProfileFriendsComponent from '../components/HomePage/UserProfileFriends';
 
 const StyledTrack = styled.div`
     background-color: #f1f1f1;
@@ -56,6 +59,7 @@ const ThumbY = React.forwardRef<HTMLDivElement>(
 function UserProfile() {
   const [user, setUser] = useState<User | null>(null);
   const [userName, setUserName] = useState<string>('');
+  const [friendIdArray, setFriendIdArray] = useState<string[]>([]);
   const { chatState, setChatState, setChatUser } = useChatContext();
   const [loaded, setLoaded] = useState(false);
   const [nearMeBooks, setNearMeBooks] = useState<string[]>([]);
@@ -82,6 +86,16 @@ function UserProfile() {
 
     setNearMeBooks(response.data);
   };
+  function getFriendIds() {
+    const friendIds = loggedInUser?.friendships?.reduce((acc: string[], friendship: Friendship) => {
+      if (friendship && friendship.friendId && friendship.friendId.length > 0) {
+        acc.push(friendship.friendId);
+      }
+      return acc;
+    }, []) || [];
+
+    setFriendIdArray(friendIds);
+  }
 
   function getUser() {
     axios.get(`/user/id?id=${userId}`)
@@ -105,6 +119,7 @@ function UserProfile() {
   useEffect(() => {
     getUser();
     getNearMeBooks();
+    getFriendIds();
   }, [userId]);
   // useEffect(() => {
   //   console.log(userId);
