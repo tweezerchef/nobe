@@ -25,7 +25,7 @@ function Trending() {
   const [trending, setTrending] = useState<any[]>([]);
   const [showBigBook, setShowBigBook] = useState<any>(false);
   const [book1, setBook1] = useState<any>(null);
-  const { category } = useParams<{ linkPlaceId: string }>();
+  // const { category } = useParams<{ linkPlaceId: string }>();
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -63,11 +63,11 @@ function Trending() {
         });
     });
   };
-  useEffect(() => {
-    if (category) {
-      fetchTrending(category);
-    }
-  });
+  // useEffect(() => {
+  //   if (category) {
+  //     fetchTrending(category);
+  //   }
+  // });
 
   if (showBigBook) {
     return (

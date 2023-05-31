@@ -3,12 +3,11 @@ import React, {
 } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/joy/Stack';
-import { Link } from 'react-router-dom';
-import Box, { BoxProps } from '@mui/material/Box';
+import { useNavigate, Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import { margin } from '@mui/system';
 import UserContext from '../../../hooks/Context';
 
 function ProfileCard() {
@@ -17,6 +16,10 @@ function ProfileCard() {
   const owned = user?.UserBooks?.filter((book) => book.owned === true).length;
   const wishlist = user?.UserBooks?.filter((book) => book.wishlist === true).length;
   const username = user?.username ? user.username : user?.firstName;
+  const navigate = useNavigate();
+  const handleProfileClick = () => {
+    navigate('/home');
+  };
 
   return (
 
@@ -33,25 +36,22 @@ function ProfileCard() {
     >
       <Grid container spacing={2} direction="column">
         <Grid>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Link to={`/profile/${user?.id}`}>
-              <Avatar
-                src={user?.picture}
-                alt={user?.firstName}
-                style={{
-                  width: '4rem',
-                  height: '4rem',
-                  margin: '1rem',
-                  marginLeft: '1.5rem',
-                  marginTop: '1.5rem',
-                }}
-              />
-            </Link>
-            <Link to={`/profile/${user?.id}`}>
-              <Typography variant="h5">
-                {username}
-              </Typography>
-            </Link>
+          <Stack direction="row" spacing={2} alignItems="center" alignContent="center">
+            <Avatar
+              src={user?.picture}
+              alt={user?.firstName}
+              onClick={handleProfileClick}
+              style={{
+                width: '4rem',
+                height: '4rem',
+                margin: '1rem',
+                marginLeft: '4rem',
+                marginTop: '1.5rem',
+              }}
+            />
+            <Typography variant="h5" onClick={handleProfileClick}>
+              {username}
+            </Typography>
           </Stack>
         </Grid>
         <Divider sx={{ borderBottomWidth: 6, bgcolor: 'ThreeDDarkShadow' }} />
@@ -62,7 +62,7 @@ function ProfileCard() {
           <Grid>
             <Grid container spacing={4} alignContent="center" justifyContent="center" alignItems="center">
               <Grid>
-                <Typography variant="body1" align="center" sx={{ margin: '.1rem' }}>
+                <Typography variant="h6" align="center" sx={{ margin: '.1rem' }}>
                   Friends:
                   {' '}
                   {user?.friendships?.length}
@@ -71,7 +71,7 @@ function ProfileCard() {
                 </Typography>
               </Grid>
               <Grid>
-                <Typography variant="body1" align="center" sx={{ margin: '.1rem' }}>
+                <Typography variant="h6" align="center" sx={{ margin: '.1rem' }}>
                   Lending Library:
                   {' '}
                   {owned}
@@ -80,7 +80,7 @@ function ProfileCard() {
                 </Typography>
               </Grid>
               <Grid>
-                <Typography variant="body1" align="center" sx={{ margin: '.1rem' }}>
+                <Typography variant="h6" align="center" sx={{ margin: '.1rem' }}>
                   Wish List:
                   {' '}
                   {wishlist}
@@ -89,7 +89,7 @@ function ProfileCard() {
                 </Typography>
               </Grid>
               <Grid>
-                <Typography variant="body1" align="center" sx={{ margin: '.1rem' }}>
+                <Typography variant="h6" align="center" sx={{ margin: '.1rem' }}>
                   Clubs:
                   {' '}
                   {user?.clubMembers?.length}
@@ -98,7 +98,7 @@ function ProfileCard() {
                 </Typography>
               </Grid>
               <Grid>
-                <Typography variant="body1" align="center" sx={{ margin: '.1rem' }}>
+                <Typography variant="h6" align="center" sx={{ margin: '.1rem' }}>
                   Posts:
                   {' '}
                   {user?.Posts?.length}
