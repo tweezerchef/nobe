@@ -36,10 +36,15 @@ Trending.post('/inventory', async (req, res) => {
     if (color === 'danger' && type === 'wishlist') wishlist = true;
     if (color === 'danger' && type === 'owned') owned = true;
 
+    console.log(req.body);
+    console.log('isbn10', isbn10);
+
     const response = await axios.get(`http://localhost:8080/google-books/ISBN10?ISBN10=${isbn10}`);
     const {
       title, ISBN10, author, image, description,
     } = response.data;
+
+    console.log('title', title);
 
     const newBook = await axios.post('http://localhost:8080/bookdata/title', {
       title,
@@ -71,7 +76,7 @@ Trending.post('/inventory', async (req, res) => {
         bookId: bookID,
       },
     });
-    // res.send(userBook).status(200);
+    res.send(ISBN10).status(200);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Something went wrong' });
