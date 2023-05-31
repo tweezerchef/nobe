@@ -17,7 +17,7 @@ import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
 import styled from 'styled-components';
 import { Friendship } from '@prisma/client';
-import { get } from 'http';
+import Diversity2Icon from '@mui/icons-material/Diversity2';
 import UserContext from '../hooks/Context';
 import { FlameStyledChip, StyledDivider } from '../styles/Home/style';
 import Feed from './Feed';
@@ -121,11 +121,6 @@ function UserProfile() {
     getNearMeBooks();
     getFriendIds();
   }, [userId]);
-  // useEffect(() => {
-  //   console.log(userId);
-  //   getUser();
-  //   getNearMeBooks();
-  // }, []);
 
   const colWidth = {
     xs: 12, sm: 6, md: 4, lg: 3,
@@ -301,6 +296,34 @@ function UserProfile() {
                 )}
                   </Box>
                   <StyledDivider textAlign="left">
+                    <Chip size="lg">
+                      <Diversity2Icon />
+                      {userName}
+                      's
+                      {' '}
+                      Friends
+                    </Chip>
+                  </StyledDivider>
+                  <Box
+                    overflow="clip"
+                    alignContent="center"
+                    alignItems="center"
+                    justifyContent="center"
+                    justifyItems="center"
+                    sx={{
+                      width: '100%',
+                      minHeight: isMobile ? '90vw' : '280px',
+                      maxHeight: isMobile ? '95vw' : '350px',
+                    }}
+                  >
+                    {friendIdArray && user && (
+                    <UserProfileFriendsComponent
+                      user={user}
+                      friendIdArray={friendIdArray}
+                    />
+                    )}
+                  </Box>
+                  <StyledDivider textAlign="right">
                     <FlameStyledChip size="lg">
                       {userName}
                       's Favorite Books
