@@ -32,7 +32,7 @@ function ClubCard({ club } : ClubCardProps) {
         minHeight: isMobile ? '62vw' : '250x',
         maxHeight: isMobile ? '62vw' : '290px',
         maxWidth: isMobile ? '70vw' : '350px',
-        boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
+        boxShadow: '0px 0px 15px  rgba(37, 37, 37, 0.425)',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',

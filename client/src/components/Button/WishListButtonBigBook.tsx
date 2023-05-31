@@ -2,18 +2,22 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import IconButton from '@mui/joy/IconButton';
-import { Tooltip } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 import UserContext from '../../hooks/Context';
 
+interface WishListButtonProps {
+  book: any
+  isWishListed: boolean
+  setIsWishListed: React.Dispatch<React.SetStateAction<boolean>>
+}
+
 type CustomColor = 'success' | 'danger';
-function WishListButton(props: any) {
-  const { book } = props;
+function WishListButton({ book, isWishListed, setIsWishListed }: WishListButtonProps) {
   const userContext = useContext(UserContext);
   const user = userContext?.user;
   const id = user?.id;
   const [color, setColor] = useState<CustomColor>('danger');
   const [toolTip, setToolTip] = useState<NonNullable<React.ReactNode>>(<h1>Add to Wishlist</h1>);
-
   const addToWishlist = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     axios.post('/user-books/wishlist', {
@@ -22,30 +26,31 @@ function WishListButton(props: any) {
       color,
     });
     if (color === 'success') {
+      setIsWishListed(false);
       setColor('danger' as CustomColor);
       setToolTip(<h1>Add to Wishlist</h1>);
     } else {
+      setIsWishListed(true);
       setColor('success' as CustomColor);
       setToolTip(<h1>Remove from Wishlist</h1>);
     }
   };
   useEffect(() => {
-    if (book.UserBooks && book.UserBooks.length > 0) {
-      book.UserBooks.forEach((entry: any) => {
-        if (entry.userId === id && entry.wishlist === true) {
-          setColor('success' as CustomColor);
-          setToolTip(<h1>Remove from Wishlist</h1>);
-        }
-      });
+    if (isWishListed) {
+      setColor('success' as CustomColor);
+      setToolTip(<h1>Remove from Wishlist</h1>);
+    } else {
+      setColor('danger' as CustomColor);
+      setToolTip(<h1>Add to Wishlist</h1>);
     }
-  }, [book, id]);
+  }, [book, isWishListed]);
 
   return (
 
     <Tooltip title={toolTip} placement="top-end">
       <IconButton
         aria-label="Add to Wishlist"
-        size="md"
+        size="lg"
         variant="solid"
         color={color}
         sx={{
