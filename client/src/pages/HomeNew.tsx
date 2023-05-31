@@ -362,7 +362,7 @@ function HomeNew() {
                 </Box>
                 <StyledDivider textAlign="right">
                   <FlameStyledChip size="lg">
-                    Hot Places To Read
+                    Hot Clubs
                   </FlameStyledChip>
                 </StyledDivider>
                 <Box

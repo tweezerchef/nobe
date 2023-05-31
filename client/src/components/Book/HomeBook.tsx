@@ -150,7 +150,7 @@ const Book = React.memo(({
       sx={{
         width: isMobile ? '70vw' : '18vw',
         height: isMobile ? '62vw' : '19.5vw',
-        minHeight: isMobile ? '62vw' : '250px',
+        minHeight: isMobile ? '62vw' : '260px',
         maxHeight: isMobile ? '62vw' : '325px',
         minWidth: isMobile ? '70vw' : '200px',
         maxWidth: isMobile ? '70vw' : '325px',
