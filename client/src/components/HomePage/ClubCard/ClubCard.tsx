@@ -28,28 +28,31 @@ function ClubCard({ club } : ClubCardProps) {
       variant="outlined"
       sx={{
         width: isMobile ? '70vw' : '22vw',
-        height: isMobile ? '62vw' : '17vw',
-        minHeight: isMobile ? '62vw' : '250px',
+        height: isMobile ? '62vw' : '20vw',
+        minHeight: isMobile ? '62vw' : '250x',
         maxHeight: isMobile ? '62vw' : '290px',
         maxWidth: isMobile ? '70vw' : '350px',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         display: 'flex',
         flexDirection: 'column',
+        overflow: 'hidden',
       }}
     >
+      <Link to={to}>
+        <Box sx={{ position: 'relative' }}>
 
-      <Box sx={{ position: 'relative' }}>
-
-        <AspectRatio ratio="2">
-          {image ? (
-            <img src={image} loading="lazy" alt="" />
-          ) : (
-            <img src="https://i.imgur.com/XrUd1L2.jpg" loading="lazy" alt="" />
-          )}
-        </AspectRatio>
-      </Box>
-      <Tooltip title="Take Me There">
-        <Link to={to}>
+          <AspectRatio ratio="2">
+            {image ? (
+              <img src={image} loading="lazy" alt="" />
+            ) : (
+              <img src="https://i.imgur.com/XrUd1L2.jpg" loading="lazy" alt="" />
+            )}
+          </AspectRatio>
+        </Box>
+        <Box sx={{
+          alignContent: 'center', justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column',
+        }}
+        >
           {name && (
           <Typography
             level="h5"
@@ -57,16 +60,14 @@ function ClubCard({ club } : ClubCardProps) {
               mt: 2,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
+              alignContent: 'center',
+              alignText: 'center',
+              justifyContent: 'center',
               textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              '-webkit-line-clamp': 2,
-              '-webkit-box-orient': 'vertical',
             }}
           >
             {name}
-            <Tooltip title="This Club Is HOT">
-              <WhatshotTwoToneIcon color="warning" />
-            </Tooltip>
+
           </Typography>
           )}
           <CardOverflow
@@ -78,19 +79,20 @@ function ClubCard({ club } : ClubCardProps) {
               px: 'var(--Card-padding)',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: '#f0f0f0',
+              textAlign: 'center',
+              backgroundColor: '#f0f0f081',
             }}
           >
-            <Typography level="body3" sx={{ fontWeight: 'md' }} />
-            {name}
-
             {description}
-
           </CardOverflow>
-        </Link>
-      </Tooltip>
+        </Box>
+      </Link>
     </Card>
 
   );
 }
 export default ClubCard;
+
+// <Tooltip title="This Club Is HOT">
+// <WhatshotTwoToneIcon color="warning" />
+// </Tooltip>

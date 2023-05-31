@@ -360,6 +360,23 @@ function HomeNew() {
                 >
                   <HomeNearMe />
                 </Box>
+                <StyledDivider textAlign="right">
+                  <FlameStyledChip size="lg">
+                    Hot Places To Read
+                  </FlameStyledChip>
+                </StyledDivider>
+                <Box
+                  overflow="hidden"
+                  alignContent="center"
+                  alignItems="center"
+                  sx={{
+                    width: '100%',
+                    minHeight: isMobile ? '90vw' : '280px',
+                    maxHeight: isMobile ? '95vw' : '330px',
+                  }}
+                >
+                  <HomeTopClubs />
+                </Box>
                 <Box
                   sx={{
                     width: '100%',

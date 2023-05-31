@@ -53,9 +53,8 @@ function HomeTopClubs() {
         justifyContent: 'center',
         width: '100%',
         height: isMobile ? '80vw' : '20vw',
-        maxHeight: isMobile ? '80vw' : '370px',
+        maxHeight: isMobile ? '80vw' : '300px',
         marginTop: isMobile ? '.2vh' : '1.5vh',
-        paddingBottom: '0',
       }}
     >
       <IconButton
