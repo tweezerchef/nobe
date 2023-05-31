@@ -80,7 +80,7 @@ function HomeLendingLibrary({ nearMeBooks }: HomeWishListProps) {
   const getUserBooks = async () => {
     const booksArray: Book[] = [];
 
-    const userBooks = await axios.get(`/user-books/wishlist/${id}`);
+    const userBooks = await axios.get(`/user-books/owned/${id}`);
     userBooks.data.forEach((book: UserBook) => {
       booksArray.push(book.Books);
     });

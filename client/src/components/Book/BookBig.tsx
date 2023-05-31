@@ -229,20 +229,20 @@ function BigBook(props: any) {
                 >
                   <Stack direction="row" spacing={3} alignContent="center" alignItems="center">
                     <LendingLibraryButtonBigBook
-                      padding="15px"
-                      margin="10rem"
                       book={book}
                       isLendingLibrary={isLendingLibrary}
                       setIsLendingLibrary={setIsLendingLibrary}
                     />
+                    { book && isWishListed !== undefined
+                    && setIsWishListed !== undefined
+                    && isWishListed !== undefined
+                    && (
                     <WishListButtonBigBook
-                      padding="15px"
-                      margin="10rem"
                       book={book}
-                      isWishlisted={isWishListed}
-                      setIsWishlisted={setIsWishListed}
+                      isWishListed={isWishListed}
+                      setIsWishListed={setIsWishListed}
                     />
-
+                    )}
                   </Stack>
                 </Box>
                 <UserStarRating
