@@ -5,6 +5,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import Slide from '@mui/material/Slide';
+import axios from 'axios';
 import { User } from '../../typings/types';
 import UserContext from '../../hooks/Context';
 import FriendCard from './FriendCard/FriendCard';
@@ -32,9 +33,15 @@ function FriendsComponent({ friendIdArray, setFriendIdArray }: FriendsComponentP
   const userId = user?.id;
 
   const getFriends = () => {
-    if (user?.friendships) {
-      setFriends(user?.friendships);
-    }
+    axios.get('/api/friendship/userFriend', {
+      params: {
+        userId,
+      },
+    }).then((res) => {
+      setFriends(res.data);
+    }).catch((err) => {
+      console.error(err);
+    });
   };
 
   const friendsPerPage = 3;
@@ -51,7 +58,7 @@ function FriendsComponent({ friendIdArray, setFriendIdArray }: FriendsComponentP
 
   useEffect(() => {
     getFriends();
-  }, []);
+  }, [friendIdArray]);
 
   return (
     <Box
@@ -78,7 +85,7 @@ function FriendsComponent({ friendIdArray, setFriendIdArray }: FriendsComponentP
       </IconButton>
 
       <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
-        {friends.map((friend, index) => (
+        {friends && friends.length && (friends.map((friend, index) => (
           <Box
             sx={{
               position: 'absolute',
@@ -98,11 +105,12 @@ function FriendsComponent({ friendIdArray, setFriendIdArray }: FriendsComponentP
                 alignContent="center"
                 justifyContent="center"
               >
+
                 {friends.slice(
                   index * friendsPerPage,
                   index * friendsPerPage + friendsPerPage,
                 )
-                  // eslint-disable-next-line @typescript-eslint/no-shadow
+                // eslint-disable-next-line @typescript-eslint/no-shadow
                   .map((friend) => (
                     <Box>
                       {friend.friend && userId
@@ -120,7 +128,7 @@ function FriendsComponent({ friendIdArray, setFriendIdArray }: FriendsComponentP
             </Slide>
 
           </Box>
-        ))}
+        )))}
       </Box>
 
       <IconButton

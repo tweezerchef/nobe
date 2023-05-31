@@ -132,3 +132,13 @@ interface Book {
   image: string;
   title: string;
 }
+
+interface Club {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  clubMembers: ClubMembers[];
+  Discussion: Discussions[];
+  Club_Books: ClubBooks[];
+}

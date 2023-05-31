@@ -64,13 +64,14 @@ function FriendsComponent({ friendIdArray, userId, setFriendIdArray }: FriendsCo
 
   return (
     <Box>
-      <Divider textAlign="right">
+      <Divider textAlign="left">
         <Box
           component="form"
           onSubmit={(event) => {
             event.preventDefault(); // Prevent form submission
           }}
           sx={{
+            mt: 4,
             '& > :not(style)': { m: 1, width: '350px' },
           }}
           noValidate
@@ -130,7 +131,7 @@ function FriendsComponent({ friendIdArray, userId, setFriendIdArray }: FriendsCo
           justifyContent: 'center',
           justifyItems: 'center',
           width: '100%',
-          height: '300px',
+          height: '320px',
         }}
       >
         <IconButton

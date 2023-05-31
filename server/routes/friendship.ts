@@ -11,6 +11,28 @@ dotenv.config();
 
 const Friendship = express.Router();
 
+Friendship.get('/userFriend', async (req, res) => {
+  const { userId } = req.query;
+  if (!userId && typeof userId !== 'string') {
+    return res.status(400).json({ error: 'Missing userId' });
+  }
+
+  try {
+    const friends = await prisma.friendship.findMany({
+      where: {
+        userId: userId as string,
+      },
+      include: {
+        friend: true,
+      },
+    });
+    res.send(friends);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
 Friendship.post('/', async (req, res) => {
   const { userId, friendId } = req.body;
   try {

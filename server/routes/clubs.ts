@@ -21,6 +21,26 @@ ClubsRoute.get('/', async (req: Request, res: Response) => {
   }
 });
 
+ClubsRoute.get('/top', async (req: Request, res: Response) => {
+  try {
+    const clubs = await prisma.clubs.findMany({
+      include: {
+        clubMembers: true,
+      },
+      orderBy: {
+        clubMembers: {
+          _count: 'desc',
+        },
+      },
+      take: 10,
+    });
+    res.json(clubs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
 ClubsRoute.get('/:id', async (req: Request, res: Response) => {
   try {
     const club = await prisma.clubs.findMany({

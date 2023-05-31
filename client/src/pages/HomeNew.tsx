@@ -20,10 +20,11 @@ import HomePlaces from '../components/HomePage/HomePlaces';
 import HomeNearMe from '../components/HomePage/HomeNearMe';
 import HomeExploreBooks from '../components/HomePage/HomeExploreBooks';
 import HomeFriends from '../components/HomePage/Friends';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import HomeRecommendedBooks from '../components/HomePage/HomeRecommendedBooks';
 import FriendFinder from '../components/HomePage/FriendFinder';
 import MaxWidthDiv from '../hooks/MaxWidth';
+import HomeLendingLibrary from '../components/HomePage/HomeLendingLibrary';
+import HomeTopClubs from '../components/HomePage/HomeTopClubs';
 
 const StyledTrack = styled.div`
     background-color: #f1f1f1;
@@ -64,6 +65,7 @@ interface Friendship {
 
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 interface ourBooks {
   id: string;
   title: string;
@@ -126,13 +128,12 @@ function HomeNew() {
         id: userId,
       },
     }).then((response) => {
-      console.log('response.data', response.data);
       userContext?.setUser(response.data);
     }).then(() => getFriendIds)
       .catch((err) => {
         console.error(err);
       });
-  }, [friendIdArray]);
+  }, [friendIdArray.length]);
 
   const colWidth = {
     xs: 12, sm: 6, md: 4, lg: 3,
@@ -140,7 +141,7 @@ function HomeNew() {
   return (
     <MaxWidthDiv>
       <Box sx={{
-        flexGrow: 1, overflow: 'clip', height: '98vh', width: '100%',
+        flexGrow: 1, overflow: 'hidden', height: '100vh', width: '100%',
       }}
       >
         <Grid
@@ -174,7 +175,7 @@ function HomeNew() {
               position: 'sticky',
               top: '0px',
               height: '100vh',
-              paddingBottom: '8vh',
+              paddingBottom: '2vh',
               display: { xs: 'none', sm: 'block' },
             }}
           >
@@ -220,7 +221,7 @@ function HomeNew() {
             sm={9.5}
             width="100%"
             sx={{
-              height: '98vh', overflow: 'auto', paddingBottom: '9vh',
+              height: '98vh', overflow: 'auto', paddingBottom: '2vh',
             }}
           >
 
@@ -273,6 +274,32 @@ function HomeNew() {
                   <HomeWishList nearMeBooks={nearMeBooks} />
                 </Box>
                 <StyledDivider textAlign="left">
+                  <Chip size="lg">
+                    <Diversity2Icon />
+                    Friends
+                  </Chip>
+                </StyledDivider>
+                <Box
+                  overflow="clip"
+                  alignContent="center"
+                  alignItems="center"
+                  justifyContent="center"
+                  justifyItems="center"
+                  sx={{
+                    width: '100%',
+                    minHeight: isMobile ? '90vw' : '280px',
+                    maxHeight: isMobile ? '95vw' : '350px',
+                  }}
+                >
+                  {friendIdArray && (
+                  <HomeFriends
+                    key={friendIdArray.length}
+                    friendIdArray={friendIdArray}
+                    setFriendIdArray={setFriendIdArray}
+                  />
+                  )}
+                </Box>
+                <StyledDivider textAlign="right">
                   <FlameStyledChip size="lg">
                     Hot Places To Read
                   </FlameStyledChip>
@@ -356,28 +383,22 @@ function HomeNew() {
               && <HomeExploreBooks ourBooks={ourBooks} nearMeBooks={nearMeBooks} />}
 
                 </Box>
-                <StyledDivider textAlign="left">
+                <StyledDivider textAlign="right">
                   <Chip size="lg">
-                    <Diversity2Icon />
-                    Friends
+                    Your Lending Library
                   </Chip>
                 </StyledDivider>
                 <Box
-                  overflow="clip"
+                  overflow="hidden"
                   alignContent="center"
                   alignItems="center"
-                  justifyContent="center"
-                  justifyItems="center"
                   sx={{
                     width: '100%',
-                    minHeight: isMobile ? '90vw' : '280px',
+                    minHeight: isMobile ? '90vw' : '290px',
                     maxHeight: isMobile ? '95vw' : '350px',
                   }}
                 >
-                  <HomeFriends
-                    friendIdArray={friendIdArray}
-                    setFriendIdArray={setFriendIdArray}
-                  />
+                  <HomeLendingLibrary nearMeBooks={nearMeBooks} />
                 </Box>
                 <Box
                   overflow="clip"
@@ -387,20 +408,21 @@ function HomeNew() {
                   justifyItems="center"
                   sx={{
                     width: '100%',
-                    minHeight: isMobile ? '90vw' : '280px',
-                    maxHeight: isMobile ? '95vw' : '370px',
+                    minHeight: isMobile ? '90vw' : '335px',
+                    maxHeight: isMobile ? '95vw' : '450px',
                   }}
                 >
-                  {userId
+                  {userId && friendIdArray
               && (
               <FriendFinder
+                key={friendIdArray.length}
                 friendIdArray={friendIdArray}
                 userId={userId}
                 setFriendIdArray={setFriendIdArray}
               />
               )}
                 </Box>
-                <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px' }} />
+                <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px', paddingBottom: '3rem' }} />
               </Stack>
             </ScrollBar>
           </Grid>
