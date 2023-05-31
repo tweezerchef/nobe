@@ -39,10 +39,11 @@ function FollowButton({
         setButtonText('Unfollow');
         axios.post('/api/friendship', { userId, friendId });
       } else {
-        setFriendIdArray?.(friendIdArray.filter((id) => id !== friendId));
         setButton(<PersonAddIcon />);
         setButtonText('Follow');
-        axios.delete('/api/friendship', { data: { userId, friendId } });
+        axios.delete('/api/friendship', { data: { userId, friendId } }).then(() => {
+          setFriendIdArray(friendIdArray.filter((id) => id !== friendId));
+        });
       }
     } catch (error) {
       console.error(error);
