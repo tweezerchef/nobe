@@ -46,6 +46,7 @@ const TrendingCard: React.FC<BookCardProps> = ({ book }) => {
         maxWidth: isMobile ? '70vw' : '320px',
         display: 'flex',
         flexDirection: 'column',
+        boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
       }}
     >
       <Box width="100%" height="55%" onClick={() => navigate('/trending')}>
@@ -65,7 +66,7 @@ const TrendingCard: React.FC<BookCardProps> = ({ book }) => {
       <Typography
         onClick={() => navigate('/trending')}
         sx={{
-          mt: 2.4,
+          mt: 2,
           overflow: 'hidden',
           whiteSpace: isMobile ? 'wrap' : 'normal',
           flexWrap: 'wrap',
@@ -90,7 +91,7 @@ const TrendingCard: React.FC<BookCardProps> = ({ book }) => {
           textAlign: 'center',
         }}
       >
-        <Link href="#multiple-actions">{book.author}</Link>
+        {book.author}
       </Typography>
       <Divider inset="context" />
       <CardOverflow

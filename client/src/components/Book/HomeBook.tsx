@@ -210,7 +210,7 @@ const Book = React.memo(({
           flexWrap: 'wrap',
           textAlign: 'center',
           textOverflow: 'ellipsis',
-          fontSize: isMobile ? '1.5rem' : '1.27rem',
+          fontSize: isMobile ? '1.5rem' : '1.2rem',
           fontWeight: '500',
           lineHeight: '1.4rem',
         }}

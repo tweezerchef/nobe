@@ -439,23 +439,6 @@ function HomeNew() {
                 >
                   <HomeTrending />
                 </Box>
-                <StyledDivider textAlign="left">
-                  <Chip size="lg">
-                    Your Lending Library
-                  </Chip>
-                </StyledDivider>
-                <Box
-                  overflow="hidden"
-                  alignContent="center"
-                  alignItems="center"
-                  sx={{
-                    width: '100%',
-                    minHeight: isMobile ? '90vw' : '290px',
-                    maxHeight: isMobile ? '95vw' : '350px',
-                  }}
-                >
-                  <HomeLendingLibrary nearMeBooks={nearMeBooks} />
-                </Box>
                 <Box
                   overflow="clip"
                   alignContent="center"
@@ -477,6 +460,23 @@ function HomeNew() {
                 setFriendIdArray={setFriendIdArray}
               />
               )}
+                </Box>
+                <StyledDivider textAlign="right">
+                  <Chip size="lg">
+                    Your Lending Library
+                  </Chip>
+                </StyledDivider>
+                <Box
+                  overflow="hidden"
+                  alignContent="center"
+                  alignItems="center"
+                  sx={{
+                    width: '100%',
+                    minHeight: isMobile ? '90vw' : '290px',
+                    maxHeight: isMobile ? '95vw' : '350px',
+                  }}
+                >
+                  <HomeLendingLibrary nearMeBooks={nearMeBooks} />
                 </Box>
                 <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px', paddingBottom: '3rem' }} />
               </Stack>
