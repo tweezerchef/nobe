@@ -1,7 +1,6 @@
 import React, {
   useState, useContext, useEffect,
 } from 'react';
-import { useParams } from 'react-router';
 import axios from 'axios';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
@@ -63,11 +62,9 @@ function Trending() {
         });
     });
   };
-  // useEffect(() => {
-  //   if (category) {
-  //     fetchTrending(category);
-  //   }
-  // });
+  useEffect(() => {
+    fetchTrending('mass-market-monthly');
+  });
 
   if (showBigBook) {
     return (

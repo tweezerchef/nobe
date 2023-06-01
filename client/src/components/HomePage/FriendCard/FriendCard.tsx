@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@mui/material/styles';
 import { User } from '../../../typings/types';
 import FollowButton from '../../Button/FollowButton';

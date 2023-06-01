@@ -26,6 +26,7 @@ import MaxWidthDiv from '../hooks/MaxWidth';
 import HomeLendingLibrary from '../components/HomePage/HomeLendingLibrary';
 import HomeTopClubs from '../components/HomePage/HomeTopClubs';
 import HomeAllBooksNearMe from '../components/HomePage/HomeAllBooksNearMe';
+import HomeTrending from '../components/HomePage/HomeTrending';
 
 const StyledTrack = styled.div`
     background-color: #f1f1f1;
@@ -422,6 +423,23 @@ function HomeNew() {
 
                 </Box>
                 <StyledDivider textAlign="right">
+                  <Chip size="lg">
+                    New York Times Best Sellers
+                  </Chip>
+                </StyledDivider>
+                <Box
+                  overflow="hidden"
+                  alignContent="center"
+                  alignItems="center"
+                  sx={{
+                    width: '100%',
+                    minHeight: isMobile ? '90vw' : '300px',
+                    maxHeight: isMobile ? '95vw' : '380px',
+                  }}
+                >
+                  <HomeTrending />
+                </Box>
+                <StyledDivider textAlign="left">
                   <Chip size="lg">
                     Your Lending Library
                   </Chip>
