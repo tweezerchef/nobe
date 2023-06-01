@@ -13,6 +13,8 @@ import Button from '@mui/material/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import Stack from '@mui/material/Stack';
+import styled from 'styled-components';
+import ScrollBar from 'react-scrollbars-custom';
 import UserStarRating from '../UserStarRating/UserStarRating';
 import UserReview from '../UserStarRating/UserReview';
 import Reviews from './Reviews';
@@ -44,10 +46,26 @@ const useStyles = makeStyles({
     transform: 'translate(-50%, -50%)',
     maxWidth: '80vw',
     maxHeight: '80vh',
-    overflow: 'auto',
+    overflow: 'hidden',
     padding: '16px',
   },
 });
+
+const StyledTrack = styled.div`
+    background-color: #888;
+`;
+const StyledThumb = styled.div`
+    background-color: #11101081;
+    border-radius: 3px;
+    height: '.5rem';
+`;
+
+const TrackY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledTrack {...props} ref={ref} />,
+);
+const ThumbY = React.forwardRef<HTMLDivElement>(
+  (props, ref) => <StyledThumb {...props} ref={ref} />,
+);
 
 function BigBook(props: any) {
   const classes = useStyles();
@@ -334,20 +352,36 @@ function BigBook(props: any) {
                 px: 'var(--Card-padding)',
                 bgcolor: 'background.level1',
                 marginTop: '10px',
+                height: '150px',
+                overflow: 'auto',
               }}
             >
               {' '}
-
-              <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
-                {userBooks && (
+              <ScrollBar
+                style={{ width: '100%' }}
+                trackYProps={{
+                  renderer: (props) => {
+                    const { elementRef, ...restProps } = props;
+                    return <TrackY {...restProps} ref={elementRef} />;
+                  },
+                }}
+                thumbYProps={{
+                  renderer: (props) => {
+                    const { elementRef, ...restProps } = props;
+                    return <ThumbY {...restProps} ref={elementRef} />;
+                  },
+                }}
+              >
+                <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
+                  {userBooks && (
                   <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary', fontSize: 'md' }}>
                     <Reviews UserBooks={userBooks} />
                   </Typography>
-                )}
-              </Typography>
+                  )}
+                </Typography>
 
-              <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }} />
-
+                <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }} />
+              </ScrollBar>
             </Box>
           </Box>
         </Card>

@@ -18,7 +18,8 @@ interface UserBook {
     id: string;
     picture: string;
     rating: number
-    firstName: string;
+    firstName: string
+    username: string;
   };
 }
 interface ReviewsProps {
@@ -55,7 +56,7 @@ function Reviews({ UserBooks }: ReviewsProps) {
               <ListItemContent>
                 <MiniStar value={userBook.rating} />
                 <Typography level="body1" noWrap>
-                  {userBook.User.firstName}
+                  { userBook.User.username ? userBook.User.username : userBook.User.firstName }
                   's Review:
                   {userBook.review}
                 </Typography>
