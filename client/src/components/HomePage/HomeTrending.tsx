@@ -30,6 +30,7 @@ function HomeTrending() {
   const [trending, setTrending] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
+  const [loading, setLoading] = useState(true);
 
   const booksPerPage = 3;
 
@@ -44,9 +45,25 @@ function HomeTrending() {
   };
 
   async function fetchTrending(category: string) {
-    const response = await fetch(`/api/trending?category=${category}`);
-    const data = await response.json();
-    setTrending(data.results.books);
+    const localStorageData = localStorage.getItem('trendingBooks');
+    const localStorageTimestamp = localStorage.getItem('trendingBooksTimestamp');
+    const currentTime = new Date().getTime();
+    if (
+      localStorageData
+      && localStorageTimestamp
+      && currentTime - parseInt(localStorageTimestamp, 10) < 10 * 60 * 60 * 1000
+    ) {
+      // Data exists in local storage and it's within the 10-minute threshold
+      setTrending(JSON.parse(localStorageData));
+      setLoading(false);
+    } else {
+      const response = await fetch(`/api/trending?category=${category}`);
+      const data = await response.json();
+      setTrending(data.results.books);
+      setLoading(false);
+      localStorage.setItem('trendingBooks', JSON.stringify(data.results.books));
+      localStorage.setItem('trendingBooksTimestamp', currentTime.toString());
+    }
   }
 
   useEffect(() => {

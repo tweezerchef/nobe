@@ -62,9 +62,10 @@ function Trending() {
         });
     });
   };
+
   useEffect(() => {
     fetchTrending('mass-market-monthly');
-  });
+  }, []);
 
   if (showBigBook) {
     return (

@@ -131,6 +131,7 @@ function PlaceCard({ place } : PlaceCardProps) {
               display: '-webkit-box',
               '-webkit-line-clamp': 2,
               '-webkit-box-orient': 'vertical',
+              textAlign: 'center',
             }}
           >
             {name}
