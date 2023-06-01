@@ -3,13 +3,7 @@ import React, {
 } from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import {
-  Card,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField, List,
+  List,
   ListItemText,
   ListItemButton,
   Typography,
@@ -40,6 +34,7 @@ function ReadingSpotsMap(props: ReadingSpotsProps) {
   const [open, setOpen] = React.useState(false);
   const [placeId, setPlaceId] = useState<string>(linkPlaceId || 'ChIJZYIRslSkIIYRtNMiXuhbBts');
   const [userPlaces, setUserPlaces] = useState<Place[]>([]);
+  console.log(savedPlaces);
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -72,17 +67,17 @@ function ReadingSpotsMap(props: ReadingSpotsProps) {
     mapRef.current?.panTo({ lat, lng });
   }, []);
 
-  const handleFormOpen = () => {
-    setIsFormOpen(true);
-    setIsAddingDescription(true);
-    setOpen(true);
-  };
+  // const handleFormOpen = () => {
+  //   setIsFormOpen(true);
+  //   setIsAddingDescription(true);
+  //   setOpen(true);
+  // };
 
-  const handleFormCancel = () => {
-    setIsFormOpen(false);
-    setIsAddingDescription(false);
-    setShowInfoWindow(false);
-  };
+  // const handleFormCancel = () => {
+  //   setIsFormOpen(false);
+  //   setIsAddingDescription(false);
+  //   setShowInfoWindow(false);
+  // };
 
   const fetchSavedPlaces = useCallback(async () => {
     try {
@@ -94,7 +89,7 @@ function ReadingSpotsMap(props: ReadingSpotsProps) {
   }, []);
 
   const handleMarkerClick = useCallback(() => {
-    setShowInfoWindow((prev) => !prev);
+    // setShowInfoWindow((prev) => !prev);
     fetchSavedPlaces();
   }, []);
 
@@ -145,7 +140,7 @@ function ReadingSpotsMap(props: ReadingSpotsProps) {
                     {place.name}
                     {place.location}
                   </Typography>
-)}
+                )}
                 />
               </ListItemButton>
             ))}
@@ -171,105 +166,17 @@ function ReadingSpotsMap(props: ReadingSpotsProps) {
                 icon={{
                   url: 'http://maps.google.com/mapfiles/kml/shapes/library_maps.png',
                 }}
-              >
-                {showInfoWindow && (
-                  <InfoWindow
-                    onCloseClick={handleMarkerClick}
-                    position={latlng}
-                    options={{ maxWidth: 250 }}
-                  >
-                    <div>
-                      <div className="location">{location}</div>
-                      <div>
-                        {!isAddingDescription && (
-                          <Button onClick={handleFormOpen}>Add Review</Button>
-                        )}
-                        {isFormOpen && (
-                          <Card>
-                            <Dialog
-                              open={open}
-                              fullWidth
-                              maxWidth="md"
-                            >
-                              <DialogTitle>Leave This Spot a Review</DialogTitle>
-                              <DialogContent>
-                                <TextField
-                                  autoFocus
-                                  margin="dense"
-                                  label="Description"
-                                  fullWidth
-                                  variant="outlined"
-                                  value={description}
-                                  onChange={(e) => setDescription(e.target.value)}
-                                />
-                              </DialogContent>
-                              <DialogActions>
-                                <Button onClick={handleFormCancel}>Cancel</Button>
-                                {/* <Button onClick={handleFormSubmit}>Save</Button> */}
-                              </DialogActions>
-                            </Dialog>
-                          </Card>
-                        )}
-                      </div>
-                    </div>
-                  </InfoWindow>
-                )}
-              </Marker>
+              />
               )}
               {savedPlaces?.map((place) => (
                 <Marker
                   key={place.id}
-                // position={new google.maps.LatLng(place.Lat, place.Long)}
                   position={{ lat: place.Lat, lng: place.Long }}
                   icon={{
                     url: 'http://maps.google.com/mapfiles/kml/shapes/library_maps.png',
                   }}
                   onClick={() => handlePlaceClick(place.id, place)}
-                >
-                  {selectedPlace === place.id && (
-                  <InfoWindow
-                    onCloseClick={() => setSelectedPlace(null)}
-                    position={{ lat: place.Lat, lng: place.Long }}
-                    options={{ maxWidth: 250 }}
-                  >
-                    <div>
-                      <div className="location">{place.Location}</div>
-                      {place.Description_Places && place.Description_Places.length > 0 && <div className="description">{place.Description_Places[0].body}</div>}
-                      <div>
-                        {!isAddingDescription && (
-                          <Button onClick={handleFormOpen}>Add Review</Button>
-                        )}
-                        {isFormOpen && (
-                          <Card>
-                            <Dialog
-                              open={open}
-                              fullWidth
-                              maxWidth="md"
-                            >
-                              <DialogTitle>Leave This Spot a Review</DialogTitle>
-                              <DialogContent>
-                                <TextField
-                                  autoFocus
-                                  margin="dense"
-                                  label="Description"
-                                  fullWidth
-                                  variant="outlined"
-                                  value={description}
-                                  onChange={(e) => setDescription(e.target.value)}
-                                />
-                              </DialogContent>
-                              <DialogActions>
-                                <Button onClick={handleFormCancel}>Cancel</Button>
-                                {/* <Button onClick={handleFormSubmit}>Save</Button> */}
-                              </DialogActions>
-                            </Dialog>
-                          </Card>
-                        )}
-                      </div>
-                    </div>
-                  </InfoWindow>
-                  )}
-                </Marker>
+                />
               ))}
             </GoogleMap>
           </div>
