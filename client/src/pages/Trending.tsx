@@ -1,8 +1,8 @@
 import React, {
-  useState, useEffect, useRef, useContext,
+  useState, useContext, useEffect,
 } from 'react';
+import { useParams } from 'react-router';
 import axios from 'axios';
-
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -25,6 +25,7 @@ function Trending() {
   const [trending, setTrending] = useState<any[]>([]);
   const [showBigBook, setShowBigBook] = useState<any>(false);
   const [book1, setBook1] = useState<any>(null);
+  // const { category } = useParams<{ linkPlaceId: string }>();
 
   const userContext = useContext(UserContext);
   const user = userContext?.user;
@@ -52,10 +53,8 @@ function Trending() {
       type: 'added to db',
       isbn10,
     }).then((response) => {
-      console.log('response1', response.data);
       axios.get(`/bookdata/?ISBN10=${response.data}`)
         .then((response2) => {
-          console.log('response2', response2.data);
           setBook1(response2.data);
           setShowBigBook(true);
         })
@@ -64,9 +63,13 @@ function Trending() {
         });
     });
   };
+  // useEffect(() => {
+  //   if (category) {
+  //     fetchTrending(category);
+  //   }
+  // });
 
   if (showBigBook) {
-    console.log(book1);
     return (
       <BigBook book={book1} id={userId} onClose={() => setShowBigBook(false)} />
     );

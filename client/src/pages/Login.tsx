@@ -1,15 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { EntryPage, PageHeader } from './style'; import EntryCard from '../components/EntryCard/EntryCard'; import InputGroup from '../components/Input Group/InputGroup'; import Input from '../components/Input/Input'; import Button from '../components/Button';
+import Box from '@mui/material/Box';
+import { EntryPage } from './style'; import EntryCard from '../components/EntryCard/EntryCard'; import InputGroup from '../components/Input Group/InputGroup'; import Input from '../components/Input/Input'; import Button from '../components/Button';
 import useFetch from '../hooks/useFetch';
 import UserContext from '../hooks/Context';
 
 declare const google: any;
-declare const handleGoogle: string;
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -81,9 +80,23 @@ function Login() {
   }, [handleGoogle]);
   return (
     <EntryPage>
-      <PageHeader to="/">NOBE</PageHeader>
       <EntryCard>
-        <h2>Log in</h2>
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignContent: 'start', mt: '0',
+        }}
+        >
+          <img
+            src="https://nobe.s3.us-east-2.amazonaws.com/Nobe_Logo.png"
+            alt="logo"
+            style={{
+              width: '280px',
+              height: 'auto',
+              marginTop: '-30px',
+              marginBottom: '10px',
+              filter: 'brightness(1.2) contrast(1.2)',
+            }}
+          />
+        </Box>
         <form onSubmit={(e) => e.preventDefault()}>
           <InputGroup>
             <label htmlFor="login-email">Email Address</label>

@@ -25,6 +25,7 @@ import FriendFinder from '../components/HomePage/FriendFinder';
 import MaxWidthDiv from '../hooks/MaxWidth';
 import HomeLendingLibrary from '../components/HomePage/HomeLendingLibrary';
 import HomeTopClubs from '../components/HomePage/HomeTopClubs';
+import HomeAllBooksNearMe from '../components/HomePage/HomeAllBooksNearMe';
 
 const StyledTrack = styled.div`
     background-color: #f1f1f1;
@@ -85,7 +86,9 @@ function HomeNew() {
   const getNearMeBooks = async () => {
     // Get user's latitude, longitude, and radius from the user object
     if (!user) return;
-    const { latitude, longitude, radius } = user;
+    const {
+      latitude, longitude, radius, id,
+    } = user;
 
     // Make the request to fetch nearMeBooks with query parameters
     const response = await axios.get('/location/locations/login', {
@@ -93,6 +96,7 @@ function HomeNew() {
         lat: latitude,
         lon: longitude,
         radius,
+        id,
       },
     });
 
@@ -354,15 +358,32 @@ function HomeNew() {
                   alignItems="center"
                   sx={{
                     width: '100%',
-                    minHeight: isMobile ? '90vw' : '280px',
-                    maxHeight: isMobile ? '95vw' : '350px',
+                    minHeight: isMobile ? '90vw' : '190px',
+                    maxHeight: isMobile ? '95vw' : '250px',
                   }}
                 >
                   <HomeNearMe />
                 </Box>
                 <StyledDivider textAlign="right">
+                  <Chip size="lg">
+                    All The Books Near You
+                  </Chip>
+                </StyledDivider>
+                <Box
+                  overflow="hidden"
+                  alignContent="center"
+                  alignItems="center"
+                  sx={{
+                    width: '100%',
+                    minHeight: isMobile ? '90vw' : '280px',
+                    maxHeight: isMobile ? '95vw' : '350px',
+                  }}
+                >
+                  <HomeAllBooksNearMe nearMeBooks={nearMeBooks} />
+                </Box>
+                <StyledDivider textAlign="left">
                   <FlameStyledChip size="lg">
-                    Hot Clubs
+                    Hot Places To Read
                   </FlameStyledChip>
                 </StyledDivider>
                 <Box

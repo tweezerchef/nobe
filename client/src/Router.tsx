@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import {
   Navigate,
-  BrowserRouter,
   Routes,
   Route,
-  Link,
 } from 'react-router-dom';
 import UserContext from './hooks/Context';
 import Home from './pages/Home';
@@ -26,20 +23,7 @@ import BookSearch from './pages/BookSearch';
 import UsersProfile from './pages/UserProfile';
 import UserSettings from './pages/UserSettingsPage';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface User {
-  email: string;
-}
-
 function Router() {
-  // const [user, setUser] = useState<User | null>(null);
-  // useEffect(() => {
-  //     const theUser = localStorage.getItem("user");
-
-  //     if (theUser && !theUser.includes("undefined")) {
-  //         setUser(JSON.parse(theUser));
-  //     }
-  // }, []);
   const userContext = useContext(UserContext);
   const user = userContext?.user;
 
