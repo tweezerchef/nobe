@@ -92,7 +92,7 @@ const NearMeUserBook: React.FC<NearMeUserBookProps> = ({
     <Card
       variant="outlined"
       sx={{
-        width: '34vw',
+        width: '24vw',
         height: '100%',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
         alignContent: 'center',

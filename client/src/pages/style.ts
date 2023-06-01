@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export const EntryPage = styled.div`
-display: flex;
-align-items: center; flex-direction: column;
-min-height: 100vh;
-background-color: #fbfbfb
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  min-height: 100vh;
+  background-color: #fbfbfb;
 `;
 
 export const PageHeader = styled(Link)`
