@@ -26,6 +26,7 @@ import MaxWidthDiv from '../hooks/MaxWidth';
 import HomeLendingLibrary from '../components/HomePage/HomeLendingLibrary';
 import HomeTopClubs from '../components/HomePage/HomeTopClubs';
 import HomeAllBooksNearMe from '../components/HomePage/HomeAllBooksNearMe';
+import HomeTrending from '../components/HomePage/HomeTrending';
 
 const StyledTrack = styled.div`
     background-color: #f1f1f1;
@@ -423,7 +424,7 @@ function HomeNew() {
                 </Box>
                 <StyledDivider textAlign="right">
                   <Chip size="lg">
-                    Your Lending Library
+                    New York Times Best Sellers
                   </Chip>
                 </StyledDivider>
                 <Box
@@ -432,11 +433,11 @@ function HomeNew() {
                   alignItems="center"
                   sx={{
                     width: '100%',
-                    minHeight: isMobile ? '90vw' : '290px',
-                    maxHeight: isMobile ? '95vw' : '350px',
+                    minHeight: isMobile ? '90vw' : '300px',
+                    maxHeight: isMobile ? '95vw' : '380px',
                   }}
                 >
-                  <HomeLendingLibrary nearMeBooks={nearMeBooks} />
+                  <HomeTrending />
                 </Box>
                 <Box
                   overflow="clip"
@@ -459,6 +460,23 @@ function HomeNew() {
                 setFriendIdArray={setFriendIdArray}
               />
               )}
+                </Box>
+                <StyledDivider textAlign="right">
+                  <Chip size="lg">
+                    Your Lending Library
+                  </Chip>
+                </StyledDivider>
+                <Box
+                  overflow="hidden"
+                  alignContent="center"
+                  alignItems="center"
+                  sx={{
+                    width: '100%',
+                    minHeight: isMobile ? '90vw' : '290px',
+                    maxHeight: isMobile ? '95vw' : '350px',
+                  }}
+                >
+                  <HomeLendingLibrary nearMeBooks={nearMeBooks} />
                 </Box>
                 <img src="https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png" alt="logo" style={{ height: '275px', paddingBottom: '3rem' }} />
               </Stack>
