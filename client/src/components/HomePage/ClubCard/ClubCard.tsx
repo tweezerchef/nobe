@@ -4,8 +4,6 @@ import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Typography from '@mui/joy/Typography';
-import Tooltip from '@mui/material/Toolbar';
-import WhatshotTwoToneIcon from '@mui/icons-material/WhatshotTwoTone';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';

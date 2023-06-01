@@ -6,6 +6,8 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { IconButton } from '@mui/material';
 import Slide from '@mui/material/Slide';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import UserContext from '../../hooks/Context';
 import { UserBook } from '../../typings/types';
 import NearMeUserBook from './NearMeUserBook/NearMeUserBook';
@@ -17,6 +19,8 @@ function HomeNearMe() {
   const lat = user?.latitude || 29.9584;
   const lon = user?.longitude || -90.0651;
   const radius = user?.radius || 10;
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left' | undefined>('left');
@@ -99,9 +103,10 @@ function HomeNearMe() {
         alignContent: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '200px',
+        height: isMobile ? '80vw' : '18vw',
+        maxHeight: isMobile ? '80vw' : '250px',
+        marginTop: isMobile ? '.2vh' : '1.5vh',
         paddingBottom: '0',
-        marginTop: '4px',
       }}
     >
       <IconButton

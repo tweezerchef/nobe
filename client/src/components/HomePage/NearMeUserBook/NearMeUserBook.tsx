@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/joy/Box';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { UserBook, Book } from '../../../typings/types';
 import BigBook from '../../Book/BookBig';
 import UserContext from '../../../hooks/Context';
@@ -86,37 +88,51 @@ const NearMeUserBook: React.FC<NearMeUserBookProps> = ({
       </BigBookOverlay>
     );
   }
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
 
     <Card
       variant="outlined"
       sx={{
-        width: '24vw',
-        height: '100%',
+        width: isMobile ? '70vw' : '45vw',
+        height: isMobile ? '62vw' : '13vw',
+        minHeight: isMobile ? '62vw' : '120px',
+        maxHeight: isMobile ? '62vw' : '200px',
+        minWidth: isMobile ? '70vw' : '400px',
+        maxWidth: isMobile ? '70vw' : '450px',
         boxShadow: '0px 0px 25px  rgba(37, 37, 37, 0.6)',
-        alignContent: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#ececec',
-        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      <Grid container spacing={0} alignItems="center" justifyContent="space-evenly">
-        <Grid item xs={4} textAlign="center">
-          <Link to={`/profile/${User?.id}`}>
-            <Avatar
-              src={User?.picture}
-              alt={User?.firstName}
-              style={{
-                width: '4.75rem',
-                height: '4.75rem',
-                margin: '0 auto',
-              }}
-            />
-            <Typography level="h5">
-              {username}
-            </Typography>
-          </Link>
+      <Grid container spacing={0} alignItems="center" justifyContent="space-evenly" style={{ height: '100%' }}>
+        <Grid item xs={4}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+            }}
+          >
+            <Link to={`/profile/${User?.id}`}>
+              <Avatar
+                src={User?.picture}
+                alt={User?.firstName}
+                sx={{
+                  width: '4.75rem',
+                  height: '4.75rem',
+                  margin: '0 auto',
+                }}
+              />
+              <Typography level="h5" sx={{ textAlign: 'center' }}>
+                {username}
+              </Typography>
+            </Link>
+          </Box>
         </Grid>
         <Divider orientation="vertical" flexItem />
         <Grid item xs={4}>
@@ -124,6 +140,13 @@ const NearMeUserBook: React.FC<NearMeUserBookProps> = ({
             onClick={handleOnClick}
             className={classes.card}
             overflow="hidden"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+            }}
           >
             <AspectRatio ratio="2">
               <img src={bookcover} alt="Book Cover" />

@@ -312,7 +312,7 @@ function UserProfile() {
                     justifyItems="center"
                     sx={{
                       width: '100%',
-                      minHeight: isMobile ? '90vw' : '280px',
+                      minHeight: isMobile ? '90vw' : '300px',
                       maxHeight: isMobile ? '95vw' : '350px',
                     }}
                   >
