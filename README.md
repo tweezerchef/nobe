@@ -63,7 +63,7 @@ GOOGLE_CALLBACK_URL="http://localhost:3000/auth/google/callback"
 Replace `your_client_id` and `your_client_secret` with the appropriate values for your OAuth credentials.
 
 5: Remaining Credentials
-Refer to the example.env file for the remaining credentials needed to run the app.
+Refer to the example.env file for the remaining credentials needed to run the app.  You will need an googleAPI key for maps and books, the New York Times API for "Trending",  as well as an OPENAI key for the AI feature.
 
 
 6. Start the server:
