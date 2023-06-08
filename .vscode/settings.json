@@ -4,5 +4,8 @@
     "Convo",
     "lendinglibrary"
   ],
-  "search.useIgnoreFiles": false
+  "search.useIgnoreFiles": false,
+  "githubPullRequests.ignoredPullRequestBranches": [
+    "main"
+  ]
 }
