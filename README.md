@@ -2,7 +2,7 @@
 ![NOBE LOGO](https://nobe.s3.us-east-2.amazonaws.com/Banner+Small+.png)
 
 ## Description
-NOBE is a web application that allows users to connect with books and fellow book lovers. Users can search for books, add books to their personal library, and connect with other users who have the same interests. The principle idea is creating a collective library and facilitate peer to peer lending, and through that process, and the discussion of books, create a community of readers, virtual and "IRL".
+NOBE is a web application that allows users to connect with books and fellow book lovers. Users can search for books, add books to their personal library, and connect with other users who have the same interests. The principle idea is creating a collective library and facilitate peer-to-peer lending, and through that process, and the discussion of books, create a community of readers, virtual and "IRL". Please note that this is a large project with many dependencies and requires active users, a populated database, and a lot of set up to run.  It is not meant to be cloned and operated locally; it is only for code demonstration.  I may refactor this in order to create a newer deployed. 
 
 ## Technologies Used
 * React
